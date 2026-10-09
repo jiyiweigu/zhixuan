@@ -1,8 +1,10 @@
 # ===== 本项目专属忽略（智选志愿 · 竞赛工作仓）=====
 
 # WorkBuddy 工作目录的临时产物（渲染图、命令输出等，32MB 级派生物，不入库）
-# 注意：.workbuddy/memory/（项目记忆）需入库，故不做整目录忽略
 .workbuddy/scratch/
+
+# 团队内部工作笔记（分工过程、决策记录、本机环境与凭据路径）—— 本仓库已开源，不入库
+.workbuddy/memory/
 
 # 第三方他人仓库（非团队原创成果，不入库）
 zhangxuefeng-skill-main/

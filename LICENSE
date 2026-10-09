@@ -1,0 +1,30 @@
+MIT License
+
+Copyright (c) 2026 Zhixuan Team (智选志愿团队)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+注：本许可仅覆盖本项目团队成员原创的代码与文档。
+以下内容不适用本许可，其权利归各自权利人所有：
+1. 仓库中收录的竞赛官方文件（竞赛通知、参赛指南、评分标准等 PDF），版权归赛事主办方；
+2. 所使用的第三方开源组件、模型与字体（Vue、Element Plus、ECharts、FastAPI、
+   PostgreSQL、pgvector、bge 系列模型、通义千问、思源黑体等），遵循其各自许可；
+3. 各招生数据的原始来源（各省教育考试院、阳光高考平台、各高校官方发布等）。
