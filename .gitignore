@@ -1,0 +1,53 @@
+# ===== 本项目专属忽略（智选志愿 · 竞赛工作仓）=====
+
+# WorkBuddy 工作目录的临时产物（渲染图、命令输出等，32MB 级派生物，不入库）
+# 注意：.workbuddy/memory/（项目记忆）需入库，故不做整目录忽略
+.workbuddy/scratch/
+
+# 第三方他人仓库（非团队原创成果，不入库）
+zhangxuefeng-skill-main/
+
+# ===== 通用忽略（代码开发阶段生效）=====
+
+# 依赖
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# 环境与密钥（必须忽略）
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+secrets.json
+
+# 构建产物
+dist/
+build/
+*.egg-info/
+
+# 数据大文件（脚本入库，数据走网盘）
+data/raw/*
+data/**/*.zip
+data/**/*.csv
+!data/**/.gitkeep
+!data/raw/sample_*.csv
+
+# 向量与数据库导出
+*.sql.gz
+*.dump
+data/vector_store/
+
+# 编辑器与系统
+.vscode/*
+!.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+logs/
