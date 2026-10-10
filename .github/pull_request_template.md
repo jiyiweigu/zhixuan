@@ -22,3 +22,10 @@
 - [ ] 事实性数据都带了 `source_name` / `source_url` / `year`
 - [ ] 未改动他人负责模块（如有改动已在群里说明）
 - [ ] 未使用 `git push -f` / `git reset --hard`
+## 接口变更
+- [ ] 无
+- [ ] 有（已同步 `docs/api-contract.md`、Mock 与 OpenAPI，并通知受影响模块）
+## Mock 数据
+- [ ] 已覆盖 success / empty / error 状态
+- [ ] 已覆盖低置信度或待核验状态
+- [ ] Mock 来源已标记为演示数据

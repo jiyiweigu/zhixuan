@@ -1,0 +1,3 @@
+export const mockPathways:Zhixuan.ApiResponse<Zhixuan.Pathway[]>={code:0,message:'success',trace_id:'mock-pathways',data:[{id:'normal-batch',name:'普通批',status:'可查询',source_name:'河南省教育考试院',source_url:'https://www.haeea.cn',year:2026}]}
+export const mockEligibility:Zhixuan.ApiResponse<Zhixuan.Eligibility>={code:0,message:'success',trace_id:'mock-eligibility',data:{eligible:['普通批'],pending:['国家专项计划'],profile:{province:'河南',score:620,subject_type:'物理类'},citations:[{source_name:'河南省教育考试院',source_url:'https://www.haeea.cn',year:2026}]}}
+export const mockQa:Zhixuan.ApiResponse<Zhixuan.QaResult>={code:0,message:'success',trace_id:'mock-qa',data:{answer:'请先完善考生档案，再获取可核验建议。',confidence:.62,citations:[{source_name:'河南省教育考试院',source_url:'https://www.haeea.cn',year:2026}]}}
