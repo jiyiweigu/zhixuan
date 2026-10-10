@@ -32,22 +32,32 @@ cd zhixuan
 | `develop` | 集成分支 | 经 PR 合并 |
 | `feature/<模块>-<姓名拼音>` | 个人开发分支 | 本人 |
 
-例：`feature/qa-lisi`、`fix/plan-rank-zhangsan`。**禁止**中文、空格、`test`、`dev`、`master`。
+**已建好的成员分支**（都已从 `develop` 拉出，直接切换过去开发即可，不用自己建）：
+
+| 分支 | 对应角色 |
+|---|---|
+| `feature/backend-xu` | ② 后端 |
+| `feature/data-fei` | ③ 数据工程 |
+| `feature/rag-zhang` | ④ 算法 / RAG |
+| `feature/admin-yuan` | ⑤ 管理端前端 + 测试 + 材料 |
+
+例：`feature/backend-xu`、`fix/plan-rank-zhang`。**禁止**中文、空格、`test`、`dev`、`master`。
 
 ## 四、每日六步流程
 
 ```bash
-# 1 同步
+# 1 同步集成分支
 git checkout develop
 git pull origin develop
-# 2 建分支（首次）
-git checkout -b feature/qa-lisi
+# 2 切到自己的分支（已由队长建好；若没有则 git checkout -b feature/<模块>-<姓名拼音>）
+git checkout feature/backend-xu
+git merge develop
 # 3 开发 + 小步提交
 git status
 git add 具体文件
 git commit -m "feat(qa): 问答接口返回 citations 与 confidence"
 # 4 推送
-git push -u origin feature/qa-lisi
+git push -u origin feature/backend-xu
 # 5 到 GitHub 提 PR（base=develop）
 # 6 审查通过后 Squash merge，并删除自己的分支
 ```
