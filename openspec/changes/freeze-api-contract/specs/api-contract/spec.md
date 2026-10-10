@@ -1,4 +1,4 @@
-## api-contract
+## ADDED Requirements
 
 ### Requirement: Unified response envelope
 The system SHALL return every API response in the `{code, message, data, trace_id}` envelope, with `code=0` for success and documented business error codes for failures.
