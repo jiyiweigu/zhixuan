@@ -1,4 +1,24 @@
 from fastapi import APIRouter
-router = APIRouter(prefix='/v1', tags=['v1'])
+from app.schemas.core import ProfileRequest, Credentials, PlanRequest
+from app.services.eligibility import build_eligibility, build_plan, response, DEMO
+router=APIRouter(prefix='/api',tags=['core'])
 @router.get('/health')
-def health_v1(): return {'code':0,'message':'success','data':{'status':'ok'},'trace_id':'v1'}
+def health(): return response({'status':'ok','service':'zhixuan'})
+@router.post('/auth/register')
+def register(payload:Credentials): return response({'user_id':'u_demo','username':payload.username,'access_token':'mock-token'})
+@router.post('/auth/login')
+def login(payload:Credentials): return response({'user_id':'u_demo','username':payload.username,'access_token':'mock-token'})
+@router.get('/user/profile')
+def profile(): return response({'province':'河南','score':620,'subject_type':'物理类'})
+@router.put('/user/profile')
+def update_profile(payload:ProfileRequest): return response(payload.model_dump())
+@router.get('/pathways')
+def pathways(): return response([{'id':'special-plan','name':'国家专项计划','status':'待核验',**DEMO},{'id':'normal-batch','name':'普通批','status':'可查询',**DEMO}])
+@router.post('/pathways/eligibility-check')
+def eligibility_check(payload:ProfileRequest): return response(build_eligibility(payload))
+@router.get('/qa')
+def qa(q:str): return response({'answer':'请先完善考生档案，我会基于你的省份、分数与选科给出可核验建议。','confidence':.62,'citations':[DEMO]})
+@router.post('/plans')
+def plans(payload:PlanRequest): return response(build_plan(payload.profile,payload.strategy))
+@router.get('/schools')
+def schools(keyword:str='',province:str='河南'): return response([{'school_id':'mock-001','name':'演示院校','province':province,'citations':[DEMO],**DEMO}] if keyword or province else [])

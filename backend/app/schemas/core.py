@@ -4,10 +4,10 @@ class ProfileRequest(BaseModel):
     score: int = Field(ge=0, le=750)
     subject_type: str = '物理类'
 class Citation(BaseModel):
-    source_name: str
-    source_url: str
-    year: int
-class QaResponse(BaseModel):
-    answer: str
-    confidence: float = Field(ge=0, le=1)
-    citations: list[Citation]
+    source_name: str; source_url: str; year: int
+class Credentials(BaseModel):
+    username: str = Field(min_length=2, max_length=50)
+    password: str = Field(min_length=6, max_length=128)
+class PlanRequest(BaseModel):
+    profile: ProfileRequest
+    strategy: str = Field(pattern='^(冲|稳|保)$')

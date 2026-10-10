@@ -43,7 +43,7 @@ Auth: no（游客可用）；请求：
 ```json
 {"province":"河南","score":620,"subject_type":"物理类"}
 ```
-响应 `data` 含 `eligible`、`pending`、`profile`、`citations`。
+响应 `data` 含 `eligible`、`pending`、`ineligible`、`profile`、`citations`。
 
 ## 4. 问答
 
@@ -62,7 +62,7 @@ Auth: no；`data` 为院校数组，每项含 `school_id`、`name`、`province`�
 
 ## 统一 Mock
 
-前端设置 `VITE_USE_MOCK=true` 时使用 `frontend/src/api/mock.ts`，无需启动后端即可开发。真实接口联调时改为 `false`。
+前端设置 `VITE_USE_MOCK=true` 时使用 `frontend/src/mocks/index.ts`，无需启动后端即可开发。真实接口联调时改为 `false`。
 
 ## 变更流程
 
