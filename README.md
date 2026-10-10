@@ -33,7 +33,7 @@
 ## 三、团队协作（**新人必读，先看这个**）
 
 - 团队 5 人，**主账号 = 队长账号**，其余 4 人由队长在 `Settings → Collaborators` 邀请（权限 **Write**）；**团队内部不使用 Fork 流程**（外部协作者请走 Fork + PR）。
-- 三分支模型：`main`（稳定可演示，仅队长经 PR 合并）→ `develop`（集成）→ `feature/<模块>-<姓名拼音>`（个人）。
+- 三分支模型：`main`（稳定可演示，仅队长经 PR 合并）→ `develop`（集成）→ `feature/<姓名拼音>`（个人，已建好：`feature/xu`、`feature/fei`、`feature/zhang`、`feature/yuan`）。
 - 完整规范见 **[CONTRIBUTING.md](./CONTRIBUTING.md)**（含每日六步流程、提交信息格式、10 条禁止事项、求助模板）。
 
 **核心三条**：

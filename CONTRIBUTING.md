@@ -30,18 +30,20 @@ cd zhixuan
 |---|---|---|
 | `main` | 稳定可演示版本，合并后打 tag | 仅队长（经 PR） |
 | `develop` | 集成分支 | 经 PR 合并 |
-| `feature/<模块>-<姓名拼音>` | 个人开发分支 | 本人 |
+| `feature/<姓名拼音>` | 个人开发分支 | 本人 |
 
 **已建好的成员分支**（都已从 `develop` 拉出，直接切换过去开发即可，不用自己建）：
 
-| 分支 | 对应角色 |
+| 分支 | 成员（姓氏拼音） |
 |---|---|
-| `feature/backend-xu` | ② 后端 |
-| `feature/data-fei` | ③ 数据工程 |
-| `feature/rag-zhang` | ④ 算法 / RAG |
-| `feature/admin-yuan` | ⑤ 管理端前端 + 测试 + 材料 |
+| `feature/xu` | 徐 |
+| `feature/fei` | 费 |
+| `feature/zhang` | 张 |
+| `feature/yuan` | 袁 |
 
-例：`feature/backend-xu`、`fix/plan-rank-zhang`。**禁止**中文、空格、`test`、`dev`、`master`。
+> 分工由队长统一安排，分支名只标识成员、不含模块，方便中途调整任务。
+
+命名规范：全小写英文 + 连字符，例：`feature/xu`、`feature/zhang`、`fix/plan-rank-zhang`。**禁止**中文、空格、`test`、`dev`、`master`。
 
 ## 四、每日六步流程
 
@@ -49,15 +51,15 @@ cd zhixuan
 # 1 同步集成分支
 git checkout develop
 git pull origin develop
-# 2 切到自己的分支（已由队长建好；若没有则 git checkout -b feature/<模块>-<姓名拼音>）
-git checkout feature/backend-xu
+# 2 切到自己的分支（已由队长建好；若没有则 git checkout -b feature/<姓名拼音>）
+git checkout feature/xu
 git merge develop
 # 3 开发 + 小步提交
 git status
 git add 具体文件
 git commit -m "feat(qa): 问答接口返回 citations 与 confidence"
 # 4 推送
-git push -u origin feature/backend-xu
+git push -u origin feature/xu
 # 5 到 GitHub 提 PR（base=develop）
 # 6 审查通过后 Squash merge，并删除自己的分支
 ```
@@ -105,7 +107,7 @@ docs(readme): 补充本地启动步骤与默认账号
 2. 我想做的事：
 3. git status 输出：
 4. 报错信息：
-5. 团队规范：main=稳定、develop=集成、我的分支 feature/<模块>-<姓名拼音>；
+5. 团队规范：main=稳定、develop=集成、我的分支 feature/<姓名拼音>（如 feature/xu）；
    提交格式 type(scope): 中文描述；禁止 push -f 和 reset --hard。
 
 请给逐条可复制命令，并说明每步作用与风险；涉及可能丢代码的操作请明确警告。
