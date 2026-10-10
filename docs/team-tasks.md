@@ -13,6 +13,17 @@
 
 每天开工前先在自己分支上执行 `git pull origin develop`，再开始写代码；具体谁做哪个模块由队长指派，模块清单见《开发产品书_智选志愿》第 4–5 章。
 
+## 共享文件约定（重要）
+
+下面这些文件是**公共资产，只有队长可以修改**。队员需要变更时，先在群里说明（或提 Issue），由队长统一改：
+
+- `docs/api-contract.md` —— 接口契约，前后端唯一的对齐依据
+- `frontend/src/api/index.ts`、`frontend/src/types/api.d.ts`、`frontend/src/mocks/index.ts`
+- `frontend/package.json`、`frontend/package-lock.json`
+- `README.md`、`CONTRIBUTING.md`、`docs/*.md`
+
+原因：五个人同时改这些文件必然冲突，而且契约一旦被改乱，前后端立刻对不上。**队员在自己分支上只改自己负责的页面和模块文件。**
+
 ## 角色分工
 
 - 主负责人：维护契约、Mock、develop 集成与 PR 审查。
