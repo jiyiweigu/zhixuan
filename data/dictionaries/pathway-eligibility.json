@@ -1,0 +1,202 @@
+{
+  "meta": {
+    "title": "升学途径资格规则数据（pathway_eligibility）",
+    "generated_at": "2026-10-11",
+    "owner": "徐（③ 数据工程）",
+    "target_table": "pathway_eligibility",
+    "table_fields": "id, pathway_id, province, rule_type(户籍/学籍/区域/成绩), rule_desc, params(json), source_id",
+    "contract": "输出结构遵循《开发产品书》8.3 规则引擎 JSON 契约；② 负责引擎逻辑，③ 负责本文件规则数据。",
+    "note": "params 为规则参数，供 ② 的规则引擎直接求值。凡 data_status=schema_only 的途径，其规则为占位骨架，params 中标 source_required=true，引擎须按「未提供」处理、不得默认成立。"
+  },
+  "rules": [
+    {
+      "pathway_id": "national-special",
+      "pathway_name": "国家专项计划",
+      "province": "河南",
+      "rule_type": "区域",
+      "rule_desc": "考生户籍须在国家专项计划实施区域（河南省 38 县）内",
+      "params": {
+        "region_table": "pathway_region",
+        "pathway_scope": "national-special",
+        "county_codes": [
+          "410225", "410324", "410325", "410326", "410327", "410328",
+          "410423", "411224", "411321", "411324", "411325",
+          "411326", "411327", "411330", "411421", "411422", "411423",
+          "411424", "411425", "411522", "411523", "411524", "411525",
+          "411526", "411527", "411603", "411623", "411624", "411625",
+          "411627", "411722", "411723", "411725", "411729", "410526",
+          "410727", "410926", "410927"
+        ],
+        "match_by": "county_code",
+        "fallback_match_by": "county_name",
+        "count": 38,
+        "note": "county_codes 与 data/dictionaries/pathway-regions.json 中 pathway_id=national-special 的行严格一致（38 条）。已通过一致性校验脚本比对。"
+      },
+      "data_status": "verified",
+      "source_id": "SRC-HENAN-SPECIAL-REGION"
+    },
+    {
+      "pathway_id": "national-special",
+      "pathway_name": "国家专项计划",
+      "province": "河南",
+      "rule_type": "户籍",
+      "rule_desc": "本人具有实施区域当地连续 3 年以上（至今）户籍，其父亲或母亲或法定监护人具有当地户籍",
+      "params": {
+        "self_household_years_min": 3,
+        "self_household_continuous": true,
+        "parent_household_local": true,
+        "household_type_required": null,
+        "note": "国家专项不要求农村户籍（与高校专项的区别）"
+      },
+      "data_status": "verified",
+      "source_id": "SRC-HENAN-SPECIAL-REGION"
+    },
+    {
+      "pathway_id": "national-special",
+      "pathway_name": "国家专项计划",
+      "province": "河南",
+      "rule_type": "学籍",
+      "rule_desc": "本人具有户籍所在县高中连续 3 年学籍并实际就读",
+      "params": {
+        "school_years_min": 3,
+        "school_continuous": true,
+        "school_in_same_county": true
+      },
+      "data_status": "verified",
+      "source_id": "SRC-HENAN-SPECIAL-REGION"
+    },
+    {
+      "pathway_id": "national-special",
+      "pathway_name": "国家专项计划",
+      "province": "河南",
+      "rule_type": "成绩",
+      "rule_desc": "高考成绩不低于本科批次录取控制分数线",
+      "params": {
+        "batch": "本科批",
+        "min_score_rule": ">=批次控制线",
+        "note": "具体分数线以当年官方公布为准，引擎需查 score_segment / 控制线数据"
+      },
+      "data_status": "verified",
+      "source_id": "SRC-HENAN-EXAM"
+    },
+
+    {
+      "pathway_id": "college-special",
+      "pathway_name": "高校专项计划",
+      "province": "河南",
+      "rule_type": "区域",
+      "rule_desc": "考生户籍须在高校专项计划实施区域（河南省 53 县）内",
+      "params": {
+        "region_table": "pathway_region",
+        "pathway_scope": "college-special",
+        "count": 53,
+        "superset_of": "national-special",
+        "note": "53 县 = 国家专项 38 县 + 省定扶贫开发工作重点县 15 县。county_codes 见 pathway-regions.json 中 pathway_id=college-special 的 53 行，此处不重复展开。"
+      },
+      "data_status": "verified",
+      "source_id": "SRC-HENAN-SPECIAL-REGION"
+    },
+    {
+      "pathway_id": "college-special",
+      "pathway_name": "高校专项计划",
+      "province": "河南",
+      "rule_type": "户籍",
+      "rule_desc": "本人及父亲或母亲或法定监护人户籍地在实施区域的农村，且本人具有当地连续 3 年以上（至今）户籍",
+      "params": {
+        "self_household_years_min": 3,
+        "self_household_continuous": true,
+        "parent_household_local": true,
+        "household_type_required": "农村",
+        "note": "高校专项【必须】农村户籍，这是与国家专项的核心差异"
+      },
+      "data_status": "verified",
+      "source_id": "SRC-HENAN-SPECIAL-REGION"
+    },
+    {
+      "pathway_id": "college-special",
+      "pathway_name": "高校专项计划",
+      "province": "河南",
+      "rule_type": "学籍",
+      "rule_desc": "本人具有户籍所在县高中连续 3 年学籍并实际就读",
+      "params": {
+        "school_years_min": 3,
+        "school_continuous": true,
+        "school_in_same_county": true
+      },
+      "data_status": "verified",
+      "source_id": "SRC-HENAN-SPECIAL-REGION"
+    },
+    {
+      "pathway_id": "college-special",
+      "pathway_name": "高校专项计划",
+      "province": "河南",
+      "rule_type": "成绩",
+      "rule_desc": "高考成绩不低于特殊类型招生录取控制分数线",
+      "params": {
+        "batch": "特殊类型招生",
+        "min_score_rule": ">=特殊类型招生控制线"
+      },
+      "data_status": "verified",
+      "source_id": "SRC-HENAN-EXAM"
+    },
+
+    {
+      "pathway_id": "local-special",
+      "pathway_name": "地方专项计划",
+      "province": "河南",
+      "rule_type": "户籍",
+      "rule_desc": "本人及父亲或母亲或法定监护人户籍地在我省农村",
+      "params": {
+        "household_type_required": "农村",
+        "province_only": true,
+        "county_restriction": null,
+        "note": "地方专项不限定具体县，只要河南省农村户籍即可（与另两类专项的关键差异）"
+      },
+      "data_status": "verified",
+      "source_id": "SRC-HENAN-SPECIAL-REGION"
+    },
+    {
+      "pathway_id": "local-special",
+      "pathway_name": "地方专项计划",
+      "province": "河南",
+      "rule_type": "成绩",
+      "rule_desc": "高考成绩不低于本科批次录取控制分数线",
+      "params": {
+        "batch": "本科批",
+        "min_score_rule": ">=批次控制线"
+      },
+      "data_status": "verified",
+      "source_id": "SRC-HENAN-EXAM"
+    },
+
+    {
+      "pathway_id": "general-batch",
+      "pathway_name": "普通本科批",
+      "province": "河南",
+      "rule_type": "成绩",
+      "rule_desc": "无资格限制，达到相应批次控制分数线即可填报",
+      "params": {
+        "eligibility_restriction": "none",
+        "batch": "本科批"
+      },
+      "data_status": "verified",
+      "source_id": "SRC-HENAN-EXAM"
+    }
+  ],
+  "placeholders": [
+    {
+      "pathway_id": "early-batch-special",
+      "pathway_name": "提前批特殊类型",
+      "province": "河南",
+      "rule_type": "成绩",
+      "rule_desc": "占位：具体规则依赖各校招生章程，待采集后补充",
+      "params": {
+        "source_required": true,
+        "note": "骨架占位。引擎遇 params.source_required=true 时，按「未提供」处理，不得默认成立。"
+      },
+      "data_status": "schema_only",
+      "source_id": null,
+      "placeholder_reason": "尚无可核实官方来源；待 M5 采集招生章程后补 source_id 并移入 rules"
+    }
+  ]
+}

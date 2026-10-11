@@ -1,0 +1,1823 @@
+{
+  "meta": {
+    "title": "河南省专项计划实施区域表",
+    "generated_at": "2026-10-11",
+    "owner": "徐（③ 数据工程）",
+    "target_table": "pathway_region",
+    "unit": "本文件 regions 为「一县一途径一行」的可入库格式（共 91 行）",
+    "source_id": "SRC-HENAN-SPECIAL-REGION",
+    "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+    "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+    "year": 2025,
+    "note": "county_code 为 6 位行政区划代码。国家专项 = 集中连片特困县(26) + 国家级扶贫开发重点县(12) = 38 县；高校专项 = 国家专项 38 县 + 省定扶贫开发工作重点县(15) = 53 县。两个集合互斥，合起来为 53 县。未命中项见 unmatched，需人工复核，未写入正式行。"
+  },
+  "regions": [
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "兰考县",
+      "county_code": "410225",
+      "city": "开封市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "兰考县",
+      "county_code": "410225",
+      "city": "开封市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "栾川县",
+      "county_code": "410324",
+      "city": "洛阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "栾川县",
+      "county_code": "410324",
+      "city": "洛阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "嵩县",
+      "county_code": "410325",
+      "city": "洛阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "嵩县",
+      "county_code": "410325",
+      "city": "洛阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "洛宁县",
+      "county_code": "410328",
+      "city": "洛阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "洛宁县",
+      "county_code": "410328",
+      "city": "洛阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "汝阳县",
+      "county_code": "410326",
+      "city": "洛阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "汝阳县",
+      "county_code": "410326",
+      "city": "洛阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "鲁山县",
+      "county_code": "410423",
+      "city": "平顶山市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "鲁山县",
+      "county_code": "410423",
+      "city": "平顶山市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "卢氏县",
+      "county_code": "411224",
+      "city": "三门峡市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "卢氏县",
+      "county_code": "411224",
+      "city": "三门峡市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "南召县",
+      "county_code": "411321",
+      "city": "南阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "南召县",
+      "county_code": "411321",
+      "city": "南阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "镇平县",
+      "county_code": "411324",
+      "city": "南阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "镇平县",
+      "county_code": "411324",
+      "city": "南阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "内乡县",
+      "county_code": "411325",
+      "city": "南阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "内乡县",
+      "county_code": "411325",
+      "city": "南阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "淅川县",
+      "county_code": "411326",
+      "city": "南阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "淅川县",
+      "county_code": "411326",
+      "city": "南阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "民权县",
+      "county_code": "411421",
+      "city": "商丘市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "民权县",
+      "county_code": "411421",
+      "city": "商丘市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "宁陵县",
+      "county_code": "411423",
+      "city": "商丘市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "宁陵县",
+      "county_code": "411423",
+      "city": "商丘市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "柘城县",
+      "county_code": "411424",
+      "city": "商丘市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "柘城县",
+      "county_code": "411424",
+      "city": "商丘市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "光山县",
+      "county_code": "411522",
+      "city": "信阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "光山县",
+      "county_code": "411522",
+      "city": "信阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "新县",
+      "county_code": "411523",
+      "city": "信阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "新县",
+      "county_code": "411523",
+      "city": "信阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "商城县",
+      "county_code": "411524",
+      "city": "信阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "商城县",
+      "county_code": "411524",
+      "city": "信阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "固始县",
+      "county_code": "411525",
+      "city": "信阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "固始县",
+      "county_code": "411525",
+      "city": "信阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "淮滨县",
+      "county_code": "411527",
+      "city": "信阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "淮滨县",
+      "county_code": "411527",
+      "city": "信阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "潢川县",
+      "county_code": "411526",
+      "city": "信阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "潢川县",
+      "county_code": "411526",
+      "city": "信阳市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "淮阳县",
+      "county_code": "411603",
+      "city": "周口市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "淮阳县",
+      "county_code": "411603",
+      "city": "周口市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "沈丘县",
+      "county_code": "411624",
+      "city": "周口市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "沈丘县",
+      "county_code": "411624",
+      "city": "周口市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "太康县",
+      "county_code": "411627",
+      "city": "周口市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "太康县",
+      "county_code": "411627",
+      "city": "周口市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "商水县",
+      "county_code": "411623",
+      "city": "周口市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "商水县",
+      "county_code": "411623",
+      "city": "周口市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "郸城县",
+      "county_code": "411625",
+      "city": "周口市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "郸城县",
+      "county_code": "411625",
+      "city": "周口市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "新蔡县",
+      "county_code": "411729",
+      "city": "驻马店市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "新蔡县",
+      "county_code": "411729",
+      "city": "驻马店市",
+      "category": "集中连片特困县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "宜阳县",
+      "county_code": "410327",
+      "city": "洛阳市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "宜阳县",
+      "county_code": "410327",
+      "city": "洛阳市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "滑县",
+      "county_code": "410526",
+      "city": "安阳市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "滑县",
+      "county_code": "410526",
+      "city": "安阳市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "封丘县",
+      "county_code": "410727",
+      "city": "新乡市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "封丘县",
+      "county_code": "410727",
+      "city": "新乡市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "范县",
+      "county_code": "410926",
+      "city": "濮阳市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "范县",
+      "county_code": "410926",
+      "city": "濮阳市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "台前县",
+      "county_code": "410927",
+      "city": "濮阳市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "台前县",
+      "county_code": "410927",
+      "city": "濮阳市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "社旗县",
+      "county_code": "411327",
+      "city": "南阳市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "社旗县",
+      "county_code": "411327",
+      "city": "南阳市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "桐柏县",
+      "county_code": "411330",
+      "city": "南阳市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "桐柏县",
+      "county_code": "411330",
+      "city": "南阳市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "睢县",
+      "county_code": "411422",
+      "city": "商丘市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "睢县",
+      "county_code": "411422",
+      "city": "商丘市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "虞城县",
+      "county_code": "411425",
+      "city": "商丘市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "虞城县",
+      "county_code": "411425",
+      "city": "商丘市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "上蔡县",
+      "county_code": "411722",
+      "city": "驻马店市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "上蔡县",
+      "county_code": "411722",
+      "city": "驻马店市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "确山县",
+      "county_code": "411725",
+      "city": "驻马店市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "确山县",
+      "county_code": "411725",
+      "city": "驻马店市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "national-special",
+      "province": "河南省",
+      "county_name": "平舆县",
+      "county_code": "411723",
+      "city": "驻马店市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "平舆县",
+      "county_code": "411723",
+      "city": "驻马店市",
+      "category": "国家级扶贫开发重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "伊川县",
+      "county_code": "410329",
+      "city": "洛阳市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "叶县",
+      "county_code": "410422",
+      "city": "平顶山市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "内黄县",
+      "county_code": "410527",
+      "city": "安阳市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "原阳县",
+      "county_code": "410725",
+      "city": "新乡市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "濮阳县",
+      "county_code": "410928",
+      "city": "濮阳市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "舞阳县",
+      "county_code": "411121",
+      "city": "漯河市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "方城县",
+      "county_code": "411322",
+      "city": "南阳市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "夏邑县",
+      "county_code": "411426",
+      "city": "商丘市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "罗山县",
+      "county_code": "411521",
+      "city": "信阳市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "息县",
+      "county_code": "411528",
+      "city": "信阳市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "西华县",
+      "county_code": "411622",
+      "city": "周口市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "扶沟县",
+      "county_code": "411621",
+      "city": "周口市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "泌阳县",
+      "county_code": "411726",
+      "city": "驻马店市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "正阳县",
+      "county_code": "411724",
+      "city": "驻马店市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    },
+    {
+      "pathway_id": "college-special",
+      "province": "河南省",
+      "county_name": "汝南县",
+      "county_code": "411727",
+      "city": "驻马店市",
+      "category": "省定扶贫开发工作重点县",
+      "source_id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育考试院、河南省阳光高考信息平台（县域名单）；民政部/国家统计局行政区划代码（县码）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2025,
+      "data_status": "verified"
+    }
+  ],
+  "counties": [
+    {
+      "county_code": "410225",
+      "province": "河南省",
+      "city": "开封市",
+      "county_name": "兰考县",
+      "county_official_name": "兰考县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410324",
+      "province": "河南省",
+      "city": "洛阳市",
+      "county_name": "栾川县",
+      "county_official_name": "栾川县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410325",
+      "province": "河南省",
+      "city": "洛阳市",
+      "county_name": "嵩县",
+      "county_official_name": "嵩县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410328",
+      "province": "河南省",
+      "city": "洛阳市",
+      "county_name": "洛宁县",
+      "county_official_name": "洛宁县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410326",
+      "province": "河南省",
+      "city": "洛阳市",
+      "county_name": "汝阳县",
+      "county_official_name": "汝阳县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410423",
+      "province": "河南省",
+      "city": "平顶山市",
+      "county_name": "鲁山县",
+      "county_official_name": "鲁山县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411224",
+      "province": "河南省",
+      "city": "三门峡市",
+      "county_name": "卢氏县",
+      "county_official_name": "卢氏县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411321",
+      "province": "河南省",
+      "city": "南阳市",
+      "county_name": "南召县",
+      "county_official_name": "南召县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411324",
+      "province": "河南省",
+      "city": "南阳市",
+      "county_name": "镇平县",
+      "county_official_name": "镇平县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411325",
+      "province": "河南省",
+      "city": "南阳市",
+      "county_name": "内乡县",
+      "county_official_name": "内乡县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411326",
+      "province": "河南省",
+      "city": "南阳市",
+      "county_name": "淅川县",
+      "county_official_name": "淅川县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411421",
+      "province": "河南省",
+      "city": "商丘市",
+      "county_name": "民权县",
+      "county_official_name": "民权县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411423",
+      "province": "河南省",
+      "city": "商丘市",
+      "county_name": "宁陵县",
+      "county_official_name": "宁陵县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411424",
+      "province": "河南省",
+      "city": "商丘市",
+      "county_name": "柘城县",
+      "county_official_name": "柘城县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411522",
+      "province": "河南省",
+      "city": "信阳市",
+      "county_name": "光山县",
+      "county_official_name": "光山县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411523",
+      "province": "河南省",
+      "city": "信阳市",
+      "county_name": "新县",
+      "county_official_name": "新县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411524",
+      "province": "河南省",
+      "city": "信阳市",
+      "county_name": "商城县",
+      "county_official_name": "商城县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411525",
+      "province": "河南省",
+      "city": "信阳市",
+      "county_name": "固始县",
+      "county_official_name": "固始县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411527",
+      "province": "河南省",
+      "city": "信阳市",
+      "county_name": "淮滨县",
+      "county_official_name": "淮滨县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411526",
+      "province": "河南省",
+      "city": "信阳市",
+      "county_name": "潢川县",
+      "county_official_name": "潢川县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411603",
+      "province": "河南省",
+      "city": "周口市",
+      "county_name": "淮阳县",
+      "county_official_name": "淮阳区",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411624",
+      "province": "河南省",
+      "city": "周口市",
+      "county_name": "沈丘县",
+      "county_official_name": "沈丘县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411627",
+      "province": "河南省",
+      "city": "周口市",
+      "county_name": "太康县",
+      "county_official_name": "太康县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411623",
+      "province": "河南省",
+      "city": "周口市",
+      "county_name": "商水县",
+      "county_official_name": "商水县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411625",
+      "province": "河南省",
+      "city": "周口市",
+      "county_name": "郸城县",
+      "county_official_name": "郸城县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411729",
+      "province": "河南省",
+      "city": "驻马店市",
+      "county_name": "新蔡县",
+      "county_official_name": "新蔡县",
+      "category": "集中连片特困县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410327",
+      "province": "河南省",
+      "city": "洛阳市",
+      "county_name": "宜阳县",
+      "county_official_name": "宜阳县",
+      "category": "国家级扶贫开发重点县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410526",
+      "province": "河南省",
+      "city": "安阳市",
+      "county_name": "滑县",
+      "county_official_name": "滑县",
+      "category": "国家级扶贫开发重点县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410727",
+      "province": "河南省",
+      "city": "新乡市",
+      "county_name": "封丘县",
+      "county_official_name": "封丘县",
+      "category": "国家级扶贫开发重点县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410926",
+      "province": "河南省",
+      "city": "濮阳市",
+      "county_name": "范县",
+      "county_official_name": "范县",
+      "category": "国家级扶贫开发重点县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410927",
+      "province": "河南省",
+      "city": "濮阳市",
+      "county_name": "台前县",
+      "county_official_name": "台前县",
+      "category": "国家级扶贫开发重点县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411327",
+      "province": "河南省",
+      "city": "南阳市",
+      "county_name": "社旗县",
+      "county_official_name": "社旗县",
+      "category": "国家级扶贫开发重点县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411330",
+      "province": "河南省",
+      "city": "南阳市",
+      "county_name": "桐柏县",
+      "county_official_name": "桐柏县",
+      "category": "国家级扶贫开发重点县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411422",
+      "province": "河南省",
+      "city": "商丘市",
+      "county_name": "睢县",
+      "county_official_name": "睢县",
+      "category": "国家级扶贫开发重点县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411425",
+      "province": "河南省",
+      "city": "商丘市",
+      "county_name": "虞城县",
+      "county_official_name": "虞城县",
+      "category": "国家级扶贫开发重点县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411722",
+      "province": "河南省",
+      "city": "驻马店市",
+      "county_name": "上蔡县",
+      "county_official_name": "上蔡县",
+      "category": "国家级扶贫开发重点县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411725",
+      "province": "河南省",
+      "city": "驻马店市",
+      "county_name": "确山县",
+      "county_official_name": "确山县",
+      "category": "国家级扶贫开发重点县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411723",
+      "province": "河南省",
+      "city": "驻马店市",
+      "county_name": "平舆县",
+      "county_official_name": "平舆县",
+      "category": "国家级扶贫开发重点县",
+      "pathway_ids": [
+        "national-special",
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410329",
+      "province": "河南省",
+      "city": "洛阳市",
+      "county_name": "伊川县",
+      "county_official_name": "伊川县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410422",
+      "province": "河南省",
+      "city": "平顶山市",
+      "county_name": "叶县",
+      "county_official_name": "叶县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410527",
+      "province": "河南省",
+      "city": "安阳市",
+      "county_name": "内黄县",
+      "county_official_name": "内黄县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410725",
+      "province": "河南省",
+      "city": "新乡市",
+      "county_name": "原阳县",
+      "county_official_name": "原阳县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "410928",
+      "province": "河南省",
+      "city": "濮阳市",
+      "county_name": "濮阳县",
+      "county_official_name": "濮阳县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411121",
+      "province": "河南省",
+      "city": "漯河市",
+      "county_name": "舞阳县",
+      "county_official_name": "舞阳县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411322",
+      "province": "河南省",
+      "city": "南阳市",
+      "county_name": "方城县",
+      "county_official_name": "方城县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411426",
+      "province": "河南省",
+      "city": "商丘市",
+      "county_name": "夏邑县",
+      "county_official_name": "夏邑县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411521",
+      "province": "河南省",
+      "city": "信阳市",
+      "county_name": "罗山县",
+      "county_official_name": "罗山县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411528",
+      "province": "河南省",
+      "city": "信阳市",
+      "county_name": "息县",
+      "county_official_name": "息县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411622",
+      "province": "河南省",
+      "city": "周口市",
+      "county_name": "西华县",
+      "county_official_name": "西华县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411621",
+      "province": "河南省",
+      "city": "周口市",
+      "county_name": "扶沟县",
+      "county_official_name": "扶沟县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411726",
+      "province": "河南省",
+      "city": "驻马店市",
+      "county_name": "泌阳县",
+      "county_official_name": "泌阳县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411724",
+      "province": "河南省",
+      "city": "驻马店市",
+      "county_name": "正阳县",
+      "county_official_name": "正阳县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    },
+    {
+      "county_code": "411727",
+      "province": "河南省",
+      "city": "驻马店市",
+      "county_name": "汝南县",
+      "county_official_name": "汝南县",
+      "category": "省定扶贫开发工作重点县",
+      "pathway_ids": [
+        "college-special"
+      ]
+    }
+  ],
+  "unmatched": []
+}

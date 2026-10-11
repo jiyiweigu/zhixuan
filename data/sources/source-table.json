@@ -1,0 +1,120 @@
+{
+  "meta": {
+    "title": "数据来源登记表（source）",
+    "generated_at": "2026-10-11",
+    "owner": "徐（③ 数据工程）",
+    "target_table": "source",
+    "table_fields": "id, source_name, source_url, year, source_type, fetched_at",
+    "note": "本表是所有事实表的三要素凭据。任何事实数据入库前，其 source_id 必须在此表中存在。source_type 枚举：官方 / 高校官网 / 权威媒体 / 其他。可采集性为调研附加信息，不入库。"
+  },
+  "sources": [
+    {
+      "id": "SRC-HENAN-EXAM",
+      "source_name": "河南省教育考试院",
+      "source_url": "https://www.haeea.cn/",
+      "year": 2025,
+      "source_type": "官方",
+      "fetched_at": null,
+      "crawl_status": "blocked_waf",
+      "crawl_note": "HTTP 412，JS 挑战型 WAF（瑞数）。需无头浏览器或人工下载附件。",
+      "content": "一分一段表、录取控制分数线、招生计划、专项计划资格公示、军警司法面试体检线",
+      "plan": "方案B：人工下载官方 PDF/Excel，脚本解析"
+    },
+    {
+      "id": "SRC-HENAN-ZSW",
+      "source_name": "河南招生考试信息网",
+      "source_url": "https://www.heao.com.cn",
+      "year": 2025,
+      "source_type": "官方",
+      "fetched_at": null,
+      "crawl_status": "blocked_waf",
+      "crawl_note": "HTTP 412，同上。",
+      "content": "往年院校录取情况统计、招生计划、批次控制线、分数段统计",
+      "plan": "方案B：人工下载附件"
+    },
+    {
+      "id": "SRC-MOE-SUNSHINE",
+      "source_name": "教育部阳光高考信息平台",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2025,
+      "source_type": "官方",
+      "fetched_at": null,
+      "crawl_status": "blocked_waf",
+      "crawl_note": "HTTP 412，同上。",
+      "content": "高校招生章程、三大专项计划政策、公示名单、学科评估",
+      "plan": "方案B：人工下载；招生章程量大有条件时上无头浏览器"
+    },
+    {
+      "id": "SRC-HENAN-SUNSHINE",
+      "source_name": "河南省阳光高考信息平台",
+      "source_url": "https://gaokao.haedu.cn/",
+      "year": 2025,
+      "source_type": "官方",
+      "fetched_at": null,
+      "crawl_status": "ok",
+      "crawl_note": "HTTP 200，可直接抓取（requests + bs4）。",
+      "content": "三大专项计划政策问答、实施区域名单",
+      "plan": "方案A：脚本直接抓取"
+    },
+    {
+      "id": "SRC-HENAN-JYT",
+      "source_name": "河南省教育厅",
+      "source_url": "https://jyt.henan.gov.cn/",
+      "year": 2025,
+      "source_type": "官方",
+      "fetched_at": null,
+      "crawl_status": "ok",
+      "crawl_note": "HTTP 200，可直接抓取。",
+      "content": "政策文件、实施区域名单附件、成绩查询入口",
+      "plan": "方案A：脚本直接抓取"
+    },
+    {
+      "id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育厅（国家专项计划和高校专项计划县域名单）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2019,
+      "source_type": "官方",
+      "fetched_at": "2026-10-11",
+      "crawl_status": "manual_verified",
+      "crawl_note": "人工核对官方附件表格，已与阳光高考平台问答页交叉印证。",
+      "content": "国家专项 38 县 + 高校专项 53 县（含省定 15 县）名单",
+      "plan": "已产出 pathway-region 数据"
+    },
+    {
+      "id": "SRC-MCA-DIVISION",
+      "source_name": "民政部/国家统计局 中华人民共和国行政区划代码",
+      "source_url": "https://www.mca.gov.cn/mzsj/xzqh/2023/202301xzqh.html",
+      "year": 2023,
+      "source_type": "官方",
+      "fetched_at": "2026-10-11",
+      "crawl_status": "ok",
+      "crawl_note": "经镜像 JSON（modood/Administrative-divisions-of-China）获取，53/53 县码命中。",
+      "content": "省/市/县三级行政区划代码（county_code）",
+      "plan": "已用于 pathway-region 县码补全"
+    },
+    {
+      "id": "SRC-MOE-DEGREE",
+      "source_name": "教育部学位与研究生教育发展中心（学科评估）",
+      "source_url": "https://www.cdgdc.edu.cn/",
+      "year": 2022,
+      "source_type": "官方",
+      "fetched_at": null,
+      "crawl_status": "pending",
+      "crawl_note": "待验证。",
+      "content": "第四轮/第五轮学科评估等级",
+      "plan": "待验证"
+    },
+    {
+      "id": "SRC-SCHOOL-OFFICIAL-SAMPLE",
+      "source_name": "高校官网（抽样：郑州大学）",
+      "source_url": "https://www.zzu.edu.cn/",
+      "year": 2025,
+      "source_type": "高校官网",
+      "fetched_at": null,
+      "crawl_status": "pending",
+      "crawl_note": "抽样样板。300 所院校需逐校登记，每校一条 id（如 SRC-SCHOOL-ZZU），预计静态可抓。",
+      "content": "院校简介、学费、师资、校区、办学实力",
+      "plan": "方案A：抽样验证后批量抓取；每校单独建 source 记录"
+    }
+  ]
+}
