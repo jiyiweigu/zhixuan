@@ -17,6 +17,12 @@ data/
 │   ├── pathway-regions.csv      ← 同上，人工核对版
 │   ├── pathway-eligibility.json ← ★ 资格规则数据（2.3，供 ② 规则引擎消费）
 │   └── fields-definition.md     ← 数据字段定义与口径（★ 采集前必读）
+├── score_segment/               ← ★ 一分一段表（2.2）
+│   ├── score_segment_2026_历史类.json / .csv
+│   ├── score_segment_2026_物理类.json / .csv
+│   ├── review_2026_历史类.html   ← 人工复核工作台（图 + 解析并排）
+│   ├── review_2026_物理类.html
+│   └── 一分一段解析报告.md        ← ★ 质量边界与算法说明（必读）
 ├── sources/
 │   ├── source-registry.md       ← 数据源登记表（调研版，含可采集性）
 │   ├── source-table.json        ← ★ source 表入库数据（9 条）
@@ -25,8 +31,11 @@ data/
 ├── scripts/                     ← 采集与清洗脚本（2.1/2.2/2.3/2.6）
 │   ├── validate.py              ← 三要素强制校验（2.6）
 │   ├── build_region_table.py    ← 专项区域表构建（2.3）
-│   └── check_eligibility_consistency.py ← 规则与区域表一致性校验
-└── samples/                     ← 小样本包（先小样验证再全量）
+│   ├── check_eligibility_consistency.py ← 规则与区域表一致性校验
+│   ├── parse_score_segment.py   ← 一分一段表 OCR 解析（2.2）
+│   └── build_review_page.py     ← 复核工作台生成（2.2）
+└── samples/
+    └── raw/                     ← 小样本包（PDF 原件 + 抽出的页面 JPEG）
 ```
 
 ---
@@ -39,8 +48,14 @@ data/
 | `dictionaries/pathway-regions.json` | pathway_region | 91 | ✅ 91/91 通过 |
 | `dictionaries/pathway-eligibility.json` | pathway_eligibility | 11 | ✅ 11/11 通过 |
 | `sources/source-table.json` | source | 9 | ✅ 9/9 通过 |
+| `score_segment/score_segment_2026_历史类.json` | score_segment | 454 | ✅ 454/454 通过（high 441） |
+| `score_segment/score_segment_2026_物理类.json` | score_segment | 462 | ✅ 462/462 通过（high 441） |
 
 一致性自检：`check_eligibility_consistency.py` → ✅ 国家专项 38 县与规则 county_codes 完全一致，38 ⊂ 53 成立
+
+> 一分一段表说明：官方只发布**扫描件 PDF（无文本层）**，必须 OCR。
+> 详细质量边界、算法与缺口清单见 `score_segment/一分一段解析报告.md`。
+> **请勿将 gap 分数当 0 或跳过——那是缺失，须人工补录。**
 
 ---
 
@@ -53,12 +68,21 @@ PY="C:/Users/lenovo/.workbuddy/binaries/python/versions/3.13.12/python.exe"
 $PY data/scripts/validate.py data/dictionaries/pathway-regions.json --kind pathway_region
 $PY data/scripts/validate.py data/dictionaries/pathway-eligibility.json --kind pathway_eligibility
 $PY data/scripts/validate.py data/sources/source-table.json --kind source
+$PY data/scripts/validate.py data/score_segment/score_segment_2026_历史类.json --kind score_segment
 
 # 重建专项区域表（会在镜像上拉取行政区划代码）
 $PY data/scripts/build_region_table.py
 
 # 规则与区域表一致性校验（--fix 可回写）
 $PY data/scripts/check_eligibility_consistency.py
+
+# 一分一段表解析（首次加 --refresh 跑 OCR，之后命中缓存秒级重算）
+$PY data/scripts/parse_score_segment.py data/samples/raw/imgs --year 2026 --subject 历史类 --refresh
+$PY data/scripts/parse_score_segment.py data/samples/raw/imgs --year 2026 --subject 物理类 --refresh
+
+# 生成人工复核工作台
+$PY data/scripts/build_review_page.py --year 2026 --subject 历史类
+$PY data/scripts/build_review_page.py --year 2026 --subject 物理类
 ```
 
 
@@ -127,6 +151,8 @@ $PY data/scripts/check_eligibility_consistency.py
 - ✅ **`source` 表数据已产出**（9 条，含可采集性结论）
 - ✅ **资格规则数据已产出**（11 条，供 ② 规则引擎消费）
 - ✅ 校验脚本（2.6）已实现并跑通
-- ⏳ 采集脚本待开发（D5–D7）：一分一段、院校库、录取分
+- ✅ **一分一段表（2026）已解析**：历史类 454 行 / 物理类 462 行，high 各 441；附复核工作台
+- ⏳ 采集脚本待开发：院校库、专业库、录取分、院校画像
+- ⏳ 2023–2025 一分一段（任务 2.2 含三年，本次先做 2026 验证方法）
 - ⏳ 数据表结构待 D4 由 ② 冻结
 - ⚠️ 数据库（PostgreSQL 16 + pgvector）尚未安装

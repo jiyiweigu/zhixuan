@@ -1,0 +1,3857 @@
+{
+  "meta": {
+    "title": "河南省 2026 年普通高招分数段统计表（物理类）",
+    "target_table": "score_segment",
+    "province": "河南",
+    "year": 2026,
+    "subject_type": "物理类",
+    "source_name": "河南省教育考试院（经河南省阳光高考信息平台发布）",
+    "source_url": "https://gaokao.haedu.cn/501/552/2026/0625/155639.html",
+    "source_id": "SRC-HENAN-SCORE-SEG-2026",
+    "cumulative_rank_note": "官方口径：表中'考生人数'为加入政策性照顾分后对应总分及以上考生累计人数，即 cumulative_rank。",
+    "parse_method": "扫描件 OCR：Tesseract 5.4 + 投影法网格切分 + 并行逐格多阈值识别；分数骨架取自分数列（识别可靠），人数列仅信原始读数锚点，缺口插值并标注置信度",
+    "final_rows": 462,
+    "high_confidence_rows": 441,
+    "interpolated_rows": 21,
+    "gap_scores": [
+      692,
+      681,
+      678,
+      677,
+      674,
+      673,
+      662,
+      659,
+      658,
+      650,
+      635,
+      616,
+      601,
+      599,
+      593,
+      581,
+      535,
+      534,
+      522,
+      520,
+      499,
+      488,
+      487,
+      485,
+      473,
+      470,
+      454,
+      453,
+      443,
+      439,
+      432,
+      430,
+      416,
+      408,
+      399,
+      394,
+      373,
+      360,
+      358,
+      350,
+      344,
+      335,
+      295,
+      293,
+      291,
+      277,
+      268,
+      257,
+      254,
+      247,
+      232,
+      214,
+      212,
+      211,
+      210,
+      196,
+      188,
+      176,
+      166,
+      165,
+      136,
+      133,
+      129
+    ],
+    "review_status": "OCR 结果，low 置信行与 gaps 需人工复核后方可入库",
+    "warnings": [
+      "分数 696：读数 2 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 692：读数 4636 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 681：读数 9382 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 678：读数 7179 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 677：读数 341 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 674：读数 4 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 673：读数 4180 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 662：读数 2064 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 659：读数 302 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 658：读数 3956 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 650：读数 166 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 635：读数 49979 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 599：读数 42213 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 593：读数 392490 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 581：读数 92392 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 535：读数 422008 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 534：读数 24764 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 520：读数 464455 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 499：读数 193885 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 487：读数 564683 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 485：读数 564747 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 473：读数 548567 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 470：读数 565147 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 454：读数 2 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 453：读数 590975 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 443：读数 371295 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 439：读数 30004 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 432：读数 33432 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 430：读数 438299 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 416：读数 2051 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 408：读数 342348 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 399：读数 411800 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 394：读数 4777 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 373：读数 4306 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 360：读数 45202 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 358：读数 463900 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 350：读数 4699 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 344：读数 436605 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 335：读数 43 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 295：读数 922234 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 293：读数 23809 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 277：读数 55832 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 268：读数 44200 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 257：读数 947594 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 254：读数 4 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 232：读数 958208 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 214：读数 962368 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 212：读数 862649 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 211：读数 56803 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 196：读数 564093 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 176：读数 965005 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 166：读数 965219 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 165：读数 965240 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 136：读数 56602 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 133：读数 965582 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 129：读数 555607 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 83：读数 488189 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 79：读数 4831 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 76：读数 58570 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 70：读数 66462 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 66：读数 542416 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 60：读数 2906 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 48：读数 367927 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 47：读数 98 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 44：读数 252894 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 37：读数 3471 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 33：读数 11106 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 8：读数 564713 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 5：读数 202262 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 4：读数 219125 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 3：读数 2 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 2：读数 559092 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 1：读数 55018 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "共 63 个分数无可靠值（长缺口），已列入 gaps 待人工补录"
+    ]
+  },
+  "segments": [
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 706,
+      "cumulative_rank": 14,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 705,
+      "cumulative_rank": 15,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 704,
+      "cumulative_rank": 24,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 703,
+      "cumulative_rank": 29,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 702,
+      "cumulative_rank": 32,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 701,
+      "cumulative_rank": 41,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 700,
+      "cumulative_rank": 48,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 699,
+      "cumulative_rank": 74,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 698,
+      "cumulative_rank": 82,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 697,
+      "cumulative_rank": 91,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 696,
+      "cumulative_rank": 99,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 695,
+      "cumulative_rank": 108,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 694,
+      "cumulative_rank": 124,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 693,
+      "cumulative_rank": 145,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 691,
+      "cumulative_rank": 188,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 690,
+      "cumulative_rank": 212,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 689,
+      "cumulative_rank": 249,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 688,
+      "cumulative_rank": 285,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 687,
+      "cumulative_rank": 313,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 686,
+      "cumulative_rank": 351,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 685,
+      "cumulative_rank": 388,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 684,
+      "cumulative_rank": 436,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 683,
+      "cumulative_rank": 480,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 682,
+      "cumulative_rank": 528,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 680,
+      "cumulative_rank": 650,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 679,
+      "cumulative_rank": 711,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 676,
+      "cumulative_rank": 918,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 675,
+      "cumulative_rank": 1003,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 670,
+      "cumulative_rank": 1483,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 669,
+      "cumulative_rank": 1594,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 668,
+      "cumulative_rank": 1716,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 667,
+      "cumulative_rank": 1840,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 666,
+      "cumulative_rank": 1970,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 665,
+      "cumulative_rank": 2103,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 664,
+      "cumulative_rank": 2243,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 663,
+      "cumulative_rank": 2411,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 656,
+      "cumulative_rank": 3699,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 655,
+      "cumulative_rank": 3911,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 654,
+      "cumulative_rank": 4145,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 653,
+      "cumulative_rank": 4393,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 651,
+      "cumulative_rank": 4904,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 648,
+      "cumulative_rank": 5726,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 647,
+      "cumulative_rank": 6003,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 646,
+      "cumulative_rank": 6322,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 645,
+      "cumulative_rank": 6624,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 644,
+      "cumulative_rank": 6940,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 643,
+      "cumulative_rank": 7266,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 642,
+      "cumulative_rank": 7594,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 641,
+      "cumulative_rank": 7933,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 640,
+      "cumulative_rank": 8296,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 639,
+      "cumulative_rank": 8675,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 638,
+      "cumulative_rank": 9041,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 637,
+      "cumulative_rank": 9436,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 636,
+      "cumulative_rank": 9820,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 632,
+      "cumulative_rank": 11545,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 631,
+      "cumulative_rank": 11991,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 630,
+      "cumulative_rank": 12465,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 629,
+      "cumulative_rank": 12921,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 628,
+      "cumulative_rank": 13376,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 627,
+      "cumulative_rank": 13866,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 626,
+      "cumulative_rank": 14402,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 625,
+      "cumulative_rank": 14895,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 624,
+      "cumulative_rank": 15400,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 623,
+      "cumulative_rank": 15934,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 622,
+      "cumulative_rank": 16508,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 621,
+      "cumulative_rank": 17085,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 620,
+      "cumulative_rank": 17665,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 619,
+      "cumulative_rank": 18342,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 618,
+      "cumulative_rank": 18961,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 617,
+      "cumulative_rank": 19565,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 615,
+      "cumulative_rank": 20892,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 614,
+      "cumulative_rank": 21610,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 613,
+      "cumulative_rank": 22325,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 612,
+      "cumulative_rank": 23045,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 611,
+      "cumulative_rank": 23760,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 610,
+      "cumulative_rank": 24532,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 609,
+      "cumulative_rank": 25290,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 608,
+      "cumulative_rank": 26036,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 607,
+      "cumulative_rank": 26789,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 606,
+      "cumulative_rank": 27587,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 605,
+      "cumulative_rank": 28420,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 604,
+      "cumulative_rank": 29256,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 603,
+      "cumulative_rank": 30037,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 602,
+      "cumulative_rank": 30869,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 600,
+      "cumulative_rank": 32622,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 598,
+      "cumulative_rank": 34459,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 597,
+      "cumulative_rank": 35366,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 596,
+      "cumulative_rank": 36341,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 595,
+      "cumulative_rank": 37287,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 592,
+      "cumulative_rank": 40214,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 589,
+      "cumulative_rank": 43302,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 588,
+      "cumulative_rank": 44405,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 587,
+      "cumulative_rank": 45527,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 586,
+      "cumulative_rank": 46645,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 585,
+      "cumulative_rank": 47770,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 584,
+      "cumulative_rank": 48919,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 583,
+      "cumulative_rank": 50069,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 582,
+      "cumulative_rank": 51246,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 580,
+      "cumulative_rank": 53651,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 574,
+      "cumulative_rank": 61069,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 573,
+      "cumulative_rank": 62376,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 572,
+      "cumulative_rank": 63656,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 569,
+      "cumulative_rank": 67893,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 567,
+      "cumulative_rank": 70643,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 566,
+      "cumulative_rank": 72023,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 565,
+      "cumulative_rank": 73451,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 564,
+      "cumulative_rank": 74935,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 563,
+      "cumulative_rank": 76390,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 562,
+      "cumulative_rank": 77920,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 561,
+      "cumulative_rank": 79344,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 560,
+      "cumulative_rank": 80858,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 559,
+      "cumulative_rank": 82468,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 558,
+      "cumulative_rank": 84007,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 557,
+      "cumulative_rank": 85572,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 555,
+      "cumulative_rank": 88735,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 554,
+      "cumulative_rank": 90380,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 552,
+      "cumulative_rank": 93554,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 551,
+      "cumulative_rank": 95187,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 550,
+      "cumulative_rank": 96853,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 549,
+      "cumulative_rank": 98544,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 548,
+      "cumulative_rank": 100218,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 547,
+      "cumulative_rank": 101842,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 546,
+      "cumulative_rank": 103446,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 545,
+      "cumulative_rank": 105161,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 544,
+      "cumulative_rank": 106845,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 543,
+      "cumulative_rank": 108630,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 542,
+      "cumulative_rank": 110323,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 541,
+      "cumulative_rank": 112055,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 540,
+      "cumulative_rank": 113849,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 539,
+      "cumulative_rank": 115590,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 538,
+      "cumulative_rank": 117402,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 537,
+      "cumulative_rank": 119776,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 536,
+      "cumulative_rank": 121040,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 533,
+      "cumulative_rank": 126552,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 532,
+      "cumulative_rank": 128394,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 531,
+      "cumulative_rank": 130228,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 530,
+      "cumulative_rank": 132163,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 529,
+      "cumulative_rank": 134138,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 528,
+      "cumulative_rank": 136057,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 527,
+      "cumulative_rank": 137897,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 526,
+      "cumulative_rank": 139845,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 525,
+      "cumulative_rank": 141785,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 524,
+      "cumulative_rank": 143717,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 523,
+      "cumulative_rank": 145684,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 521,
+      "cumulative_rank": 149577,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 519,
+      "cumulative_rank": 153396,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 518,
+      "cumulative_rank": 155452,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 517,
+      "cumulative_rank": 157450,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 516,
+      "cumulative_rank": 159452,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 515,
+      "cumulative_rank": 161448,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 514,
+      "cumulative_rank": 163430,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 513,
+      "cumulative_rank": 165386,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 509,
+      "cumulative_rank": 173540,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 508,
+      "cumulative_rank": 175563,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 507,
+      "cumulative_rank": 177603,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 506,
+      "cumulative_rank": 179565,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 505,
+      "cumulative_rank": 181638,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 504,
+      "cumulative_rank": 183673,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 503,
+      "cumulative_rank": 185729,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 502,
+      "cumulative_rank": 187738,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 501,
+      "cumulative_rank": 189753,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 500,
+      "cumulative_rank": 197837,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 494,
+      "cumulative_rank": 204305,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 493,
+      "cumulative_rank": 206437,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 492,
+      "cumulative_rank": 208563,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 491,
+      "cumulative_rank": 210678,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 490,
+      "cumulative_rank": 212769,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 489,
+      "cumulative_rank": 214826,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 486,
+      "cumulative_rank": 221269,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 484,
+      "cumulative_rank": 225395,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 483,
+      "cumulative_rank": 227477,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 482,
+      "cumulative_rank": 229584,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 481,
+      "cumulative_rank": 231661,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 480,
+      "cumulative_rank": 233796,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 479,
+      "cumulative_rank": 235862,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 478,
+      "cumulative_rank": 237969,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 477,
+      "cumulative_rank": 240122,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 476,
+      "cumulative_rank": 242257,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 475,
+      "cumulative_rank": 244387,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 474,
+      "cumulative_rank": 246490,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 469,
+      "cumulative_rank": 257166,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 468,
+      "cumulative_rank": 259357,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 467,
+      "cumulative_rank": 261462,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 466,
+      "cumulative_rank": 263544,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 465,
+      "cumulative_rank": 265656,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 464,
+      "cumulative_rank": 267720,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 463,
+      "cumulative_rank": 269830,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 462,
+      "cumulative_rank": 271880,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 461,
+      "cumulative_rank": 274071,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 460,
+      "cumulative_rank": 276187,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 459,
+      "cumulative_rank": 278328,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 458,
+      "cumulative_rank": 280457,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 457,
+      "cumulative_rank": 282616,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 456,
+      "cumulative_rank": 284695,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 452,
+      "cumulative_rank": 293060,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 451,
+      "cumulative_rank": 295147,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 450,
+      "cumulative_rank": 297262,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 449,
+      "cumulative_rank": 299359,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 448,
+      "cumulative_rank": 301400,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 447,
+      "cumulative_rank": 303496,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 446,
+      "cumulative_rank": 305609,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 445,
+      "cumulative_rank": 307689,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 444,
+      "cumulative_rank": 309819,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 442,
+      "cumulative_rank": 313946,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 441,
+      "cumulative_rank": 316081,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 440,
+      "cumulative_rank": 318037,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 438,
+      "cumulative_rank": 321988,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 437,
+      "cumulative_rank": 324045,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 436,
+      "cumulative_rank": 326066,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 435,
+      "cumulative_rank": 328227,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 434,
+      "cumulative_rank": 330296,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 433,
+      "cumulative_rank": 332338,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 427,
+      "cumulative_rank": 344306,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 426,
+      "cumulative_rank": 346277,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 425,
+      "cumulative_rank": 348208,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 424,
+      "cumulative_rank": 350200,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 423,
+      "cumulative_rank": 352205,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 422,
+      "cumulative_rank": 354177,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 421,
+      "cumulative_rank": 356186,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 420,
+      "cumulative_rank": 358110,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 419,
+      "cumulative_rank": 359972,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 415,
+      "cumulative_rank": 367557,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 412,
+      "cumulative_rank": 373155,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 411,
+      "cumulative_rank": 375059,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 410,
+      "cumulative_rank": 376933,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 409,
+      "cumulative_rank": 378789,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 405,
+      "cumulative_rank": 386076,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 404,
+      "cumulative_rank": 387912,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 403,
+      "cumulative_rank": 389619,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 402,
+      "cumulative_rank": 391351,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 401,
+      "cumulative_rank": 393105,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 400,
+      "cumulative_rank": 394902,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 398,
+      "cumulative_rank": 398390,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 397,
+      "cumulative_rank": 400060,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 396,
+      "cumulative_rank": 401788,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 395,
+      "cumulative_rank": 403471,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 393,
+      "cumulative_rank": 406912,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 392,
+      "cumulative_rank": 408564,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 389,
+      "cumulative_rank": 413412,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 388,
+      "cumulative_rank": 415061,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 387,
+      "cumulative_rank": 416762,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 386,
+      "cumulative_rank": 418324,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 385,
+      "cumulative_rank": 419957,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 384,
+      "cumulative_rank": 421543,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 383,
+      "cumulative_rank": 423020,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 382,
+      "cumulative_rank": 424558,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 381,
+      "cumulative_rank": 426179,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 380,
+      "cumulative_rank": 427655,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 379,
+      "cumulative_rank": 429187,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 378,
+      "cumulative_rank": 430747,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 377,
+      "cumulative_rank": 432267,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 376,
+      "cumulative_rank": 433738,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 375,
+      "cumulative_rank": 435197,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 372,
+      "cumulative_rank": 439494,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 371,
+      "cumulative_rank": 440915,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 370,
+      "cumulative_rank": 442329,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 369,
+      "cumulative_rank": 443739,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 368,
+      "cumulative_rank": 445144,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 367,
+      "cumulative_rank": 446517,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 366,
+      "cumulative_rank": 447959,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 365,
+      "cumulative_rank": 449370,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 364,
+      "cumulative_rank": 450787,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 363,
+      "cumulative_rank": 452181,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 362,
+      "cumulative_rank": 453415,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 361,
+      "cumulative_rank": 454846,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 359,
+      "cumulative_rank": 457529,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 357,
+      "cumulative_rank": 460201,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 356,
+      "cumulative_rank": 461468,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 355,
+      "cumulative_rank": 462708,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 354,
+      "cumulative_rank": 464022,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 353,
+      "cumulative_rank": 465281,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 352,
+      "cumulative_rank": 466536,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 349,
+      "cumulative_rank": 470233,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 347,
+      "cumulative_rank": 472624,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 346,
+      "cumulative_rank": 473833,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 345,
+      "cumulative_rank": 474988,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 343,
+      "cumulative_rank": 477329,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 342,
+      "cumulative_rank": 478494,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 341,
+      "cumulative_rank": 479588,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 340,
+      "cumulative_rank": 480750,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 339,
+      "cumulative_rank": 481799,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 338,
+      "cumulative_rank": 482666,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 337,
+      "cumulative_rank": 483919,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 332,
+      "cumulative_rank": 489232,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 331,
+      "cumulative_rank": 490277,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 330,
+      "cumulative_rank": 491281,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 329,
+      "cumulative_rank": 492310,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 328,
+      "cumulative_rank": 493323,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 327,
+      "cumulative_rank": 494309,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 324,
+      "cumulative_rank": 497272,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 323,
+      "cumulative_rank": 498291,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 322,
+      "cumulative_rank": 499265,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 321,
+      "cumulative_rank": 500258,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 320,
+      "cumulative_rank": 501190,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 319,
+      "cumulative_rank": 502150,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 318,
+      "cumulative_rank": 503110,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 317,
+      "cumulative_rank": 503984,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 316,
+      "cumulative_rank": 504878,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 315,
+      "cumulative_rank": 505768,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 314,
+      "cumulative_rank": 506662,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 313,
+      "cumulative_rank": 507502,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 312,
+      "cumulative_rank": 508388,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 308,
+      "cumulative_rank": 511729,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 307,
+      "cumulative_rank": 512609,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 306,
+      "cumulative_rank": 513439,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 305,
+      "cumulative_rank": 514236,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 304,
+      "cumulative_rank": 515038,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 303,
+      "cumulative_rank": 515868,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 302,
+      "cumulative_rank": 516653,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 301,
+      "cumulative_rank": 517521,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 300,
+      "cumulative_rank": 518280,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 299,
+      "cumulative_rank": 519145,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 298,
+      "cumulative_rank": 519923,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 297,
+      "cumulative_rank": 520686,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 296,
+      "cumulative_rank": 521496,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 294,
+      "cumulative_rank": 523006,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 292,
+      "cumulative_rank": 524588,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 290,
+      "cumulative_rank": 526011,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 289,
+      "cumulative_rank": 526771,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 288,
+      "cumulative_rank": 527527,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 287,
+      "cumulative_rank": 528255,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 286,
+      "cumulative_rank": 528967,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 285,
+      "cumulative_rank": 529690,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 284,
+      "cumulative_rank": 530410,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 283,
+      "cumulative_rank": 531125,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 282,
+      "cumulative_rank": 531812,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 281,
+      "cumulative_rank": 532544,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 280,
+      "cumulative_rank": 533248,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 279,
+      "cumulative_rank": 533949,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 278,
+      "cumulative_rank": 534622,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 276,
+      "cumulative_rank": 535985,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 275,
+      "cumulative_rank": 536659,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 274,
+      "cumulative_rank": 537354,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 273,
+      "cumulative_rank": 538007,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 272,
+      "cumulative_rank": 538688,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 271,
+      "cumulative_rank": 539322,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 270,
+      "cumulative_rank": 539934,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 265,
+      "cumulative_rank": 543074,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 264,
+      "cumulative_rank": 543649,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 263,
+      "cumulative_rank": 544241,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 262,
+      "cumulative_rank": 544812,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 261,
+      "cumulative_rank": 545380,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 260,
+      "cumulative_rank": 545927,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 259,
+      "cumulative_rank": 546485,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 258,
+      "cumulative_rank": 547019,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 256,
+      "cumulative_rank": 548069,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 251,
+      "cumulative_rank": 550585,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 250,
+      "cumulative_rank": 551069,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 249,
+      "cumulative_rank": 551521,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 248,
+      "cumulative_rank": 552011,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 246,
+      "cumulative_rank": 552914,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 243,
+      "cumulative_rank": 554191,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 242,
+      "cumulative_rank": 554619,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 241,
+      "cumulative_rank": 555041,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 240,
+      "cumulative_rank": 555422,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 239,
+      "cumulative_rank": 555817,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 238,
+      "cumulative_rank": 556184,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 237,
+      "cumulative_rank": 556574,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 236,
+      "cumulative_rank": 556902,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 235,
+      "cumulative_rank": 557254,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 234,
+      "cumulative_rank": 557595,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 233,
+      "cumulative_rank": 557915,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 231,
+      "cumulative_rank": 558495,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 230,
+      "cumulative_rank": 558797,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 227,
+      "cumulative_rank": 559654,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 226,
+      "cumulative_rank": 559945,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 225,
+      "cumulative_rank": 560174,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 224,
+      "cumulative_rank": 560406,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 223,
+      "cumulative_rank": 560630,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 222,
+      "cumulative_rank": 560843,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 221,
+      "cumulative_rank": 561051,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 220,
+      "cumulative_rank": 561253,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 219,
+      "cumulative_rank": 561476,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 218,
+      "cumulative_rank": 561677,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 217,
+      "cumulative_rank": 561863,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 216,
+      "cumulative_rank": 562046,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 215,
+      "cumulative_rank": 562200,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 209,
+      "cumulative_rank": 563058,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 208,
+      "cumulative_rank": 563200,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 207,
+      "cumulative_rank": 563298,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 206,
+      "cumulative_rank": 563403,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 205,
+      "cumulative_rank": 563516,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 204,
+      "cumulative_rank": 563608,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 203,
+      "cumulative_rank": 563689,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 202,
+      "cumulative_rank": 563765,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 201,
+      "cumulative_rank": 563838,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 200,
+      "cumulative_rank": 563923,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 199,
+      "cumulative_rank": 564005,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 198,
+      "cumulative_rank": 564080,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 197,
+      "cumulative_rank": 564154,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 195,
+      "cumulative_rank": 564268,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 194,
+      "cumulative_rank": 564335,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 193,
+      "cumulative_rank": 564398,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 192,
+      "cumulative_rank": 564465,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 191,
+      "cumulative_rank": 564516,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 190,
+      "cumulative_rank": 564574,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 189,
+      "cumulative_rank": 564605,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 184,
+      "cumulative_rank": 564775,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 183,
+      "cumulative_rank": 564803,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 182,
+      "cumulative_rank": 564836,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 181,
+      "cumulative_rank": 564874,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 180,
+      "cumulative_rank": 564902,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 179,
+      "cumulative_rank": 564925,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 178,
+      "cumulative_rank": 564958,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 177,
+      "cumulative_rank": 564984,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 175,
+      "cumulative_rank": 565025,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 174,
+      "cumulative_rank": 565064,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 169,
+      "cumulative_rank": 565164,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 168,
+      "cumulative_rank": 565182,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 167,
+      "cumulative_rank": 565209,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 162,
+      "cumulative_rank": 565286,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 161,
+      "cumulative_rank": 565306,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 160,
+      "cumulative_rank": 565319,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 159,
+      "cumulative_rank": 565343,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 158,
+      "cumulative_rank": 565354,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 157,
+      "cumulative_rank": 565367,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 156,
+      "cumulative_rank": 565371,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 155,
+      "cumulative_rank": 565388,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 154,
+      "cumulative_rank": 565398,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 153,
+      "cumulative_rank": 565406,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 152,
+      "cumulative_rank": 565413,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 151,
+      "cumulative_rank": 565423,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 150,
+      "cumulative_rank": 565433,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 149,
+      "cumulative_rank": 565445,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 146,
+      "cumulative_rank": 565483,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 145,
+      "cumulative_rank": 565488,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 144,
+      "cumulative_rank": 565495,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 143,
+      "cumulative_rank": 565502,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 142,
+      "cumulative_rank": 565513,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 141,
+      "cumulative_rank": 565524,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 140,
+      "cumulative_rank": 565528,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 139,
+      "cumulative_rank": 565537,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 138,
+      "cumulative_rank": 565546,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 137,
+      "cumulative_rank": 565554,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 135,
+      "cumulative_rank": 565565,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 134,
+      "cumulative_rank": 565576,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 128,
+      "cumulative_rank": 565610,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 127,
+      "cumulative_rank": 565617,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 126,
+      "cumulative_rank": 565619,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 125,
+      "cumulative_rank": 565629,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 124,
+      "cumulative_rank": 565634,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 123,
+      "cumulative_rank": 565637,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 122,
+      "cumulative_rank": 565646,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 121,
+      "cumulative_rank": 565647,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 120,
+      "cumulative_rank": 565653,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 83,
+      "cumulative_rank": 565654,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 79,
+      "cumulative_rank": 565655,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 76,
+      "cumulative_rank": 565656,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 70,
+      "cumulative_rank": 565657,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 66,
+      "cumulative_rank": 565658,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 60,
+      "cumulative_rank": 565659,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 48,
+      "cumulative_rank": 565660,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 47,
+      "cumulative_rank": 565661,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 44,
+      "cumulative_rank": 565662,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 37,
+      "cumulative_rank": 565663,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 33,
+      "cumulative_rank": 565664,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 8,
+      "cumulative_rank": 565665,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 5,
+      "cumulative_rank": 565666,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 4,
+      "cumulative_rank": 565667,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 3,
+      "cumulative_rank": 565668,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 2,
+      "cumulative_rank": 565669,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "物理类",
+      "score": 1,
+      "cumulative_rank": 565670,
+      "confidence": "low"
+    }
+  ]
+}

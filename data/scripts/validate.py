@@ -236,8 +236,14 @@ def check_enums(rec: Dict[str, Any]) -> List[str]:
     return errors
 
 
-def validate_record(rec: Dict[str, Any], kind: str, *, strict: bool = False):
-    """校验单条记录，返回 (错误列表, 警告列表)"""
+def validate_record(rec: Dict[str, Any], kind: str, *, strict: bool = False,
+                    file_meta: Dict[str, Any] | None = None):
+    """
+    校验单条记录，返回 (错误列表, 警告列表)
+
+    file_meta：文件级来源三要素（如 score_segment 的 meta）。
+    当某条记录自身既无三要素也无 source_id 时，回退到 file_meta。
+    """
     errors: List[str] = []
     warnings: List[str] = []
 
@@ -245,7 +251,8 @@ def validate_record(rec: Dict[str, Any], kind: str, *, strict: bool = False):
     errors.extend(check_required(rec, kind))
 
     # 2. 来源三要素（★ 核心）
-    errs, warns = check_source_triplet(rec)
+    #    支持三级回退：记录内三要素 → 记录内 source_id → 文件级 meta 三要素
+    errs, warns = _check_provenance(rec, kind, file_meta)
     errors.extend(errs)
     warnings.extend(warns)
 
@@ -264,38 +271,86 @@ def validate_record(rec: Dict[str, Any], kind: str, *, strict: bool = False):
     return errors, warnings
 
 
+def _check_provenance(rec: Dict[str, Any], kind: str,
+                      file_meta: Dict[str, Any] | None):
+    """
+    来源三要素校验（含文件级回退）。
+
+    优先级：
+      1) 记录自身含完整三要素 → 直接通过
+      2) 记录含非空 source_id（且该 kind 允许外键） → 通过
+      3) 文件级 meta 含完整三要素 → 视为整表来源，通过
+      4) 文件级 meta 含 source_id → 通过
+      否则报错。
+    """
+    # 1) 记录自身三要素齐全
+    errs, warns = check_source_triplet(rec, allow_fk=False)
+    if not errs:
+        return errs, warns
+
+    # 2) 记录含 source_id 且该 kind 允许外键
+    if kind in SOURCE_ID_KINDS and not _is_blank(rec.get(SOURCE_FK_FIELD)):
+        return [], []
+
+    # 3/4) 文件级 meta 回退
+    if file_meta:
+        meta_errs, _ = check_source_triplet(file_meta, allow_fk=False)
+        if not meta_errs:
+            return [], warns
+        if kind in SOURCE_ID_KINDS and not _is_blank(file_meta.get(SOURCE_FK_FIELD)):
+            return [], warns
+
+    # 都不满足：报记录自身的错误（信息量最大）
+    return errs, warns
+
+
 # ─────────────────────────────────────────────────────────
 # 文件读取
 # ─────────────────────────────────────────────────────────
 
 def read_records(path: str) -> List[Dict[str, Any]]:
     """读取 CSV 或 JSON 记录，统一返回 list[dict]"""
+    recs, _meta = read_records_with_meta(path)
+    return recs
+
+
+def read_records_with_meta(path: str) -> "tuple[List[Dict[str, Any]], Dict[str, Any]]":
+    """
+    读取 CSV 或 JSON，返回 (记录数组, 文件级 meta)。
+
+    为什么需要返回 meta：
+    ── 有些事实表（如 score_segment 一分一段）的来源三要素是**整表级**的，
+       写在文件顶部的 meta 里，而不是每行重复。若只校验行内三要素，
+       这类表会被误判为"364 行全部缺来源"。
+       因此把 meta 一并返回，供校验器作为"文件级来源"回退依据。
+    """
     ext = os.path.splitext(path)[1].lower()
 
     if ext == ".json":
         with open(path, encoding="utf-8") as f:
             data = json.load(f)
         if isinstance(data, dict):
+            meta = data.get("meta") if isinstance(data.get("meta"), dict) else {}
             # 优先按已知包装键取数组
             for key in ("records", "items", "data", "pathways", "regions",
-                        "counties", "sources", "rules", "list"):
+                        "counties", "sources", "rules", "segments", "list"):
                 if key in data and isinstance(data[key], list):
-                    return data[key]
+                    return data[key], meta
             # 兜底：若 dict 中"唯一"的 list 值就有记录数组，则取之
             # （这样新增文件即使换键名也不必再改本脚本）
             list_values = [v for k, v in data.items()
                            if isinstance(v, list) and k != "meta"]
             if len(list_values) == 1 and list_values[0] and \
                     isinstance(list_values[0][0], dict):
-                return list_values[0]
-            return [data]
+                return list_values[0], meta
+            return [data], meta
         if isinstance(data, list):
-            return data
+            return data, {}
         raise ValueError(f"无法识别的 JSON 结构：{type(data).__name__}")
 
     if ext == ".csv":
         with open(path, encoding="utf-8-sig", newline="") as f:
-            return list(csv.DictReader(f))
+            return list(csv.DictReader(f)), {}
 
     raise ValueError(f"不支持的文件类型：{ext}（仅支持 .csv / .json）")
 
@@ -322,7 +377,7 @@ def validate_file(path: str, kind: str, *, strict: bool = False) -> Report:
     """校验一个文件"""
     report = Report(file=path, kind=kind)
     try:
-        records = read_records(path)
+        records, file_meta = read_records_with_meta(path)
     except Exception as exc:  # noqa: BLE001
         report.issues.append(Issue(0, "-", "ERROR", f"读取失败：{exc}"))
         return report
@@ -333,7 +388,7 @@ def validate_file(path: str, kind: str, *, strict: bool = False) -> Report:
             report.issues.append(Issue(idx, "-", "ERROR", "记录不是对象结构"))
             continue
         rid = str(rec.get("id") or rec.get("name") or rec.get("school_id") or f"#{idx}")
-        errs, warns = validate_record(rec, kind, strict=strict)
+        errs, warns = validate_record(rec, kind, strict=strict, file_meta=file_meta)
         for e in errs:
             report.issues.append(Issue(idx, rid, "ERROR", e))
         for w in warns:
