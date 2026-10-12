@@ -81,6 +81,7 @@ SCHEMA_BY_KIND: Dict[str, List[str]] = {
     "school_profile": ["school_id"],
     "school_life": ["school_id", "category", "content", "source_type", "reliability"],
     "source": ["source_name", "source_url", "year", "source_type"],
+    "province_exam_rule": ["province", "year", "batch", "mode"],
 }
 
 # 用 source_id 外键引用 `source` 表、而非内联三要素的"种类"
