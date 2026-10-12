@@ -175,6 +175,18 @@
       "crawl_note": "HTTP 200 直连可抓，无 WAF。另取《江西省2026年普通高校招生工作实施意见》http://www.jxeea.cn/jxsjyksy/gsgg91/content/content_2039911996485861376.html 交叉核对录取批次与投档比例。",
       "content": "2026 年本科批次 45 个院校专业组 × 6 专业 + 调剂、2 次征集各 20 个、提前本科 45 组、同分排序规则、投档比例 1:1、征集可降 20 分投档；2026 三大变化（按专业招生/组内选科一致/高校专项改省级审核）。",
       "plan": "已用于 province_exam_rule 的江西 2026 规则核实"
+    },
+    {
+      "id": "SRC-GAOKAO-COMPASS",
+      "source_name": "Gaokao-Compass-11M 高考数据集（MIT，DOI 10.57967/hf/9882）",
+      "source_url": "https://hf-mirror.com/datasets/choucsan/Gaokao-Compass-11M",
+      "year": 2025,
+      "source_type": "其他",
+      "fetched_at": "2026-10-12",
+      "crawl_status": "ok",
+      "crawl_note": "★ 渠道来源，非官方。经国内镜像 hf-mirror.com 下载，无需 token、无频率限制（官方 huggingface.co 本机不可达）。数据集为 MIT 许可，可再分发，须保留 DOI 引用。",
+      "content": "31 省 × 2017–2025 高考结构化数据：招生计划（含选科要求）、院校投档线（含最低位次/985/211）、专业级录取（含最高/平均分）、一分一段表。共 1132 万行。",
+      "plan": "作品内事实结论的 source_url 须指向省考试院/阳光高考，不指向本数据集；本表仅作为获取渠道登记。已用于 score_segment（2022–2025 河南/江西）与 school_major_score 导入。"
     }
   ]
 }
