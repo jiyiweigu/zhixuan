@@ -15643,7 +15643,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 514,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -15659,7 +15659,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "502",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -15667,7 +15667,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 514,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -15683,7 +15683,7 @@
       "major_note": "（滨州校区）",
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -15691,7 +15691,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 514,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -15707,7 +15707,7 @@
       "major_note": "（滨州校区）",
       "group_code": "101",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -15715,7 +15715,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 514,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -15731,7 +15731,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "102",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -15739,7 +15739,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 514,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -15755,7 +15755,7 @@
       "major_note": null,
       "group_code": "102",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -15763,7 +15763,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 514,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -15779,7 +15779,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28651,7 +28651,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28667,7 +28667,7 @@
       "major_note": null,
       "group_code": "502",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28675,7 +28675,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28691,7 +28691,7 @@
       "major_note": null,
       "group_code": "101",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28699,7 +28699,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28715,7 +28715,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28723,7 +28723,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28739,7 +28739,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28747,7 +28747,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28763,7 +28763,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28771,7 +28771,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28787,7 +28787,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28795,7 +28795,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28811,7 +28811,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28819,7 +28819,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28835,7 +28835,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28843,7 +28843,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28859,7 +28859,7 @@
       "major_note": null,
       "group_code": "101",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28867,7 +28867,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28883,7 +28883,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28891,7 +28891,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28907,7 +28907,7 @@
       "major_note": null,
       "group_code": "101",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28915,7 +28915,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28931,7 +28931,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28939,7 +28939,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28955,7 +28955,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28963,7 +28963,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -28979,7 +28979,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -28987,7 +28987,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -29003,7 +29003,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -29011,7 +29011,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -29027,7 +29027,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -29035,7 +29035,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -29051,7 +29051,7 @@
       "major_note": null,
       "group_code": "101",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -29059,7 +29059,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -29075,7 +29075,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -29083,7 +29083,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -29099,7 +29099,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -29107,7 +29107,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -29123,7 +29123,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -29131,7 +29131,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -29147,7 +29147,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -29155,7 +29155,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -29171,7 +29171,7 @@
       "major_note": null,
       "group_code": "101",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -29179,7 +29179,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -29195,7 +29195,7 @@
       "major_note": "（外语语种要求：英语）",
       "group_code": "101",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -29203,7 +29203,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -29219,7 +29219,7 @@
       "major_note": "（国家专项）（计算机科学与技术、网络工程）",
       "group_code": "561",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -29227,7 +29227,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -29243,7 +29243,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -29251,7 +29251,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -29267,7 +29267,7 @@
       "major_note": null,
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -29275,7 +29275,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 322,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -29291,7 +29291,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": "alias",
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -31187,7 +31187,7 @@
       "major_note": "（抚州市）（不招色盲、色弱考生）",
       "group_code": "502",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -31211,7 +31211,7 @@
       "major_note": "（抚州市）（不招色盲、色弱考生）",
       "group_code": "503",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -31235,7 +31235,7 @@
       "major_note": "（抚州市）（不招色盲、色弱考生）",
       "group_code": "101",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -31259,7 +31259,7 @@
       "major_note": "（抚州市）（不招色盲、色弱考生）",
       "group_code": "502",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -31283,7 +31283,7 @@
       "major_note": "（抚州市）（不招色盲、色弱考生）",
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -43723,7 +43723,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 582,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -43747,7 +43747,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 582,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -43771,7 +43771,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 582,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -43795,7 +43795,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 582,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -43819,7 +43819,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 582,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -43843,7 +43843,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 582,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -43867,7 +43867,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 582,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -43891,7 +43891,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 582,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -43915,7 +43915,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 582,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -43939,7 +43939,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 582,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -43963,7 +43963,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 582,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -43987,7 +43987,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 582,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -57155,7 +57155,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -57179,7 +57179,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -57203,7 +57203,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -57227,7 +57227,7 @@
       "major_note": "（师范类）（5）",
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -57251,7 +57251,7 @@
       "major_note": "（师范类）",
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -57275,7 +57275,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -71723,7 +71723,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "502",
       "admit_count": 3,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -71747,7 +71747,7 @@
       "major_note": null,
       "group_code": "101",
       "admit_count": 3,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -71771,7 +71771,7 @@
       "major_note": "（师范类）（不招色盲、色弱考生）",
       "group_code": "101",
       "admit_count": 3,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -71795,7 +71795,7 @@
       "major_note": "（师范类）",
       "group_code": "101",
       "admit_count": 2,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -71819,7 +71819,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "502",
       "admit_count": 6,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -71843,7 +71843,7 @@
       "major_note": "（师范类）",
       "group_code": "502",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -71867,7 +71867,7 @@
       "major_note": null,
       "group_code": "101",
       "admit_count": 3,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -71891,7 +71891,7 @@
       "major_note": null,
       "group_code": "502",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -71915,7 +71915,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "502",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -71939,7 +71939,7 @@
       "major_note": null,
       "group_code": "101",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -71963,7 +71963,7 @@
       "major_note": "（师范类）",
       "group_code": "501",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -71987,7 +71987,7 @@
       "major_note": "（师范类）（外语语种要求：英语。外语成绩不低于：100）",
       "group_code": "101",
       "admit_count": 2,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -72011,7 +72011,7 @@
       "major_note": null,
       "group_code": "502",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -72035,7 +72035,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -81019,7 +81019,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81043,7 +81043,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81067,7 +81067,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81091,7 +81091,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81115,7 +81115,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81139,7 +81139,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81163,7 +81163,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81187,7 +81187,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81211,7 +81211,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81235,7 +81235,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81259,7 +81259,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81283,7 +81283,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81307,7 +81307,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81331,7 +81331,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81355,7 +81355,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81379,7 +81379,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81403,7 +81403,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81427,7 +81427,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81451,7 +81451,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81475,7 +81475,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81499,7 +81499,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81523,7 +81523,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81547,7 +81547,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81571,7 +81571,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81595,7 +81595,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81619,7 +81619,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81643,7 +81643,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81667,7 +81667,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81691,7 +81691,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81715,7 +81715,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81739,7 +81739,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81763,7 +81763,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81787,7 +81787,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81811,7 +81811,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81835,7 +81835,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81859,7 +81859,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81883,7 +81883,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81907,7 +81907,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81931,7 +81931,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81955,7 +81955,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -81979,7 +81979,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -82003,7 +82003,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -82027,7 +82027,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -82051,7 +82051,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -82075,7 +82075,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -82099,7 +82099,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 399,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95323,7 +95323,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95347,7 +95347,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95371,7 +95371,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95395,7 +95395,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95419,7 +95419,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95443,7 +95443,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95467,7 +95467,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95491,7 +95491,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95515,7 +95515,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95539,7 +95539,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95563,7 +95563,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95587,7 +95587,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95611,7 +95611,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95635,7 +95635,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95659,7 +95659,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95683,7 +95683,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95707,7 +95707,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95731,7 +95731,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95755,7 +95755,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95779,7 +95779,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95803,7 +95803,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95827,7 +95827,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95851,7 +95851,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95875,7 +95875,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95899,7 +95899,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95923,7 +95923,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95947,7 +95947,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95971,7 +95971,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -95995,7 +95995,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96019,7 +96019,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96043,7 +96043,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96067,7 +96067,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96091,7 +96091,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96115,7 +96115,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96139,7 +96139,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96163,7 +96163,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96187,7 +96187,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96211,7 +96211,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96235,7 +96235,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96259,7 +96259,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96283,7 +96283,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96307,7 +96307,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96331,7 +96331,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96355,7 +96355,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96379,7 +96379,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96403,7 +96403,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96427,7 +96427,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96451,7 +96451,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96475,7 +96475,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96499,7 +96499,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96523,7 +96523,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96547,7 +96547,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96571,7 +96571,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96595,7 +96595,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96619,7 +96619,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96643,7 +96643,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96667,7 +96667,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96691,7 +96691,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96715,7 +96715,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96739,7 +96739,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96763,7 +96763,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96787,7 +96787,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96811,7 +96811,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96835,7 +96835,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96859,7 +96859,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96883,7 +96883,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96907,7 +96907,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96931,7 +96931,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -96955,7 +96955,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 494,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -135427,7 +135427,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 68,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -135451,7 +135451,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 68,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -135475,7 +135475,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 68,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -135499,7 +135499,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 68,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -135523,7 +135523,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 68,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -135547,7 +135547,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 68,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -135571,7 +135571,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 68,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -135595,7 +135595,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 68,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -135619,7 +135619,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 68,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -150947,7 +150947,7 @@
       "major_note": null,
       "group_code": "101",
       "admit_count": 5,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -150971,7 +150971,7 @@
       "major_note": "（师范类）（不招色盲、色弱考生）",
       "group_code": "501",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -150995,7 +150995,7 @@
       "major_note": null,
       "group_code": "502",
       "admit_count": 5,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151019,7 +151019,7 @@
       "major_note": null,
       "group_code": "101",
       "admit_count": 5,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151043,7 +151043,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "502",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151067,7 +151067,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": 5,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151091,7 +151091,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151115,7 +151115,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": 5,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151139,7 +151139,7 @@
       "major_note": null,
       "group_code": "101",
       "admit_count": 5,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151163,7 +151163,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151187,7 +151187,7 @@
       "major_note": "（师范类）",
       "group_code": "101",
       "admit_count": 5,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151211,7 +151211,7 @@
       "major_note": "（师范类）",
       "group_code": "501",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151235,7 +151235,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "502",
       "admit_count": 5,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151259,7 +151259,7 @@
       "major_note": null,
       "group_code": "502",
       "admit_count": 11,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151283,7 +151283,7 @@
       "major_note": "（师范类）（外语语种要求：英语）",
       "group_code": "101",
       "admit_count": 5,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151307,7 +151307,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "502",
       "admit_count": 5,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -151331,7 +151331,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "502",
       "admit_count": 5,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -162067,7 +162067,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162091,7 +162091,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162115,7 +162115,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162139,7 +162139,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162163,7 +162163,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162187,7 +162187,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162211,7 +162211,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162235,7 +162235,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162259,7 +162259,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162283,7 +162283,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162307,7 +162307,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162331,7 +162331,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162355,7 +162355,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162379,7 +162379,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162403,7 +162403,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162427,7 +162427,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -162451,7 +162451,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 440,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -169123,7 +169123,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 652,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -169147,7 +169147,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 652,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -169171,7 +169171,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 652,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -169195,7 +169195,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 652,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -169219,7 +169219,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 652,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -169243,7 +169243,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 652,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -169267,7 +169267,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 652,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -169291,7 +169291,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 652,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -169835,7 +169835,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "501",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -169859,7 +169859,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "501",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -169883,7 +169883,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "501",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -169907,7 +169907,7 @@
       "major_note": "（不招色盲、色弱考生）",
       "group_code": "501",
       "admit_count": 4,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -194939,7 +194939,7 @@
       "major_note": "（师范类）",
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -194963,7 +194963,7 @@
       "major_note": "（师范类）",
       "group_code": "101",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -194987,7 +194987,7 @@
       "major_note": null,
       "group_code": "502",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -195011,7 +195011,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -195035,7 +195035,7 @@
       "major_note": "（师范类）",
       "group_code": "101",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -195059,7 +195059,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -195083,7 +195083,7 @@
       "major_note": "（师范类）",
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -195107,7 +195107,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -195131,7 +195131,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -195155,7 +195155,7 @@
       "major_note": "（师范类）",
       "group_code": "101",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -195179,7 +195179,7 @@
       "major_note": null,
       "group_code": "101",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -195203,7 +195203,7 @@
       "major_note": null,
       "group_code": "501",
       "admit_count": null,
-      "match_via": "name",
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "pending",
@@ -204667,7 +204667,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 1246,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -204691,7 +204691,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 1246,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -204715,7 +204715,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 1246,
       "major_id": null,
       "province": "江西",
       "year": 2025,
@@ -204739,7 +204739,7 @@
       "source_url": ""
     },
     {
-      "school_id": null,
+      "school_id": 1246,
       "major_id": null,
       "province": "江西",
       "year": 2025,

@@ -28,9 +28,9 @@
       "skipped": {
         "non_benke": 3349
       },
-      "school_id_matched": 19449,
-      "school_id_match_rate": 0.9715,
-      "unresolved_school_codes": 6,
+      "school_id_matched": 19846,
+      "school_id_match_rate": 0.9913,
+      "unresolved_school_codes": 4,
       "subject_type_missing": 0,
       "min_score_missing": 28,
       "batch_dist": {
@@ -52,9 +52,9 @@
         "non_benke": 9607,
         "prep_batch": 786
       },
-      "school_id_matched": 17269,
-      "school_id_match_rate": 0.951,
-      "unresolved_school_codes": 80,
+      "school_id_matched": 17782,
+      "school_id_match_rate": 0.9793,
+      "unresolved_school_codes": 43,
       "subject_type_missing": 0,
       "min_score_missing": 0,
       "batch_dist": {
@@ -105,9 +105,9 @@
       "skipped": {
         "non_benke": 21838
       },
-      "school_id_matched": 30800,
-      "school_id_match_rate": 0.9867,
-      "unresolved_school_codes": 34,
+      "school_id_matched": 30908,
+      "school_id_match_rate": 0.9902,
+      "unresolved_school_codes": 21,
       "subject_type_missing": 31214,
       "min_score_missing": 0,
       "batch_dist": {
@@ -130,9 +130,9 @@
       "skipped": {
         "non_benke": 11755
       },
-      "school_id_matched": 21527,
-      "school_id_match_rate": 0.945,
-      "unresolved_school_codes": 108,
+      "school_id_matched": 21771,
+      "school_id_match_rate": 0.9557,
+      "unresolved_school_codes": 101,
       "subject_type_missing": 22781,
       "min_score_missing": 0,
       "batch_dist": {
@@ -156,9 +156,9 @@
         "prep_batch": 175,
         "art_sports": 20
       },
-      "school_id_matched": 13824,
-      "school_id_match_rate": 0.9921,
-      "unresolved_school_codes": 6,
+      "school_id_matched": 13875,
+      "school_id_match_rate": 0.9958,
+      "unresolved_school_codes": 4,
       "subject_type_missing": 0,
       "min_score_missing": 0,
       "batch_dist": {
@@ -180,9 +180,9 @@
         "prep_batch": 100,
         "art_sports": 6
       },
-      "school_id_matched": 9673,
-      "school_id_match_rate": 0.9742,
-      "unresolved_school_codes": 15,
+      "school_id_matched": 9871,
+      "school_id_match_rate": 0.9942,
+      "unresolved_school_codes": 6,
       "subject_type_missing": 0,
       "min_score_missing": 0,
       "batch_dist": {
