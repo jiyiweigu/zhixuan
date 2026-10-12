@@ -1,0 +1,196 @@
+{
+  "meta": {
+    "generated_at": "2026-10-12",
+    "owner": "徐（③ 数据工程）",
+    "target_table": "school_major_score",
+    "purpose": "院校专业录取分：供 ② 的冲稳保推荐与位次换算使用。",
+    "scope": "首期仅本科批（队长《数据源与数据获取方案》+ 产品书口径）",
+    "dataset": "Gaokao-Compass-11M",
+    "dataset_doi": "10.57967/hf/9882"
+  },
+  "summary": {
+    "files": 8,
+    "total_imported_rows": 116036,
+    "unusable_files": [
+      "河南2023",
+      "江西2023"
+    ],
+    "total_unresolved_school_codes_hint": "见各文件 unresolved_school_codes"
+  },
+  "files": [
+    {
+      "province": "河南",
+      "year": 2022,
+      "exam_system": "文理科",
+      "source_file": "2022_henan_major-admission.csv",
+      "source_rows": 23369,
+      "imported_rows": 20020,
+      "skipped": {
+        "non_benke": 3349
+      },
+      "school_id_matched": 19449,
+      "school_id_match_rate": 0.9715,
+      "unresolved_school_codes": 6,
+      "subject_type_missing": 0,
+      "min_score_missing": 28,
+      "batch_dist": {
+        "本科一批": 11484,
+        "本科二批": 8536
+      },
+      "quality_flags": [],
+      "data_status": "pending",
+      "file": "data\\school_major_score\\school_major_score_2022_河南.json"
+    },
+    {
+      "province": "江西",
+      "year": 2022,
+      "exam_system": "文理科",
+      "source_file": "2022_jiangxi_major-admission.csv",
+      "source_rows": 28551,
+      "imported_rows": 18158,
+      "skipped": {
+        "non_benke": 9607,
+        "prep_batch": 786
+      },
+      "school_id_matched": 17269,
+      "school_id_match_rate": 0.951,
+      "unresolved_school_codes": 80,
+      "subject_type_missing": 0,
+      "min_score_missing": 0,
+      "batch_dist": {
+        "本科一批": 7532,
+        "本科二批": 10626
+      },
+      "quality_flags": [],
+      "data_status": "pending",
+      "file": "data\\school_major_score\\school_major_score_2022_江西.json"
+    },
+    {
+      "province": "河南",
+      "year": 2023,
+      "exam_system": "文理科",
+      "source_file": "2023_henan_major-admission.csv",
+      "imported_rows": 0,
+      "skipped": {
+        "unusable_whole_file": 1
+      },
+      "quality_flags": [
+        "unusable"
+      ],
+      "unusable_reason": "university_code 与 university_name 整列全空，无法定位院校",
+      "data_status": "pending"
+    },
+    {
+      "province": "江西",
+      "year": 2023,
+      "exam_system": "文理科",
+      "source_file": "2023_jiangxi_major-admission.csv",
+      "imported_rows": 0,
+      "skipped": {
+        "unusable_whole_file": 1
+      },
+      "quality_flags": [
+        "unusable"
+      ],
+      "unusable_reason": "min_score 与 min_rank 整列全空（31997/31997），无分数无位次",
+      "data_status": "pending"
+    },
+    {
+      "province": "河南",
+      "year": 2024,
+      "exam_system": "文理科",
+      "source_file": "2024_henan_major-admission.csv",
+      "source_rows": 53052,
+      "imported_rows": 31214,
+      "skipped": {
+        "non_benke": 21838
+      },
+      "school_id_matched": 30800,
+      "school_id_match_rate": 0.9867,
+      "unresolved_school_codes": 34,
+      "subject_type_missing": 31214,
+      "min_score_missing": 0,
+      "batch_dist": {
+        "本一": 13324,
+        "本二": 17890
+      },
+      "quality_flags": [
+        "subject_type_missing"
+      ],
+      "data_status": "pending",
+      "file": "data\\school_major_score\\school_major_score_2024_河南.json"
+    },
+    {
+      "province": "江西",
+      "year": 2024,
+      "exam_system": "3+1+2",
+      "source_file": "2024_jiangxi_major-admission.csv",
+      "source_rows": 34536,
+      "imported_rows": 22781,
+      "skipped": {
+        "non_benke": 11755
+      },
+      "school_id_matched": 21527,
+      "school_id_match_rate": 0.945,
+      "unresolved_school_codes": 108,
+      "subject_type_missing": 22781,
+      "min_score_missing": 0,
+      "batch_dist": {
+        "本科": 22781
+      },
+      "quality_flags": [
+        "subject_type_missing"
+      ],
+      "data_status": "pending",
+      "file": "data\\school_major_score\\school_major_score_2024_江西.json"
+    },
+    {
+      "province": "河南",
+      "year": 2025,
+      "exam_system": "3+1+2",
+      "source_file": "2025_henan_major-admission.csv",
+      "source_rows": 16965,
+      "imported_rows": 13934,
+      "skipped": {
+        "non_benke": 2836,
+        "prep_batch": 175,
+        "art_sports": 20
+      },
+      "school_id_matched": 13824,
+      "school_id_match_rate": 0.9921,
+      "unresolved_school_codes": 6,
+      "subject_type_missing": 0,
+      "min_score_missing": 0,
+      "batch_dist": {
+        "本科批": 13934
+      },
+      "quality_flags": [],
+      "data_status": "pending",
+      "file": "data\\school_major_score\\school_major_score_2025_河南.json"
+    },
+    {
+      "province": "江西",
+      "year": 2025,
+      "exam_system": "3+1+2",
+      "source_file": "2025_jiangxi_major-admission.csv",
+      "source_rows": 11725,
+      "imported_rows": 9929,
+      "skipped": {
+        "non_benke": 1690,
+        "prep_batch": 100,
+        "art_sports": 6
+      },
+      "school_id_matched": 9673,
+      "school_id_match_rate": 0.9742,
+      "unresolved_school_codes": 15,
+      "subject_type_missing": 0,
+      "min_score_missing": 0,
+      "batch_dist": {
+        "本科批": 9929
+      },
+      "quality_flags": [],
+      "data_status": "pending",
+      "file": "data\\school_major_score\\school_major_score_2025_江西.json"
+    }
+  ]
+}
