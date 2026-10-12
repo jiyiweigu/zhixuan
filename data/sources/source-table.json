@@ -81,6 +81,30 @@
       "plan": "已产出 pathway-region 数据"
     },
     {
+      "id": "SRC-HENAN-ZSJH",
+      "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
+      "source_url": "https://zsjh.haedu.cn/qwerasd/school",
+      "year": 2026,
+      "source_type": "官方",
+      "fetched_at": "2026-10-12",
+      "crawl_status": "ok",
+      "crawl_note": "★ 独立子域，ASP.NET WebForms + JSON AJAX，无 WAF。JSON 接口 /qwerasd/dyna-school?page=<n>，page=0..83 共 2495 条。无需无头浏览器。",
+      "content": "在豫招生院校清单（校名、教育部国标代码、批次、科类、计划数、院校代号）",
+      "plan": "已产出 school 表数据（1367 所本科）"
+    },
+    {
+      "id": "SRC-MOE-SCHOOL-LIST",
+      "source_name": "中华人民共和国教育部（全国普通高等学校名单）",
+      "source_url": "https://hudong.moe.gov.cn/qggxmd/",
+      "year": 2026,
+      "source_type": "官方",
+      "fetched_at": "2026-10-12",
+      "crawl_status": "ok",
+      "crawl_note": "HTTP 200，HTML 表格接口 getDataIndex.jsp?listid=10000101&page=<n>，page=1..148 共 2952 所。10位标识码后5位=国标代码。",
+      "content": "全国高校名单（校名、标识码、主管部门、所在地、层次）",
+      "plan": "已用于补全 school 表 province/city/level/ownership"
+    },
+    {
       "id": "SRC-MCA-DIVISION",
       "source_name": "民政部/国家统计局 中华人民共和国行政区划代码",
       "source_url": "https://www.mca.gov.cn/mzsj/xzqh/2023/202301xzqh.html",

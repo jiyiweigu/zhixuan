@@ -17,6 +17,12 @@ data/
 │   ├── pathway-regions.csv      ← 同上，人工核对版
 │   ├── pathway-eligibility.json ← ★ 资格规则数据（2.3，供 ② 规则引擎消费）
 │   └── fields-definition.md     ← 数据字段定义与口径（★ 采集前必读）
+├── schools/                     ← ★ 院校库（2.1）
+│   ├── schools_raw.json         ← 源A 原始全量 2495 条（含批次/科类）
+│   ├── moe_schools.json         ← 源B 教育部全国高校 2952 所
+│   ├── schools_merged.json      ← ★ 合并后 school 表数据（1367 所本科）
+│   ├── schools.csv              ← 人工核对版
+│   └── 院校库采集报告.md         ← ★ 来源/口径/待补字段说明
 ├── score_segment/               ← ★ 一分一段表（2.2）
 │   ├── score_segment_2026_历史类.json / .csv
 │   ├── score_segment_2026_物理类.json / .csv
@@ -32,6 +38,9 @@ data/
 │   ├── validate.py              ← 三要素强制校验（2.6）
 │   ├── build_region_table.py    ← 专项区域表构建（2.3）
 │   ├── check_eligibility_consistency.py ← 规则与区域表一致性校验
+│   ├── fetch_schools.py         ← 在豫招生院校采集（2.1）
+│   ├── fetch_moe_schools.py     ← 教育部全国高校名单采集（2.1）
+│   ├── merge_schools.py         ← 院校库合并与字段推断（2.1）
 │   ├── parse_score_segment.py   ← 一分一段表 OCR 解析（2.2）
 │   └── build_review_page.py     ← 复核工作台生成（2.2）
 └── samples/
@@ -50,6 +59,7 @@ data/
 | `sources/source-table.json` | source | 9 | ✅ 9/9 通过 |
 | `score_segment/score_segment_2026_历史类.json` | score_segment | 454 | ✅ 454/454 通过（high 441） |
 | `score_segment/score_segment_2026_物理类.json` | score_segment | 462 | ✅ 462/462 通过（high 441） |
+| `schools/schools_merged.json` | school | 1367 | ✅ 1367/1367 通过（province/level 100%） |
 
 一致性自检：`check_eligibility_consistency.py` → ✅ 国家专项 38 县与规则 county_codes 完全一致，38 ⊂ 53 成立
 
@@ -83,6 +93,12 @@ $PY data/scripts/parse_score_segment.py data/samples/raw/imgs --year 2026 --subj
 # 生成人工复核工作台
 $PY data/scripts/build_review_page.py --year 2026 --subject 历史类
 $PY data/scripts/build_review_page.py --year 2026 --subject 物理类
+
+# 院校库采集（2.1，两源 + 合并）
+$PY data/scripts/fetch_schools.py          # 在豫招生院校（84 页）
+$PY data/scripts/fetch_moe_schools.py      # 教育部全国高校（148 页）
+$PY data/scripts/merge_schools.py          # 合并 + 字段推断
+$PY data/scripts/validate.py data/schools/schools_merged.json --kind school
 ```
 
 
@@ -152,7 +168,9 @@ $PY data/scripts/build_review_page.py --year 2026 --subject 物理类
 - ✅ **资格规则数据已产出**（11 条，供 ② 规则引擎消费）
 - ✅ 校验脚本（2.6）已实现并跑通
 - ✅ **一分一段表（2026）已解析**：历史类 454 行 / 物理类 462 行，high 各 441；附复核工作台
-- ⏳ 采集脚本待开发：院校库、专业库、录取分、院校画像
-- ⏳ 2023–2025 一分一段（任务 2.2 含三年，本次先做 2026 验证方法）
+- ✅ **院校库（2.1）已采集**：在豫招生本科 **1367 所**，code/province/level 近乎全填
+  - ★ 找到**可直连的官方源** `zsjh.haedu.cn`（无 WAF），**无需 Playwright**
+  - 待补：`type`/`website`/`intro`（建议并入任务 2.5 院校画像）
+- ⏳ 专业库（2.1）、录取分与 2023–2025 一分一段（2.2）、院校画像（2.5）
 - ⏳ 数据表结构待 D4 由 ② 冻结
 - ⚠️ 数据库（PostgreSQL 16 + pgvector）尚未安装
