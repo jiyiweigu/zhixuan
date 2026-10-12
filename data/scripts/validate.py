@@ -88,7 +88,32 @@ SCHEMA_BY_KIND: Dict[str, List[str]] = {
 # 这类记录只要带非空 source_id 即视为满足来源要求
 SOURCE_ID_KINDS = {"pathway_region", "pathway_eligibility", "pathway_score",
                    "school_major_score", "score_segment", "enrollment_rule",
-                   "discipline_eval", "pathway"}
+                   "discipline_eval", "pathway", "major"}
+
+# ★ 字段别名：③ 侧采集产物的字段名 → 第 7 章建表字段名
+#   背景：③ 的产物忠实于**原始数据源**（如教育部专业目录给的是
+#   `code / name / class_name / menlei`），而第 7 章 `major` 表用的是
+#   `id / name / code / category / first_class`。二者语义相同、命名不同。
+#   校验器按第 7 章口径检查，但允许通过别名找到实际字段，**避免为迎合
+#   校验器而扭曲采集产物的原始字段名**。
+FIELD_ALIASES: Dict[str, Dict[str, List[str]]] = {
+    "major": {
+        "category": ["menlei", "class_name"],     # 学科门类
+        "first_class": ["class_name"],            # 专业类
+        "id": ["code"],                           # 用国标专业代码作业务主键
+    },
+}
+
+
+def _resolve_field(rec: Dict[str, Any], kind: str, field_name: str) -> Any:
+    """按别名表解析字段值；找不到返回 None"""
+    if field_name in rec:
+        return rec[field_name]
+    for alt in FIELD_ALIASES.get(kind, {}).get(field_name, []):
+        if alt in rec:
+            return rec[alt]
+    return None
+
 
 # 有年份语义的字段（需做区间校验）
 YEAR_FIELDS = {"year"}
@@ -207,10 +232,11 @@ def _check_url(value: str) -> List[str]:
 
 
 def check_required(rec: Dict[str, Any], kind: str) -> List[str]:
-    """校验该类型要求的必填字段"""
+    """校验该类型要求的必填字段（支持 FIELD_ALIASES 别名回退）"""
     errors = []
     for f in SCHEMA_BY_KIND.get(kind, []):
-        if f not in rec or _is_blank(rec[f]):
+        val = _resolve_field(rec, kind, f)
+        if val is None or _is_blank(val):
             errors.append(f"缺少必填字段 `{f}`")
     return errors
 
@@ -334,7 +360,8 @@ def read_records_with_meta(path: str) -> "tuple[List[Dict[str, Any]], Dict[str, 
             meta = data.get("meta") if isinstance(data.get("meta"), dict) else {}
             # 优先按已知包装键取数组
             for key in ("records", "items", "data", "pathways", "regions",
-                        "counties", "sources", "rules", "segments", "list"):
+                        "counties", "sources", "rules", "segments", "list",
+                        "majors", "classes", "schools", "scores"):
                 if key in data and isinstance(data[key], list):
                     return data[key], meta
             # 兜底：若 dict 中"唯一"的 list 值就有记录数组，则取之
