@@ -1,0 +1,1 @@
+<script setup lang="ts">import SourceCard from './SourceCard.vue';defineProps<{citations?:Zhixuan.Citation[]}>()</script><template><section v-if="citations?.length" class="citation-list"><h3>来源与依据</h3><SourceCard v-for="(c,i) in citations" :key="i" :citation="c"/></section><p v-else class="evidence-empty">暂无可核验来源，暂不展示确定性结论。</p></template>

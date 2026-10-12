@@ -1,27 +1,20 @@
-import { auth, profile, pathways, eligibility, qa, plans, schools } from '../mocks'
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
-const useMock = import.meta.env.VITE_USE_MOCK !== 'false'
-const TOKEN_KEY='access_token'
-export const getToken=()=>localStorage.getItem(TOKEN_KEY)
-export const setToken=(t:string)=>localStorage.setItem(TOKEN_KEY,t)
-export const clearToken=()=>localStorage.removeItem(TOKEN_KEY)
-const qs=(q?:Record<string,string|undefined>)=>{const p=Object.entries(q||{}).filter(([,v])=>v!==undefined&&v!=='')as[string,string][];return p.length?'?'+p.map(([k,v])=>`${k}=${encodeURIComponent(v)}`).join('&'):''}
-async function request<T>(path:string,init?:RequestInit):Promise<Zhixuan.ApiResponse<T>> { const token=getToken(); const r=await fetch(`${API_BASE}${path}`,{...init,headers:{'Content-Type':'application/json',...(token?{Authorization:`Bearer ${token}`}:{}) ,...(init?.headers||{})}}); if(!r.ok) throw new Error(`API ${r.status}`); return r.json() }
-const pick=<T>(value:Zhixuan.ApiResponse<T>)=>Promise.resolve(value)
+import { fixtures } from '../mocks'
+import { request } from '../utils/request'
+const mock=import.meta.env.VITE_USE_MOCK!=='false'
+const m=<T>(v:T):Promise<T>=>Promise.resolve(structuredClone(v))
 export const api={
- health:()=>request<{status:string}>('/api/health'),
- register:(p:{username:string;password:string})=>useMock?pick(auth.success):request('/api/auth/register',{method:'POST',body:JSON.stringify(p)}),
- login:(p:{username:string;password:string})=>useMock?pick(auth.success):request('/api/auth/login',{method:'POST',body:JSON.stringify(p)}),
- logout:()=>useMock?pick(auth.logout):request('/api/auth/logout',{method:'POST'}),
- me:()=>useMock?pick(auth.me):request<Zhixuan.User>('/api/auth/me'),
- getProfile:()=>useMock?pick(profile.success):request<Zhixuan.Profile>('/api/user/profile'),
- updateProfile:(p:Zhixuan.Profile)=>useMock?pick(profile.success):request('/api/user/profile',{method:'PUT',body:JSON.stringify(p)}),
- deleteAccount:(p:{password:string})=>useMock?pick(profile.deleted):request('/api/user',{method:'DELETE',body:JSON.stringify(p)}),
- pathways:(q?:{category?:string;priority?:'P0'|'P1'|'P2';status?:string})=>useMock?pick(pathways.success):request<Zhixuan.Pathway[]>(`/api/pathways${qs(q)}`),
- pathwayDetail:(id:string)=>useMock?pick(pathways.detail):request<Zhixuan.Pathway>(`/api/pathways/${encodeURIComponent(id)}`),
- regionCheck:(p:{province:string;county:string})=>useMock?pick(pathways.regionCheck):request<Zhixuan.RegionCheck>(`/api/pathways/region-check${qs({province:p.province,county:p.county})}`),
- eligibility:(p:Zhixuan.Profile)=>useMock?pick(eligibility.pending):request<Zhixuan.Eligibility>('/api/pathways/eligibility-check',{method:'POST',body:JSON.stringify(p)}),
- qa:(q:string)=>useMock?pick(qa.success):request<Zhixuan.QaResult>(`/api/qa${qs({q})}`),
- plans:(p:Zhixuan.PlanRequest)=>useMock?pick(plans.success):request<Zhixuan.PlanResult>('/api/plans',{method:'POST',body:JSON.stringify(p)}),
- schools:(keyword='',province='河南')=>useMock?pick(schools.success):request<Zhixuan.School[]>(`/api/schools${qs({keyword,province})}`)
+ register:(p:any)=>mock?m(fixtures.auth.login):request<any>('/api/user/register',{method:'POST',body:JSON.stringify(p)}),login:(p:any)=>mock?m(p.role==='admin'?fixtures.auth.admin:fixtures.auth.login):request<any>(p.role==='admin'?'/api/admin/login':'/api/user/login',{method:'POST',body:JSON.stringify(p)}),logout:()=>mock?m(null):request('/api/user/logout',{method:'POST'}),me:()=>mock?m(fixtures.auth.login.user):request('/api/user/me'),
+ getProfile:()=>mock?m(fixtures.profile.profile):request('/api/user/profile'),updateProfile:(p:any)=>mock?m({...fixtures.profile.profile,...p,updated_at:new Date().toISOString()}):request('/api/user/profile',{method:'PUT',body:JSON.stringify(p)}),deleteAccount:(p:any)=>mock?m(null):request('/api/user',{method:'DELETE',body:JSON.stringify(p)}),
+ pathways:(q:any={})=>mock?m(fixtures.pathways.items):request(`/api/pathways${qs(q)}`),pathwayDetail:(id:string)=>mock?m(fixtures.pathways.detail):request(`/api/pathways/${id}`),regions:(id:string,p:string)=>mock?m(fixtures.pathways.regions):request(`/api/pathways/${id}/regions${qs({province:p})}`),regionCheck:(p:any)=>mock?m({in_region:false,region_name:null,citations:[]}):request(`/api/pathways/region-check${qs(p)}`),eligibility:(p:any,auth=false)=>mock?m(fixtures.eligibility.data):request(auth?'/api/user/profile/eligibility':'/api/pathways/eligibility-check',{method:'POST',body:JSON.stringify(p)}),
+ ask:(p:any)=>mock?m(fixtures.qa.answer):request('/api/qa/ask',{method:'POST',body:JSON.stringify(p)}),qaHistory:(q:any={})=>mock?m(fixtures.qa.history):request(`/api/qa/history${qs(q)}`),
+ recommend:(p:any)=>mock?m(fixtures.recommendation):request('/api/recommend',{method:'POST',body:JSON.stringify(p)}),generatePlan:(p:any)=>mock?m(fixtures.recommendation):request('/api/plan/generate',{method:'POST',body:JSON.stringify(p)}),riskCheck:(p:any)=>mock?m({risks:[]}):request('/api/plan/risk-check',{method:'POST',body:JSON.stringify(p)}),scoreSegment:(q:any)=>mock?m({score:q.score,cumulative_rank:18000,same_score_count:200,...citeMock}):request(`/api/scores/segment${qs(q)}`),
+ plans:()=>mock?m(fixtures.plans.items):request('/api/user/plans'),plan:(id:string)=>mock?m(fixtures.plans.detail):request(`/api/user/plans/${id}`),savePlan:(p:any)=>mock?m({plan_id:1}):request('/api/user/plans',{method:'POST',body:JSON.stringify(p)}),updatePlan:(id:string,p:any)=>mock?m(null):request(`/api/user/plans/${id}`,{method:'PUT',body:JSON.stringify(p)}),deletePlan:(id:string)=>mock?m(null):request(`/api/user/plans/${id}`,{method:'DELETE'}),
+ schools:(q:any={})=>mock?m(fixtures.school.items):request(`/api/schools${qs(q)}`),school:(id:string)=>mock?m(fixtures.school.items[0]):request(`/api/schools/${id}`),schoolProfile:(id:string)=>mock?m(fixtures.school.profile):request(`/api/schools/${id}/profile`),schoolLife:(id:string,q:any={})=>mock?m(fixtures.school.life):request(`/api/schools/${id}/life${qs(q)}`),compareSchools:(ids:any[])=>mock?m({items:fixtures.school.items}):request('/api/schools/compare',{method:'POST',body:JSON.stringify({school_ids:ids})}),majors:(q:any={})=>mock?m(fixtures.majors.items):request(`/api/majors${qs(q)}`),major:(id:string)=>mock?m(fixtures.majors.detail):request(`/api/majors/${id}`),
+ favorites:()=>mock?m(fixtures.favorites.items):request('/api/user/favorites'),addFavorite:(p:any)=>mock?m({favorite_id:1}):request('/api/user/favorites',{method:'POST',body:JSON.stringify(p)}),removeFavorite:(p:any)=>mock?m(null):request(`/api/user/favorites${qs(p)}`,{method:'DELETE'}),
+ adminDocs:(q:any={})=>mock?m(fixtures.admin.docs):request(`/api/admin/docs${qs(q)}`),uploadDoc:(p:any)=>mock?m({doc_id:'mock'}):request('/api/admin/docs',{method:'POST',body:p}),deleteDoc:(id:string)=>mock?m(null):request(`/api/admin/docs/${id}`,{method:'DELETE'}),rebuildIndex:(p:any)=>mock?m({task_id:'mock-task',status:'queued'}):request('/api/admin/index/rebuild',{method:'POST',body:JSON.stringify(p)}),indexTask:(id:string)=>mock?m({status:'completed',progress:100}):request(`/api/admin/index/tasks/${id}`),
+ adminPathways:()=>mock?m(fixtures.pathways.items):request('/api/admin/pathways'),savePathway:(p:any)=>mock?m(p):request('/api/admin/pathways',{method:'POST',body:JSON.stringify(p)}),rules:()=>mock?m([]):request('/api/admin/pathway-rules'),saveRule:(p:any)=>mock?m(p):request('/api/admin/pathway-rules',{method:'POST',body:JSON.stringify(p)}),pathwayRegions:(id:string)=>mock?m(fixtures.pathways.regions):request(`/api/admin/pathway-regions${qs({pathway_id:id})}`),reviewTasks:()=>mock?m({items:[fixtures.admin.task],total:1,page:1,page_size:20}):request('/api/admin/review/tasks?status=pending&page=1'),reviewTask:(id:string)=>mock?m(fixtures.admin.task):request(`/api/admin/review/tasks/${id}`),reviewAction:(id:string,p:any)=>mock?m(null):request(`/api/admin/review/tasks/${id}`,{method:'POST',body:JSON.stringify(p)}),adminStats:()=>mock?m(fixtures.admin.stats):request('/api/admin/stats')
 }
+const qs=(q:Record<string,any>)=>{const p=new URLSearchParams();Object.entries(q).forEach(([k,v])=>{if(v!==undefined&&v!==null&&v!=='')p.set(k,String(v))});const s=p.toString();return s?`?${s}`:''}
+const citeMock={source_name:'演示数据（非官方）',source_url:'https://example.invalid/mock',year:2026}
+
+export { getToken, setToken, clearToken } from './token'

@@ -1,28 +1,18 @@
 declare namespace Zhixuan {
  interface ApiResponse<T>{code:number;message:string;data:T;trace_id:string}
- interface Citation{source_name:string;source_url:string;year:number}
- interface User{user_id:string;username:string}
- interface AuthResult extends User{access_token:string}
- interface ProfilePreferences{priority?:'城市优先'|'专业优先';preferred_majors?:string[];preferred_cities?:string[];accept_adjustment?:boolean}
- interface Profile{
-  province:string;score:number;subject_type:string;
-  household_type?:'农村'|'城镇';
-  household_county?:string;enrollment_county?:string;
-  household_years?:number;enrollment_years?:number;
-  parent_household_local?:boolean;special_marks?:string[];
-  preferences?:ProfilePreferences;updated_at?:string;
- }
- interface Eligibility{eligible:string[];pending:string[];ineligible:string[];profile:Profile;citations:Citation[]}
- interface QaResult{answer:string;confidence:number;citations:Citation[]}
- interface Pathway extends Citation{id:string;name:string;status:string;category?:string;priority?:'P0'|'P1'|'P2'}
- interface RegionCheck{in_region:boolean;region_name:string|null;citations:Citation[]}
- interface PlanItem extends Citation{school_id:string;name:string;tier:'冲'|'稳'|'保';risk_level:'low'|'medium'|'high'}
- interface PlanRequest{profile:Profile;strategy:'冲'|'稳'|'保';priority?:'城市优先'|'专业优先';preferred_majors?:string[];preferred_cities?:string[];accept_adjustment?:boolean}
- interface PlanResult{
-  items:PlanItem[];risk_notes:string[];citations:Citation[];
-  strategy?:string;priority?:string;tiers?:Record<string,PlanItem[]>;
-  quota?:string[];shortage?:string[];excluded?:string[];
-  risks?:string[];summary?:string;data_status?:string;disclaimer?:string;
- }
- interface School extends Citation{school_id:string;name:string;province:string}
+ interface Page<T>{items:T[];total:number;page:number;page_size:number}
+ interface Citation{index?:number;chunk_id?:string;source_name:string;source_url:string;year:number;snippet?:string}
+ interface Profile{profile_id?:number;province:string;exam_type?:'普通'|'艺术'|'体育';first_subject?:'物理'|'历史';second_subjects?:string[];subject_type?:string;score:number|null;rank?:number|null;household_type?:'城镇'|'农村';home_county?:string;home_county_code?:string;school_years?:number;has_national_special?:boolean;has_local_special?:boolean;has_college_special?:boolean;preferred_cities?:string[];preferred_majors?:string[];tuition_budget?:number|null;updated_at?:string;preferences?:{priority?:'城市优先'|'专业优先';preferred_majors?:string[];preferred_cities?:string[];accept_adjustment?:boolean}}
+ interface User{user_id:number|string;username:string;role?:'user'|'admin'}
+ interface AuthResult{token?:string;access_token?:string;expires_in?:number;user?:User;admin?:User;user_id?:number|string;username?:string}
+ interface Pathway{pathway_id:number|string;name:string;category:string;batch:string;target_group:string;apply_time:string;priority:'P0'|'P1'|'P2';data_status:'available'|'schema_only';source_name?:string;source_url?:string;year?:number;sources?:Citation[];description?:string;conditions?:Array<{text:string;source_name:string;source_url:string}>;timeline?:Array<{node:string;date_desc:string}>}
+ interface EligibilityResult{pathway_id:number|string;pathway_name:string;eligible:boolean;reason:string;rules:Array<{rule_type:string;rule_desc:string;source_name:string;source_url:string}>;risk_note:string|null}
+ interface Eligibility{results:EligibilityResult[];updated_profile?:Profile;citations?:Citation[]}
+ interface QaResult{qa_log_id:number|string;session_id:string;answer:string;citations:Citation[];confidence:'high'|'medium'|'low';needs_review:boolean;degraded:boolean;elapsed_ms:number}
+ interface PlanItem{tier:'冲'|'稳'|'保';order:number;school_id:number|string;school_name:string;group_code:string|null;major_ids:number[];major_names:string[];min_score_ref:number|null;min_rank_ref:number|null;ref_year:number|null;gap_rank:number|null;source_note:string;source_name?:string;source_url?:string;year?:number}
+ interface Recommendation{strategy:'school'|'major'|'city';tiers:Array<{tier:'冲'|'稳'|'保';items:PlanItem[]}>;generated_at:string;citations?:Citation[]}
+ interface Risk{level:'high'|'medium'|'low';type:string;target:string;message:string;rule_source:string}
+ interface School{school_id:number|string;name:string;code:string;province:string;city:string;level:string;type:string;ownership:string;website?:string;intro?:string;sources?:Citation[];citations?:Citation[]}
+ interface Major{major_id:number|string;name:string;code:string;category:string;degree:string;intro?:string;first_class_schools?:string[]}
+ interface ConfidenceBadgeProps {level:'high'|'medium'|'low'}
 }

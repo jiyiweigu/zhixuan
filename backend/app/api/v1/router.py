@@ -1,24 +1,29 @@
 from fastapi import APIRouter
-from app.schemas.core import ProfileRequest, Credentials, PlanRequest
-from app.services.eligibility import build_eligibility, build_plan, response, DEMO
+from app.schemas.core import ProfileRequest,Credentials,PlanRequest,QaAskRequest
+from app.services.eligibility import build_eligibility,build_plan,response,DEMO
+from app.services.ai_support import restricted_answer,analyze_trend
 router=APIRouter(prefix='/api',tags=['core'])
 @router.get('/health')
 def health(): return response({'status':'ok','service':'zhixuan'})
 @router.post('/auth/register')
-def register(payload:Credentials): return response({'user_id':'u_demo','username':payload.username,'access_token':'mock-token'})
+def register(p:Credentials): return response({'user_id':'u_demo','username':p.username,'access_token':'mock-token'})
 @router.post('/auth/login')
-def login(payload:Credentials): return response({'user_id':'u_demo','username':payload.username,'access_token':'mock-token'})
+def login(p:Credentials): return response({'user_id':'u_demo','username':p.username,'access_token':'mock-token'})
 @router.get('/user/profile')
 def profile(): return response({'province':'河南','score':620,'subject_type':'物理类'})
 @router.put('/user/profile')
-def update_profile(payload:ProfileRequest): return response(payload.model_dump())
+def update_profile(p:ProfileRequest): return response(p.model_dump())
 @router.get('/pathways')
 def pathways(): return response([{'id':'special-plan','name':'国家专项计划','status':'待核验',**DEMO},{'id':'normal-batch','name':'普通批','status':'可查询',**DEMO}])
 @router.post('/pathways/eligibility-check')
-def eligibility_check(payload:ProfileRequest): return response(build_eligibility(payload))
+def eligibility_check(p:ProfileRequest): return response(build_eligibility(p))
+@router.post('/qa/ask')
+def ask(p:QaAskRequest): return response(restricted_answer(p.question,[]))
 @router.get('/qa')
-def qa(q:str): return response({'answer':'请先完善考生档案，我会基于你的省份、分数与选科给出可核验建议。','confidence':.62,'citations':[DEMO]})
+def qa(q:str): return response(restricted_answer(q,[]))
 @router.post('/plans')
-def plans(payload:PlanRequest): return response(build_plan(payload.profile,payload.strategy))
+def plans(p:PlanRequest): return response(build_plan(p.profile,p.strategy))
 @router.get('/schools')
 def schools(keyword:str='',province:str='河南'): return response([{'school_id':'mock-001','name':'演示院校','province':province,'citations':[DEMO],**DEMO}] if keyword or province else [])
+@router.post('/recommend/trend')
+def trend(points:list[dict],target_type:str='school_major'): return response(analyze_trend(points,target_type))

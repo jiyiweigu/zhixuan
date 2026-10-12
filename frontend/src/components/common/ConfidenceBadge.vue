@@ -1,0 +1,1 @@
+<script setup lang="ts">defineProps<{level:'high'|'medium'|'low'}>();const label={high:'高置信度',medium:'中置信度',low:'低置信度'}</script><template><span class="confidence">{{label[level]}}<small v-if="level==='low'">建议人工核实</small></span></template>

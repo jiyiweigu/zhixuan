@@ -1,0 +1,1 @@
+<script setup lang="ts">defineProps<{status:'available'|'schema_only'|'mock'}>();const label={available:'已有数据',schema_only:'规划中',mock:'演示数据'};</script><template><span class="data-status">{{label[status]}}</span></template>
