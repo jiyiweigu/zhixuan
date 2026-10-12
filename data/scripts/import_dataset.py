@@ -206,6 +206,8 @@ def import_one(path: Path, province: str, year: int, table: str) -> tuple[list[d
             elif dst_f in ("min_rank", "admit_count", "plan_count", "duration",
                            "segment_count", "cumulative_rank", "is_985", "is_211"):
                 rec[dst_f] = to_int(v)
+            elif dst_f == "year":
+                rec[dst_f] = to_int(v) or year
             else:
                 rec[dst_f] = v or None
 
@@ -244,10 +246,42 @@ def import_one(path: Path, province: str, year: int, table: str) -> tuple[list[d
         out.append(rec)
 
     stats["rows_out"] = len(out)
-    # 数据状态：2023 河南投档全空分 → missing
+
+    # ── 脏数据/缺失判定（红线：宁可标 missing，不可猜）────────────────
+    # 1) 校名为空比例过高 → 视有无院校代号决定 missing / partial（仅对含校名的表）
+    if "school_name" in fm.values():
+        empty_name = sum(1 for r in out if not r.get("school_name"))
+        if out and empty_name / len(out) > 0.5:
+            code_ok = sum(1 for r in out if r.get("school_national_code"))
+            if code_ok / len(out) > 0.5:
+                # 有院校代号 → 可通过代号反查补名（派生字段），标 partial
+                stats["data_status"] = "partial"
+                stats["quality_flags"] = ["school_name_empty_but_code_present"]
+                stats["note"] = (f"{empty_name}/{len(out)} 条 school_name 为空，"
+                                 f"但 university_code 完整 → 属可修复（用院校代号反查补名），"
+                                 f"标 partial；补出的校名为派生字段，须在导入时标注来源")
+            else:
+                stats["data_status"] = "missing"
+                stats["quality_flags"] = ["school_name_and_code_empty"]
+                stats["note"] = (f"{empty_name}/{len(out)} 条 school_name 为空，"
+                                 f"且院校代号亦缺失 → 无法关联 school 表，判为不可用，标 missing")
+
+    # 2) 投档表行数异常少（相较其他年份 1000+）且无有效位次
+    if table in ("school-admission",):
+        rank_ok = sum(1 for r in out if r.get("min_rank") is not None)
+        if len(out) < 100 and rank_ok == 0:
+            stats["data_status"] = "missing"
+            stats.setdefault("quality_flags", []).append("too_few_rows_and_no_rank")
+            stats["note"] = (f"仅 {len(out)} 行且无任何 min_rank；"
+                             f"对比其他年份 1000+ 行，判为整表缺失，不补全、不插值")
+
+    # 3) 河南 2023 投档表特别标注
     if table == "school-admission" and province == "河南" and year == 2023:
         stats["data_status"] = "missing"
-        stats["note"] = "2023 河南院校投档线仅 25 行且分数全空，标 missing，不补全、不插值"
+        stats.setdefault("quality_flags", []).append("henan_2023_school_admission_broken")
+        stats["note"] = ("2023 河南院校投档表仅 25 行、校名全空、admit_count 全 0，"
+                         "分数呈现脏数据特征（68/63/71/187/563 混杂），整表不可用。"
+                         "标 missing，不补全、不插值。")
     return out, stats
 
 
