@@ -41,6 +41,9 @@ data/**/*.csv
 !data/**/.gitkeep
 !data/raw/sample_*.csv
 
+# 导入中间层（import_dataset.py 产出，可重跑，不入库）
+data/staged/
+
 # 采集脚本的原始页面缓存（可复现，不入库）
 data/**/.cache/
 data/**/.cache_moe/
