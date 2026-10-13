@@ -1,0 +1,388 @@
+{
+  "_meta": {
+    "source": "河南省教育考试院《河南省实施国家专项计划和高校专项计划县域名单》",
+    "source_url": "https://www.haeea.cn/a/202504/43485_edf25549.shtml",
+    "cross_check": "阳光高考 https://gaokao.chsi.com.cn/gkxx/zc/ss/202203/20220330/2176913166.html 附件；郑州大学2025年高校专项计划招生简章 附件一",
+    "note": "国家专项38县=26原集中连片特困县+12原国家级扶贫开发重点县；高校专项53县=38国家专项县+15原省定扶贫开发重点县；地方专项实施区域为河南省农村地区，不划分具体县（户籍地在河南农村即可，2025年官方文件表述）。",
+    "year": 2025
+  },
+  "国家专项计划": {
+    "province": "河南",
+    "counties": [
+      {
+        "county_name": "兰考县",
+        "county_code": "410225"
+      },
+      {
+        "county_name": "栾川县",
+        "county_code": "410324"
+      },
+      {
+        "county_name": "嵩县",
+        "county_code": "410325"
+      },
+      {
+        "county_name": "洛宁县",
+        "county_code": "410328"
+      },
+      {
+        "county_name": "汝阳县",
+        "county_code": "410326"
+      },
+      {
+        "county_name": "鲁山县",
+        "county_code": "410423"
+      },
+      {
+        "county_name": "卢氏县",
+        "county_code": "411224"
+      },
+      {
+        "county_name": "南召县",
+        "county_code": "411321"
+      },
+      {
+        "county_name": "镇平县",
+        "county_code": "411324"
+      },
+      {
+        "county_name": "内乡县",
+        "county_code": "411325"
+      },
+      {
+        "county_name": "淅川县",
+        "county_code": "411326"
+      },
+      {
+        "county_name": "民权县",
+        "county_code": "411421"
+      },
+      {
+        "county_name": "宁陵县",
+        "county_code": "411423"
+      },
+      {
+        "county_name": "柘城县",
+        "county_code": "411424"
+      },
+      {
+        "county_name": "光山县",
+        "county_code": "411522"
+      },
+      {
+        "county_name": "新县",
+        "county_code": "411523"
+      },
+      {
+        "county_name": "商城县",
+        "county_code": "411524"
+      },
+      {
+        "county_name": "固始县",
+        "county_code": "411525"
+      },
+      {
+        "county_name": "淮滨县",
+        "county_code": "411527"
+      },
+      {
+        "county_name": "潢川县",
+        "county_code": "411526"
+      },
+      {
+        "county_name": "淮阳县",
+        "county_code": "411626"
+      },
+      {
+        "county_name": "沈丘县",
+        "county_code": "411624"
+      },
+      {
+        "county_name": "太康县",
+        "county_code": "411627"
+      },
+      {
+        "county_name": "商水县",
+        "county_code": "411623"
+      },
+      {
+        "county_name": "郸城县",
+        "county_code": "411625"
+      },
+      {
+        "county_name": "新蔡县",
+        "county_code": "411729"
+      },
+      {
+        "county_name": "宜阳县",
+        "county_code": "410327"
+      },
+      {
+        "county_name": "滑县",
+        "county_code": "410526"
+      },
+      {
+        "county_name": "封丘县",
+        "county_code": "410727"
+      },
+      {
+        "county_name": "范县",
+        "county_code": "410926"
+      },
+      {
+        "county_name": "台前县",
+        "county_code": "410927"
+      },
+      {
+        "county_name": "社旗县",
+        "county_code": "411327"
+      },
+      {
+        "county_name": "桐柏县",
+        "county_code": "411330"
+      },
+      {
+        "county_name": "睢县",
+        "county_code": "411422"
+      },
+      {
+        "county_name": "虞城县",
+        "county_code": "411425"
+      },
+      {
+        "county_name": "上蔡县",
+        "county_code": "411722"
+      },
+      {
+        "county_name": "确山县",
+        "county_code": "411725"
+      },
+      {
+        "county_name": "平舆县",
+        "county_code": "411723"
+      }
+    ]
+  },
+  "高校专项计划": {
+    "province": "河南",
+    "counties": [
+      {
+        "county_name": "兰考县",
+        "county_code": "410225"
+      },
+      {
+        "county_name": "栾川县",
+        "county_code": "410324"
+      },
+      {
+        "county_name": "嵩县",
+        "county_code": "410325"
+      },
+      {
+        "county_name": "洛宁县",
+        "county_code": "410328"
+      },
+      {
+        "county_name": "汝阳县",
+        "county_code": "410326"
+      },
+      {
+        "county_name": "鲁山县",
+        "county_code": "410423"
+      },
+      {
+        "county_name": "卢氏县",
+        "county_code": "411224"
+      },
+      {
+        "county_name": "南召县",
+        "county_code": "411321"
+      },
+      {
+        "county_name": "镇平县",
+        "county_code": "411324"
+      },
+      {
+        "county_name": "内乡县",
+        "county_code": "411325"
+      },
+      {
+        "county_name": "淅川县",
+        "county_code": "411326"
+      },
+      {
+        "county_name": "民权县",
+        "county_code": "411421"
+      },
+      {
+        "county_name": "宁陵县",
+        "county_code": "411423"
+      },
+      {
+        "county_name": "柘城县",
+        "county_code": "411424"
+      },
+      {
+        "county_name": "光山县",
+        "county_code": "411522"
+      },
+      {
+        "county_name": "新县",
+        "county_code": "411523"
+      },
+      {
+        "county_name": "商城县",
+        "county_code": "411524"
+      },
+      {
+        "county_name": "固始县",
+        "county_code": "411525"
+      },
+      {
+        "county_name": "淮滨县",
+        "county_code": "411527"
+      },
+      {
+        "county_name": "潢川县",
+        "county_code": "411526"
+      },
+      {
+        "county_name": "淮阳县",
+        "county_code": "411626"
+      },
+      {
+        "county_name": "沈丘县",
+        "county_code": "411624"
+      },
+      {
+        "county_name": "太康县",
+        "county_code": "411627"
+      },
+      {
+        "county_name": "商水县",
+        "county_code": "411623"
+      },
+      {
+        "county_name": "郸城县",
+        "county_code": "411625"
+      },
+      {
+        "county_name": "新蔡县",
+        "county_code": "411729"
+      },
+      {
+        "county_name": "宜阳县",
+        "county_code": "410327"
+      },
+      {
+        "county_name": "滑县",
+        "county_code": "410526"
+      },
+      {
+        "county_name": "封丘县",
+        "county_code": "410727"
+      },
+      {
+        "county_name": "范县",
+        "county_code": "410926"
+      },
+      {
+        "county_name": "台前县",
+        "county_code": "410927"
+      },
+      {
+        "county_name": "社旗县",
+        "county_code": "411327"
+      },
+      {
+        "county_name": "桐柏县",
+        "county_code": "411330"
+      },
+      {
+        "county_name": "睢县",
+        "county_code": "411422"
+      },
+      {
+        "county_name": "虞城县",
+        "county_code": "411425"
+      },
+      {
+        "county_name": "上蔡县",
+        "county_code": "411722"
+      },
+      {
+        "county_name": "确山县",
+        "county_code": "411725"
+      },
+      {
+        "county_name": "平舆县",
+        "county_code": "411723"
+      },
+      {
+        "county_name": "伊川县",
+        "county_code": "410329"
+      },
+      {
+        "county_name": "叶县",
+        "county_code": "410422"
+      },
+      {
+        "county_name": "内黄县",
+        "county_code": "410527"
+      },
+      {
+        "county_name": "原阳县",
+        "county_code": "410725"
+      },
+      {
+        "county_name": "濮阳县",
+        "county_code": "410928"
+      },
+      {
+        "county_name": "舞阳县",
+        "county_code": "411121"
+      },
+      {
+        "county_name": "方城县",
+        "county_code": "411322"
+      },
+      {
+        "county_name": "夏邑县",
+        "county_code": "411426"
+      },
+      {
+        "county_name": "罗山县",
+        "county_code": "411521"
+      },
+      {
+        "county_name": "息县",
+        "county_code": "411528"
+      },
+      {
+        "county_name": "西华县",
+        "county_code": "411622"
+      },
+      {
+        "county_name": "扶沟县",
+        "county_code": "411621"
+      },
+      {
+        "county_name": "泌阳县",
+        "county_code": "411726"
+      },
+      {
+        "county_name": "正阳县",
+        "county_code": "411724"
+      },
+      {
+        "county_name": "汝南县",
+        "county_code": "411727"
+      }
+    ]
+  },
+  "地方专项计划": {
+    "province": "河南",
+    "scope": "全省农村地区",
+    "counties": []
+  }
+}
