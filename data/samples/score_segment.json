@@ -22,7 +22,7 @@
       "score_range": "709-750",
       "exam_system": "文理科",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_id": "SRC-GAOKAO-COMPASS",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
@@ -40,7 +40,7 @@
       "score_range": "510",
       "exam_system": "文理科",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_id": "SRC-GAOKAO-COMPASS",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
@@ -58,7 +58,7 @@
       "score_range": "395",
       "exam_system": "文理科",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_id": "SRC-GAOKAO-COMPASS",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
@@ -76,7 +76,7 @@
       "score_range": "671-750",
       "exam_system": "文理科",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_id": "SRC-GAOKAO-COMPASS",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
@@ -94,7 +94,7 @@
       "score_range": "710-750",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_id": "SRC-GAOKAO-COMPASS",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
@@ -112,7 +112,7 @@
       "score_range": "426",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_id": "SRC-GAOKAO-COMPASS",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
@@ -130,7 +130,7 @@
       "score_range": "686-750",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_id": "SRC-GAOKAO-COMPASS",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
@@ -148,7 +148,7 @@
       "score_range": "470",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_id": "SRC-GAOKAO-COMPASS",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
@@ -166,7 +166,7 @@
       "score_range": "681-750",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_id": "SRC-GAOKAO-COMPASS",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
@@ -184,7 +184,7 @@
       "score_range": "447",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_id": "SRC-GAOKAO-COMPASS",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
@@ -202,7 +202,7 @@
       "score_range": "665-750",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_id": "SRC-GAOKAO-COMPASS",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
@@ -220,7 +220,7 @@
       "score_range": "462",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_id": "SRC-GAOKAO-COMPASS",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
