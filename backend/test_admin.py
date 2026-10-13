@@ -160,7 +160,7 @@ def pathway_payload(**overrides) -> dict:
         "apply_time": "6 月",
         "description": "管理端新建途径测试。",
         "priority": "P2",
-        "data_status": "planned",
+        "data_status": "schema_only",
         "year": 2026,
         "source": {
             "source_name": "河南省教育考试院",

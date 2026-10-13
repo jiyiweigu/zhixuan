@@ -3,13 +3,16 @@
 契约唯一依据：docs/api-contract.md
 - 响应包：{code, message, data, trace_id}
 - 错误码：1001 参数错误 / 1002 未登录 / 1003 无权限 / 1006 用户名重复
+  / 1008 限流 / 1500 未捕获异常 / 3001 规则数据缺失 / 4001 来源不完整
 
-约定（两层，待与队长确认后补入 docs/api-contract.md）：
-- 业务错误统一返回 HTTP 200，错误由响应体中的 code 区分（1001/1002/1003/1006）。
+约定（两层，见 docs/api-contract.md「统一约定」）：
+- 业务错误统一返回 HTTP 200，错误由响应体中的 code 区分。
   原因见 frontend/src/api/index.ts —— 请求封装对非 2xx 直接抛错，
   只有 HTTP 200 时才会把响应体交给业务层处理。
 - HTTP 层错误（404 路由不存在、405 方法不允许等）保留原 HTTP 状态码，
   仅把响应体统一成同一形状；此时 code 直接沿用 HTTP 状态码。
+- 错误 `data` 默认为 ``None``；契约 8.4 的 3001 例外——它在 ``data`` 里带
+  ``data_status`` / ``missing_rule_sets``，由 ``BizError(data=...)`` 承载。
 """
 
 from __future__ import annotations
@@ -32,24 +35,29 @@ class BizCode:
     UNAUTHORIZED = 1002
     FORBIDDEN = 1003
     USERNAME_EXISTS = 1006
-    # 以下三项契约暂未定义，为本 PR 提出的补充，待队长确认后补入契约（见 PR 描述）：
-    # 1008 登录失败次数超过阈值（tasks.md 3.2），1500 未捕获的服务端异常
+    # 1008 登录失败次数超过阈值（任务 3.2）；1500 未捕获的服务端异常
     TOO_MANY_ATTEMPTS = 1008
     INTERNAL_ERROR = 1500
-    # 产品书 6.0.4 已定义：缺少来源信息，拒绝入库（管理端语料/规则维护，tasks.md 8.2、8.6）
+    # 产品书 6.0.4 / 契约统一约定：缺少来源信息，拒绝入库
     MISSING_SOURCE = 4001
-    # 产品书 6.0.4 / 6.2.6–6.2.9：资格规则数据缺失。
+    # 契约统一约定 / 8.4：报考规则数据缺失/未就绪。
     # 报考约束引擎在规则数据未入库时**必须**返回本码，绝不静默放行（8.5 实现纪律第 3 条）。
     RULE_MISSING = 3001
 
 
 class BizError(Exception):
-    """可预期的业务异常，由全局处理器转成统一响应包。"""
+    """可预期的业务异常，由全局处理器转成统一响应包。
 
-    def __init__(self, message: str, code: int = BizCode.PARAM_ERROR) -> None:
+    ``data`` 会原样放进响应体的 ``data`` 字段（契约 8.4 的 3001 用它说明缺失数据集）。
+    """
+
+    def __init__(
+        self, message: str, code: int = BizCode.PARAM_ERROR, data: Any = None
+    ) -> None:
         super().__init__(message)
         self.message = message
         self.code = code
+        self.data = data
 
 
 def new_trace_id() -> str:
@@ -63,13 +71,16 @@ def ok(data: Any = None, message: str = "success", code: int = BizCode.OK) -> di
 
 
 def fail(
-    message: str, code: int = BizCode.PARAM_ERROR, trace_id: str | None = None
+    message: str,
+    code: int = BizCode.PARAM_ERROR,
+    trace_id: str | None = None,
+    data: Any = None,
 ) -> dict[str, Any]:
-    """失败响应包，data 恒为 None。"""
+    """失败响应包。``data`` 默认 ``None``；契约 8.4 的 3001 用它带 ``missing_rule_sets``。"""
     return {
         "code": code,
         "message": message,
-        "data": None,
+        "data": data,
         "trace_id": trace_id or new_trace_id(),
     }
 
@@ -79,7 +90,10 @@ def register_exception_handlers(app: FastAPI) -> None:
 
     @app.exception_handler(BizError)
     async def _handle_biz_error(request: Request, exc: BizError) -> JSONResponse:
-        return JSONResponse(status_code=200, content=fail(exc.message, exc.code))
+        return JSONResponse(
+            status_code=200,
+            content=fail(exc.message, exc.code, data=getattr(exc, "data", None)),
+        )
 
     @app.exception_handler(RequestValidationError)
     async def _handle_validation_error(

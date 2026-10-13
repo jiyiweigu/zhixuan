@@ -116,20 +116,35 @@ EXPECTED_COLUMNS: dict[str, set[str]] = {
         "corrected_answer", "created_at", "reviewed_at",
     },
     "admin_user": {"id", "username", "password_hash", "role", "created_at"},
-    # 7.6 报考约束（v1.1 新增三张规则表，三表都必须带 year，见 7.6 与 app/models/constraints.py）
+    # 7.6 报考约束（v1.1 新增三张规则表，三表都必须带 year，见 7.6 与 app/models/constraints.py；
+    #      0007 起 province_exam_rule 收敛到契约 8.7 的 batch_code/exam_type 唯一键）
     "province_exam_rule": {
-        "id", "province", "year", "batch", "mode", "volunteer_count",
+        "id", "province_code", "province", "year", "batch_code", "batch", "exam_type",
+        "mode", "volunteer_count",
         "majors_per_group", "has_adjust", "admit_method", "ratio", "tie_rule",
         "mutex_groups", "collect_count", "source_id", "created_at", "updated_at",
     },
     "subject_requirement": {
-        "id", "province", "year", "batch", "school_id", "group_code", "major_id",
+        "id", "province_code", "province", "year", "batch", "school_id", "group_code", "major_id",
         "first_subject", "secondary_subjects", "logic", "source_id",
         "created_at", "updated_at",
     },
     "physical_restriction": {
         "id", "condition", "threshold", "major_category", "major_code", "level",
-        "detail", "province", "year", "source_id", "created_at", "updated_at",
+        "detail", "province_code", "province", "year", "source_id", "created_at", "updated_at",
+    },
+    # 契约 8.7 追加的三张逻辑表（0007 迁移）
+    "admission_requirement": {
+        "id", "province_code", "year", "school_id", "major_id", "requirement_type",
+        "requirement_value", "level", "detail", "source_id", "created_at", "updated_at",
+    },
+    "major_tuition": {
+        "id", "province_code", "year", "school_id", "major_id", "amount", "currency",
+        "period", "ownership", "note", "source_id", "created_at", "updated_at",
+    },
+    "rule_dataset_status": {
+        "id", "province_code", "year", "batch_code", "exam_type", "dataset",
+        "status", "note", "created_at", "updated_at",
     },
     # 7.3 考生档案（0001 建立，0006 按产品书 6.1.4 统一字段名并补齐 v1.1 的 11 个字段）
     "profiles": {
@@ -170,6 +185,10 @@ EXPECTED_INDEXES: dict[str, set[str]] = {
     "province_exam_rule": {"ix_province_exam_rule_lookup"},
     "subject_requirement": {"ix_subject_requirement_major", "ix_subject_requirement_school"},
     "physical_restriction": {"ix_physical_restriction_condition", "ix_physical_restriction_major"},
+    # 契约 8.7 三张逻辑表的唯一键索引
+    "admission_requirement": {"ix_admission_requirement_lookup"},
+    "major_tuition": {"ix_major_tuition_lookup"},
+    "rule_dataset_status": {"ix_rule_dataset_status_lookup"},
 }
 
 # 事实表的外键必须指向来源或上游实体
@@ -185,6 +204,9 @@ EXPECTED_FOREIGN_KEYS: dict[str, set[str]] = {
     "province_exam_rule": {"source.id"},
     "subject_requirement": {"major.id", "school.id", "source.id"},
     "physical_restriction": {"source.id"},
+    # 契约 8.7 三张逻辑表：规则事实表必须有来源外键；状态表无外键（描述"哪些已入库"）
+    "admission_requirement": {"school.id", "major.id", "source.id"},
+    "major_tuition": {"school.id", "major.id", "source.id"},
 }
 
 

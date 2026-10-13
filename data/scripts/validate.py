@@ -19,7 +19,7 @@
   # 校验整个目录
   python validate.py ../samples/ --kind school
 
-  # 严格模式（把 schema_only/pending 也视为错误）
+  # 严格模式（把 schema_only/partial/unavailable 也视为错误）
   python validate.py ../samples/ --strict
 
 退出码：
@@ -47,11 +47,24 @@ REQUIRED_SOURCE_FIELDS = ("source_name", "source_url", "year")
 # 允许出现三要素的替代形式：外键 source_id 可替代三要素
 SOURCE_FK_FIELD = "source_id"
 
-# 数据状态枚举
-DATA_STATUS_VERIFIED = "verified"
+# 数据状态枚举（契约四值，见 docs/api-contract.md §8.1）
+DATA_STATUS_AVAILABLE = "available"
+DATA_STATUS_PARTIAL = "partial"
 DATA_STATUS_SCHEMA_ONLY = "schema_only"
-DATA_STATUS_PENDING = "pending"
-VALID_DATA_STATUS = {DATA_STATUS_VERIFIED, DATA_STATUS_SCHEMA_ONLY, DATA_STATUS_PENDING}
+DATA_STATUS_UNAVAILABLE = "unavailable"
+VALID_DATA_STATUS = {
+    DATA_STATUS_AVAILABLE,
+    DATA_STATUS_PARTIAL,
+    DATA_STATUS_SCHEMA_ONLY,
+    DATA_STATUS_UNAVAILABLE,
+}
+
+# 非 available 状态：界面须如实标注；strict 模式下视为错误
+NON_AVAILABLE_DATA_STATUS = {
+    DATA_STATUS_SCHEMA_ONLY: "仅架构，界面须标注「规划中」",
+    DATA_STATUS_PARTIAL: "部分字段可用，界面须如实标注",
+    DATA_STATUS_UNAVAILABLE: "无匹配数据版本，界面须标注「不提供」",
+}
 
 # 优先级枚举
 VALID_PRIORITY = {"P0", "P1", "P2"}
@@ -260,13 +273,10 @@ def validate_record(rec: Dict[str, Any], kind: str, *, strict: bool = False,
     # 3. 枚举合法性
     errors.extend(check_enums(rec))
 
-    # 4. 数据状态语义提示
+    # 4. 数据状态语义提示（契约四值：available / partial / schema_only / unavailable）
     status = rec.get("data_status")
-    if status == DATA_STATUS_SCHEMA_ONLY:
-        msg = "`data_status=schema_only`（仅架构，界面须标注「规划中」）"
-        (errors if strict else warnings).append(msg)
-    elif status == DATA_STATUS_PENDING:
-        msg = "`data_status=pending`（数据待采集，界面须如实标注）"
+    if status in NON_AVAILABLE_DATA_STATUS:
+        msg = f"`data_status={status}`（{NON_AVAILABLE_DATA_STATUS[status]}）"
         (errors if strict else warnings).append(msg)
 
     return errors, warnings
@@ -429,7 +439,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     )
     parser.add_argument(
         "--strict", action="store_true",
-        help="严格模式：schema_only / pending 也视为错误",
+        help="严格模式：schema_only / partial / unavailable 也视为错误",
     )
     args = parser.parse_args(list(argv) if argv is not None else None)
 

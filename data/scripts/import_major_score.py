@@ -336,7 +336,7 @@ def import_one(province: str, year: int, path: Path, idx: SchoolIndex,
             "match_via": match_via,
             "exam_system": es,
             "confidence": "channel",
-            "data_status": "pending",
+            "data_status": "schema_only",
             "source_name": CHANNEL["source_name"],
             "source_url": "",
         })
@@ -368,7 +368,7 @@ def import_one(province: str, year: int, path: Path, idx: SchoolIndex,
         "min_score_missing": score_missing,
         "batch_dist": dict(Counter(x["batch"] for x in out)),
         "quality_flags": quality_flags,
-        "data_status": "pending",
+        "data_status": "schema_only",
     }
     return out, stats
 
@@ -419,7 +419,7 @@ def main() -> int:
                 "source_file": p.name, "imported_rows": 0,
                 "skipped": {"unusable_whole_file": 1},
                 "quality_flags": ["unusable"], "unusable_reason": bad,
-                "data_status": "pending",
+                "data_status": "unavailable",
             })
             continue
 
@@ -439,7 +439,7 @@ def main() -> int:
                 "batch_note": "★ 不得合并批次：本科一批/二批的批次线与投档序列不同。",
                 "subject_type_note": "老高考为文科/理科，新高考为物理类/历史类，不可跨制度比较。",
                 "admit_count_note": "admit_count 为实际录取数，≠ plan_count（招生计划数）。",
-                "data_status": "pending",
+                "data_status": "schema_only",
                 "verified_note": "渠道来源，未逐条对官方核实。核实通过后才可升 available。",
                 "quality_flags": st.get("quality_flags", []),
             },
