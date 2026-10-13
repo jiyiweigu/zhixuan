@@ -1,0 +1,35 @@
+[
+  {
+    "province": "江西",
+    "metric": "高考报名与考试",
+    "year": 2025,
+    "total_registered": 646300,
+    "actual_exam": 567100,
+    "pre_admitted": 79200,
+    "ordinary_count": 496300,
+    "sanxiao_count": 70800,
+    "source_name": "人民网江西频道（高考新闻发布会）",
+    "source_url": "https://jx.people.com.cn/n2/2025/0611/c186330-41255943.html",
+    "doc_type": "province_stat"
+  },
+  {
+    "province": "江西",
+    "metric": "高考报名与考试",
+    "year": 2024,
+    "total_registered": 642100,
+    "actual_exam": 552600,
+    "source_name": "人民网江西频道（高考新闻发布会）",
+    "source_url": "https://jx.people.com.cn/n2/2025/0611/c186330-41255943.html",
+    "doc_type": "province_stat"
+  },
+  {
+    "province": "江西",
+    "metric": "高考报名与考试",
+    "year": 2023,
+    "total_registered": 625700,
+    "actual_exam": 535700,
+    "source_name": "人民网江西频道（高考新闻发布会）",
+    "source_url": "https://jx.people.com.cn/n2/2025/0611/c186330-41255943.html",
+    "doc_type": "province_stat"
+  }
+]

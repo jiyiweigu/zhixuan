@@ -1,0 +1,24 @@
+[
+  {
+    "province": "江西",
+    "year": 2025,
+    "stage": "第一次集中填报",
+    "start_time": "6月26日9：00",
+    "end_time": "27日17：00",
+    "scope": "",
+    "source_name": "江西省教育考试院",
+    "source_url": "https://www.jxeea.cn/jxsjyksy/cjwd80/content/content_1937322656332894208.html",
+    "doc_type": "schedule"
+  },
+  {
+    "province": "江西",
+    "year": 2025,
+    "stage": "第二次集中填报",
+    "start_time": "6月30日9：00",
+    "end_time": "7月4日17：00",
+    "scope": "",
+    "source_name": "江西省教育考试院",
+    "source_url": "https://www.jxeea.cn/jxsjyksy/cjwd80/content/content_1937322656332894208.html",
+    "doc_type": "schedule"
+  }
+]

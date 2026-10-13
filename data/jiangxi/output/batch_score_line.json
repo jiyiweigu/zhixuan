@@ -1,0 +1,46 @@
+[
+  {
+    "province": "江西",
+    "batch": "本科批",
+    "subject_type": "历史类",
+    "score": 463,
+    "track": "普通类",
+    "source_name": "中国教育在线·掌上高考（转载江西省教育考试院）",
+    "source_url": "https://gaokao.eol.cn/jiang_xi/dongtai/202406/t20240626_2619478.shtml",
+    "year": 2024,
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "江西",
+    "batch": "本科批",
+    "subject_type": "物理类",
+    "score": 448,
+    "track": "普通类",
+    "source_name": "中国教育在线·掌上高考（转载江西省教育考试院）",
+    "source_url": "https://gaokao.eol.cn/jiang_xi/dongtai/202406/t20240626_2619478.shtml",
+    "year": 2024,
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "江西",
+    "batch": "特殊类型招生",
+    "subject_type": "历史类",
+    "score": 532,
+    "track": "普通类",
+    "source_name": "中国教育在线·掌上高考（转载江西省教育考试院）",
+    "source_url": "https://gaokao.eol.cn/jiang_xi/dongtai/202406/t20240626_2619478.shtml",
+    "year": 2024,
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "江西",
+    "batch": "特殊类型招生",
+    "subject_type": "物理类",
+    "score": 520,
+    "track": "普通类",
+    "source_name": "中国教育在线·掌上高考（转载江西省教育考试院）",
+    "source_url": "https://gaokao.eol.cn/jiang_xi/dongtai/202406/t20240626_2619478.shtml",
+    "year": 2024,
+    "doc_type": "batch_score_line"
+  }
+]

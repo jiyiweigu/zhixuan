@@ -1,0 +1,143 @@
+[
+  {
+    "pathway_name": "国家专项计划",
+    "province": "江西",
+    "rule_type": "户籍",
+    "rule_desc": "本人自高一开始至今具有同一实施县（市、区）户籍，并在当地完成普通高考报名",
+    "params": {
+      "household": "实施区域",
+      "household_same_county": true,
+      "from": "高一"
+    },
+    "source_name": "江西省教育厅（阳光高考平台转载）",
+    "source_url": "https://gaokao.chsi.com.cn/gkxx/zc/ss/202312/20231201/2293172455.html",
+    "year": 2024
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "江西",
+    "rule_type": "户籍",
+    "rule_desc": "本人与父亲或母亲或法定监护人具有同一实施县（市、区）户籍",
+    "params": {
+      "parent_same_county": true
+    },
+    "source_name": "江西省教育厅（阳光高考平台转载）",
+    "source_url": "https://gaokao.chsi.com.cn/gkxx/zc/ss/202312/20231201/2293172455.html",
+    "year": 2024
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "江西",
+    "rule_type": "学籍",
+    "rule_desc": "本人具有户籍地县（市、区）高中连续3年（6学期）学籍并实际就读",
+    "params": {
+      "enrollment_years": 3,
+      "actual_study": true
+    },
+    "source_name": "江西省教育厅（阳光高考平台转载）",
+    "source_url": "https://gaokao.chsi.com.cn/gkxx/zc/ss/202312/20231201/2293172455.html",
+    "year": 2024
+  },
+  {
+    "pathway_name": "地方专项计划",
+    "province": "江西",
+    "rule_type": "区域",
+    "rule_desc": "实施区域为江西省农村地区；本人自高一开始至今具有江西省农村户籍",
+    "params": {
+      "scope": "全省农村",
+      "household": "农村"
+    },
+    "source_name": "江西省教育厅（阳光高考平台转载）",
+    "source_url": "https://gaokao.chsi.com.cn/gkxx/zc/ss/202312/20231201/2293172455.html",
+    "year": 2024
+  },
+  {
+    "pathway_name": "地方专项计划",
+    "province": "江西",
+    "rule_type": "其他",
+    "rule_desc": "已在我省完成当年普通高考报名",
+    "params": {
+      "registered": true
+    },
+    "source_name": "江西省教育厅（阳光高考平台转载）",
+    "source_url": "https://gaokao.chsi.com.cn/gkxx/zc/ss/202312/20231201/2293172455.html",
+    "year": 2024
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "江西",
+    "rule_type": "户籍",
+    "rule_desc": "本人自高一开始至今具有同一实施县（市、区）农村户籍，并在当地完成当年普通高考报名",
+    "params": {
+      "household": "农村",
+      "household_same_county": true,
+      "from": "高一"
+    },
+    "source_name": "江西省教育厅（阳光高考平台转载）",
+    "source_url": "https://gaokao.chsi.com.cn/gkxx/zc/ss/202312/20231201/2293172455.html",
+    "year": 2024
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "江西",
+    "rule_type": "户籍",
+    "rule_desc": "本人与父亲或母亲或法定监护人具有同一实施县（市、区）农村户籍",
+    "params": {
+      "household": "农村",
+      "parent_same_county": true
+    },
+    "source_name": "江西省教育厅（阳光高考平台转载）",
+    "source_url": "https://gaokao.chsi.com.cn/gkxx/zc/ss/202312/20231201/2293172455.html",
+    "year": 2024
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "江西",
+    "rule_type": "学籍",
+    "rule_desc": "本人具有户籍地县（市、区）高中连续3年（6学期）学籍并实际就读",
+    "params": {
+      "enrollment_years": 3,
+      "actual_study": true
+    },
+    "source_name": "江西省教育厅（阳光高考平台转载）",
+    "source_url": "https://gaokao.chsi.com.cn/gkxx/zc/ss/202312/20231201/2293172455.html",
+    "year": 2024
+  },
+  {
+    "pathway_name": "苏区专项计划",
+    "province": "江西",
+    "rule_type": "区域",
+    "rule_desc": "在实施区域取得当年普通高考报名资格",
+    "params": {
+      "region": "54个原中央苏区振兴发展规划县"
+    },
+    "source_name": "江西省教育厅（阳光高考平台转载）",
+    "source_url": "https://www.srx.gov.cn/gxqjyj/ggzyr/202510/def39889aa9c4478a9c449047ec29e93.shtml",
+    "year": 2026
+  },
+  {
+    "pathway_name": "苏区专项计划",
+    "province": "江西",
+    "rule_type": "户籍",
+    "rule_desc": "本人自高一开始至今具有实施区域户籍",
+    "params": {
+      "household_same_region": true,
+      "from": "高一"
+    },
+    "source_name": "江西省教育厅（阳光高考平台转载）",
+    "source_url": "https://www.srx.gov.cn/gxqjyj/ggzyr/202510/def39889aa9c4478a9c449047ec29e93.shtml",
+    "year": 2026
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "江西",
+    "rule_type": "其他",
+    "rule_desc": "农村考生认定口径：户口所在地城乡分类代码3位村码首位数=2（如220/210/211），或原农业户口且未发生户籍迁移",
+    "params": {
+      "rural_rule": "城乡分类代码首位=2 或 原农业户口未迁移"
+    },
+    "source_name": "江西省教育厅（2026年普通高考报名办法）",
+    "source_url": "https://jyt.jiangxi.gov.cn/jxjyw/tzgg785/content/content_1976547792451313664.html",
+    "year": 2026
+  }
+]

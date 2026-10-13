@@ -1,0 +1,237 @@
+{
+  "generated_at": "2026-10-13T16:35:27",
+  "province": "江西",
+  "summary": {
+    "total_valid": 47641,
+    "total_rejected": 2233,
+    "doc_types": 15,
+    "checks_passed": 26,
+    "checks_total": 26,
+    "accuracy_rate": "100.0%"
+  },
+  "by_doc_type": {
+    "pathway_region": {
+      "valid": 137,
+      "rejected": 0
+    },
+    "pathway_eligibility": {
+      "valid": 11,
+      "rejected": 0
+    },
+    "pathway": {
+      "valid": 26,
+      "rejected": 0
+    },
+    "batch_score_line": {
+      "valid": 4,
+      "rejected": 0
+    },
+    "province_stat": {
+      "valid": 3,
+      "rejected": 0
+    },
+    "schedule": {
+      "valid": 2,
+      "rejected": 0
+    },
+    "score_segment": {
+      "valid": 1148,
+      "rejected": 0
+    },
+    "school": {
+      "valid": 119,
+      "rejected": 1
+    },
+    "school_major_score": {
+      "valid": 4843,
+      "rejected": 24
+    },
+    "group_admission": {
+      "valid": 10752,
+      "rejected": 1248
+    },
+    "subject_requirement": {
+      "valid": 7040,
+      "rejected": 960
+    },
+    "knowledge_doc": {
+      "valid": 7,
+      "rejected": 0
+    },
+    "supplement": {
+      "valid": 10279,
+      "rejected": 0
+    },
+    "school_plan": {
+      "valid": 10279,
+      "rejected": 0
+    },
+    "school_profile": {
+      "valid": 2991,
+      "rejected": 0
+    }
+  },
+  "checks": [
+    {
+      "item": "pathway_region 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "pathway_eligibility 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "pathway 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "batch_score_line 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "province_stat 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "schedule 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "score_segment 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "school 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "school_major_score 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "group_admission 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "subject_requirement 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "knowledge_doc 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "supplement 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "school_plan 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "school_profile 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "专项县名单口径（国家24/高校58/苏区54/地方全省）",
+      "required": "国家≥24, 高校≥58, 苏区≥54, 地方=1(全省meta)",
+      "actual": {
+        "国家专项计划": 24,
+        "高校专项计划": 58,
+        "苏区专项计划": 54,
+        "地方专项计划": 1
+      },
+      "pass": true
+    },
+    {
+      "item": "一分一段位次单调性",
+      "required": "分数降序→位次升序",
+      "actual": "通过",
+      "pass": true
+    },
+    {
+      "item": "批次线分数范围",
+      "required": "0-750",
+      "actual": "448-532",
+      "pass": true
+    },
+    {
+      "item": "途径字典数量",
+      "required": "26 类",
+      "actual": "26 类",
+      "pass": true
+    },
+    {
+      "item": "B6 投档线分数范围",
+      "required": "0-750",
+      "actual": "294-689",
+      "pass": true
+    },
+    {
+      "item": "B6 位次覆盖率",
+      "required": "≥50%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "B6 覆盖院校数",
+      "required": "≥500",
+      "actual": 1742,
+      "pass": true
+    },
+    {
+      "item": "B4 选科要求覆盖院校",
+      "required": "≥500",
+      "actual": 1097,
+      "pass": true
+    },
+    {
+      "item": "B8 985 院校数（eol口径含分校）",
+      "required": "45-55",
+      "actual": 50,
+      "pass": true
+    },
+    {
+      "item": "B8 211 院校数（eol口径含分校）",
+      "required": "125-140",
+      "actual": 132,
+      "pass": true
+    },
+    {
+      "item": "B7 征集志愿批次覆盖",
+      "required": "≥1 个批次",
+      "actual": "4 个（提前本科批,提前高职（专科）,本科批,高职(专科)批）",
+      "pass": true
+    }
+  ]
+}

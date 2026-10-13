@@ -1,0 +1,7 @@
+# 江西高考数据采集 · 依赖（Python 3.10+）
+httpx>=0.27          # HTTP 客户端（限速/重试/代理友好）
+beautifulsoup4>=4.12 # HTML 解析
+lxml>=5.0            # 高性能解析器（缺失时自动回退 html.parser）
+pdfplumber>=0.11     # PDF 表格抽取（省考试院部分文件为 PDF，可选）
+xlrd>=2.0            # B7 征集志愿 .xls（OLE2）附件解析（可选）
+openpyxl>=3.1        # .xlsx 附件解析（备用，可选）
