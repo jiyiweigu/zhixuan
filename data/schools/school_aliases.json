@@ -348,5 +348,31 @@
     "rescued_by_suffix_rows": 0,
     "still_unmatched_names": 56,
     "still_unmatched_rows": 1349
+  },
+  "stats_scope_note": "`stats` 为 build_school_aliases.py 自身扫描口径（仅统计其扫描到的本科批未匹配行），与「导入后实际未挂 school_id 的行数」口径不同；以 `stats_verified` 为准。",
+  "stats_verified": {
+    "verified_at": "2026-10-13",
+    "method": "取 git origin/develop 版 import_major_score.py 与当前版，在同一份 CSV 上各跑一次 import_one，逐行比对 school_id；覆盖 6 个文件 116,036 行",
+    "baseline_unmatched_rows": 3494,
+    "baseline_unmatched_rate": 0.0301,
+    "current_unmatched_rows": 1983,
+    "current_unmatched_rate": 0.0171,
+    "rescued_rows": 1511,
+    "rescued_by_via": {
+      "alias": 871,
+      "name": 396,
+      "code2name": 244
+    },
+    "changed_wrong_rows": 0,
+    "lost_rows": 0,
+    "match_via_label_fixed_rows": 23355,
+    "per_file_current_unmatched": {
+      "河南2022": 174,
+      "江西2022": 376,
+      "河南2024": 306,
+      "江西2024": 1010,
+      "河南2025": 59,
+      "江西2025": 58
+    }
   }
 }
