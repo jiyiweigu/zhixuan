@@ -3,7 +3,7 @@
 本层只做两件事：**从规则表读数据**（IO）+ **调用纯函数引擎**（app/engine/constraints.py）。
 判定逻辑一律在引擎里，服务层不做二次改判，避免"双份真相"（8.5 风险清单）。
 
-契约对齐（docs/api-contract.md v1.2）：
+契约对齐（docs/api-contract.md v1.3）：
 
 - 8.3 ``GET /api/provinces/{code}/rules``：入参是**两位省代码**（河南 ``41`` / 江西 ``36``），
   出参含 ``province_code`` / ``batch_code`` / ``exam_type`` / ``data_status`` / 嵌套 ``rule`` /

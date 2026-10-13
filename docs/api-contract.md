@@ -1,4 +1,4 @@
-# 智选志愿 API Contract v1.2
+# 智选志愿 API Contract v1.3
 
 > **本文件是前后端与数据库的唯一 DTO 基线。** 契约、产品书、Mock 三者冲突时以本文件为准，
 > 并回头修正产品书与 Mock。字段名一律 `snake_case`。
@@ -7,6 +7,12 @@
 > ② 6.1 节由「补充说明」改为**逐条可核对的接口表**，与后端实际路由一一对应；
 > ③ 新增「路径对照表」附录；④ 统一 `data_status` / `pathway_id` / `batch` /
 > `exam_type` 四处跨层词表；⑤ 明确档案可空项一律用 `null`。
+>
+> **v1.3 变更要点（相对 v1.2）**：`batch_code` 取值由带省份前缀的示例 `HE-UG`
+> **更正为不带省份前缀的 `undergraduate_regular`**，并补入完整对照表 —— 后端
+> （`app/models/constants.py`）与数据侧（`data/dictionaries/province-exam-rule.json`）
+> 已统一为该口径，契约向二者对齐。原示例与 8.3 节自身「各省叫法经 `batch_code`
+> 归一后不得再区分」的要求自相矛盾（带前缀会把河南、江西拆成两个键），故予以更正。
 
 ## 统一约定
 
@@ -35,7 +41,7 @@
 | `data_status` | `available` / `partial` / `schema_only` / `unavailable` | 数据完备度。**禁止**使用 `verified` / `pending` / `mock` 等其它写法；数据工程内部的中间状态必须在此映射后才能出接口。 |
 | `pathway_id` | **字符串 slug**（如 `national-plan`、`regular-batch`） | 与 `data/dictionaries/pathways-26.json` 的 `id` 同源。契约 v1.1 曾在第 4 节写作 `number`，v1.2 统一为 `string`。 |
 | `batch` | 展示用批次名，首期为 `本科批` | 见第 8.3、8.7 节。 |
-| `batch_code` | 机器键（如 `HE-UG`） | 规则表与导入以 `batch_code` 作**唯一键**，`batch` 仅作展示；同一批次的历史别名不得当作不同批次。 |
+| `batch_code` | 机器键（如 `undergraduate_regular`） | 规则表与导入以 `batch_code` 作**唯一键**，`batch` 仅作展示；同一批次的历史别名不得当作不同批次。**不带省份前缀**，取值与别名对照见第 8.3 节。 |
 | `exam_type` | `普通` / `艺术` / `体育` | 数据源中的 `category_group` 是**原始列名**，导入时必须映射为 `exam_type`。 |
 | 可空档案项 | `null` | `null` = 未提供。服务端**必须**同时接受历史入参 `""` / `"未填"` / `"未知"` 并收敛为 `null`；**禁止**把三态字段的哨兵字符串原样出接口。 |
 
@@ -379,7 +385,7 @@ Auth: no。`code` 为两位省级行政区划代码（河南 `41`、江西 `36`�
   "province": "河南",
   "year": 2026,
   "batch": "本科批",
-  "batch_code": "HE-UG",
+  "batch_code": "undergraduate_regular",
   "exam_type": "普通",
   "data_status": "available",
   "rule": {
@@ -402,6 +408,21 @@ Auth: no。`code` 为两位省级行政区划代码（河南 `41`、江西 `36`�
 
 > `batch` 是**展示名**，`batch_code` 是**机器键**。规则表与导入以 `batch_code` 作唯一键，
 > 避免同一批次因各省叫法不同（如 `普通本科批` / `本科批次`）被当成不同批次。
+
+**`batch_code` 取值与别名对照（v1.3 新增；后端 `app/models/constants.py` 与数据侧
+`data/dictionaries/province-exam-rule.json` 已统一，契约对齐二者）**：
+
+| `batch_code`（机器键，唯一键成分） | 首期 `batch`（展示名） | 归一前的展示别名（导入时映射到左侧，**不得当成不同批次**） |
+|---|---|---|
+| `undergraduate_regular` | `本科批` | `普通本科批`（河南）、`本科批次`（江西） |
+| `undergraduate_early` | `提前批` | `普通本科提前批` |
+| `undergraduate_art_sport` | `艺术类/体育类本科批次` | — |
+| `vocational_regular` | `高职（专科）批` | `高职（专科）批次` |
+
+> **`batch_code` 不含省份前缀。** 省份维度由 `province_exam_rule` 主键里的 `province_code`
+> 承载；若把省份编进 `batch_code`（如 `HE-UG` / `JX-UG`），同一次「本科批」会被拆成两个键，
+> 与本节「归一后不得再区分」的要求相悖。契约 v1.2 曾用 `HE-UG` 作示例，v1.3 已更正。
+> 未登记的展示名不得静默落入默认值，须由数据侧补登后重新导入。
 
 ### 8.4 `POST /api/eligibility/check`
 
@@ -526,7 +547,7 @@ Auth: no。`province` 使用省级行政区划代码，`year` 必填。返回该
 | `GET/PUT /api/admin/rule-dataset-status` | 查询/更新省份、年份、批次、考试类型下各规则集的 `data_status` 与说明 |
 | `POST /api/admin/rule-datasets/import` | 数据成员批量导入 JSON 规则项，单次最多 500 条；全批事务写入，任一项校验失败整批回滚，响应返回 `dataset`、`created`、`updated`、`rejected`、`errors[]` |
 
-批量导入请求形状：`{ "dataset": "subject_requirement", "province_code": "41", "year": 2026, "batch_code": "HE-UG", "exam_type": "普通", "items": [...] }`。`dataset` 只能取 `province_exam_rule | subject_requirement | physical_restriction | admission_requirement | major_tuition`；每个 item 应符合该逻辑表字段。成功导入后，后端重新计算/更新对应 `rule_dataset_status`；只有必要规则覆盖完整且来源有效时，状态才能置为 `available`。导入接口不接受来源缺失记录，不接受演示来源 `example.invalid`。
+批量导入请求形状：`{ "dataset": "subject_requirement", "province_code": "41", "year": 2026, "batch_code": "undergraduate_regular", "exam_type": "普通", "items": [...] }`。`dataset` 只能取 `province_exam_rule | subject_requirement | physical_restriction | admission_requirement | major_tuition`；每个 item 应符合该逻辑表字段。成功导入后，后端重新计算/更新对应 `rule_dataset_status`；只有必要规则覆盖完整且来源有效时，状态才能置为 `available`。导入接口不接受来源缺失记录，不接受演示来源 `example.invalid`。
 
 ### 8.9 后端与数据库交付检查点
 

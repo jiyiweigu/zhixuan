@@ -1,4 +1,4 @@
-// 统一 Mock：字段形状必须与 docs/api-contract.md v1.2 一致。
+// 统一 Mock：字段形状必须与 docs/api-contract.md v1.3 一致。
 // 关闭 Mock（VITE_USE_MOCK=false）后页面取数不应变形。
 const cite={source_name:'演示数据（非官方）',source_url:'https://example.invalid/mock',year:2026,snippet:'仅用于前端交互演示，不代表政策或招生事实。'}
 const now='2026-10-12T09:00:00+08:00'
