@@ -188,10 +188,12 @@ class SchoolIndex:
     （如 `江西水利电力大学(原南昌工程学院)` → 核心名 `江西水利电力大学`）。
     """
 
-    def __init__(self, path: Path):
+    def __init__(self, path: Path, exclude=None):
         data = json.loads(path.read_text(encoding="utf-8"))
         self.records = data.get("records", [])
         self.unmatched = data.get("unmatched", [])
+        if exclude is not None:
+            self.records = [r for r in self.records if not exclude(r)]
         self.by_henan_code: dict[str, int] = {}
         self.by_name: dict[str, int] = {}
         self.by_norm_name: dict[str, int] = {}
@@ -234,19 +236,44 @@ class SchoolIndex:
 
 
 class AliasIndex:
-    """院校别名表（`school_aliases.json`）：旧名 → 现名。"""
+    """院校别名表（`school_aliases.json`）：旧名 → 现名。
+
+    另合并加载 `school_fact_supplement.json` 的 **名称修复表**（`name_repair`）——
+    即 N21 从事实数据中清理出的「源污染名 / 脏名 / 结构性改名旧名 → 正名」映射，
+    使所有导入与聚合脚本的名称匹配链**自动受益**（无需各自打补丁）。
+    """
 
     def __init__(self, path: Path):
         self.aliases: dict[str, str] = {}
         self.strip_patterns: list[str] = []
+        self.repairs: dict[str, str] = {}
         if path.exists():
             d = json.loads(path.read_text(encoding="utf-8"))
             self.aliases = d.get("aliases", {})
             self.strip_patterns = d.get("strip_suffix_patterns", [])
+        rp = path.parent / "school_fact_supplement.json"
+        if rp.exists():
+            self.repairs = json.loads(rp.read_text(encoding="utf-8")).get("name_repair", {})
 
     def resolve(self, name: str) -> str | None:
-        """返回该旧名对应的现名；无别名则 None。"""
-        return self.aliases.get((name or "").strip())
+        """返回该旧名/脏名对应的正名；无映射则 None。
+
+        查询顺序：原名 → 原名(去尾部括号) → 别名表 → 修复表。
+        """
+        n = (name or "").strip()
+        if not n:
+            return None
+        if n in self.aliases:
+            return self.aliases[n]
+        if n in self.repairs:
+            return self.repairs[n]
+        c = core_name(n)
+        if c != n:
+            if c in self.aliases:
+                return self.aliases[c]
+            if c in self.repairs:
+                return self.repairs[c]
+        return None
 
 
 # ─────────────────────────────────────────────────────────
@@ -394,7 +421,7 @@ def import_one(province: str, year: int, path: Path, idx: SchoolIndex, alias: Al
             "match_via": match_via,
             "exam_system": es,
             "confidence": "channel",
-            "data_status": "pending",
+            "data_status": "schema_only",
             "source_name": CHANNEL["source_name"],
             "source_url": "",
         })
@@ -426,7 +453,7 @@ def import_one(province: str, year: int, path: Path, idx: SchoolIndex, alias: Al
         "min_score_missing": score_missing,
         "batch_dist": dict(Counter(x["batch"] for x in out)),
         "quality_flags": quality_flags,
-        "data_status": "pending",
+        "data_status": "schema_only",
     }
     return out, stats
 
@@ -480,7 +507,7 @@ def main() -> int:
                 "source_file": p.name, "imported_rows": 0,
                 "skipped": {"unusable_whole_file": 1},
                 "quality_flags": ["unusable"], "unusable_reason": bad,
-                "data_status": "pending",
+                "data_status": "schema_only",
             })
             continue
 
@@ -500,7 +527,7 @@ def main() -> int:
                 "batch_note": "★ 不得合并批次：本科一批/二批的批次线与投档序列不同。",
                 "subject_type_note": "老高考为文科/理科，新高考为物理类/历史类，不可跨制度比较。",
                 "admit_count_note": "admit_count 为实际录取数，≠ plan_count（招生计划数）。",
-                "data_status": "pending",
+                "data_status": "schema_only",
                 "verified_note": "渠道来源，未逐条对官方核实。核实通过后才可升 available。",
                 "quality_flags": st.get("quality_flags", []),
             },
