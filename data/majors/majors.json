@@ -27,7 +27,7 @@
     "doc_no": "教高函〔2025〕3 号",
     "issued": "2025-04-01",
     "published": "2025-04-22",
-    "data_status": "verified",
+    "data_status": "available",
     "data_status_note": "该文件为教育部正式发布文本的 PDF 原件解析，非渠道流转数据；代码/名称逐条来自 PDF 正文，可回源核对。",
     "parser": "data/scripts/parse_major_catalog.py",
     "warnings": []
