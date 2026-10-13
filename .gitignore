@@ -48,6 +48,10 @@ data/staged/
 data/**/.cache/
 data/**/.cache_moe/
 data/**/.cache_srk/
+data/**/.cache_site/
+
+# ③ 诊断产物（只读排查用，可重跑，不入库）
+data/**/*_diag.json
 
 # 向量与数据库导出
 *.sql.gz

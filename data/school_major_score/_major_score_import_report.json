@@ -38,7 +38,7 @@
         "本科二批": 8536
       },
       "quality_flags": [],
-      "data_status": "pending",
+      "data_status": "schema_only",
       "file": "data\\school_major_score\\school_major_score_2022_河南.json"
     },
     {
@@ -62,7 +62,7 @@
         "本科二批": 10626
       },
       "quality_flags": [],
-      "data_status": "pending",
+      "data_status": "schema_only",
       "file": "data\\school_major_score\\school_major_score_2022_江西.json"
     },
     {
@@ -78,7 +78,7 @@
         "unusable"
       ],
       "unusable_reason": "university_code 与 university_name 整列全空，无法定位院校",
-      "data_status": "pending"
+      "data_status": "schema_only"
     },
     {
       "province": "江西",
@@ -93,7 +93,7 @@
         "unusable"
       ],
       "unusable_reason": "min_score 与 min_rank 整列全空（31997/31997），无分数无位次",
-      "data_status": "pending"
+      "data_status": "schema_only"
     },
     {
       "province": "河南",
@@ -117,7 +117,7 @@
       "quality_flags": [
         "subject_type_missing"
       ],
-      "data_status": "pending",
+      "data_status": "schema_only",
       "file": "data\\school_major_score\\school_major_score_2024_河南.json"
     },
     {
@@ -141,7 +141,7 @@
       "quality_flags": [
         "subject_type_missing"
       ],
-      "data_status": "pending",
+      "data_status": "schema_only",
       "file": "data\\school_major_score\\school_major_score_2024_江西.json"
     },
     {
@@ -165,7 +165,7 @@
         "本科批": 13934
       },
       "quality_flags": [],
-      "data_status": "pending",
+      "data_status": "schema_only",
       "file": "data\\school_major_score\\school_major_score_2025_河南.json"
     },
     {
@@ -189,7 +189,7 @@
         "本科批": 9929
       },
       "quality_flags": [],
-      "data_status": "pending",
+      "data_status": "schema_only",
       "file": "data\\school_major_score\\school_major_score_2025_江西.json"
     }
   ]
