@@ -1,0 +1,126 @@
+{
+  "version": "2026.1",
+  "note": "志愿方案风险预警规则（tasks.md 6.5）。声明式定义，引擎按 check 类型解释执行；每条风险提示必须携带来源（design.md：无来源结论不得展示）。",
+  "rules": [
+    {
+      "code": "NO_BAO",
+      "check": "tier_empty",
+      "params": {"tier": "保"},
+      "level": "high",
+      "title": "缺少保底志愿",
+      "detail": "方案中没有『保』档志愿，一旦前方志愿全部未命中，存在滑档风险。",
+      "remedy": "在方案末尾补充至少 2 个录取分明显低于本人成绩的保底志愿。",
+      "source_name": "教育部阳光高考信息平台（志愿填报风险提示）",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2026
+    },
+    {
+      "code": "NO_CHONG",
+      "check": "tier_empty",
+      "params": {"tier": "冲"},
+      "level": "low",
+      "title": "缺少冲刺志愿",
+      "detail": "方案中没有『冲』档志愿，分数利用偏保守，可能错失更好的院校机会。",
+      "remedy": "如愿意承担一定风险，可在方案前部补充 2~4 个冲刺志愿。",
+      "source_name": "教育部阳光高考信息平台（志愿填报风险提示）",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2026
+    },
+    {
+      "code": "NO_WEN",
+      "check": "tier_empty",
+      "params": {"tier": "稳"},
+      "level": "medium",
+      "title": "缺少稳妥志愿",
+      "detail": "方案中没有『稳』档志愿，方案将在冲刺与保底之间出现断层。",
+      "remedy": "补充录取分与本人成绩相当的志愿作为方案主体。",
+      "source_name": "教育部阳光高考信息平台（志愿填报风险提示）",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2026
+    },
+    {
+      "code": "BAO_TOO_FEW",
+      "check": "tier_count_below",
+      "params": {"tier": "保", "count": 2},
+      "level": "medium",
+      "title": "保底志愿数量不足",
+      "detail": "『保』档志愿少于 2 个，兜底能力偏弱。",
+      "remedy": "建议将『保』档补充至 2 个以上。",
+      "source_name": "教育部阳光高考信息平台（志愿填报风险提示）",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2026
+    },
+    {
+      "code": "TIER_UNBALANCED",
+      "check": "tier_ratio_imbalanced",
+      "params": {"dominant_ratio": 0.7},
+      "level": "medium",
+      "title": "档位分布失衡",
+      "detail": "方案过度集中于单一档位，梯度不合理，抗风险能力弱。",
+      "remedy": "在各档位之间均衡分配志愿数量，避免集中填报。",
+      "source_name": "教育部阳光高考信息平台（志愿填报风险提示）",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2026
+    },
+    {
+      "code": "GRADIENT_TOO_SMALL",
+      "check": "gradient_too_small",
+      "params": {"min_delta": 2},
+      "level": "medium",
+      "title": "志愿梯度不足",
+      "detail": "相邻志愿之间的录取分差过小，容易同时命中或同时失效，未形成有效梯度。",
+      "remedy": "拉开相邻志愿的分差，使各志愿形成由高到低的合理梯度。",
+      "source_name": "教育部阳光高考信息平台（志愿填报梯度设置指导）",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2026
+    },
+    {
+      "code": "SUBJECT_REQUIREMENT",
+      "check": "subject_requirement_unmet",
+      "params": {},
+      "level": "high",
+      "title": "选科要求不满足",
+      "detail": "所选专业对选考科目有额外要求，本人科类不满足，投档后存在退档风险。",
+      "remedy": "删除不满足选科要求的专业，或改选科类要求相符的专业。",
+      "source_name": "教育部（普通高校招生选考科目要求指引）",
+      "source_url": "https://www.moe.gov.cn/",
+      "year": 2026
+    },
+    {
+      "code": "ALL_CHONG",
+      "check": "all_in_tier",
+      "params": {"tier": "冲"},
+      "level": "high",
+      "title": "全部为冲刺志愿",
+      "detail": "方案中所有志愿均属『冲』档，缺少稳固与保底，落榜风险极高。",
+      "remedy": "必须补充『稳』与『保』档志愿。",
+      "source_name": "教育部阳光高考信息平台（志愿填报风险提示）",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2026
+    },
+    {
+      "code": "NEAR_BATCH_LINE",
+      "check": "near_batch_line",
+      "params": {"margin": 10},
+      "level": "medium",
+      "title": "成绩接近批次控制线",
+      "detail": "本人成绩接近批次控制线，可选择的院校范围较窄，需重点关注保底志愿。",
+      "remedy": "优先保证保底志愿的数量与安全垫，必要时考虑下一批次院校。",
+      "source_name": "教育部阳光高考信息平台（志愿填报风险提示）",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2026
+    },
+    {
+      "code": "NO_MAJOR_ADJUST",
+      "check": "major_adjust_refused",
+      "params": {},
+      "level": "medium",
+      "title": "不服从专业调剂",
+      "detail": "选择不服从专业调剂时，若所填专业均未录取，存在被退档的风险。",
+      "remedy": "除非对专业有明确不可妥协的要求，建议服从调剂以降低退档风险。",
+      "source_name": "教育部阳光高考信息平台（志愿填报风险提示）",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2026
+    }
+  ]
+}

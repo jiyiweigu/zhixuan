@@ -1,0 +1,61 @@
+{
+  "version": "2026.1",
+  "note": "冲—稳—保档位定义（tasks.md 6.3）。档位以 score_gap = 考生分数 - 院校专业上一年度最低录取分 界定；待一分一段数据入库（tasks.md 2.2）后升级为位次法。本阈值属志愿填报通行方法论，非官方硬性规定。",
+  "gap_formula": "score_gap = 考生分数 - 上一年度最低录取分",
+  "strategies": [
+    {
+      "id": "chong",
+      "label": "冲",
+      "min_gap": -15,
+      "max_gap": -1,
+      "description": "录取分略高于本人成绩，有一定冲刺空间，但失效概率高，必须依赖靠后的稳、保志愿兜底。",
+      "advice": "建议 2~4 个，且不得作为方案最后几个志愿。",
+      "source_name": "教育部阳光高考信息平台（志愿填报梯度设置指导）",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2026
+    },
+    {
+      "id": "wen",
+      "label": "稳",
+      "min_gap": 0,
+      "max_gap": 10,
+      "description": "录取分与本人成绩相当，是方案主体，命中概率较高。",
+      "advice": "建议占方案主体，数量最多。",
+      "source_name": "教育部阳光高考信息平台（志愿填报梯度设置指导）",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2026
+    },
+    {
+      "id": "bao",
+      "label": "保",
+      "min_gap": 11,
+      "max_gap": 30,
+      "description": "录取分明显低于本人成绩，用于兜底，防止滑档。",
+      "advice": "建议不少于 2 个，且必须排在方案末尾。",
+      "source_name": "教育部阳光高考信息平台（志愿填报梯度设置指导）",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2026
+    }
+  ],
+  "out_of_range": {
+    "too_high": "录取分高出本人成绩 15 分以上，超出冲档范围，命中概率过低，未纳入方案。",
+    "too_low": "录取分低于本人成绩 30 分以上，分数利用不充分，未纳入方案。"
+  },
+  "plan_profiles": {
+    "冲": {
+      "label": "冲",
+      "quota": {"冲": 4, "稳": 3, "保": 2},
+      "description": "以冲刺为主，适合愿意承担一定风险、且明确已有保底打算的考生。"
+    },
+    "稳": {
+      "label": "稳",
+      "quota": {"冲": 2, "稳": 4, "保": 3},
+      "description": "梯度均衡，以稳妥为主，适合多数考生。"
+    },
+    "保": {
+      "label": "保",
+      "quota": {"冲": 2, "稳": 3, "保": 4},
+      "description": "以保底为主，适合分数优势不明显、或对院校层次要求相对宽松的考生。"
+    }
+  }
+}

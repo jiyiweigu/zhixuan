@@ -1,45 +1,37 @@
 ## 1. 基础工程与路由
 
-- [x] 1.1 按产品书路由表建立用户端 `/`、`/login`、`/register`、`/profile`、`/eligibility`、`/pathways`、`/pathways/:id`、`/qa`、`/plan`、`/schools`、`/schools/:id`、`/majors`、`/majors/:id`、`/compare`、`/favorites`。
-- [x] 1.2 建立 `/admin/login`、`/admin/docs`、`/admin/index`、`/admin/review`、`/admin/pathways`、`/admin/stats` 路由及管理端布局。
-- [x] 1.3 增加 auth/profile/qa/plan/dict Pinia stores 与用户/管理员路由守卫。
-- [x] 1.4 完成用户端/管理端导航、页脚、响应式断点和 Editorial 设计变量。
+- [x] 1.1 建立用户端核心路由骨架
+- [x] 1.2 建立管理端路由与布局骨架
+- [x] 1.3 建立基础 stores 与路由守卫骨架
+- [x] 1.4 建立 Editorial 视觉变量与响应式基础
 
 ## 2. 公共组件
 
-- [x] 2.1 实现 DisclaimerBar、SourceCard、CitationList、ConfidenceBadge。
-- [x] 2.2 实现 EligibilityList、TierCard、StrategyTabs、SourceTag、DataStatusTag、LoadingSkeleton、EmptyState。
-- [x] 2.3 为公共组件补齐 TypeScript props 与无引用保护。
+- [x] 2.1 建立来源、引用、置信度、免责声明等基础组件
+- [x] 2.2 建立资格、方案、状态、加载和空状态组件骨架
+- [ ] 2.3 补齐真实业务引用、错误状态和契约级 props 验证
 
 ## 3. 用户端页面
 
-- [x] 3.1 实现首页、登录、注册和账号状态恢复。
-- [x] 3.2 实现考生档案表单、校验、保存和空态。
-- [x] 3.3 实现途径列表/详情与资格自检、路径筛选、结论依据展开和游客流程。
-- [x] 3.4 实现问答多轮会话、`session_id`、引用展开、high/medium/low 置信度、`needs_review`、`degraded` 和历史列表。
-- [x] 3.5 实现 `/api/recommend`、`/api/plan/generate`、风险核查、冲稳保分组、策略切换、方案 CRUD 和位次/来源年份展示。
-- [x] 3.6 实现院校/专业多条件检索与分页、院校详情/画像/生活信息、专业详情、最多 5 校对比和来源折叠规则。
-- [x] 3.7 实现院校对比、收藏和问答历史页面。
-- [x] 3.8 实现 dict 状态缓存、问答会话和 session_id 展示。
+- [x] 3.1 首页、登录、注册和账号状态恢复骨架
+- [ ] 3.2 完成考生档案两段式表单、字段校验、保存、空态和完成度
+- [ ] 3.3 完成路径/资格自检的真实 API 形状、专业适配和依据展开
+- [ ] 3.4 完成问答多轮、引用、置信度、降级和历史闭环
+- [ ] 3.5 完成方案生成、风险体检、冲稳保、策略切换和方案 CRUD
+- [ ] 3.6 完成院校/专业检索、详情、画像、对比和来源折叠规则
+- [ ] 3.7 完成对比、收藏和问答历史的真实交互
+- [ ] 3.8 完成跨页状态缓存失效与真实接口联调
 
 ## 4. 管理端页面
 
-- [x] 4.1 实现管理端登录和布局导航。
-- [x] 4.2 实现语料筛选/上传/删除、索引重建/进度、审核任务列表/详情/审核动作、途径及规则维护、区域列表和统计页面。
-- [x] 4.3 为管理端补齐表格、筛选、分页、空态和无权限状态。
+- [x] 4.1 管理端登录和布局导航骨架
+- [ ] 4.2 完成语料、索引、审核、途径和规则维护的真实接口交互
+- [ ] 4.3 补齐管理端表格、筛选、分页、空态和无权限状态
 
 ## 5. API、Mock 与质量
 
-- [x] 5.1 将 API 封装覆盖产品书第 6 章中用户、档案、收藏、方案、路径、问答、推荐、风险、一分一段、院校、专业和管理端接口，并同步 snake_case 类型和 Mock。
-- [x] 5.2 为每个页面接入 success/loading/empty/error Mock。
-- [x] 5.3 完成 `npm run typecheck`、`npm run build` 和路由 smoke check。
-- [x] 5.4 按核心链路完成登录→档案→资格→问答→方案→院校演示验收。
-- [x] 5.5 检查移动端、免责声明、引用覆盖和演示数据标记。
-
-
-
-
-
-
-
-
+- [x] 5.1 API 层路径已按 API Contract v1.2 对齐（附录 A），并由 `backend/test_alignment.py` 自动断言
+- [ ] 5.2 页面的 payload / 响应形状仍按旧 Mock 书写，需按契约 v1.2 改写（如 `recommend` 的 `tiers` 已改为各档数量、`schools` 已改为分页包）
+- [x] 5.3 初步通过 typecheck/build；待业务改造后重新回归
+- [ ] 5.4 完成核心链路端到端验收（关掉 Mock 跑通：登录→档案→资格→问答→方案→院校）
+- [ ] 5.5 完成移动端、免责声明、引用覆盖和演示数据标记复核

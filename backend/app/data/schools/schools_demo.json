@@ -1,0 +1,446 @@
+{
+  "_note": "院校/专业演示数据集（非官方）。tasks.md 2.5 由 ③ 号采集真实数据入库后，本文件只作本地开发与测试的种子，不再作为线上来源。",
+  "data_status": "演示数据（非官方）",
+  "sources": [
+    {
+      "key": "hn_exam_2025",
+      "source_name": "河南省教育考试院（演示数据）",
+      "source_url": "https://example.invalid/hn/exam-2025",
+      "year": 2025,
+      "source_type": "official"
+    },
+    {
+      "key": "zzu_admission_2025",
+      "source_name": "郑州大学本科招生网（演示数据）",
+      "source_url": "https://example.invalid/zzu/admission-2025",
+      "year": 2025,
+      "source_type": "school"
+    },
+    {
+      "key": "henu_admission_2025",
+      "source_name": "河南大学招生信息网（演示数据）",
+      "source_url": "https://example.invalid/henu/admission-2025",
+      "year": 2025,
+      "source_type": "school"
+    },
+    {
+      "key": "ncwu_admission_2025",
+      "source_name": "华北水利水电大学招生网（演示数据）",
+      "source_url": "https://example.invalid/ncwu/admission-2025",
+      "year": 2025,
+      "source_type": "school"
+    }
+  ],
+  "schools": [
+    {
+      "key": "zzu",
+      "name": "郑州大学",
+      "code": "10459",
+      "province": "河南",
+      "city": "郑州",
+      "level": "本科",
+      "type": "综合",
+      "ownership": "公办",
+      "website": "https://www.zzu.edu.cn",
+      "intro": "国家「双一流」建设高校、「211 工程」高校，河南省人民政府与教育部共建。"
+    },
+    {
+      "key": "henu",
+      "name": "河南大学",
+      "code": "10475",
+      "province": "河南",
+      "city": "开封",
+      "level": "本科",
+      "type": "综合",
+      "ownership": "公办",
+      "website": "https://www.henu.edu.cn",
+      "intro": "国家「双一流」建设高校，创办于 1912 年，校区分布于开封与郑州。"
+    },
+    {
+      "key": "ncwu",
+      "name": "华北水利水电大学",
+      "code": "10078",
+      "province": "河南",
+      "city": "郑州",
+      "level": "本科",
+      "type": "理工",
+      "ownership": "公办",
+      "website": "https://www.ncwu.edu.cn",
+      "intro": "以水利为特色的多科性大学，水利部与河南省共建。"
+    },
+    {
+      "key": "haut",
+      "name": "河南工业大学",
+      "code": "10463",
+      "province": "河南",
+      "city": "郑州",
+      "level": "本科",
+      "type": "理工",
+      "ownership": "公办",
+      "website": "https://www.haut.edu.cn",
+      "intro": "以粮油食品为特色的多科性大学。"
+    },
+    {
+      "key": "zzuli",
+      "name": "郑州轻工业大学",
+      "code": "10462",
+      "province": "河南",
+      "city": "郑州",
+      "level": "本科",
+      "type": "理工",
+      "ownership": "公办",
+      "website": "https://www.zzuli.edu.cn",
+      "intro": "以轻工、食品、设计为特色的省属重点建设高校。"
+    },
+    {
+      "key": "hust",
+      "name": "华中科技大学",
+      "code": "10487",
+      "province": "湖北",
+      "city": "武汉",
+      "level": "本科",
+      "type": "综合",
+      "ownership": "公办",
+      "website": "https://www.hust.edu.cn",
+      "intro": "国家「双一流」建设高校、「985 工程」高校。"
+    },
+    {
+      "key": "whu",
+      "name": "武汉大学",
+      "code": "10486",
+      "province": "湖北",
+      "city": "武汉",
+      "level": "本科",
+      "type": "综合",
+      "ownership": "公办",
+      "website": "https://www.whu.edu.cn",
+      "intro": "国家「双一流」建设高校、「985 工程」高校。"
+    },
+    {
+      "key": "zzrvtc",
+      "name": "郑州铁路职业技术学院",
+      "code": "12943",
+      "province": "河南",
+      "city": "郑州",
+      "level": "专科",
+      "type": "理工",
+      "ownership": "公办",
+      "website": "https://www.zzrvtc.edu.cn",
+      "intro": "以轨道交通类专业为特色的高等职业院校。"
+    }
+  ],
+  "majors": [
+    {
+      "key": "cs",
+      "name": "计算机科学与技术",
+      "code": "080901",
+      "category": "工学",
+      "first_class": "国家级一流本科专业建设点",
+      "degree": "工学学士"
+    },
+    {
+      "key": "se",
+      "name": "软件工程",
+      "code": "080902",
+      "category": "工学",
+      "first_class": "国家级一流本科专业建设点",
+      "degree": "工学学士"
+    },
+    {
+      "key": "ee",
+      "name": "电子信息工程",
+      "code": "080701",
+      "category": "工学",
+      "first_class": "省级一流本科专业建设点",
+      "degree": "工学学士"
+    },
+    {
+      "key": "civil",
+      "name": "土木工程",
+      "code": "081001",
+      "category": "工学",
+      "first_class": "省级一流本科专业建设点",
+      "degree": "工学学士"
+    },
+    {
+      "key": "finance",
+      "name": "金融学",
+      "code": "020301K",
+      "category": "经济学",
+      "first_class": "国家级一流本科专业建设点",
+      "degree": "经济学学士"
+    },
+    {
+      "key": "law",
+      "name": "法学",
+      "code": "030101K",
+      "category": "法学",
+      "first_class": "省级一流本科专业建设点",
+      "degree": "法学学士"
+    },
+    {
+      "key": "clinical",
+      "name": "临床医学",
+      "code": "100201K",
+      "category": "医学",
+      "first_class": "国家级一流本科专业建设点",
+      "degree": "医学学士"
+    },
+    {
+      "key": "chinese",
+      "name": "汉语言文学",
+      "code": "050101",
+      "category": "文学",
+      "first_class": "国家级一流本科专业建设点",
+      "degree": "文学学士"
+    }
+  ],
+  "scores": [
+    {
+      "school": "zzu",
+      "major": "cs",
+      "province": "河南",
+      "year": 2025,
+      "batch": "本科一批",
+      "subject_type": "物理类",
+      "min_score": 615,
+      "min_rank": 21000,
+      "avg_score": 623,
+      "plan_count": 120,
+      "source": "hn_exam_2025"
+    },
+    {
+      "school": "zzu",
+      "major": "clinical",
+      "province": "河南",
+      "year": 2025,
+      "batch": "本科一批",
+      "subject_type": "物理类",
+      "min_score": 628,
+      "min_rank": 15200,
+      "avg_score": 636,
+      "plan_count": 80,
+      "source": "hn_exam_2025"
+    },
+    {
+      "school": "zzu",
+      "major": "law",
+      "province": "河南",
+      "year": 2025,
+      "batch": "本科一批",
+      "subject_type": "历史类",
+      "min_score": 601,
+      "min_rank": 6100,
+      "avg_score": 608,
+      "plan_count": 60,
+      "source": "hn_exam_2025"
+    },
+    {
+      "school": "henu",
+      "major": "chinese",
+      "province": "河南",
+      "year": 2025,
+      "batch": "本科一批",
+      "subject_type": "历史类",
+      "min_score": 586,
+      "min_rank": 9800,
+      "avg_score": 592,
+      "plan_count": 90,
+      "source": "hn_exam_2025"
+    },
+    {
+      "school": "henu",
+      "major": "se",
+      "province": "河南",
+      "year": 2025,
+      "batch": "本科一批",
+      "subject_type": "物理类",
+      "min_score": 590,
+      "min_rank": 42000,
+      "avg_score": 597,
+      "plan_count": 110,
+      "source": "hn_exam_2025"
+    },
+    {
+      "school": "ncwu",
+      "major": "civil",
+      "province": "河南",
+      "year": 2025,
+      "batch": "本科一批",
+      "subject_type": "物理类",
+      "min_score": 572,
+      "min_rank": 68000,
+      "avg_score": 579,
+      "plan_count": 150,
+      "source": "hn_exam_2025"
+    },
+    {
+      "school": "ncwu",
+      "major": "ee",
+      "province": "河南",
+      "year": 2025,
+      "batch": "本科一批",
+      "subject_type": "物理类",
+      "min_score": 566,
+      "min_rank": 79000,
+      "avg_score": 573,
+      "plan_count": 100,
+      "source": "hn_exam_2025"
+    },
+    {
+      "school": "haut",
+      "major": "finance",
+      "province": "河南",
+      "year": 2025,
+      "batch": "本科一批",
+      "subject_type": "历史类",
+      "min_score": 573,
+      "min_rank": 13500,
+      "avg_score": 580,
+      "plan_count": 70,
+      "source": "hn_exam_2025"
+    },
+    {
+      "school": "zzuli",
+      "major": "ee",
+      "province": "河南",
+      "year": 2025,
+      "batch": "本科一批",
+      "subject_type": "物理类",
+      "min_score": 561,
+      "min_rank": 88000,
+      "avg_score": 568,
+      "plan_count": 95,
+      "source": "hn_exam_2025"
+    },
+    {
+      "school": "hust",
+      "major": "cs",
+      "province": "河南",
+      "year": 2025,
+      "batch": "本科一批",
+      "subject_type": "物理类",
+      "min_score": 646,
+      "min_rank": 7200,
+      "avg_score": 653,
+      "plan_count": 45,
+      "source": "hn_exam_2025"
+    },
+    {
+      "school": "whu",
+      "major": "cs",
+      "province": "河南",
+      "year": 2025,
+      "batch": "本科一批",
+      "subject_type": "物理类",
+      "min_score": 651,
+      "min_rank": 5900,
+      "avg_score": 658,
+      "plan_count": 40,
+      "source": "hn_exam_2025"
+    },
+    {
+      "school": "zzrvtc",
+      "major": "ee",
+      "province": "河南",
+      "year": 2025,
+      "batch": "高职高专批",
+      "subject_type": "物理类",
+      "min_score": 392,
+      "min_rank": 268000,
+      "avg_score": 405,
+      "plan_count": 180,
+      "source": "hn_exam_2025"
+    }
+  ],
+  "profiles": [
+    {
+      "school": "zzu",
+      "tuition_range": "4400-5700 元/年",
+      "accommodation_fee": "800-1200 元/年",
+      "campus_list": [
+        { "name": "主校区", "address": "郑州市科学大道 100 号", "city": "郑州" },
+        { "name": "南校区", "address": "郑州市大学北路 75 号", "city": "郑州" }
+      ],
+      "established_year": 1956,
+      "master_phd_points": { "master": 60, "phd": 31 },
+      "first_class_major_count": 65,
+      "faculty_count": 5800,
+      "student_faculty_ratio": "17:1",
+      "source": "zzu_admission_2025"
+    },
+    {
+      "school": "henu",
+      "tuition_range": "4400-5700 元/年",
+      "accommodation_fee": "800-1000 元/年",
+      "campus_list": [
+        { "name": "明伦校区", "address": "开封市顺河回族区明伦街 85 号", "city": "开封" },
+        { "name": "金明校区", "address": "开封市金明大道北段", "city": "开封" },
+        { "name": "郑州校区", "address": "郑州市郑东新区明理路 379 号", "city": "郑州" }
+      ],
+      "established_year": 1912,
+      "master_phd_points": { "master": 48, "phd": 21 },
+      "first_class_major_count": 50,
+      "faculty_count": 4400,
+      "student_faculty_ratio": "18:1",
+      "source": "henu_admission_2025"
+    },
+    {
+      "school": "ncwu",
+      "tuition_range": "4400-5500 元/年",
+      "accommodation_fee": "800-1000 元/年",
+      "campus_list": [
+        { "name": "龙子湖校区", "address": "郑州市金水东路 136 号", "city": "郑州" },
+        { "name": "花园校区", "address": "郑州市北环路 36 号", "city": "郑州" }
+      ],
+      "established_year": 1951,
+      "master_phd_points": { "master": 34, "phd": 4 },
+      "first_class_major_count": 24,
+      "faculty_count": 2600,
+      "student_faculty_ratio": "19:1",
+      "source": "ncwu_admission_2025"
+    }
+  ],
+  "life": [
+    {
+      "school": "zzu",
+      "category": "宿舍",
+      "content": "主校区本科生以四人间为主，上床下桌，配备空调与独立卫浴。",
+      "source_type": "official",
+      "source_name": "郑州大学本科招生网（演示数据）",
+      "source_url": "https://example.invalid/zzu/dorm",
+      "year": 2025,
+      "reliability": "official"
+    },
+    {
+      "school": "zzu",
+      "category": "食堂",
+      "content": "校内食堂较多，主校区有多个学生餐厅，人均消费约 15 元。",
+      "source_type": "forum",
+      "source_name": "某校论坛（演示数据）",
+      "source_url": "https://example.invalid/forum/zzu-food",
+      "year": 2024,
+      "reliability": "unofficial"
+    },
+    {
+      "school": "henu",
+      "category": "交通",
+      "content": "明伦校区紧邻开封老城区，步行可达鼓楼商圈；郑州校区临近地铁。",
+      "source_type": "media",
+      "source_name": "某自媒体（演示数据）",
+      "source_url": "https://example.invalid/media/henu-traffic",
+      "year": 2025,
+      "reliability": "unofficial"
+    },
+    {
+      "school": "henu",
+      "category": "宿舍",
+      "content": "金明校区多为四人间或六人间，公寓化管理。",
+      "source_type": "official",
+      "source_name": "河南大学招生信息网（演示数据）",
+      "source_url": "https://example.invalid/henu/dorm",
+      "year": 2025,
+      "reliability": "official"
+    }
+  ]
+}

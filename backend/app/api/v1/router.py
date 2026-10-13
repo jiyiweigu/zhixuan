@@ -1,29 +1,60 @@
+"""v1 路由汇总。
+
+模块划分与 docs/api-contract.md 一致，各模块接口定义在同名文件内：
+    health     健康检查
+    auth       认证（注册/登录/登出/当前用户）
+    profile    考生档案
+    pathways   升学途径与资格自检
+    qa         可溯源问答（提问 / 结构化提问 / 历史）
+    plans      志愿方案生成
+    recommend  冲稳保推荐与方案风险体检
+    user_plans 志愿方案保存/命名/编辑/删除（产品书 6.1.7）
+    favorites  院校/专业收藏
+    scores     一分一段（分数 ↔ 位次）
+    schools    院校检索、详情与画像
+    majors     专业检索与详情
+    admin      管理端（产品书 6.6；tasks.md 8.1/8.2/8.6/8.7），子包 app/api/v1/admin/
+
+新增模块（recommend / favorites / scores）补齐契约 6.1 节中前端 api 层已声明的接口，
+消除「关掉 Mock 即 404」的联调缺口。
+"""
+
+from __future__ import annotations
+
 from fastapi import APIRouter
-from app.schemas.core import ProfileRequest,Credentials,PlanRequest,QaAskRequest
-from app.services.eligibility import build_eligibility,build_plan,response,DEMO
-from app.services.ai_support import restricted_answer,analyze_trend
-router=APIRouter(prefix='/api',tags=['core'])
-@router.get('/health')
-def health(): return response({'status':'ok','service':'zhixuan'})
-@router.post('/auth/register')
-def register(p:Credentials): return response({'user_id':'u_demo','username':p.username,'access_token':'mock-token'})
-@router.post('/auth/login')
-def login(p:Credentials): return response({'user_id':'u_demo','username':p.username,'access_token':'mock-token'})
-@router.get('/user/profile')
-def profile(): return response({'province':'河南','score':620,'subject_type':'物理类'})
-@router.put('/user/profile')
-def update_profile(p:ProfileRequest): return response(p.model_dump())
-@router.get('/pathways')
-def pathways(): return response([{'id':'special-plan','name':'国家专项计划','status':'待核验',**DEMO},{'id':'normal-batch','name':'普通批','status':'可查询',**DEMO}])
-@router.post('/pathways/eligibility-check')
-def eligibility_check(p:ProfileRequest): return response(build_eligibility(p))
-@router.post('/qa/ask')
-def ask(p:QaAskRequest): return response(restricted_answer(p.question,[]))
-@router.get('/qa')
-def qa(q:str): return response(restricted_answer(q,[]))
-@router.post('/plans')
-def plans(p:PlanRequest): return response(build_plan(p.profile,p.strategy))
-@router.get('/schools')
-def schools(keyword:str='',province:str='河南'): return response([{'school_id':'mock-001','name':'演示院校','province':province,'citations':[DEMO],**DEMO}] if keyword or province else [])
-@router.post('/recommend/trend')
-def trend(points:list[dict],target_type:str='school_major'): return response(analyze_trend(points,target_type))
+
+from app.api.v1 import (
+    admin,
+    auth,
+    eligibility,
+    favorites,
+    health,
+    majors,
+    pathways,
+    plans,
+    profile,
+    qa,
+    recommend,
+    schools,
+    scores,
+    user_plans,
+)
+from app.core.config import settings
+
+router = APIRouter(prefix=settings.api_prefix)
+
+router.include_router(health.router)
+router.include_router(auth.router)
+router.include_router(profile.router)
+router.include_router(eligibility.user_router)
+router.include_router(favorites.router)
+router.include_router(pathways.router)
+router.include_router(eligibility.router)
+router.include_router(qa.router)
+router.include_router(plans.router)
+router.include_router(recommend.router)
+router.include_router(user_plans.router)
+router.include_router(scores.router)
+router.include_router(schools.router)
+router.include_router(majors.router)
+router.include_router(admin.router)
