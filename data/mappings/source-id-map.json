@@ -1,0 +1,230 @@
+{
+  "meta": {
+    "title": "source 逻辑 id ↔ source 表三要素 映射",
+    "purpose": "让 ② 的 loader 把数据里的字符串 source_id（SRC-XXX）无损转成 source 表 int 行 id",
+    "owner": "徐（③ 数据工程）",
+    "generated_at": "2026-10-13",
+    "background": "③ 产物用 SRC-XXX 作可读来源标识；source 表 id 为 int 自增主键。",
+    "usage": "② 读到数据行的 source_id='SRC-XXX' 时：① 在本表 map 中取 (source_name, source_url, year)；② 调 source_guard.ensure_source() 取得 source.id；③ 写入事实表的 source_id 列。注意：数据行内联的 source_name/source_url 可能与映射表不同（如 school_major_score 行内 source_url 为空），**一律以本表为准**，否则会新建出多余 source 行、甚至因 url 为空被 require_source 拒绝。",
+    "integrity": {
+      "source_count": 17,
+      "triplet_unique": 17,
+      "duplicate_triplets": [],
+      "referenced_id_count": 8,
+      "referenced_not_in_table": []
+    }
+  },
+  "map": {
+    "SRC-HENAN-EXAM": {
+      "source_name": "河南省教育考试院",
+      "source_url": "https://www.haeea.cn/",
+      "year": 2025,
+      "source_type": "官方"
+    },
+    "SRC-HENAN-ZSW": {
+      "source_name": "河南招生考试信息网",
+      "source_url": "https://www.heao.com.cn",
+      "year": 2025,
+      "source_type": "官方"
+    },
+    "SRC-MOE-SUNSHINE": {
+      "source_name": "教育部阳光高考信息平台",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2025,
+      "source_type": "官方"
+    },
+    "SRC-HENAN-SUNSHINE": {
+      "source_name": "河南省阳光高考信息平台",
+      "source_url": "https://gaokao.haedu.cn/",
+      "year": 2025,
+      "source_type": "官方"
+    },
+    "SRC-HENAN-JYT": {
+      "source_name": "河南省教育厅",
+      "source_url": "https://jyt.henan.gov.cn/",
+      "year": 2025,
+      "source_type": "官方"
+    },
+    "SRC-HENAN-SPECIAL-REGION": {
+      "source_name": "河南省教育厅（国家专项计划和高校专项计划县域名单）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2019,
+      "source_type": "官方"
+    },
+    "SRC-HENAN-ZSJH": {
+      "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
+      "source_url": "https://zsjh.haedu.cn/qwerasd/school",
+      "year": 2026,
+      "source_type": "官方"
+    },
+    "SRC-MOE-SCHOOL-LIST": {
+      "source_name": "中华人民共和国教育部（全国普通高等学校名单）",
+      "source_url": "https://hudong.moe.gov.cn/qggxmd/",
+      "year": 2026,
+      "source_type": "官方"
+    },
+    "SRC-MCA-DIVISION": {
+      "source_name": "民政部/国家统计局 中华人民共和国行政区划代码",
+      "source_url": "https://www.mca.gov.cn/mzsj/xzqh/2023/202301xzqh.html",
+      "year": 2023,
+      "source_type": "官方"
+    },
+    "SRC-MOE-DEGREE": {
+      "source_name": "教育部学位与研究生教育发展中心（学科评估）",
+      "source_url": "https://www.cdgdc.edu.cn/",
+      "year": 2022,
+      "source_type": "官方"
+    },
+    "SRC-SCHOOL-OFFICIAL-SAMPLE": {
+      "source_name": "高校官网（抽样：郑州大学）",
+      "source_url": "https://www.zzu.edu.cn/",
+      "year": 2025,
+      "source_type": "高校官网"
+    },
+    "SRC-SHANGHAIRANKING": {
+      "source_name": "上海软科教育信息咨询有限公司（软科中国大学排名）",
+      "source_url": "https://www.shanghairanking.cn/rankings/bcur/2024",
+      "year": 2024,
+      "source_type": "其他"
+    },
+    "SRC-HENAN-2026-ZY": {
+      "source_name": "河南省阳光高考信息平台（志愿填报与投档规则）",
+      "source_url": "https://gaokao.haedu.cn/145/424/2026/0701/155718.html",
+      "year": 2026,
+      "source_type": "官方"
+    },
+    "SRC-JIANGXI-2026-ZY": {
+      "source_name": "江西省教育考试院（志愿填报及投档规则）",
+      "source_url": "http://www.jxeea.cn/jxsjyksy/dtxx67/content/content_2065264535121223680.html",
+      "year": 2026,
+      "source_type": "官方"
+    },
+    "SRC-GAOKAO-COMPASS": {
+      "source_name": "Gaokao-Compass-11M 高考数据集（MIT，DOI 10.57967/hf/9882）",
+      "source_url": "https://hf-mirror.com/datasets/choucsan/Gaokao-Compass-11M",
+      "year": 2025,
+      "source_type": "其他"
+    },
+    "SRC-MOE-ZHUANYE-2025": {
+      "source_name": "中华人民共和国教育部《普通高等学校本科专业目录（2025年）》",
+      "source_url": "https://www.moe.gov.cn/srcsite/A08/moe_1034/s4930/202504/W020250422312780837078.pdf",
+      "year": 2025,
+      "source_type": "官方"
+    },
+    "SRC-HENAN-SCORE-SEG-2026": {
+      "source_name": "河南省教育考试院（经河南省阳光高考信息平台发布）",
+      "source_url": "https://gaokao.haedu.cn/501/552/2026/0625/155639.html",
+      "year": 2026,
+      "source_type": "官方"
+    }
+  },
+  "reverse_triplet_to_id": {
+    "Gaokao-Compass-11M 高考数据集（MIT，DOI 10.57967/hf/9882）|https://hf-mirror.com/datasets/choucsan/Gaokao-Compass-11M|2025": "SRC-GAOKAO-COMPASS",
+    "上海软科教育信息咨询有限公司（软科中国大学排名）|https://www.shanghairanking.cn/rankings/bcur/2024|2024": "SRC-SHANGHAIRANKING",
+    "中华人民共和国教育部《普通高等学校本科专业目录（2025年）》|https://www.moe.gov.cn/srcsite/A08/moe_1034/s4930/202504/W020250422312780837078.pdf|2025": "SRC-MOE-ZHUANYE-2025",
+    "中华人民共和国教育部（全国普通高等学校名单）|https://hudong.moe.gov.cn/qggxmd/|2026": "SRC-MOE-SCHOOL-LIST",
+    "教育部学位与研究生教育发展中心（学科评估）|https://www.cdgdc.edu.cn/|2022": "SRC-MOE-DEGREE",
+    "教育部阳光高考信息平台|https://gaokao.chsi.com.cn/|2025": "SRC-MOE-SUNSHINE",
+    "民政部/国家统计局 中华人民共和国行政区划代码|https://www.mca.gov.cn/mzsj/xzqh/2023/202301xzqh.html|2023": "SRC-MCA-DIVISION",
+    "江西省教育考试院（志愿填报及投档规则）|http://www.jxeea.cn/jxsjyksy/dtxx67/content/content_2065264535121223680.html|2026": "SRC-JIANGXI-2026-ZY",
+    "河南招生考试信息网|https://www.heao.com.cn|2025": "SRC-HENAN-ZSW",
+    "河南省教育厅|https://jyt.henan.gov.cn/|2025": "SRC-HENAN-JYT",
+    "河南省教育厅（国家专项计划和高校专项计划县域名单）|https://jyt.henan.gov.cn/2019/08-29/1932941.html|2019": "SRC-HENAN-SPECIAL-REGION",
+    "河南省教育考试院|https://www.haeea.cn/|2025": "SRC-HENAN-EXAM",
+    "河南省教育考试院（经河南省阳光高考信息平台发布）|https://gaokao.haedu.cn/501/552/2026/0625/155639.html|2026": "SRC-HENAN-SCORE-SEG-2026",
+    "河南省阳光高考信息平台|https://gaokao.haedu.cn/|2025": "SRC-HENAN-SUNSHINE",
+    "河南省阳光高考信息平台（志愿填报与投档规则）|https://gaokao.haedu.cn/145/424/2026/0701/155718.html|2026": "SRC-HENAN-2026-ZY",
+    "河南省阳光高考信息平台（招生计划查询系统）|https://zsjh.haedu.cn/qwerasd/school|2026": "SRC-HENAN-ZSJH",
+    "高校官网（抽样：郑州大学）|https://www.zzu.edu.cn/|2025": "SRC-SCHOOL-OFFICIAL-SAMPLE"
+  },
+  "referenced_by": {
+    "data/dictionaries/pathway-eligibility.json": [
+      "SRC-HENAN-EXAM",
+      "SRC-HENAN-SPECIAL-REGION"
+    ],
+    "data/dictionaries/pathway-regions.json": [
+      "SRC-HENAN-SPECIAL-REGION"
+    ],
+    "data/dictionaries/pathways-26.json": [
+      "SRC-HENAN-EXAM",
+      "SRC-MOE-SUNSHINE"
+    ],
+    "data/dictionaries/province-exam-rule.json": [
+      "SRC-HENAN-2026-ZY",
+      "SRC-HENAN-ZSJH",
+      "SRC-JIANGXI-2026-ZY"
+    ],
+    "data/samples/pathway_eligibility.json": [
+      "SRC-HENAN-EXAM",
+      "SRC-HENAN-SPECIAL-REGION"
+    ],
+    "data/samples/pathway_region.json": [
+      "SRC-HENAN-SPECIAL-REGION"
+    ],
+    "data/samples/province_exam_rule.json": [
+      "SRC-HENAN-2026-ZY",
+      "SRC-HENAN-ZSJH",
+      "SRC-JIANGXI-2026-ZY"
+    ],
+    "data/samples/school.json": [
+      "SRC-HENAN-ZSJH"
+    ],
+    "data/samples/school_major_score.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/samples/score_segment.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/school_major_score/school_major_score_2022_江西.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/school_major_score/school_major_score_2022_河南.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/school_major_score/school_major_score_2024_江西.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/school_major_score/school_major_score_2024_河南.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/school_major_score/school_major_score_2025_江西.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/school_major_score/school_major_score_2025_河南.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/schools/schools.json": [
+      "SRC-HENAN-ZSJH"
+    ],
+    "data/schools/schools_merged.json": [
+      "SRC-HENAN-ZSJH"
+    ],
+    "data/schools/shanghai_top300_inhenan.json": [
+      "SRC-SHANGHAIRANKING"
+    ],
+    "data/score_segment/score_segment_2022_江西.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/score_segment/score_segment_2022_河南.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/score_segment/score_segment_2023_江西.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/score_segment/score_segment_2023_河南.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/score_segment/score_segment_2024_江西.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/score_segment/score_segment_2024_河南.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/score_segment/score_segment_2025_江西.json": [
+      "SRC-GAOKAO-COMPASS"
+    ],
+    "data/score_segment/score_segment_2025_河南.json": [
+      "SRC-GAOKAO-COMPASS"
+    ]
+  }
+}
