@@ -1,0 +1,1 @@
+<script setup lang="ts">defineProps<{type:string;reliability:'high'|'medium'|'low'}>()</script><template><span class="source-tag">{{type}} · {{reliability==='high'?'可靠性高':reliability==='medium'?'可靠性中':'可靠性低'}}</span></template>

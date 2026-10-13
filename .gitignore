@@ -1,10 +1,9 @@
 # ===== 本项目专属忽略（智选志愿 · 竞赛工作仓）=====
 
-# WorkBuddy 工作目录的临时产物（渲染图、命令输出等，32MB 级派生物，不入库）
-.workbuddy/scratch/
-
-# 团队内部工作笔记（分工过程、决策记录、本机环境与凭据路径）—— 本仓库已开源，不入库
-.workbuddy/memory/
+# AI 工具本地配置目录：个人环境产物（技能副本、内部归档、临时输出），非团队资产，不入库
+# 说明：团队共用的 OpenSpec 命令入口保留在 .codebuddy/；OpenSpec 产物本身在 openspec/
+.workbuddy/
+.agents/
 
 # 第三方他人仓库（非团队原创成果，不入库）
 zhangxuefeng-skill-main/
@@ -31,12 +30,24 @@ dist/
 build/
 *.egg-info/
 
+# 本地运行产物（SQLite 数据库、上传缓存等）
+.runtime/
+backend/.runtime/
+
 # 数据大文件（脚本入库，数据走网盘）
 data/raw/*
 data/**/*.zip
 data/**/*.csv
 !data/**/.gitkeep
 !data/raw/sample_*.csv
+
+# 导入中间层（import_dataset.py 产出，可重跑，不入库）
+data/staged/
+
+# 采集脚本的原始页面缓存（可复现，不入库）
+data/**/.cache/
+data/**/.cache_moe/
+data/**/.cache_srk/
 
 # 向量与数据库导出
 *.sql.gz

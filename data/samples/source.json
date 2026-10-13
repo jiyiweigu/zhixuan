@@ -1,0 +1,193 @@
+{
+  "_sample_meta": {
+    "purpose": "供 ② 后端做建表/导入联调的小样本包",
+    "owner": "徐（③ 数据工程）",
+    "generated_at": "2026-10-12",
+    "nature": "sample — 真实数据截取，非全量，不得用于生产展示",
+    "note": "全量给齐（仅 15 条），② 可直接入库做外键依据。",
+    "target_table": "source"
+  },
+  "count": 15,
+  "sources": [
+    {
+      "id": "SRC-HENAN-EXAM",
+      "source_name": "河南省教育考试院",
+      "source_url": "https://www.haeea.cn/",
+      "year": 2025,
+      "source_type": "官方",
+      "fetched_at": null,
+      "crawl_status": "blocked_waf",
+      "crawl_note": "HTTP 412，JS 挑战型 WAF（瑞数）。需无头浏览器或人工下载附件。",
+      "content": "一分一段表、录取控制分数线、招生计划、专项计划资格公示、军警司法面试体检线",
+      "plan": "方案B：人工下载官方 PDF/Excel，脚本解析"
+    },
+    {
+      "id": "SRC-HENAN-ZSW",
+      "source_name": "河南招生考试信息网",
+      "source_url": "https://www.heao.com.cn",
+      "year": 2025,
+      "source_type": "官方",
+      "fetched_at": null,
+      "crawl_status": "blocked_waf",
+      "crawl_note": "HTTP 412，同上。",
+      "content": "往年院校录取情况统计、招生计划、批次控制线、分数段统计",
+      "plan": "方案B：人工下载附件"
+    },
+    {
+      "id": "SRC-MOE-SUNSHINE",
+      "source_name": "教育部阳光高考信息平台",
+      "source_url": "https://gaokao.chsi.com.cn/",
+      "year": 2025,
+      "source_type": "官方",
+      "fetched_at": null,
+      "crawl_status": "blocked_waf",
+      "crawl_note": "HTTP 412，同上。",
+      "content": "高校招生章程、三大专项计划政策、公示名单、学科评估",
+      "plan": "方案B：人工下载；招生章程量大有条件时上无头浏览器"
+    },
+    {
+      "id": "SRC-HENAN-SUNSHINE",
+      "source_name": "河南省阳光高考信息平台",
+      "source_url": "https://gaokao.haedu.cn/",
+      "year": 2025,
+      "source_type": "官方",
+      "fetched_at": null,
+      "crawl_status": "ok",
+      "crawl_note": "HTTP 200，可直接抓取（requests + bs4）。",
+      "content": "三大专项计划政策问答、实施区域名单",
+      "plan": "方案A：脚本直接抓取"
+    },
+    {
+      "id": "SRC-HENAN-JYT",
+      "source_name": "河南省教育厅",
+      "source_url": "https://jyt.henan.gov.cn/",
+      "year": 2025,
+      "source_type": "官方",
+      "fetched_at": null,
+      "crawl_status": "ok",
+      "crawl_note": "HTTP 200，可直接抓取。",
+      "content": "政策文件、实施区域名单附件、成绩查询入口",
+      "plan": "方案A：脚本直接抓取"
+    },
+    {
+      "id": "SRC-HENAN-SPECIAL-REGION",
+      "source_name": "河南省教育厅（国家专项计划和高校专项计划县域名单）",
+      "source_url": "https://jyt.henan.gov.cn/2019/08-29/1932941.html",
+      "year": 2019,
+      "source_type": "官方",
+      "fetched_at": "2026-10-11",
+      "crawl_status": "manual_verified",
+      "crawl_note": "人工核对官方附件表格，已与阳光高考平台问答页交叉印证。",
+      "content": "国家专项 38 县 + 高校专项 53 县（含省定 15 县）名单",
+      "plan": "已产出 pathway-region 数据"
+    },
+    {
+      "id": "SRC-HENAN-ZSJH",
+      "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
+      "source_url": "https://zsjh.haedu.cn/qwerasd/school",
+      "year": 2026,
+      "source_type": "官方",
+      "fetched_at": "2026-10-12",
+      "crawl_status": "ok",
+      "crawl_note": "★ 独立子域，ASP.NET WebForms + JSON AJAX，无 WAF。JSON 接口 /qwerasd/dyna-school?page=<n>，page=0..83 共 2495 条。无需无头浏览器。",
+      "content": "在豫招生院校清单（校名、教育部国标代码、批次、科类、计划数、院校代号）",
+      "plan": "已产出 school 表数据（1367 所本科）"
+    },
+    {
+      "id": "SRC-MOE-SCHOOL-LIST",
+      "source_name": "中华人民共和国教育部（全国普通高等学校名单）",
+      "source_url": "https://hudong.moe.gov.cn/qggxmd/",
+      "year": 2026,
+      "source_type": "官方",
+      "fetched_at": "2026-10-12",
+      "crawl_status": "ok",
+      "crawl_note": "HTTP 200，HTML 表格接口 getDataIndex.jsp?listid=10000101&page=<n>，page=1..148 共 2952 所。10位标识码后5位=国标代码。",
+      "content": "全国高校名单（校名、标识码、主管部门、所在地、层次）",
+      "plan": "已用于补全 school 表 province/city/level/ownership"
+    },
+    {
+      "id": "SRC-MCA-DIVISION",
+      "source_name": "民政部/国家统计局 中华人民共和国行政区划代码",
+      "source_url": "https://www.mca.gov.cn/mzsj/xzqh/2023/202301xzqh.html",
+      "year": 2023,
+      "source_type": "官方",
+      "fetched_at": "2026-10-11",
+      "crawl_status": "ok",
+      "crawl_note": "经镜像 JSON（modood/Administrative-divisions-of-China）获取，53/53 县码命中。",
+      "content": "省/市/县三级行政区划代码（county_code）",
+      "plan": "已用于 pathway-region 县码补全"
+    },
+    {
+      "id": "SRC-MOE-DEGREE",
+      "source_name": "教育部学位与研究生教育发展中心（学科评估）",
+      "source_url": "https://www.cdgdc.edu.cn/",
+      "year": 2022,
+      "source_type": "官方",
+      "fetched_at": null,
+      "crawl_status": "pending",
+      "crawl_note": "待验证。",
+      "content": "第四轮/第五轮学科评估等级",
+      "plan": "待验证"
+    },
+    {
+      "id": "SRC-SCHOOL-OFFICIAL-SAMPLE",
+      "source_name": "高校官网（抽样：郑州大学）",
+      "source_url": "https://www.zzu.edu.cn/",
+      "year": 2025,
+      "source_type": "高校官网",
+      "fetched_at": null,
+      "crawl_status": "pending",
+      "crawl_note": "抽样样板。300 所院校需逐校登记，每校一条 id（如 SRC-SCHOOL-ZZU），预计静态可抓。",
+      "content": "院校简介、学费、师资、校区、办学实力",
+      "plan": "方案A：抽样验证后批量抓取；每校单独建 source 记录"
+    },
+    {
+      "id": "SRC-SHANGHAIRANKING",
+      "source_name": "上海软科教育信息咨询有限公司（软科中国大学排名）",
+      "source_url": "https://www.shanghairanking.cn/rankings/bcur/2024",
+      "year": 2024,
+      "source_type": "其他",
+      "fetched_at": "2026-10-12",
+      "crawl_status": "ok",
+      "crawl_note": "★ 第三方机构排名，非官方数据。JSON 接口 /api/pub/v1/bcur?bcur_type=11&year=2024，无 WAF，全量 594 条。仅作参考位次/层次校验辅助。",
+      "content": "软科中国大学排名（主榜）2024：名次、校名、省份、类别、总分、双一流/985/211 标签",
+      "plan": "已产出 shanghairanking_2024.json / shanghai_top300.json + 在豫交集"
+    },
+    {
+      "id": "SRC-HENAN-2026-ZY",
+      "source_name": "河南省阳光高考信息平台（志愿填报与投档规则）",
+      "source_url": "https://gaokao.haedu.cn/145/424/2026/0701/155718.html",
+      "year": 2026,
+      "source_type": "官方",
+      "fetched_at": "2026-10-12",
+      "crawl_status": "ok",
+      "crawl_note": "HTTP 200 直连可抓，无 WAF。同日抓取《河南省2026年普通高等学校招生工作规定》(https://gaokao.haedu.cn/501/553/2026/0427/151635.html) 获取同分排序与调档比例原文。",
+      "content": "2026 年普通本科批志愿设置（48 个院校专业组 × 6 专业 + 调剂）、提前批 64 个「专业+院校」、高职（专科）批 48 组、兼报限制、填报时间；同分排序规则；调档比例 105% 以内。",
+      "plan": "已用于 province_exam_rule 的河南 2026 规则核实"
+    },
+    {
+      "id": "SRC-JIANGXI-2026-ZY",
+      "source_name": "江西省教育考试院（志愿填报及投档规则）",
+      "source_url": "http://www.jxeea.cn/jxsjyksy/dtxx67/content/content_2065264535121223680.html",
+      "year": 2026,
+      "source_type": "官方",
+      "fetched_at": "2026-10-12",
+      "crawl_status": "ok",
+      "crawl_note": "HTTP 200 直连可抓，无 WAF。另取《江西省2026年普通高校招生工作实施意见》http://www.jxeea.cn/jxsjyksy/gsgg91/content/content_2039911996485861376.html 交叉核对录取批次与投档比例。",
+      "content": "2026 年本科批次 45 个院校专业组 × 6 专业 + 调剂、2 次征集各 20 个、提前本科 45 组、同分排序规则、投档比例 1:1、征集可降 20 分投档；2026 三大变化（按专业招生/组内选科一致/高校专项改省级审核）。",
+      "plan": "已用于 province_exam_rule 的江西 2026 规则核实"
+    },
+    {
+      "id": "SRC-GAOKAO-COMPASS",
+      "source_name": "Gaokao-Compass-11M 高考数据集（MIT，DOI 10.57967/hf/9882）",
+      "source_url": "https://hf-mirror.com/datasets/choucsan/Gaokao-Compass-11M",
+      "year": 2025,
+      "source_type": "其他",
+      "fetched_at": "2026-10-12",
+      "crawl_status": "ok",
+      "crawl_note": "★ 渠道来源，非官方。经国内镜像 hf-mirror.com 下载，无需 token、无频率限制（官方 huggingface.co 本机不可达）。数据集为 MIT 许可，可再分发，须保留 DOI 引用。",
+      "content": "31 省 × 2017–2025 高考结构化数据：招生计划（含选科要求）、院校投档线（含最低位次/985/211）、专业级录取（含最高/平均分）、一分一段表。共 1132 万行。",
+      "plan": "作品内事实结论的 source_url 须指向省考试院/阳光高考，不指向本数据集；本表仅作为获取渠道登记。已用于 score_segment（2022–2025 河南/江西）与 school_major_score 导入。"
+    }
+  ]
+}

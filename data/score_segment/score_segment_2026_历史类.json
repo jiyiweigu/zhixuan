@@ -1,0 +1,3784 @@
+{
+  "meta": {
+    "title": "河南省 2026 年普通高招分数段统计表（历史类）",
+    "target_table": "score_segment",
+    "province": "河南",
+    "year": 2026,
+    "subject_type": "历史类",
+    "source_name": "河南省教育考试院（经河南省阳光高考信息平台发布）",
+    "source_url": "https://gaokao.haedu.cn/501/552/2026/0625/155639.html",
+    "source_id": "SRC-HENAN-SCORE-SEG-2026",
+    "cumulative_rank_note": "官方口径：表中'考生人数'为加入政策性照顾分后对应总分及以上考生累计人数，即 cumulative_rank。",
+    "parse_method": "扫描件 OCR：Tesseract 5.4 + 投影法网格切分 + 并行逐格多阈值识别；分数骨架取自分数列（识别可靠），人数列仅信原始读数锚点，缺口插值并标注置信度",
+    "final_rows": 454,
+    "high_confidence_rows": 441,
+    "interpolated_rows": 13,
+    "gap_scores": [
+      663,
+      662,
+      661,
+      660,
+      655,
+      654,
+      653,
+      652,
+      641,
+      640,
+      638,
+      597,
+      596,
+      595,
+      594,
+      580,
+      572,
+      568,
+      556,
+      516,
+      514,
+      502,
+      499,
+      490,
+      476,
+      467,
+      464,
+      449,
+      432,
+      422,
+      420,
+      413,
+      412,
+      410,
+      409,
+      396,
+      395,
+      393,
+      371,
+      352,
+      351,
+      339,
+      337,
+      330,
+      328,
+      311,
+      308,
+      297,
+      290,
+      273,
+      270,
+      250,
+      247,
+      209,
+      204,
+      200,
+      192,
+      189,
+      175,
+      169,
+      166
+    ],
+    "review_status": "OCR 结果，low 置信行与 gaps 需人工复核后方可入库",
+    "warnings": [
+      "分数 676：读数 2 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 663：读数 15 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 661：读数 182 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 660：读数 443 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 655：读数 3 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 654：读数 2415 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 653：读数 2340 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 652：读数 953 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 641：读数 985 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 638：读数 70 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 597：读数 9562 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 596：读数 787 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 594：读数 5243 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 580：读数 40 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 572：读数 132440 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 568：读数 19251 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 556：读数 59250 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 516：读数 49319 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 502：读数 99623 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 499：读数 7081 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 490：读数 165265 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 476：读数 7 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 464：读数 315281 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 449：读数 315505 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 432：读数 18969 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 422：读数 12951 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 420：读数 431660 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 413：读数 488780 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 412：读数 140372 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 410：读数 14290 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 409：读数 443708 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 396：读数 468421 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 395：读数 193 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 393：读数 299124 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 371：读数 37546 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 352：读数 2733 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 351：读数 11481 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 337：读数 2278 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 330：读数 23562 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 328：读数 337870 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 311：读数 256353 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 308：读数 263553 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 297：读数 313514 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 290：读数 576869 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 273：读数 290646 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 250：读数 30369 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 247：读数 465008 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 209：读数 343334 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 204：读数 811377 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 200：读数 188795 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 189：读数 544594 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 175：读数 35085 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 169：读数 315478 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 166：读数 345233 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 73：读数 12835 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 71：读数 79054 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 48：读数 66958 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 47：读数 76408 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 42：读数 2893 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 34：读数 309958 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 33：读数 185265 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 5：读数 20761 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 4：读数 315575 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 3：读数 34338 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 2：读数 255275 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "分数 0：读数 315489 被 LIS 判为离群误读（破坏全局单调性），改为插值",
+      "共 61 个分数无可靠值（长缺口），已列入 gaps 待人工补录"
+    ]
+  },
+  "segments": [
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 686,
+      "cumulative_rank": 7,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 685,
+      "cumulative_rank": 9,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 684,
+      "cumulative_rank": 10,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 683,
+      "cumulative_rank": 11,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 682,
+      "cumulative_rank": 13,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 681,
+      "cumulative_rank": 14,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 679,
+      "cumulative_rank": 17,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 678,
+      "cumulative_rank": 20,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 677,
+      "cumulative_rank": 22,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 676,
+      "cumulative_rank": 26,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 675,
+      "cumulative_rank": 28,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 674,
+      "cumulative_rank": 34,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 673,
+      "cumulative_rank": 38,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 672,
+      "cumulative_rank": 49,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 671,
+      "cumulative_rank": 53,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 670,
+      "cumulative_rank": 56,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 669,
+      "cumulative_rank": 61,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 668,
+      "cumulative_rank": 68,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 667,
+      "cumulative_rank": 76,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 666,
+      "cumulative_rank": 83,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 665,
+      "cumulative_rank": 94,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 664,
+      "cumulative_rank": 108,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 659,
+      "cumulative_rank": 153,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 658,
+      "cumulative_rank": 168,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 657,
+      "cumulative_rank": 175,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 656,
+      "cumulative_rank": 189,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 650,
+      "cumulative_rank": 296,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 649,
+      "cumulative_rank": 317,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 648,
+      "cumulative_rank": 338,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 647,
+      "cumulative_rank": 371,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 646,
+      "cumulative_rank": 401,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 645,
+      "cumulative_rank": 424,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 644,
+      "cumulative_rank": 465,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 643,
+      "cumulative_rank": 495,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 642,
+      "cumulative_rank": 542,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 639,
+      "cumulative_rank": 670,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 635,
+      "cumulative_rank": 862,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 634,
+      "cumulative_rank": 898,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 633,
+      "cumulative_rank": 954,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 632,
+      "cumulative_rank": 1019,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 631,
+      "cumulative_rank": 1082,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 630,
+      "cumulative_rank": 1167,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 627,
+      "cumulative_rank": 1388,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 626,
+      "cumulative_rank": 1471,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 625,
+      "cumulative_rank": 1555,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 624,
+      "cumulative_rank": 1618,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 623,
+      "cumulative_rank": 1705,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 622,
+      "cumulative_rank": 1784,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 621,
+      "cumulative_rank": 1856,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 620,
+      "cumulative_rank": 1949,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 619,
+      "cumulative_rank": 2060,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 618,
+      "cumulative_rank": 2155,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 617,
+      "cumulative_rank": 2282,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 616,
+      "cumulative_rank": 2383,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 615,
+      "cumulative_rank": 2506,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 611,
+      "cumulative_rank": 3031,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 610,
+      "cumulative_rank": 3192,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 609,
+      "cumulative_rank": 3327,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 608,
+      "cumulative_rank": 3488,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 607,
+      "cumulative_rank": 3648,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 606,
+      "cumulative_rank": 3831,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 605,
+      "cumulative_rank": 4003,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 604,
+      "cumulative_rank": 4182,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 603,
+      "cumulative_rank": 4362,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 602,
+      "cumulative_rank": 4547,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 601,
+      "cumulative_rank": 4722,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 600,
+      "cumulative_rank": 4922,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 599,
+      "cumulative_rank": 5124,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 598,
+      "cumulative_rank": 5349,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 593,
+      "cumulative_rank": 6495,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 592,
+      "cumulative_rank": 6754,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 591,
+      "cumulative_rank": 7018,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 590,
+      "cumulative_rank": 7290,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 589,
+      "cumulative_rank": 7576,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 588,
+      "cumulative_rank": 7850,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 587,
+      "cumulative_rank": 8131,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 586,
+      "cumulative_rank": 8432,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 585,
+      "cumulative_rank": 8734,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 584,
+      "cumulative_rank": 9030,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 583,
+      "cumulative_rank": 9351,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 582,
+      "cumulative_rank": 9688,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 581,
+      "cumulative_rank": 9990,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 579,
+      "cumulative_rank": 10604,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 578,
+      "cumulative_rank": 10984,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 577,
+      "cumulative_rank": 11328,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 576,
+      "cumulative_rank": 11703,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 575,
+      "cumulative_rank": 12068,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 574,
+      "cumulative_rank": 12454,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 569,
+      "cumulative_rank": 14366,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 567,
+      "cumulative_rank": 15222,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 566,
+      "cumulative_rank": 15624,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 565,
+      "cumulative_rank": 16082,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 564,
+      "cumulative_rank": 16468,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 563,
+      "cumulative_rank": 16907,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 562,
+      "cumulative_rank": 17364,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 561,
+      "cumulative_rank": 17826,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 560,
+      "cumulative_rank": 18302,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 559,
+      "cumulative_rank": 18762,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 553,
+      "cumulative_rank": 21842,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 552,
+      "cumulative_rank": 22418,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 551,
+      "cumulative_rank": 22919,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 549,
+      "cumulative_rank": 24062,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 546,
+      "cumulative_rank": 25716,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 545,
+      "cumulative_rank": 26317,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 544,
+      "cumulative_rank": 26887,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 543,
+      "cumulative_rank": 27491,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 542,
+      "cumulative_rank": 28077,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 541,
+      "cumulative_rank": 28679,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 540,
+      "cumulative_rank": 29294,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 539,
+      "cumulative_rank": 29897,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 538,
+      "cumulative_rank": 30508,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 537,
+      "cumulative_rank": 31153,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 536,
+      "cumulative_rank": 31774,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 534,
+      "cumulative_rank": 33010,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 533,
+      "cumulative_rank": 33647,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 530,
+      "cumulative_rank": 35664,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 529,
+      "cumulative_rank": 36306,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 528,
+      "cumulative_rank": 36970,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 527,
+      "cumulative_rank": 37651,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 526,
+      "cumulative_rank": 38308,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 525,
+      "cumulative_rank": 39007,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 524,
+      "cumulative_rank": 39715,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 523,
+      "cumulative_rank": 40413,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 522,
+      "cumulative_rank": 41145,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 521,
+      "cumulative_rank": 41866,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 520,
+      "cumulative_rank": 42556,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 519,
+      "cumulative_rank": 43225,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 518,
+      "cumulative_rank": 43916,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 517,
+      "cumulative_rank": 44612,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 513,
+      "cumulative_rank": 47394,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 512,
+      "cumulative_rank": 48045,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 511,
+      "cumulative_rank": 48789,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 510,
+      "cumulative_rank": 49529,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 509,
+      "cumulative_rank": 50299,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 508,
+      "cumulative_rank": 51070,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 507,
+      "cumulative_rank": 51817,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 506,
+      "cumulative_rank": 52567,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 505,
+      "cumulative_rank": 53305,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 504,
+      "cumulative_rank": 54105,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 503,
+      "cumulative_rank": 54843,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 501,
+      "cumulative_rank": 56433,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 500,
+      "cumulative_rank": 57184,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 498,
+      "cumulative_rank": 58780,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 497,
+      "cumulative_rank": 59591,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 496,
+      "cumulative_rank": 60365,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 495,
+      "cumulative_rank": 61181,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 494,
+      "cumulative_rank": 61962,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 493,
+      "cumulative_rank": 62775,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 492,
+      "cumulative_rank": 63631,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 487,
+      "cumulative_rank": 67820,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 486,
+      "cumulative_rank": 68678,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 485,
+      "cumulative_rank": 69517,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 484,
+      "cumulative_rank": 70391,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 483,
+      "cumulative_rank": 71240,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 482,
+      "cumulative_rank": 72083,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 481,
+      "cumulative_rank": 72941,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 480,
+      "cumulative_rank": 73822,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 479,
+      "cumulative_rank": 74058,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 478,
+      "cumulative_rank": 75509,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 473,
+      "cumulative_rank": 79928,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 472,
+      "cumulative_rank": 80820,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 471,
+      "cumulative_rank": 81679,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 470,
+      "cumulative_rank": 82586,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 469,
+      "cumulative_rank": 83528,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 468,
+      "cumulative_rank": 84471,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 465,
+      "cumulative_rank": 87202,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 463,
+      "cumulative_rank": 89016,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 462,
+      "cumulative_rank": 89908,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 461,
+      "cumulative_rank": 90830,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 460,
+      "cumulative_rank": 91753,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 459,
+      "cumulative_rank": 92756,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 458,
+      "cumulative_rank": 93728,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 457,
+      "cumulative_rank": 94631,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 456,
+      "cumulative_rank": 95565,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 455,
+      "cumulative_rank": 96473,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 454,
+      "cumulative_rank": 97414,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 453,
+      "cumulative_rank": 98342,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 452,
+      "cumulative_rank": 99993,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 450,
+      "cumulative_rank": 101250,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 448,
+      "cumulative_rank": 103196,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 447,
+      "cumulative_rank": 104149,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 446,
+      "cumulative_rank": 105134,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 445,
+      "cumulative_rank": 106072,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 444,
+      "cumulative_rank": 107064,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 443,
+      "cumulative_rank": 108005,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 442,
+      "cumulative_rank": 108954,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 441,
+      "cumulative_rank": 109945,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 440,
+      "cumulative_rank": 110886,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 439,
+      "cumulative_rank": 111845,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 438,
+      "cumulative_rank": 112863,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 437,
+      "cumulative_rank": 113872,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 436,
+      "cumulative_rank": 114864,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 435,
+      "cumulative_rank": 115904,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 434,
+      "cumulative_rank": 118950,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 431,
+      "cumulative_rank": 120010,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 430,
+      "cumulative_rank": 121004,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 429,
+      "cumulative_rank": 122031,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 428,
+      "cumulative_rank": 123097,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 427,
+      "cumulative_rank": 124150,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 426,
+      "cumulative_rank": 125208,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 425,
+      "cumulative_rank": 126268,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 424,
+      "cumulative_rank": 127337,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 423,
+      "cumulative_rank": 128413,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 421,
+      "cumulative_rank": 130572,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 419,
+      "cumulative_rank": 132703,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 417,
+      "cumulative_rank": 134547,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 416,
+      "cumulative_rank": 135945,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 415,
+      "cumulative_rank": 137052,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 414,
+      "cumulative_rank": 141446,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 407,
+      "cumulative_rank": 145885,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 406,
+      "cumulative_rank": 146968,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 405,
+      "cumulative_rank": 148121,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 404,
+      "cumulative_rank": 149243,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 403,
+      "cumulative_rank": 150386,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 402,
+      "cumulative_rank": 151503,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 401,
+      "cumulative_rank": 152643,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 400,
+      "cumulative_rank": 153742,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 399,
+      "cumulative_rank": 154935,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 398,
+      "cumulative_rank": 156146,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 397,
+      "cumulative_rank": 157274,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 392,
+      "cumulative_rank": 163085,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 391,
+      "cumulative_rank": 164269,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 390,
+      "cumulative_rank": 165406,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 389,
+      "cumulative_rank": 166543,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 388,
+      "cumulative_rank": 167725,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 387,
+      "cumulative_rank": 168873,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 384,
+      "cumulative_rank": 172321,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 383,
+      "cumulative_rank": 173468,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 382,
+      "cumulative_rank": 174650,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 381,
+      "cumulative_rank": 175848,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 380,
+      "cumulative_rank": 176973,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 379,
+      "cumulative_rank": 178183,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 378,
+      "cumulative_rank": 179306,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 377,
+      "cumulative_rank": 180503,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 376,
+      "cumulative_rank": 181719,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 375,
+      "cumulative_rank": 182889,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 374,
+      "cumulative_rank": 184065,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 372,
+      "cumulative_rank": 186393,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 369,
+      "cumulative_rank": 189993,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 368,
+      "cumulative_rank": 191240,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 367,
+      "cumulative_rank": 192416,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 366,
+      "cumulative_rank": 193629,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 365,
+      "cumulative_rank": 194835,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 364,
+      "cumulative_rank": 196048,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 363,
+      "cumulative_rank": 197273,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 362,
+      "cumulative_rank": 198431,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 361,
+      "cumulative_rank": 199602,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 360,
+      "cumulative_rank": 200800,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 359,
+      "cumulative_rank": 201997,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 358,
+      "cumulative_rank": 203153,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 357,
+      "cumulative_rank": 204317,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 356,
+      "cumulative_rank": 205539,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 355,
+      "cumulative_rank": 206729,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 354,
+      "cumulative_rank": 207916,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 350,
+      "cumulative_rank": 212598,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 349,
+      "cumulative_rank": 213853,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 348,
+      "cumulative_rank": 215011,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 347,
+      "cumulative_rank": 216111,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 346,
+      "cumulative_rank": 217228,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 345,
+      "cumulative_rank": 218393,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 344,
+      "cumulative_rank": 219594,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 343,
+      "cumulative_rank": 220774,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 342,
+      "cumulative_rank": 221906,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 341,
+      "cumulative_rank": 223080,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 340,
+      "cumulative_rank": 224174,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 338,
+      "cumulative_rank": 226467,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 336,
+      "cumulative_rank": 228712,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 335,
+      "cumulative_rank": 229806,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 334,
+      "cumulative_rank": 230976,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 333,
+      "cumulative_rank": 232114,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 332,
+      "cumulative_rank": 233308,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 331,
+      "cumulative_rank": 234498,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 325,
+      "cumulative_rank": 241229,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 324,
+      "cumulative_rank": 242377,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 323,
+      "cumulative_rank": 243477,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 322,
+      "cumulative_rank": 244561,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 321,
+      "cumulative_rank": 245638,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 320,
+      "cumulative_rank": 246756,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 319,
+      "cumulative_rank": 247836,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 318,
+      "cumulative_rank": 248961,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 317,
+      "cumulative_rank": 250027,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 316,
+      "cumulative_rank": 257409,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 310,
+      "cumulative_rank": 257413,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 309,
+      "cumulative_rank": 258466,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 307,
+      "cumulative_rank": 260446,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 306,
+      "cumulative_rank": 261488,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 303,
+      "cumulative_rank": 264529,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 302,
+      "cumulative_rank": 265546,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 301,
+      "cumulative_rank": 266515,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 300,
+      "cumulative_rank": 267467,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 299,
+      "cumulative_rank": 268455,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 298,
+      "cumulative_rank": 269392,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 296,
+      "cumulative_rank": 271312,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 295,
+      "cumulative_rank": 272251,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 294,
+      "cumulative_rank": 273211,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 293,
+      "cumulative_rank": 274189,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 292,
+      "cumulative_rank": 275083,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 291,
+      "cumulative_rank": 276001,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 288,
+      "cumulative_rank": 278573,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 287,
+      "cumulative_rank": 279460,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 286,
+      "cumulative_rank": 280348,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 285,
+      "cumulative_rank": 281199,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 284,
+      "cumulative_rank": 282086,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 283,
+      "cumulative_rank": 282861,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 282,
+      "cumulative_rank": 283648,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 281,
+      "cumulative_rank": 284454,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 280,
+      "cumulative_rank": 285244,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 279,
+      "cumulative_rank": 286050,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 278,
+      "cumulative_rank": 286818,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 277,
+      "cumulative_rank": 287604,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 276,
+      "cumulative_rank": 288377,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 275,
+      "cumulative_rank": 289129,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 274,
+      "cumulative_rank": 292088,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 269,
+      "cumulative_rank": 293353,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 268,
+      "cumulative_rank": 294004,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 267,
+      "cumulative_rank": 294631,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 266,
+      "cumulative_rank": 295284,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 265,
+      "cumulative_rank": 295922,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 264,
+      "cumulative_rank": 296520,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 263,
+      "cumulative_rank": 297116,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 262,
+      "cumulative_rank": 297679,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 261,
+      "cumulative_rank": 298237,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 260,
+      "cumulative_rank": 298775,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 259,
+      "cumulative_rank": 299289,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 258,
+      "cumulative_rank": 299317,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 257,
+      "cumulative_rank": 300301,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 256,
+      "cumulative_rank": 300878,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 255,
+      "cumulative_rank": 301314,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 254,
+      "cumulative_rank": 301797,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 253,
+      "cumulative_rank": 302258,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 252,
+      "cumulative_rank": 302784,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 251,
+      "cumulative_rank": 303235,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 249,
+      "cumulative_rank": 304146,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 245,
+      "cumulative_rank": 305710,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 244,
+      "cumulative_rank": 306113,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 243,
+      "cumulative_rank": 306463,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 242,
+      "cumulative_rank": 306787,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 241,
+      "cumulative_rank": 307110,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 240,
+      "cumulative_rank": 307422,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 239,
+      "cumulative_rank": 307736,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 238,
+      "cumulative_rank": 308051,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 237,
+      "cumulative_rank": 308380,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 236,
+      "cumulative_rank": 308676,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 234,
+      "cumulative_rank": 309228,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 230,
+      "cumulative_rank": 310192,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 229,
+      "cumulative_rank": 310406,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 228,
+      "cumulative_rank": 310643,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 227,
+      "cumulative_rank": 310847,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 226,
+      "cumulative_rank": 311034,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 221,
+      "cumulative_rank": 311892,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 220,
+      "cumulative_rank": 312028,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 219,
+      "cumulative_rank": 312162,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 218,
+      "cumulative_rank": 312291,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 217,
+      "cumulative_rank": 312450,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 216,
+      "cumulative_rank": 312599,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 215,
+      "cumulative_rank": 312739,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 214,
+      "cumulative_rank": 312851,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 213,
+      "cumulative_rank": 312956,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 212,
+      "cumulative_rank": 313059,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 211,
+      "cumulative_rank": 313154,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 210,
+      "cumulative_rank": 313243,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 206,
+      "cumulative_rank": 313587,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 205,
+      "cumulative_rank": 313664,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 203,
+      "cumulative_rank": 313825,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 202,
+      "cumulative_rank": 313909,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 201,
+      "cumulative_rank": 313984,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 199,
+      "cumulative_rank": 314120,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 198,
+      "cumulative_rank": 314186,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 197,
+      "cumulative_rank": 314240,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 196,
+      "cumulative_rank": 314283,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 195,
+      "cumulative_rank": 314338,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 194,
+      "cumulative_rank": 314378,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 193,
+      "cumulative_rank": 314425,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 191,
+      "cumulative_rank": 314530,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 188,
+      "cumulative_rank": 314646,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 187,
+      "cumulative_rank": 314681,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 186,
+      "cumulative_rank": 314720,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 185,
+      "cumulative_rank": 314747,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 184,
+      "cumulative_rank": 314786,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 183,
+      "cumulative_rank": 314812,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 182,
+      "cumulative_rank": 314836,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 181,
+      "cumulative_rank": 314873,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 180,
+      "cumulative_rank": 314905,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 179,
+      "cumulative_rank": 314938,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 178,
+      "cumulative_rank": 314966,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 177,
+      "cumulative_rank": 314985,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 176,
+      "cumulative_rank": 315008,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 174,
+      "cumulative_rank": 315064,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 173,
+      "cumulative_rank": 315085,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 172,
+      "cumulative_rank": 315108,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 171,
+      "cumulative_rank": 315129,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 170,
+      "cumulative_rank": 315148,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 168,
+      "cumulative_rank": 315196,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 163,
+      "cumulative_rank": 315302,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 162,
+      "cumulative_rank": 315315,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 161,
+      "cumulative_rank": 315331,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 160,
+      "cumulative_rank": 315344,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 159,
+      "cumulative_rank": 315364,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 158,
+      "cumulative_rank": 315382,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 157,
+      "cumulative_rank": 315397,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 156,
+      "cumulative_rank": 315415,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 155,
+      "cumulative_rank": 315425,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 154,
+      "cumulative_rank": 315429,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 148,
+      "cumulative_rank": 315517,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 147,
+      "cumulative_rank": 315528,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 146,
+      "cumulative_rank": 315533,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 145,
+      "cumulative_rank": 315538,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 140,
+      "cumulative_rank": 315589,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 139,
+      "cumulative_rank": 315597,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 138,
+      "cumulative_rank": 315606,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 137,
+      "cumulative_rank": 315614,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 136,
+      "cumulative_rank": 315623,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 135,
+      "cumulative_rank": 315631,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 134,
+      "cumulative_rank": 315644,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 133,
+      "cumulative_rank": 315655,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 132,
+      "cumulative_rank": 315661,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 131,
+      "cumulative_rank": 315669,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 130,
+      "cumulative_rank": 315679,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 129,
+      "cumulative_rank": 315684,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 128,
+      "cumulative_rank": 315688,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 125,
+      "cumulative_rank": 315703,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 124,
+      "cumulative_rank": 315707,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 123,
+      "cumulative_rank": 315711,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 122,
+      "cumulative_rank": 315717,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 121,
+      "cumulative_rank": 315721,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 120,
+      "cumulative_rank": 315725,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 119,
+      "cumulative_rank": 315729,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 118,
+      "cumulative_rank": 315733,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 117,
+      "cumulative_rank": 315738,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 116,
+      "cumulative_rank": 315741,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 115,
+      "cumulative_rank": 315746,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 114,
+      "cumulative_rank": 315749,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 113,
+      "cumulative_rank": 315750,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 112,
+      "cumulative_rank": 315751,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 107,
+      "cumulative_rank": 315771,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 106,
+      "cumulative_rank": 315774,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 105,
+      "cumulative_rank": 315779,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 104,
+      "cumulative_rank": 315786,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 103,
+      "cumulative_rank": 315790,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 102,
+      "cumulative_rank": 315794,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 101,
+      "cumulative_rank": 315798,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 100,
+      "cumulative_rank": 315805,
+      "confidence": "high"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 73,
+      "cumulative_rank": 315806,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 71,
+      "cumulative_rank": 315807,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 48,
+      "cumulative_rank": 315808,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 47,
+      "cumulative_rank": 315809,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 42,
+      "cumulative_rank": 315810,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 34,
+      "cumulative_rank": 315811,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 33,
+      "cumulative_rank": 315812,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 5,
+      "cumulative_rank": 315813,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 4,
+      "cumulative_rank": 315814,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 3,
+      "cumulative_rank": 315815,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 2,
+      "cumulative_rank": 315816,
+      "confidence": "low"
+    },
+    {
+      "province": "河南",
+      "year": 2026,
+      "subject_type": "历史类",
+      "score": 0,
+      "cumulative_rank": 315817,
+      "confidence": "low"
+    }
+  ]
+}

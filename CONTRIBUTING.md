@@ -6,7 +6,7 @@
 
 - 仓库由**队长账号**创建，其余 4 人由队长在 `Settings → Collaborators` 邀请，权限给 **Write**。
 - **团队内部不使用 Fork 流程**，全员在同一仓库上用分支协作；外部贡献者请 Fork 后提 PR。
-- `main` 已开启分支保护：必须有 PR 且至少 1 人批准才能合并。
+- `main` **当前未开启分支保护**（队长本机 git 直连受限、只能走 API 直推，开了保护会把自己锁住；等网络恢复后再开）。约定上仍要求：`main` 只接受来自 `develop` 的 PR，且只在里程碑（可演示）时合并。
 - 本仓库为**公开的开源仓库（[MIT 许可](./LICENSE)）**——因此**严禁提交任何密钥、账号密码、个人隐私信息或未公开的第三方数据**。
 
 ## 二、第一次使用（每人一次）
@@ -44,6 +44,20 @@ cd zhixuan
 > 分工由队长统一安排，分支名只标识成员、不含模块，方便中途调整任务。
 
 命名规范：全小写英文 + 连字符，例：`feature/xu`、`feature/zhang`、`fix/plan-rank-zhang`。**禁止**中文、空格、`test`、`dev`、`master`。
+
+### 共享文件（公共资产，只有队长可改）
+
+| 文件 | 说明 |
+|---|---|
+| `docs/api-contract.md` | 接口契约，前后端唯一对齐依据 |
+| `frontend/src/api/index.ts`、`frontend/src/types/api.d.ts`、`frontend/src/mocks/index.ts` | 接口层、TS 类型、Mock |
+| `frontend/package.json`、`frontend/package-lock.json`、`frontend/tsconfig.json`、`frontend/vite.config.ts` | 依赖与编译配置 |
+| `README.md`、`README_DEV.md`、`CONTRIBUTING.md`、`docs/*.md` | 仓库文档 |
+| `.gitignore`、`.github/`、`backend/requirements.txt` | 仓库规范与依赖清单 |
+
+需要变更时：**先在群里说明或提 Issue**，由队长统一改。原因：五个人同时改这些文件必然冲突，契约一乱前后端立刻对不上。这些路径已登记在 `.github/CODEOWNERS`。
+
+**你只改自己负责的页面和模块文件。**
 
 ## 四、每日六步流程
 
@@ -125,3 +139,5 @@ docs(readme): 补充本地启动步骤与默认账号
 - Python 文件/变量 `snake_case`；Vue 组件 `PascalCase`；接口字段统一 `snake_case`。
 - 新增页面放 `frontend/src/views/user/` 或 `frontend/src/views/admin/`。
 - 新增后端接口放 `backend/app/api/v1/` 对应模块文件，业务逻辑写进 `app/services/`。
+- **AI 工具的本地配置目录（`.workbuddy/`、`.agents/`）不入库**——它们是个人环境产物。团队共用的 OpenSpec 命令在 `.codebuddy/`，OpenSpec 产物本身在 `openspec/`。
+- 本地运行产物（如 `backend/.runtime/`）不入库，已在 `.gitignore` 中。

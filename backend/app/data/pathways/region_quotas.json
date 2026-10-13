@@ -1,0 +1,84 @@
+{
+  "version": "2026.1",
+  "note": "专项计划实施区域名单。counties 为空且 verified=false 表示名单尚未完成核验入库（tasks.md 2.3），此时规则引擎只输出『待核验』，不输出可报考/不可报考的确定结论，以避免误导用户。",
+  "regions": [
+    {
+      "province": "河南",
+      "program": "national",
+      "program_name": "国家专项计划",
+      "scope": "county_list",
+      "verified": false,
+      "expected_count": 38,
+      "counties": [],
+      "definition": "国家划定的 38 个县：26 个原集中连片特殊困难县 + 12 个原国家级扶贫开发重点县。",
+      "source_name": "河南省 2026 年重点高校招生专项计划政策（新华网河南频道）",
+      "source_url": "http://www.ha.news.cn/20260411/4dba1f256da744cd8fb32106dc1bda75/c.html",
+      "year": 2026
+    },
+    {
+      "province": "河南",
+      "program": "college",
+      "program_name": "高校专项计划",
+      "scope": "county_list",
+      "verified": false,
+      "expected_count": 53,
+      "counties": [],
+      "definition": "共 53 个县：国家专项计划确认的 38 个县 + 15 个原省定扶贫开发重点县，且要求为农村户籍。",
+      "source_name": "河南省 2026 年重点高校招生专项计划政策（新华网河南频道）",
+      "source_url": "http://www.ha.news.cn/20260411/4dba1f256da744cd8fb32106dc1bda75/c.html",
+      "year": 2026
+    },
+    {
+      "province": "河南",
+      "program": "local",
+      "program_name": "地方专项计划",
+      "scope": "province_rural",
+      "verified": true,
+      "expected_count": null,
+      "counties": [],
+      "definition": "实施区域为河南省农村地区，无县名单限制；以农村户籍为判定依据。",
+      "source_name": "河南省 2026 年重点高校招生专项计划政策（新华网河南频道）",
+      "source_url": "http://www.ha.news.cn/20260411/4dba1f256da744cd8fb32106dc1bda75/c.html",
+      "year": 2026
+    },
+    {
+      "province": "江西",
+      "program": "national",
+      "program_name": "国家专项计划",
+      "scope": "county_list",
+      "verified": false,
+      "expected_count": null,
+      "counties": [],
+      "definition": "江西省为二期试点省份（design.md D10），实施区域名单待数据工程核验录入。",
+      "source_name": "江西省教育考试院（实施区域名单待核验录入）",
+      "source_url": "http://www.jxeea.cn/",
+      "year": 2026
+    },
+    {
+      "province": "江西",
+      "program": "college",
+      "program_name": "高校专项计划",
+      "scope": "county_list",
+      "verified": false,
+      "expected_count": null,
+      "counties": [],
+      "definition": "江西省为二期试点省份（design.md D10），实施区域名单待数据工程核验录入。",
+      "source_name": "江西省教育考试院（实施区域名单待核验录入）",
+      "source_url": "http://www.jxeea.cn/",
+      "year": 2026
+    },
+    {
+      "province": "江西",
+      "program": "local",
+      "program_name": "地方专项计划",
+      "scope": "province_rural",
+      "verified": true,
+      "expected_count": null,
+      "counties": [],
+      "definition": "实施区域为江西省农村地区，无县名单限制；以农村户籍为判定依据。",
+      "source_name": "江西省教育考试院",
+      "source_url": "http://www.jxeea.cn/",
+      "year": 2026
+    }
+  ]
+}

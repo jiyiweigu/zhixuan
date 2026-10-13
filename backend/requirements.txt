@@ -1,3 +1,8 @@
 fastapi
 uvicorn[standard]
 pydantic
+sqlalchemy>=2.0
+alembic
+pyjwt
+# 以下仅测试用（fastapi.testclient 依赖 httpx，运行 backend/test_*.py 时需要）
+httpx

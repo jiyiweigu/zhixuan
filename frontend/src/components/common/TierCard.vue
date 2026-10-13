@@ -1,0 +1,1 @@
+<script setup lang="ts">defineProps<{tier:'冲'|'稳'|'保';items:Zhixuan.PlanItem[]}>()</script><template><section class="tier-card"><header><b>{{tier}}</b><span>{{items.length}} 个志愿</span></header><p v-for="item in items" :key="item.order">{{item.order}}. {{item.school_name}} · {{item.major_names.join('、')}}</p><p v-if="!items.length" class="muted">暂无演示数据</p></section></template>

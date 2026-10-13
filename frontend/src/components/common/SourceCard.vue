@@ -1,0 +1,1 @@
+<script setup lang="ts">defineProps<{citation:Zhixuan.Citation}>()</script><template><details class="source-card"><summary>{{citation.source_name}} · {{citation.year}} <span>展开来源 ↗</span></summary><p>{{citation.snippet||'演示来源，仅用于交互验证。'}}</p><a :href="citation.source_url" target="_blank">打开来源</a></details></template>

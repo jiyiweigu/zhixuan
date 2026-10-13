@@ -1,0 +1,164 @@
+{
+  "meta": {
+    "generated_at": "2026-10-12",
+    "owner": "徐（③ 数据工程）",
+    "target_table": "score_segment",
+    "purpose": "位次换算基础：分数 → 位次。供 ② 的推荐算法与志愿方案使用。"
+  },
+  "summary": {
+    "files": 8,
+    "total_rows": 10778,
+    "total_monotonic_breaks": 0,
+    "total_null_rank": 0
+  },
+  "files": [
+    {
+      "province": "河南",
+      "year": 2022,
+      "exam_system": "文理科",
+      "rows": 1152,
+      "groups": {
+        "文科|专科批": 345,
+        "文科|本科一批": 126,
+        "文科|本科二批": 82,
+        "理科|专科批": 305,
+        "理科|本科一批": 190,
+        "理科|本科二批": 104
+      },
+      "monotonic_breaks": 0,
+      "null_rank": 0,
+      "data_status": "pending",
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "file": "data\\score_segment\\score_segment_2022_河南.json"
+    },
+    {
+      "province": "江西",
+      "year": 2022,
+      "exam_system": "文理科",
+      "rows": 2615,
+      "groups": {
+        "文科|": 750,
+        "文科|专科批": 372,
+        "文科|本科一批": 112,
+        "文科|本科二批": 57,
+        "理科|": 750,
+        "理科|专科批": 340,
+        "理科|本科一批": 165,
+        "理科|本科二批": 69
+      },
+      "monotonic_breaks": 0,
+      "null_rank": 0,
+      "data_status": "pending",
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "file": "data\\score_segment\\score_segment_2022_江西.json"
+    },
+    {
+      "province": "河南",
+      "year": 2023,
+      "exam_system": "文理科",
+      "rows": 1193,
+      "groups": {
+        "文科|专科批": 365,
+        "文科|本科一批": 135,
+        "文科|本科二批": 82,
+        "理科|专科批": 309,
+        "理科|本科一批": 197,
+        "理科|本科二批": 105
+      },
+      "monotonic_breaks": 0,
+      "null_rank": 0,
+      "data_status": "pending",
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "file": "data\\score_segment\\score_segment_2023_河南.json"
+    },
+    {
+      "province": "江西",
+      "year": 2023,
+      "exam_system": "文理科",
+      "rows": 1151,
+      "groups": {
+        "文科|专科批": 372,
+        "文科|本科一批": 126,
+        "文科|本科二批": 61,
+        "理科|专科批": 345,
+        "理科|本科一批": 174,
+        "理科|本科二批": 73
+      },
+      "monotonic_breaks": 0,
+      "null_rank": 0,
+      "data_status": "pending",
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "file": "data\\score_segment\\score_segment_2023_江西.json"
+    },
+    {
+      "province": "河南",
+      "year": 2024,
+      "exam_system": "文理科",
+      "rows": 1182,
+      "groups": {
+        "文科|专科批": 328,
+        "文科|本科一批": 151,
+        "文科|本科二批": 93,
+        "理科|专科批": 296,
+        "理科|本科一批": 199,
+        "理科|本科二批": 115
+      },
+      "monotonic_breaks": 0,
+      "null_rank": 0,
+      "data_status": "pending",
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "file": "data\\score_segment\\score_segment_2024_河南.json"
+    },
+    {
+      "province": "江西",
+      "year": 2024,
+      "exam_system": "3+1+2",
+      "rows": 1148,
+      "groups": {
+        "历史类|专科批": 363,
+        "历史类|本科批": 203,
+        "物理类|专科批": 348,
+        "物理类|本科批": 234
+      },
+      "monotonic_breaks": 0,
+      "null_rank": 0,
+      "data_status": "pending",
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "file": "data\\score_segment\\score_segment_2024_江西.json"
+    },
+    {
+      "province": "河南",
+      "year": 2025,
+      "exam_system": "3+1+2",
+      "rows": 1198,
+      "groups": {
+        "历史类|专科批": 371,
+        "历史类|本科批": 216,
+        "物理类|专科批": 327,
+        "物理类|本科批": 284
+      },
+      "monotonic_breaks": 0,
+      "null_rank": 0,
+      "data_status": "pending",
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "file": "data\\score_segment\\score_segment_2025_河南.json"
+    },
+    {
+      "province": "江西",
+      "year": 2025,
+      "exam_system": "3+1+2",
+      "rows": 1139,
+      "groups": {
+        "历史类|专科批": 386,
+        "历史类|本科批": 176,
+        "物理类|专科批": 329,
+        "物理类|本科批": 248
+      },
+      "monotonic_breaks": 0,
+      "null_rank": 0,
+      "data_status": "pending",
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "file": "data\\score_segment\\score_segment_2025_江西.json"
+    }
+  ]
+}

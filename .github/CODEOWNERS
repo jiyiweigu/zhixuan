@@ -1,0 +1,22 @@
+# CODEOWNERS —— 共享文件保护
+
+# 下列文件属「公共资产」，按 docs/team-tasks.md 的《共享文件约定》只有队长可改。
+# 队员如需变更：先在群里说明（或提 Issue），由队长统一修改。
+#
+# 生效条件：需在分支保护 / Rulesets 中开启 "Require review from Code Owners"。
+# 在此之前本文件仅为声明，不构成强制拦截。
+
+/docs/                        @jiyiweigu
+/frontend/src/api/            @jiyiweigu
+/frontend/src/types/          @jiyiweigu
+/frontend/src/mocks/          @jiyiweigu
+/frontend/package.json        @jiyiweigu
+/frontend/package-lock.json   @jiyiweigu
+/frontend/tsconfig.json       @jiyiweigu
+/frontend/vite.config.ts      @jiyiweigu
+/README.md                    @jiyiweigu
+/README_DEV.md                @jiyiweigu
+/CONTRIBUTING.md              @jiyiweigu
+/.gitignore                   @jiyiweigu
+/.github/                     @jiyiweigu
+/backend/requirements.txt     @jiyiweigu
