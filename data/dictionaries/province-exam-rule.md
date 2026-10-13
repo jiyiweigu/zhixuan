@@ -22,10 +22,10 @@
 
 | 层级 | 省份 | 年份 | 批次 | 状态 |
 |---|---|---|---|---|
-| **P0 做真** | 河南 | 2026 | 普通本科批 | ✅ `verified` |
-| **P0 做真** | 江西 | 2026 | 本科批次 | ✅ `verified` |
-| 登记备查 | 河南 | 2026 | 普通本科提前批 / 高职（专科）批 | ✅ `verified`（数值已核实，产品 P2 暂不支持渲染） |
-| 登记备查 | 江西 | 2026 | 高职（专科）批次 / 艺术体育本科批 | ✅ `verified`（同上） |
+| **P0 做真** | 河南 | 2026 | 普通本科批 | ✅ `available` |
+| **P0 做真** | 江西 | 2026 | 本科批次 | ✅ `available` |
+| 登记备查 | 河南 | 2026 | 普通本科提前批 / 高职（专科）批 | ✅ `available`（数值已核实，产品 P2 暂不支持渲染） |
+| 登记备查 | 江西 | 2026 | 高职（专科）批次 / 艺术体育本科批 | ✅ `available`（同上） |
 | 骨架 | 河南 | 2024 | 本科一批（老高考） | ⚠️ `schema_only`，**数值未经核实，不得使用** |
 
 **未做**：其他 29 省、2022–2025 各年规则、专业级选科要求细则 —— 均为后续任务，**不在此文件内编造**。
@@ -103,7 +103,7 @@
 | 第 7 章字段 | 本文件字段 | 备注 |
 |---|---|---|
 | `id` | `id` | 形如 `CERT-HENAN-2026-BK` |
-| `province` | `province` / `province_code` | 补了 6 位区划码，便于程序匹配 |
+| `province` | `province` / `province_code` | 补了 2 位省级区划码（河南 `41` / 江西 `36`），与契约 `/api/provinces/{code}/rules` 一致 |
 | `year` | `year` | ★ 三表都带 year（第 7 章要求） |
 | `batch` | `batch` / `batch_code` | `batch_code` 为程序用稳定标识 |
 | `mode` | `mode` | `group` / `major_school` / `school_major` |
@@ -118,7 +118,7 @@
 | `source_id` | `source_id` | 已在 `source-table.json` 登记 |
 
 **额外补充字段**（第 7 章未定义，供 ② 参考，若不要可忽略）：
-`exam_system`、`first_new_gaokao_year`、`category_group`、`extra_volunteers[]`、`special_plan_note`、`filling_note`、`source_excerpt`
+`exam_system`、`first_new_gaokao_year`、`exam_type`（数据源原始列名为 `category_group`，导入时必须改名为 `exam_type`，见契约 §8.7）、`extra_volunteers[]`、`special_plan_note`、`filling_note`、`source_excerpt`
 
 ---
 

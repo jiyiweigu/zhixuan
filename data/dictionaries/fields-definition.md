@@ -106,7 +106,7 @@
 | `apply_time` | varchar | 申请时间节点 |
 | `description` | text | 简介 |
 | `priority` | enum | `P0` / `P1` / `P2` |
-| `data_status` | enum | `verified` / `schema_only` / `pending` |
+| `data_status` | enum | `available` / `partial` / `schema_only` / `unavailable` |
 | `source_id` | int FK | → `source` |
 
 ### 4.3 `pathway_eligibility` 资格规则
@@ -175,7 +175,7 @@
 | `id` | int PK | |
 | `school_id` / `major_id` | FK | |
 | `province` | varchar | 省份 |
-| `year` | int | 年份（**2023–2025**） |
+| `year` | int | 年份（**2022 / 2024 / 2025**） |
 | `batch` | varchar | 批次 |
 | `pathway_id` | int FK | 途径 |
 | `subject_type` | varchar | 科类 |
@@ -227,18 +227,22 @@
 
 ---
 
-## 五、字段名冲突待确认（★ 重要）
+## 五、字段名冲突（部分已由契约 v1.2 裁定）
 
-契约与第 7 章 `user_profile` 表的字段名**不一致**：
+契约与第 7 章 `user_profile` 表的字段名曾有差异，其中**户籍类字段已裁定**：
+
+- **户籍所在县**：统一用 `home_county`；**户籍县行政区划码**：统一用 `home_county_code`。
+  不再存在 `household_county`（契约 v1.2 裁定，Alembic 0006 已重命名）。
+  见 `docs/api-contract.md` 第 2 节「字段名裁定」。
+
+其余字段名冲突：
 
 | 概念 | 契约字段名 | 第 7 章表字段名 | 需确认 |
 |---|---|---|---|
-| 户籍所在县 | `household_county` | `home_county` | 以哪个为准？ |
-| 户籍县区划码 | （未定义） | `home_county_code` | 契约缺 |
 | 学籍年限 | `enrollment_years` | `school_years` | 以哪个为准？ |
 | 学籍所在县 | `enrollment_county` | （未定义） | 第 7 章缺 |
 
-> **我的判断**：**以契约为准**（契约是前后端唯一依据，且是更新的）。但第 7 章的表定义也需同步，
+> **原则**：以契约为准（契约是前后端唯一依据，且是更新的）。第 7 章的表定义也需同步，
 > 否则 ② 建表时会产生偏差。**请 ② 明确。**
 
 ---
@@ -248,7 +252,7 @@
 | 枚举 | 取值 |
 |---|---|
 | `priority` | `P0` / `P1` / `P2` |
-| `data_status` | `verified` / `schema_only` / `pending` |
+| `data_status` | `available` / `partial` / `schema_only` / `unavailable` |
 | `rule_type` | `户籍` / `学籍` / `区域` / `成绩` |
 | `subject_type` | `物理类` / `历史类` /（老高考）`理科` / `文科` |
 | `household_type` | `农村` / `城镇` |

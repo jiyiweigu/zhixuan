@@ -23,7 +23,7 @@ from sqlalchemy.orm import Session
 from app.core import pagination
 from app.core.response import BizError
 from app.models.base_data import School, SchoolMajorScore
-from app.models.constants import MAX_COMPARE_SCHOOLS
+from app.models.constants import DATA_STATUS_AVAILABLE, DATA_STATUS_SCHEMA_ONLY, MAX_COMPARE_SCHOOLS
 from app.models.school_profile import SchoolLife, SchoolProfile
 from app.models.source import Source
 
@@ -170,7 +170,9 @@ def profile_payload(
             "student_faculty_ratio": None,
             "source_note": "",
             "citations": [],
-            "data_status": "暂无画像数据，待数据工程按 tasks.md 2.5 入库",
+            # data_status 只用契约「跨层词表」四值；说明文字放 data_note
+            "data_status": DATA_STATUS_SCHEMA_ONLY,
+            "data_note": "暂无画像数据，待数据工程按 tasks.md 2.5 入库",
         }
 
     citation = citation_of_source(source)
@@ -188,7 +190,7 @@ def profile_payload(
         "student_faculty_ratio": profile.student_faculty_ratio or None,
         "source_note": _source_note(source),
         "citations": [citation] if citation else [],
-        "data_status": "available",
+        "data_status": DATA_STATUS_AVAILABLE,
     }
 
 

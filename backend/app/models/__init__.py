@@ -11,6 +11,7 @@
 - 7.4 院校画像：school_profile / school_life
 - 7.5 知识库与运营：knowledge_doc / knowledge_chunk / qa_log / review_task / admin_user
 - 7.6 报考约束：province_exam_rule / subject_requirement / physical_restriction
+  （0007 追加 admission_requirement / major_tuition / rule_dataset_status，对齐契约 8.7）
 - 8.1 管理端运营：admin_audit_log（第 7 章未定义，为「操作留痕」验收新增，见 app/models/audit.py）
 - 8.3 管理端运营：index_task（第 7 章未定义，为索引重建的任务态与进度新增，见 app/models/knowledge.py）
 """
@@ -27,8 +28,11 @@ from app.models.base_data import (
     ScoreSegment,
 )
 from app.models.constraints import (
+    AdmissionRequirement,
+    MajorTuition,
     PhysicalRestriction,
     ProvinceExamRule,
+    RuleDatasetStatus,
     SubjectRequirement,
 )
 from app.models.knowledge import (
@@ -54,12 +58,14 @@ from app.models.user_data import UserFavorite, UserPlan
 __all__ = [
     "AdminAuditLog",
     "AdminUser",
+    "AdmissionRequirement",
     "DisciplineEval",
     "EnrollmentRule",
     "IndexTask",
     "KnowledgeChunk",
     "KnowledgeDoc",
     "Major",
+    "MajorTuition",
     "Pathway",
     "PathwayEligibility",
     "PathwayRegion",
@@ -69,6 +75,7 @@ __all__ = [
     "ProvinceExamRule",
     "QaLog",
     "ReviewTask",
+    "RuleDatasetStatus",
     "School",
     "SchoolLife",
     "SchoolMajorScore",

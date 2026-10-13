@@ -9,7 +9,8 @@
     audience        → target_group
     key_dates[]     → apply_time（分号连接）
     condition_summary → description
-    status「数据规划中」→ data_status=planned，其余（可查询 / 可判定）→ ready
+    status「数据规划中」→ data_status=schema_only，其余（可查询 / 可判定）→ available
+    （data_status 用契约「跨层词表」的四值，不用 ready / planned 自造写法）
 
 用法：
     cd backend && .venv/Scripts/python.exe -m app.services.pathway_seed
@@ -24,6 +25,7 @@ from typing import Any
 from sqlalchemy.orm import Session
 
 from app.core import dataset
+from app.models.constants import DATA_STATUS_AVAILABLE, DATA_STATUS_SCHEMA_ONLY
 from app.models.pathway import Pathway
 from app.services import source_guard
 
@@ -31,8 +33,8 @@ STATUS_PLANNED = "数据规划中"
 
 
 def _data_status(status: str) -> str:
-    """「数据规划中」→ planned；可查询 / 可判定 → ready。"""
-    return "planned" if str(status or "").strip() == STATUS_PLANNED else "ready"
+    """「数据规划中」→ schema_only；可查询 / 可判定 → available（契约跨层词表四值）。"""
+    return DATA_STATUS_SCHEMA_ONLY if str(status or "").strip() == STATUS_PLANNED else DATA_STATUS_AVAILABLE
 
 
 def seed_pathways(db: Session) -> dict[str, int]:

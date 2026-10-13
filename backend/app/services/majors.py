@@ -18,6 +18,7 @@ from sqlalchemy.orm import Session
 
 from app.core import pagination
 from app.models.base_data import Major
+from app.models.constants import DATA_STATUS_SCHEMA_ONLY
 
 __all__ = [
     "get_major",
@@ -82,5 +83,7 @@ def get_major(db: Session, major_id: int) -> dict[str, Any] | None:
         **major_summary(major),
         "intro": "",
         "first_class_schools": [],
-        "data_status": MISSING_FIELD_NOTE,
+        # data_status 只用契约「跨层词表」四值；说明文字放 data_note，不塞进枚举字段
+        "data_status": DATA_STATUS_SCHEMA_ONLY,
+        "data_note": MISSING_FIELD_NOTE,
     }

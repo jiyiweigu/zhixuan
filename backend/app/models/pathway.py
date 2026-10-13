@@ -26,6 +26,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.base import Base, utcnow
 from app.models.constants import (
+    DATA_STATUS_SCHEMA_ONLY,
     PATHWAY_ID_MAX_LENGTH,
     PROVINCE_MAX_LENGTH,
     YEAR_MAX,
@@ -50,7 +51,9 @@ class Pathway(Base):
     description: Mapped[str] = mapped_column(Text, default="")
     priority: Mapped[str] = mapped_column(String(8), index=True, default="P2", comment="P0 / P1 / P2")
     data_status: Mapped[str] = mapped_column(
-        String(16), default="planned", comment="ready / planned，对应「数据规划中」标注"
+        String(16),
+        default=DATA_STATUS_SCHEMA_ONLY,
+        comment="契约跨层词表四值：available / partial / schema_only / unavailable",
     )
     year: Mapped[int] = mapped_column(Integer)
     source_id: Mapped[int] = mapped_column(ForeignKey("source.id"))

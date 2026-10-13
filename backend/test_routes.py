@@ -99,6 +99,16 @@ EXPECTED = {
     ("/api/admin/physical-restrictions", "get"),
     ("/api/admin/physical-restrictions", "post"),
     ("/api/admin/physical-restrictions/{rule_id}", "put"),
+    # NEW：契约 8.8 四组管理端规则维护（v1.2 补齐）
+    ("/api/admin/admission-requirements", "get"),
+    ("/api/admin/admission-requirements", "post"),
+    ("/api/admin/admission-requirements/{rule_id}", "put"),
+    ("/api/admin/major-tuition", "get"),
+    ("/api/admin/major-tuition", "post"),
+    ("/api/admin/major-tuition/{rule_id}", "put"),
+    ("/api/admin/rule-dataset-status", "get"),
+    ("/api/admin/rule-dataset-status", "put"),
+    ("/api/admin/rule-datasets/import", "post"),
 }
 
 

@@ -507,7 +507,7 @@ def main() -> int:
                 "source_file": p.name, "imported_rows": 0,
                 "skipped": {"unusable_whole_file": 1},
                 "quality_flags": ["unusable"], "unusable_reason": bad,
-                "data_status": "schema_only",
+                "data_status": "unavailable",
             })
             continue
 

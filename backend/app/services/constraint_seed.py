@@ -12,6 +12,17 @@
 
 **幂等**：按唯一键判断已存在即跳过；真实数据入库后同键记录会被覆盖或并存（按 year 区分）。
 
+**诚实性（契约 8.1 / 8.7）**：本模块**不写入** ``rule_dataset_status``，也不写
+``major_tuition`` / ``admission_requirement``。于是接口的 ``data_status`` 由
+``app/services/constraints.py`` 按"表里是否真的有记录"如实推导：
+
+- 省份模板 / 选科 / 身体条件有记录 → ``available``；
+- 学费与章程要求无记录 → 校验接口整体降级为 ``partial``，8.6 把这两个规则集
+  列入 ``missing_rule_sets``，学费只给 ``major.tuition`` 的演示值并显式标注
+  "演示值，非官方收费标准"。
+
+真实规则由 ③ 号按 7.6 / 8.7 导入后再由管理端把状态推进到 ``available``。
+
 运行时执行：``cd backend && .venv/Scripts/python.exe -m app.services.constraint_seed``
 """
 
@@ -23,6 +34,12 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.models.base_data import Major
+from app.models.constants import (
+    BATCH_CODE_EARLY,
+    BATCH_CODE_UG,
+    EXAM_TYPE_NORMAL,
+    province_code_of,
+)
 from app.models.constraints import (
     PhysicalRestriction,
     ProvinceExamRule,
@@ -88,18 +105,26 @@ PHYSICAL_RULES: tuple[tuple[str, str, str, str, str], ...] = (
      "听力异常不宜就读医学类（合格不宜）"),
 )
 
-# 省份模板：(province, year, batch, mode, volunteer_count, majors_per_group, has_adjust,
-#            admit_method, ratio, tie_rule, mutex_groups, collect_count, source)
+# 省份模板：province, province_code, year, batch, batch_code, exam_type, mode,
+#            volunteer_count, majors_per_group, has_adjust, admit_method, ratio,
+#            tie_rule, mutex_groups, collect_count, source
+#
+# batch_code 取值与数据侧 data/dictionaries/province-exam-rule.json 同源
+# （河南「普通本科批」/江西「本科批次」经 batch_code 归一后不再区分）。
 PROVINCE_RULES: tuple[dict[str, Any], ...] = (
     {
-        "province": "河南", "year": 2026, "batch": "本科批", "mode": "group",
+        "province": "河南", "province_code": "41", "year": 2026,
+        "batch": "本科批", "batch_code": BATCH_CODE_UG, "exam_type": EXAM_TYPE_NORMAL,
+        "mode": "group",
         "volunteer_count": 48, "majors_per_group": 6, "has_adjust": True,
         "admit_method": "parallel", "ratio": "1:1",
         "tie_rule": "总分相同依次比较语文、数学、外语单科成绩",
         "mutex_groups": [], "collect_count": None, "_source": SOURCE_HAEEA,
     },
     {
-        "province": "河南", "year": 2026, "batch": "提前批", "mode": "major_school",
+        "province": "河南", "province_code": "41", "year": 2026,
+        "batch": "提前批", "batch_code": BATCH_CODE_EARLY, "exam_type": EXAM_TYPE_NORMAL,
+        "mode": "major_school",
         "volunteer_count": 64, "majors_per_group": None, "has_adjust": False,
         "admit_method": "parallel", "ratio": "1:1",
         "tie_rule": "总分相同依次比较语文、数学、外语单科成绩",
@@ -107,7 +132,9 @@ PROVINCE_RULES: tuple[dict[str, Any], ...] = (
         "collect_count": None, "_source": SOURCE_HAEEA,
     },
     {
-        "province": "江西", "year": 2026, "batch": "本科批", "mode": "group",
+        "province": "江西", "province_code": "36", "year": 2026,
+        "batch": "本科批", "batch_code": BATCH_CODE_UG, "exam_type": EXAM_TYPE_NORMAL,
+        "mode": "group",
         "volunteer_count": 45, "majors_per_group": 6, "has_adjust": True,
         "admit_method": "parallel", "ratio": "1:1",
         "tie_rule": "总分相同依次比较语文、数学、外语单科成绩",
@@ -168,6 +195,7 @@ def _ensure_requirements(db: Session, source: Source, majors: dict[str, Major], 
             continue
         db.add(
             SubjectRequirement(
+                province_code=province_code_of(province),
                 province=province, year=year, batch="本科批",
                 major_id=major.id, first_subject=first_subject,
                 secondary_subjects=list(secondary), logic=logic, source_id=source.id,
@@ -193,7 +221,8 @@ def _ensure_physical(db: Session, source: Source, province: str, year: int) -> i
         db.add(
             PhysicalRestriction(
                 condition=condition, threshold=threshold, major_category=category,
-                level=level, detail=detail, province=province, year=year,
+                level=level, detail=detail,
+                province_code=province_code_of(province), province=province, year=year,
                 source_id=source.id,
             )
         )

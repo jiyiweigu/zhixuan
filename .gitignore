@@ -44,6 +44,22 @@ data/**/*.csv
 # 导入中间层（import_dataset.py 产出，可重跑，不入库）
 data/staged/
 
+# 数据本体与考试院官方扫描件（授权/体积原因不入库，本地留档；
+# 重建见 data/DOWNLOAD.md 与 data/MANIFEST.sha256）
+data/school_major_score/school_major_score_*.json
+data/score_segment/score_segment_*.json
+data/score_segment/review_*.html
+data/schools/*.json
+data/samples/raw/
+
+# ★ ③ 特例（仅 feature/xu 分支）：院校库 JSON **保留入库**，与上一条「数据本体移出」不同。
+#   理由：院校库是 2.1 主产物，且采集/合并脚本（merge_schools、build_school_*、
+#   analyze_school_unmatched、build_school_aliases）直接依赖 schools_raw.json /
+#   moe_schools.json / shanghairanking_2024.json 等输入，移出后无法离线复跑。
+#   开 PR 前需与队长复议；渠道录取分（school_major_score）与一分一段（score_segment）
+#   因体积/授权原因，仍按 develop 策略移出（重建见 data/DOWNLOAD.md）。
+!data/schools/*.json
+
 # 采集脚本的原始页面缓存（可复现，不入库）
 data/**/.cache/
 data/**/.cache_moe/

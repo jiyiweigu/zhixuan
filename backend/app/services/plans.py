@@ -21,6 +21,7 @@ from typing import Any
 
 from app.core import dataset
 from app.core.dataset import citation_of
+from app.models.constants import DATA_STATUS_SCHEMA_ONLY
 
 TIER_ORDER = ("冲", "稳", "保")
 PRIORITY_OPTIONS = ("院校优先", "专业优先", "城市优先")
@@ -558,6 +559,8 @@ def build_plan(
         "excluded": excluded,
         "risks": risks,
         "summary": summary,
-        "data_status": "演示数据（非官方），真实录取数据请以省教育考试院发布为准",
+        # data_status 只用契约「跨层词表」四值；"演示数据（非官方）" 这类说明放 data_note
+        "data_status": DATA_STATUS_SCHEMA_ONLY,
+        "data_note": "演示数据（非官方），真实录取数据请以省教育考试院发布为准",
         "disclaimer": DISCLAIMER,
     }

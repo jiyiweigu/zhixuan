@@ -32,7 +32,7 @@
 
 1. **`source` 必须先导**：其他表的 `source_id` 依赖它。
 2. **枚举以 `data/scripts/validate.py` 为准**：
-   - `data_status` ∈ `{verified, schema_only, pending}`
+   - `data_status` ∈ `{available, partial, schema_only, unavailable}`（契约四值）
    - `source_type` ∈ `{官方, 高校官网, 权威媒体, 其他}`
    - `priority` ∈ `{P0, P1, P2}`
    - `province_exam_rule.mode` ∈ `{group, major_school, school_major}`
@@ -40,7 +40,7 @@
    - `school.json`：`type`/`website`/`intro` 为空 → 应允许 NULL
    - `school_major_score.json`：2 条 `school_id` 为空 → 应允许 NULL 并标注
    - `school_major_score.json`：2 条 `subject_type` 为空 → 应允许空串
-   - `score_segment.json` / `school_major_score.json`：`data_status = pending` → 界面须如实标注
+   - `score_segment.json` / `school_major_score.json`：`data_status = pending`（渠道数据未核实；按契约 §8.7 须映射为 `schema_only` 后方可出接口）→ 界面须如实标注
 4. **字段名口径**（第 7 章 vs 契约曾有冲突，本包统一用第 7 章名）：
    - `score_segment.cumulative_rank`（不是 `rank`）
    - `school_major_score.min_score` / `min_rank` / `avg_score`
@@ -56,7 +56,7 @@ python data/scripts/build_samples.py
 | 文件 | `validate.py` 结果 | 说明 |
 |---|---|---|
 | `source` / `pathway_region` / `pathway_eligibility` | ✅ 通过 | |
-| `pathway` / `school` / `score_segment` | ✅ 通过 + 警告 | 警告为 `data_status=pending`（设计如此） |
+| `pathway` / `school` / `score_segment` | ✅ 通过 + 警告 | 警告为 `data_status=pending`（设计如此；按契约映射为 `schema_only`） |
 | `school_major_score` | ⚠️ 2 处 ERROR + 警告 | **ERROR 是刻意留的边界行**（第 9、10 条 `school_id` 为空，用于测 NULL 处理） |
 
 > ⚠️ `school_major_score.json` 的 2 处 ERROR **不是数据缺陷**，是**故意保留**的边界样本。

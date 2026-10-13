@@ -40,7 +40,7 @@ def _client_ip(request: Request) -> str:
 def list_pathways(
     category: str = Query(default="", description="按分类过滤"),
     priority: str = Query(default="", description="按优先级过滤：P0 / P1 / P2"),
-    data_status: str = Query(default="", description="按数据状态过滤：ready / planned"),
+    data_status: str = Query(default="", description="按数据状态过滤：available / partial / schema_only / unavailable"),
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
     return ok(
