@@ -1,0 +1,70 @@
+{
+  "loaded": 5270,
+  "failed": 0,
+  "by_table": {
+    "school": {
+      "ok": 183,
+      "failed": 0
+    },
+    "major": {
+      "ok": 455,
+      "failed": 0
+    },
+    "pathway": {
+      "ok": 26,
+      "failed": 0
+    },
+    "score_segment": {
+      "ok": 3574,
+      "failed": 0
+    },
+    "batch_score_line": {
+      "ok": 18,
+      "failed": 0
+    },
+    "pathway_region": {
+      "ok": 91,
+      "failed": 0
+    },
+    "pathway_eligibility": {
+      "ok": 13,
+      "failed": 0
+    },
+    "pathway_time": {
+      "ok": 3,
+      "failed": 0
+    },
+    "school_major_score": {
+      "ok": 267,
+      "failed": 0
+    },
+    "pathway_score": {
+      "ok": 10,
+      "failed": 0
+    },
+    "enrollment_rule": {
+      "ok": 40,
+      "failed": 0
+    },
+    "school_profile": {
+      "ok": 20,
+      "failed": 0
+    },
+    "discipline_eval": {
+      "ok": 409,
+      "failed": 0
+    },
+    "school_life": {
+      "ok": 7,
+      "failed": 0
+    },
+    "knowledge_doc": {
+      "ok": 62,
+      "failed": 0
+    },
+    "knowledge_chunk": {
+      "ok": 92,
+      "failed": 0
+    }
+  }
+}

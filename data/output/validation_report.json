@@ -1,0 +1,299 @@
+{
+  "generated_at": "2026-10-12T20:49:35",
+  "province": "河南",
+  "summary": {
+    "total_valid": 6699,
+    "total_rejected": 0,
+    "doc_types": 16,
+    "checks_passed": 31,
+    "checks_total": 31,
+    "accuracy_rate": "100.0%"
+  },
+  "by_doc_type": {
+    "batch_score_line": {
+      "valid": 18,
+      "rejected": 0
+    },
+    "discipline_eval": {
+      "valid": 409,
+      "rejected": 0
+    },
+    "enrollment_rule": {
+      "valid": 40,
+      "rejected": 0
+    },
+    "knowledge_chunk": {
+      "valid": 92,
+      "rejected": 0
+    },
+    "knowledge_doc": {
+      "valid": 62,
+      "rejected": 0
+    },
+    "major": {
+      "valid": 455,
+      "rejected": 0
+    },
+    "pathway": {
+      "valid": 26,
+      "rejected": 0
+    },
+    "pathway_eligibility": {
+      "valid": 13,
+      "rejected": 0
+    },
+    "pathway_region": {
+      "valid": 91,
+      "rejected": 0
+    },
+    "pathway_score": {
+      "valid": 10,
+      "rejected": 0
+    },
+    "pathway_time": {
+      "valid": 3,
+      "rejected": 0
+    },
+    "school": {
+      "valid": 183,
+      "rejected": 0
+    },
+    "school_life": {
+      "valid": 7,
+      "rejected": 0
+    },
+    "school_major_score": {
+      "valid": 1696,
+      "rejected": 0
+    },
+    "school_profile": {
+      "valid": 20,
+      "rejected": 0
+    },
+    "score_segment": {
+      "valid": 3574,
+      "rejected": 0
+    }
+  },
+  "checks": [
+    {
+      "item": "batch_score_line 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "discipline_eval 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "enrollment_rule 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "knowledge_chunk 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "knowledge_doc 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "major 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "pathway 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "pathway_eligibility 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "pathway_region 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "pathway_score 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "pathway_time 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "school 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "school_life 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "school_major_score 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "school_profile 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "score_segment 来源三要素覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "一分一段表年份/科类覆盖",
+      "required": "2023-2024 文/理, 2025 历史/物理",
+      "actual": {
+        "2025": [
+          "历史类",
+          "物理类"
+        ],
+        "2024": [
+          "文科",
+          "理科"
+        ],
+        "2023": [
+          "文科",
+          "理科"
+        ]
+      },
+      "pass": true
+    },
+    {
+      "item": "一分一段分数范围",
+      "required": "0-750",
+      "actual": "100-710",
+      "pass": true
+    },
+    {
+      "item": "一分一段位次单调性（同分及以上累计）",
+      "required": "分数降序时位次升序",
+      "actual": "通过",
+      "pass": true
+    },
+    {
+      "item": "院校库数量",
+      "required": "河南约 150-200 所",
+      "actual": "183 所",
+      "pass": true
+    },
+    {
+      "item": "院校代码覆盖率",
+      "required": "100%",
+      "actual": "100.0%",
+      "pass": true
+    },
+    {
+      "item": "途径字典数量",
+      "required": "26 类",
+      "actual": "26 类",
+      "pass": true
+    },
+    {
+      "item": "专项县名单覆盖",
+      "required": "国家专项38县/高校专项53县（地方专项=全省农村，无县名单）",
+      "actual": {
+        "国家专项计划": 38,
+        "高校专项计划": 53
+      },
+      "pass": true
+    },
+    {
+      "item": "批次控制线年份覆盖",
+      "required": "2023/2024/2025 三年",
+      "actual": {
+        "2023": [
+          "文科",
+          "理科"
+        ],
+        "2024": [
+          "文科",
+          "理科"
+        ],
+        "2025": [
+          "历史类",
+          "物理类"
+        ]
+      },
+      "pass": true
+    },
+    {
+      "item": "知识库文档（政策/分数线/章程）",
+      "required": ">=6 篇",
+      "actual": {
+        "分数线": 3,
+        "政策": 3,
+        "章程": 56
+      },
+      "pass": true
+    },
+    {
+      "item": "录取分 2025 专业组级覆盖",
+      "required": ">=30 校（含 group_code）",
+      "actual": "169 校 / 1667 条",
+      "pass": true
+    },
+    {
+      "item": "招生章程覆盖",
+      "required": ">=20 校",
+      "actual": "20 校 / 40 条",
+      "pass": true
+    },
+    {
+      "item": "专项计划录取分覆盖（D-4）",
+      "required": "国家/地方专项各≥1 校，含院校专业组",
+      "actual": "2 校 / 10 条 / 专项组 6 条 / ['国家专项计划', '地方专项计划']",
+      "pass": true
+    },
+    {
+      "item": "学科评估覆盖（D-9）",
+      "required": ">=5 校且含等级",
+      "actual": "40 校 / 409 条 / 等级 ['A-', 'B', 'B+', 'B-']",
+      "pass": true
+    },
+    {
+      "item": "招生计划数覆盖（D-10）",
+      "required": ">=30 校含 plan_count",
+      "actual": "184 校 / 1677 条",
+      "pass": true
+    },
+    {
+      "item": "生活信息覆盖（D-11）",
+      "required": ">=3 校且含宿舍/食堂/交通等类别",
+      "actual": "7 校 / 7 条 / ['交通', '校区']",
+      "pass": true
+    }
+  ]
+}

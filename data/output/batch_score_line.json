@@ -1,0 +1,182 @@
+[
+  {
+    "province": "河南",
+    "year": 2025,
+    "batch": "普通本科批",
+    "subject_type": "历史类",
+    "score": 471,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://www.henan.gov.cn/2025/06-25/3173563.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2025,
+    "batch": "普通本科批",
+    "subject_type": "物理类",
+    "score": 427,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://www.henan.gov.cn/2025/06-25/3173563.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2025,
+    "batch": "特殊类型",
+    "subject_type": "历史类",
+    "score": 552,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://www.henan.gov.cn/2025/06-25/3173563.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2025,
+    "batch": "特殊类型",
+    "subject_type": "物理类",
+    "score": 535,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://www.henan.gov.cn/2025/06-25/3173563.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2025,
+    "batch": "高职高专批",
+    "subject_type": "历史类",
+    "score": 185,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://www.henan.gov.cn/2025/06-25/3173563.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2025,
+    "batch": "高职高专批",
+    "subject_type": "物理类",
+    "score": 185,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://www.henan.gov.cn/2025/06-25/3173563.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2024,
+    "batch": "本科一批",
+    "subject_type": "文科",
+    "score": 521,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://m.henan.gov.cn/2024/06-25/3012665.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2024,
+    "batch": "本科一批",
+    "subject_type": "理科",
+    "score": 511,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://m.henan.gov.cn/2024/06-25/3012665.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2024,
+    "batch": "本科二批",
+    "subject_type": "文科",
+    "score": 428,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://m.henan.gov.cn/2024/06-25/3012665.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2024,
+    "batch": "本科二批",
+    "subject_type": "理科",
+    "score": 396,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://m.henan.gov.cn/2024/06-25/3012665.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2024,
+    "batch": "高职高专批",
+    "subject_type": "文科",
+    "score": 185,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://m.henan.gov.cn/2024/06-25/3012665.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2024,
+    "batch": "高职高专批",
+    "subject_type": "理科",
+    "score": 185,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://m.henan.gov.cn/2024/06-25/3012665.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2023,
+    "batch": "本科一批",
+    "subject_type": "文科",
+    "score": 547,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://www.henan.gov.cn/2023/06-25/2765748.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2023,
+    "batch": "本科一批",
+    "subject_type": "理科",
+    "score": 514,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://www.henan.gov.cn/2023/06-25/2765748.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2023,
+    "batch": "本科二批",
+    "subject_type": "文科",
+    "score": 465,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://www.henan.gov.cn/2023/06-25/2765748.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2023,
+    "batch": "本科二批",
+    "subject_type": "理科",
+    "score": 409,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://www.henan.gov.cn/2023/06-25/2765748.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2023,
+    "batch": "高职高专批",
+    "subject_type": "文科",
+    "score": 185,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://www.henan.gov.cn/2023/06-25/2765748.html",
+    "doc_type": "batch_score_line"
+  },
+  {
+    "province": "河南",
+    "year": 2023,
+    "batch": "高职高专批",
+    "subject_type": "理科",
+    "score": 185,
+    "source_name": "河南省人民政府门户网站（转河南省教育考试院）",
+    "source_url": "https://www.henan.gov.cn/2023/06-25/2765748.html",
+    "doc_type": "batch_score_line"
+  }
+]

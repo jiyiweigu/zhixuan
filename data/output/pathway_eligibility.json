@@ -1,0 +1,145 @@
+[
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "rule_type": "户籍",
+    "rule_desc": "本人具有实施区域当地连续3年以上户籍，其父亲或母亲或法定监护人具有当地户籍",
+    "params": "{\"household\": \"农村\", \"years\": 3, \"guardian\": true}",
+    "source_name": "河南省教育厅《河南省2025年普通高校招生考试和录取工作实施方案》",
+    "source_url": "http://m.jyt.henan.gov.cn/2025/01-24/3117467.html",
+    "year": 2025,
+    "doc_type": "pathway_eligibility"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "rule_type": "学籍",
+    "rule_desc": "本人具有户籍所在县高中连续3年学籍并实际就读",
+    "params": "{\"school_years\": 3, \"actual_study\": true}",
+    "source_name": "河南省教育厅《河南省2025年普通高校招生考试和录取工作实施方案》",
+    "source_url": "http://m.jyt.henan.gov.cn/2025/01-24/3117467.html",
+    "year": 2025,
+    "doc_type": "pathway_eligibility"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "rule_type": "区域",
+    "rule_desc": "考生户籍在河南省国家专项计划实施区域（38个县）内",
+    "params": "{\"county_list\": \"pathway_region:国家专项计划\"}",
+    "source_name": "河南省教育厅《河南省2025年普通高校招生考试和录取工作实施方案》",
+    "source_url": "http://m.jyt.henan.gov.cn/2025/01-24/3117467.html",
+    "year": 2025,
+    "doc_type": "pathway_eligibility"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "rule_type": "成绩",
+    "rule_desc": "符合当年河南省普通高校招生统一考试报名条件，高考成绩达到相应批次录取控制分数线",
+    "params": "{\"batch_line_required\": true}",
+    "source_name": "河南省教育厅《河南省2025年普通高校招生考试和录取工作实施方案》",
+    "source_url": "http://m.jyt.henan.gov.cn/2025/01-24/3117467.html",
+    "year": 2025,
+    "doc_type": "pathway_eligibility"
+  },
+  {
+    "pathway_name": "地方专项计划",
+    "province": "河南",
+    "rule_type": "户籍",
+    "rule_desc": "考生本人及父亲或母亲或法定监护人户籍地在河南省农村，本人具有当地连续3年以上户籍",
+    "params": "{\"household\": \"农村\", \"years\": 3}",
+    "source_name": "河南省教育厅《河南省2025年普通高校招生考试和录取工作实施方案》",
+    "source_url": "http://m.jyt.henan.gov.cn/2025/01-24/3117467.html",
+    "year": 2025,
+    "doc_type": "pathway_eligibility"
+  },
+  {
+    "pathway_name": "地方专项计划",
+    "province": "河南",
+    "rule_type": "学籍",
+    "rule_desc": "考生具有河南省普通高中连续3年学籍并实际就读",
+    "params": "{\"school_years\": 3, \"actual_study\": true}",
+    "source_name": "河南省教育厅《河南省2025年普通高校招生考试和录取工作实施方案》",
+    "source_url": "http://m.jyt.henan.gov.cn/2025/01-24/3117467.html",
+    "year": 2025,
+    "doc_type": "pathway_eligibility"
+  },
+  {
+    "pathway_name": "地方专项计划",
+    "province": "河南",
+    "rule_type": "区域",
+    "rule_desc": "考生户籍在河南省地方专项计划实施区域（53个县）内且为农村区域",
+    "params": "{\"county_list\": \"pathway_region:地方专项计划\", \"area\": \"农村\"}",
+    "source_name": "河南省教育厅《河南省2025年普通高校招生考试和录取工作实施方案》",
+    "source_url": "http://m.jyt.henan.gov.cn/2025/01-24/3117467.html",
+    "year": 2025,
+    "doc_type": "pathway_eligibility"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "rule_type": "户籍",
+    "rule_desc": "考生本人及父亲或母亲或法定监护人户籍地在实施区域的农村，本人具有当地连续3年以上户籍",
+    "params": "{\"household\": \"农村\", \"years\": 3}",
+    "source_name": "教育部阳光高考平台（专项计划实施办法）",
+    "source_url": "https://gaokao.chsi.com.cn/gkxx/zt/2025zxzsjh.shtml",
+    "year": 2025,
+    "doc_type": "pathway_eligibility"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "rule_type": "学籍",
+    "rule_desc": "考生具有户籍所在县高中连续3年学籍并实际就读",
+    "params": "{\"school_years\": 3, \"actual_study\": true}",
+    "source_name": "教育部阳光高考平台（专项计划实施办法）",
+    "source_url": "https://gaokao.chsi.com.cn/gkxx/zt/2025zxzsjh.shtml",
+    "year": 2025,
+    "doc_type": "pathway_eligibility"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "rule_type": "区域",
+    "rule_desc": "考生户籍在河南省高校专项计划实施区域县（市、区）内",
+    "params": "{\"county_list\": \"pathway_region:高校专项计划\"}",
+    "source_name": "教育部阳光高考平台（专项计划实施办法）",
+    "source_url": "https://gaokao.chsi.com.cn/gkxx/zt/2025zxzsjh.shtml",
+    "year": 2025,
+    "doc_type": "pathway_eligibility"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "rule_type": "其他",
+    "rule_desc": "考生须在教育部阳光高考平台完成报名申请，并按高校要求提交材料，通过高校资格审核",
+    "params": "{\"apply_channel\": \"阳光高考平台\", \"review\": \"高校审核\"}",
+    "source_name": "教育部阳光高考平台（专项计划实施办法）",
+    "source_url": "https://gaokao.chsi.com.cn/gkxx/zt/2025zxzsjh.shtml",
+    "year": 2025,
+    "doc_type": "pathway_eligibility"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "rule_type": "其他",
+    "rule_desc": "考生须在规定时间登录河南省普通高校招生考生服务平台完成专项计划资格申报",
+    "params": "{\"apply_channel\": \"考生服务平台\", \"deadline\": \"高考报名时同步申报\"}",
+    "source_name": "河南省教育考试院《河南省2025年普通高等学校招生工作规定》",
+    "source_url": "https://gaokao.haedu.cn/501/553/2025/0428/137929.html",
+    "year": 2025,
+    "doc_type": "pathway_eligibility"
+  },
+  {
+    "pathway_name": "地方专项计划",
+    "province": "河南",
+    "rule_type": "其他",
+    "rule_desc": "填报地方专项计划志愿的考生须已通过资格审核，志愿设在本科批内",
+    "params": "{\"batch\": \"本科批\", \"audit_required\": true}",
+    "source_name": "河南省教育考试院《河南省2025年普通高等学校招生工作规定》",
+    "source_url": "https://gaokao.haedu.cn/501/553/2025/0428/137929.html",
+    "year": 2025,
+    "doc_type": "pathway_eligibility"
+  }
+]

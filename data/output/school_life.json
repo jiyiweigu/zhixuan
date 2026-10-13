@@ -1,0 +1,79 @@
+[
+  {
+    "school_name": "郑州大学",
+    "category": "校区",
+    "content": "学校总占地面积8500余亩，主校区位于郑州市科学大道100号，南校区位于郑州市大学北路75号，北校区位于郑州市文化路97号，东校区位于郑州市大学北路40号",
+    "source_type": "公开网络",
+    "reliability": "medium",
+    "source_name": "掌上高考（中国教育在线）·院校简介（校园生活节选）",
+    "source_url": "https://static-data.gaokao.cn/www/2.0/school/62/info.json",
+    "year": 2026,
+    "doc_type": "school_life"
+  },
+  {
+    "school_name": "河南牧业经济学院",
+    "category": "校区",
+    "content": "学校总占地面积191.3万平方米，现有龙子湖、英才、北林3个校区和3个科教基地，总建筑面积99.41万平方米",
+    "source_type": "公开网络",
+    "reliability": "medium",
+    "source_name": "掌上高考（中国教育在线）·院校简介（校园生活节选）",
+    "source_url": "https://static-data.gaokao.cn/www/2.0/school/3073/info.json",
+    "year": 2026,
+    "doc_type": "school_life"
+  },
+  {
+    "school_name": "河南中医药大学",
+    "category": "校区",
+    "content": "学校位于省会郑州，现有5个校区，分别为龙",
+    "source_type": "公开网络",
+    "reliability": "medium",
+    "source_name": "掌上高考（中国教育在线）·院校简介（校园生活节选）",
+    "source_url": "https://static-data.gaokao.cn/www/2.0/school/873/info.json",
+    "year": 2026,
+    "doc_type": "school_life"
+  },
+  {
+    "school_name": "河南大学",
+    "category": "校区",
+    "content": "河南大学创立于1912年，始名河南留学欧美预备学校，首任校长为林伯襄先生，校园选建于河南贡院旧址之上",
+    "source_type": "公开网络",
+    "reliability": "medium",
+    "source_name": "掌上高考（中国教育在线）·院校简介（校园生活节选）",
+    "source_url": "https://static-data.gaokao.cn/www/2.0/school/459/info.json",
+    "year": 2026,
+    "doc_type": "school_life"
+  },
+  {
+    "school_name": "河南师范大学",
+    "category": "校区",
+    "content": "学校是国家中西部高等教育振兴计划支持高校、国家“111计划”实施高校、河南省人民政府与教育部共建高校、教育部本科教学工作水平评估优秀学校和河南省特色骨干大学，河南省“双一流”创建高校，三度蝉联全国文明单位，入选第二届全国文明校园",
+    "source_type": "公开网络",
+    "reliability": "medium",
+    "source_name": "掌上高考（中国教育在线）·院校简介（校园生活节选）",
+    "source_url": "https://static-data.gaokao.cn/www/2.0/school/833/info.json",
+    "year": 2026,
+    "doc_type": "school_life"
+  },
+  {
+    "school_name": "周口师范学院",
+    "category": "交通",
+    "content": "学校交通便利，郑合（郑州至合肥）高铁，大广（大庆至广州）、宁洛（南京至洛阳）等高速公路，漯阜（漯河至阜阳）铁路直达学校",
+    "source_type": "公开网络",
+    "reliability": "medium",
+    "source_name": "掌上高考（中国教育在线）·院校简介（校园生活节选）",
+    "source_url": "https://static-data.gaokao.cn/www/2.0/school/485/info.json",
+    "year": 2026,
+    "doc_type": "school_life"
+  },
+  {
+    "school_name": "许昌学院",
+    "category": "交通",
+    "content": "许昌交通条件便利，形成了集高速公路、高速铁路、航空为一体的快捷交通体系",
+    "source_type": "公开网络",
+    "reliability": "medium",
+    "source_name": "掌上高考（中国教育在线）·院校简介（校园生活节选）",
+    "source_url": "https://static-data.gaokao.cn/www/2.0/school/493/info.json",
+    "year": 2026,
+    "doc_type": "school_life"
+  }
+]

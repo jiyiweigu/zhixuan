@@ -1,0 +1,26 @@
+[
+  {
+    "pathway_name": "国家专项计划",
+    "apply_time": "4月底前：完成专项计划资格申报；6月25日：公布成绩与分数线；6月26日-28日：填报本科提前批、国家专项本科批志愿",
+    "source_name": "河南省教育考试院《河南省2025年普通高等学校招生工作规定》",
+    "source_url": "https://gaokao.haedu.cn/501/553/2025/0428/137929.html",
+    "year": 2025,
+    "doc_type": "pathway_time"
+  },
+  {
+    "pathway_name": "地方专项计划",
+    "apply_time": "6月30日-7月2日：填报本科批志愿（含地方专项）；随本科批平行志愿投档录取",
+    "source_name": "河南省教育考试院《河南省2025年普通高等学校招生工作规定》",
+    "source_url": "https://gaokao.haedu.cn/501/553/2025/0428/137929.html",
+    "year": 2025,
+    "doc_type": "pathway_time"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "apply_time": "4月25日前：在阳光高考平台完成报名；5月底前：高校完成审核并公示；高考后出分前：部分高校组织考核；6月30日-7月2日：填报志愿",
+    "source_name": "教育部阳光高考平台（专项计划实施办法）",
+    "source_url": "https://gaokao.chsi.com.cn/gkxx/zt/2025zxzsjh.shtml",
+    "year": 2025,
+    "doc_type": "pathway_time"
+  }
+]

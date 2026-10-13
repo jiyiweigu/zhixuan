@@ -1,0 +1,912 @@
+[
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "兰考县",
+    "county_code": "410225",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "栾川县",
+    "county_code": "410324",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "嵩县",
+    "county_code": "410325",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "洛宁县",
+    "county_code": "410328",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "汝阳县",
+    "county_code": "410326",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "鲁山县",
+    "county_code": "410423",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "卢氏县",
+    "county_code": "411224",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "南召县",
+    "county_code": "411321",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "镇平县",
+    "county_code": "411324",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "内乡县",
+    "county_code": "411325",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "淅川县",
+    "county_code": "411326",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "民权县",
+    "county_code": "411421",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "宁陵县",
+    "county_code": "411423",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "柘城县",
+    "county_code": "411424",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "光山县",
+    "county_code": "411522",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "新县",
+    "county_code": "411523",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "商城县",
+    "county_code": "411524",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "固始县",
+    "county_code": "411525",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "淮滨县",
+    "county_code": "411527",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "潢川县",
+    "county_code": "411526",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "淮阳县",
+    "county_code": "411626",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "沈丘县",
+    "county_code": "411624",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "太康县",
+    "county_code": "411627",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "商水县",
+    "county_code": "411623",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "郸城县",
+    "county_code": "411625",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "新蔡县",
+    "county_code": "411729",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "宜阳县",
+    "county_code": "410327",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "滑县",
+    "county_code": "410526",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "封丘县",
+    "county_code": "410727",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "范县",
+    "county_code": "410926",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "台前县",
+    "county_code": "410927",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "社旗县",
+    "county_code": "411327",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "桐柏县",
+    "county_code": "411330",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "睢县",
+    "county_code": "411422",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "虞城县",
+    "county_code": "411425",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "上蔡县",
+    "county_code": "411722",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "确山县",
+    "county_code": "411725",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "国家专项计划",
+    "province": "河南",
+    "county_name": "平舆县",
+    "county_code": "411723",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "兰考县",
+    "county_code": "410225",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "栾川县",
+    "county_code": "410324",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "嵩县",
+    "county_code": "410325",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "洛宁县",
+    "county_code": "410328",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "汝阳县",
+    "county_code": "410326",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "鲁山县",
+    "county_code": "410423",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "卢氏县",
+    "county_code": "411224",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "南召县",
+    "county_code": "411321",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "镇平县",
+    "county_code": "411324",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "内乡县",
+    "county_code": "411325",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "淅川县",
+    "county_code": "411326",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "民权县",
+    "county_code": "411421",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "宁陵县",
+    "county_code": "411423",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "柘城县",
+    "county_code": "411424",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "光山县",
+    "county_code": "411522",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "新县",
+    "county_code": "411523",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "商城县",
+    "county_code": "411524",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "固始县",
+    "county_code": "411525",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "淮滨县",
+    "county_code": "411527",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "潢川县",
+    "county_code": "411526",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "淮阳县",
+    "county_code": "411626",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "沈丘县",
+    "county_code": "411624",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "太康县",
+    "county_code": "411627",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "商水县",
+    "county_code": "411623",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "郸城县",
+    "county_code": "411625",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "新蔡县",
+    "county_code": "411729",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "宜阳县",
+    "county_code": "410327",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "滑县",
+    "county_code": "410526",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "封丘县",
+    "county_code": "410727",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "范县",
+    "county_code": "410926",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "台前县",
+    "county_code": "410927",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "社旗县",
+    "county_code": "411327",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "桐柏县",
+    "county_code": "411330",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "睢县",
+    "county_code": "411422",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "虞城县",
+    "county_code": "411425",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "上蔡县",
+    "county_code": "411722",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "确山县",
+    "county_code": "411725",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "平舆县",
+    "county_code": "411723",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "伊川县",
+    "county_code": "410329",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "叶县",
+    "county_code": "410422",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "内黄县",
+    "county_code": "410527",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "原阳县",
+    "county_code": "410725",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "濮阳县",
+    "county_code": "410928",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "舞阳县",
+    "county_code": "411121",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "方城县",
+    "county_code": "411322",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "夏邑县",
+    "county_code": "411426",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "罗山县",
+    "county_code": "411521",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "息县",
+    "county_code": "411528",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "西华县",
+    "county_code": "411622",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "扶沟县",
+    "county_code": "411621",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "泌阳县",
+    "county_code": "411726",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "正阳县",
+    "county_code": "411724",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  },
+  {
+    "pathway_name": "高校专项计划",
+    "province": "河南",
+    "county_name": "汝南县",
+    "county_code": "411727",
+    "source_name": "河南省教育厅（专项计划实施区域名单）",
+    "source_url": "https://jyt.henan.gov.cn/",
+    "year": 2026,
+    "doc_type": "pathway_region"
+  }
+]
