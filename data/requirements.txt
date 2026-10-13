@@ -1,0 +1,9 @@
+# 智选志愿 · 数据采集流水线依赖
+# 安装（本机 npm 官方源不通，pip 用阿里云源）：
+#   pip install -r data/requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
+httpx>=0.27                # HTTP 抓取
+beautifulsoup4>=4.12       # HTML 解析
+lxml>=5.0                  # 解析加速（缺失时自动回退 html.parser，见 collectors/base.py）
+psycopg[binary]>=3.1       # 入库 PostgreSQL（run_pipeline.py --load-db）
+pandas>=2.0                # 可选：数据分析
+pdfplumber>=0.11           # 可选：PDF 表格抽取（投档线/专项名单附件）
