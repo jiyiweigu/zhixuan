@@ -124,6 +124,12 @@ class SchoolMajorScore(Base):
             name="min_score_range",
         ),
         Index("ix_school_major_score_lookup", "province", "year", "batch", "pathway_id"),
+        # 0009：与导入层按身份键 upsert 的取数路径一致
+        Index(
+            "ix_school_major_score_identity",
+            "school_id", "province", "year", "batch", "subject_type",
+            "group_code", "major_code",
+        ),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
@@ -140,6 +146,15 @@ class SchoolMajorScore(Base):
     batch: Mapped[str] = mapped_column(String(32), default="", comment="录取批次")
     group_code: Mapped[str] = mapped_column(
         String(32), default="", comment="院校专业组代码（河南为院校专业组志愿模式）"
+    )
+    # 0009：一行的真实身份是「专业组 + 专业」——
+    # 官方样本同校同年同批次同分同位次出现两行，仅 major_code 不同，缺此则无法区分行
+    major_code: Mapped[str] = mapped_column(
+        String(32), default="", comment="专业代号；将来据此回挂 major_id"
+    )
+    major_name: Mapped[str] = mapped_column(String(NAME_MAX_LENGTH), default="", comment="专业名称")
+    exam_system: Mapped[str] = mapped_column(
+        String(16), default="", comment="考试制度：文理科 / 3+1+2（跨制度不得比较）"
     )
     pathway_id: Mapped[str | None] = mapped_column(
         String(32), ForeignKey("pathway.id"), default=None, comment="对应升学途径，可空"
