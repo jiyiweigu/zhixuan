@@ -110,6 +110,13 @@ def num(v: Any) -> Any:
     return v
 
 
+def txt(v: Any) -> str:
+    """文本列（NOT NULL DEFAULT ''）：None / 空白 → ''。"""
+    if v is None:
+        return ""
+    return str(v).strip()
+
+
 def fill_text(table: str, rec: dict) -> dict:
     """NOT NULL 文本列：None / 缺失 → ""。"""
     for col in TEXT_NOT_NULL.get(table, ()):
@@ -125,6 +132,10 @@ def main() -> int:
     ap.add_argument("--scan", action="store_true", help="只盘点，不写文件")
     ap.add_argument("--province")
     ap.add_argument("--year", type=int)
+    ap.add_argument("--allow-null-identity", action="store_true", dest="allow_null_identity",
+                    help="按契约 §8.10.3 红线②：school_major_score 的 school_id/major_id "
+                         "若为数据侧『真实未匹配』则保留并以 NULL 入库（需 schema ≥ 0008/0009），"
+                         "同时输出身份列 group_code/major_code/major_name/exam_system")
     args = ap.parse_args()
 
     ledger: dict[str, list[dict]] = {}
@@ -132,11 +143,16 @@ def main() -> int:
     ROUND_SAMPLES: dict[str, list] = {"min_score": [], "avg_score": []}
     NULL_STAT: Counter = Counter()           # 分数置 NULL（口径不明）：聚合计数
     NULL_SAMPLES: dict[str, list] = {"min_score": []}
+    NULL_ID_STAT: Counter = Counter()        # 身份列真实未匹配、以 NULL 入库：聚合计数
     plan: dict[str, Any] = {"meta": {
         "title": "Golden Layer 构建计划",
         "owner": "徐（③ 数据工程）",
         "generated_at": "2026-10-14",
         "note": "逐表可直接 INSERT 的规范化层；逻辑键已换成物理 id。不连库。",
+        "identity_mode": ("allow_null (§8.10.3 红线②；需 schema ≥ 0008/0009)"
+                          if args.allow_null_identity else "legacy(身份列缺省丢弃)"),
+        "schema_requirement": ("0009_school_major_score_identity"
+                               if args.allow_null_identity else "0007_rule_datasets"),
     }, "tables": {}}
     tables: dict[str, list[dict]] = {}
 
@@ -267,22 +283,34 @@ def main() -> int:
                     "year": r.get("year"), "major_name": r.get("major_name")}
             s_code = r.get("school_id")
             m_code = r.get("major_id")
-            # ① 空 id → 丢弃并入台账（按 N26/本次口径：标 partial 后丢弃）
-            if s_code is None or (isinstance(s_code, str) and not str(s_code).strip()):
+            s_empty = s_code is None or (isinstance(s_code, str) and not str(s_code).strip())
+            m_empty = m_code is None or (isinstance(m_code, str) and not str(m_code).strip())
+            # ① 空 id（数据侧真实未匹配）
+            #    · legacy（默认）：列 NOT NULL ⇒ 丢弃待补采
+            #    · --allow-null-identity：契约 §8.10.3 红线② 允许原样以 NULL 入库并登记原因
+            if s_empty and not args.allow_null_identity:
                 drop("school_major_score", base, "school_id 为空（NOT NULL）⇒ 丢弃，待补采")
                 continue
-            if m_code is None or (isinstance(m_code, str) and not str(m_code).strip()):
+            if m_empty and not args.allow_null_identity:
                 drop("school_major_score", base, "major_id 为空（NOT NULL）⇒ 丢弃，待补采")
                 continue
-            # ② 校 id 必须存在
-            if int(s_code) not in school_ids:
-                drop("school_major_score", base, f"school_id={s_code} 不在 school 表 ⇒ 丢弃")
+            # ② 校 id **有值时**必须存在；有值却悬空一律丢弃
+            #    —— 红线①：位置耦合的值一旦对不上，绝不降级为 NULL（那等于把「错位」伪装成「缺失」）
+            if not s_empty and int(s_code) not in school_ids:
+                drop("school_major_score", base, f"school_id={s_code} 不在 school 表（悬空）⇒ 丢弃")
                 continue
             # ③ 国标码 → major.id
-            mid = code_to_major_id.get(str(m_code).strip())
-            if mid is None:
-                drop("school_major_score", base, f"major_id={m_code} 未匹配 major 表 ⇒ 丢弃")
-                continue
+            if m_empty:
+                mid = None
+                if args.allow_null_identity:
+                    NULL_ID_STAT["school_major_score.major_id 真实未匹配 ⇒ 以 NULL 入库"] += 1
+            else:
+                mid = code_to_major_id.get(str(m_code).strip())
+                if mid is None:
+                    drop("school_major_score", base, f"major_id={m_code} 未匹配 major 表 ⇒ 丢弃")
+                    continue
+            if s_empty:
+                NULL_ID_STAT["school_major_score.school_id 真实未匹配 ⇒ 以 NULL 入库"] += 1
             # ④ source_id
             s_id = sid(r.get("source_id"))
             if s_id is None:
@@ -312,7 +340,7 @@ def main() -> int:
                 return v
 
             rec = fill_text("school_major_score", {
-                "school_id": int(s_code), "major_id": mid,
+                "school_id": None if s_empty else int(s_code), "major_id": mid,
                 "province": r.get("province"), "year": int(r.get("year")),
                 "batch": r.get("batch"), "pathway_id": r.get("pathway_id"),
                 "subject_type": r.get("subject_type"),
@@ -322,6 +350,10 @@ def main() -> int:
                 "plan_count": num(r.get("plan_count")),
                 "source_id": s_id,
             })
+            if args.allow_null_identity:
+                # 0009 身份列（NOT NULL DEFAULT ''）：专业组代码 / 招生专业代号 / 专业名 / 考试制度
+                for c in ("group_code", "major_code", "major_name", "exam_system"):
+                    rec[c] = txt(r.get(c))
             sms.append(rec)
 
     # ------------------------------------------------------------------ #
@@ -535,6 +567,12 @@ def main() -> int:
             if s:
                 print(f"          {col} 样例(原值→入库): {s}")
         plan["rounding"] = {"stat": dict(ROUND_STAT), "samples": ROUND_SAMPLES}
+
+    if NULL_ID_STAT:
+        print("\n=== 身份列真实未匹配 → 以 NULL 入库（§8.10.3 红线②，已入库）===")
+        for k, n in NULL_ID_STAT.most_common():
+            print(f"      {n:>6} 行 × {k}")
+        plan["null_identity"] = dict(NULL_ID_STAT)
 
     if args.scan:
         print("\n(--scan：未写文件)")

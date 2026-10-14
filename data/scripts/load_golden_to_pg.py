@@ -54,7 +54,9 @@ SPEC: dict[str, tuple[tuple[str, ...], tuple[str, ...], bool]] = {
                        "cumulative_rank", "source_id"), (), False),
     "school_major_score": (("school_id", "major_id", "province", "year", "batch",
                             "pathway_id", "subject_type", "min_score", "min_rank",
-                            "avg_score", "plan_count", "source_id"), (), False),
+                            "avg_score", "plan_count", "source_id",
+                            # 0008/0009 新增：专业组代码 + 身份列（旧版 golden 无这些键时会自动跳过）
+                            "group_code", "major_code", "major_name", "exam_system"), (), False),
     "pathway": (("id", "name", "category", "batch", "target_group", "apply_time",
                  "description", "priority", "data_status", "year", "source_id"), (), False),
     "pathway_region": (("pathway_id", "province", "county_name", "county_code",
@@ -95,7 +97,18 @@ def main() -> int:
     ap.add_argument("--force", action="store_true", help="目标表非空时也继续")
     ap.add_argument("--truncate", action="store_true",
                     help="灌前先清空这 12 张表（⚠ 破坏性；仅用于可重跑的试点库重灌）")
+    ap.add_argument("--only", metavar="TABLE", help="只处理指定表（配合 --replace 做单表重载）")
+    ap.add_argument("--replace", action="store_true",
+                    help="先清空目标表再灌（单表重载；须配合 --only 与 --commit）")
     args = ap.parse_args()
+
+    if args.only and args.only not in SPEC:
+        print(f"✗ --only 的表名无效：{args.only}（可选：{', '.join(ORDER)}）")
+        return 2
+    if args.replace and not args.only:
+        print("✗ --replace 必须配合 --only（只清空指定表，避免误清全库）")
+        return 2
+    order = [args.only] if args.only else ORDER
 
     try:
         import psycopg
@@ -111,7 +124,7 @@ def main() -> int:
         with conn.cursor() as cur:
             # 0) 前置检查
             nonempty = []
-            for t in ORDER:
+            for t in order:
                 cur.execute(f'select count(*) from "{t}"')
                 n = cur.fetchone()[0]
                 if n:
@@ -121,6 +134,10 @@ def main() -> int:
                 cur.execute('TRUNCATE TABLE ' + ", ".join(f'"{t}"' for t in ORDER)
                             + " RESTART IDENTITY CASCADE")
                 nonempty = []
+            if args.replace and args.commit:
+                print(f'⚠ --replace：先清空 "{args.only}" 再重灌（单表重载，无 CASCADE）')
+                cur.execute(f'TRUNCATE TABLE "{args.only}" RESTART IDENTITY')
+                nonempty = [x for x in nonempty if x[0] != args.only]
             if nonempty:
                 print("⚠ 目标表已有数据：")
                 for t, n in nonempty:
@@ -131,21 +148,26 @@ def main() -> int:
 
             # 1) 逐表插入
             total = 0
-            for t in ORDER:
+            for t in order:
                 cols, json_cols, has_id = SPEC[t]
                 recs = read_jsonl(GOLDEN / f"{t}.jsonl")
                 if not recs:
                     print(f"  {t:22s}      0 行（跳过）")
                     continue
-                placeholders = ", ".join(["%s"] * len(cols))
+                # 只插 golden 中真实存在的列 —— 旧版 golden（未开 --allow-null-identity）
+                # 不含 0009 新增的 group_code/major_code/major_name/exam_system，自动跳过。
+                present = set().union(*(set(r) for r in recs))
+                use_cols = tuple(c for c in cols if c in present)
+                skipped = [c for c in cols if c not in present]
+                placeholders = ", ".join(["%s"] * len(use_cols))
                 # created_at / updated_at 在库里 NOT NULL 且无默认值 ⇒ 统一补 now()
-                all_cols = tuple(cols) + ("created_at", "updated_at")
+                all_cols = use_cols + ("created_at", "updated_at")
                 sql = (f'INSERT INTO "{t}" ({", ".join(f""" "{c}" """ for c in all_cols)}) '
                        f"VALUES ({placeholders}, now(), now())")
                 rows = []
                 for r in recs:
                     vals = []
-                    for c in cols:
+                    for c in use_cols:
                         v = r.get(c)
                         if c in json_cols and v is not None and not isinstance(v, str):
                             v = json.dumps(v, ensure_ascii=False)
@@ -155,12 +177,15 @@ def main() -> int:
                     rows.append(tuple(vals))
                 if args.commit:
                     cur.executemany(sql, rows)
-                print(f"  {t:22s} {len(rows):>7} 行{'  [已写]' if args.commit else '  [dry-run]'}")
+                note = f"  [{len(use_cols)}列]"
+                if skipped:
+                    note += f" ⚠ 缺 {'/'.join(skipped)}"
+                print(f"  {t:22s} {len(rows):>7} 行{'  [已写]' if args.commit else '  [dry-run]'}{note}")
                 total += len(rows)
 
             # 2) 显式 id 的表 → 推进序列
             if args.commit:
-                for t in ORDER:
+                for t in order:
                     if SPEC[t][2]:
                         cur.execute(
                             f"select setval(pg_get_serial_sequence('{t}','id'), "
@@ -171,7 +196,7 @@ def main() -> int:
             print(f"\n合计 {total} 行{'（已提交）' if args.commit else '（dry-run，未写）'}")
             if args.commit:
                 print("\n=== 库内实际行数 ===")
-                for t in ORDER:
+                for t in order:
                     cur.execute(f'select count(*) from "{t}"')
                     print(f"  {t:22s} {cur.fetchone()[0]:>7}")
                 # 外键抽样校验（FK 是否悬空）
