@@ -82,3 +82,19 @@
  
  
  def downgrade() -> None:
+--- a/backend/alembic/versions/20261013_0008_merge_ready.py
++++ b/backend/alembic/versions/20261013_0008_merge_ready.py
+@@ -65,11 +65,11 @@
+     # ------------------------------------------------------------------ #
+     op.add_column(
+         'school',
+-        sa.Column('is_985', sa.Boolean(), nullable=False, server_default=sa.text('0')),
++        sa.Column('is_985', sa.Boolean(), nullable=False, server_default=sa.false()),
+     )
+     op.add_column(
+         'school',
+-        sa.Column('is_211', sa.Boolean(), nullable=False, server_default=sa.text('0')),
++        sa.Column('is_211', sa.Boolean(), nullable=False, server_default=sa.false()),
+     )
+     op.add_column(
+         'school',
