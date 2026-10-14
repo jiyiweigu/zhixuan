@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "title": "选考科目要求代码字典（second_require）",
+    "generated_at": "2026-10-14",
+    "owner": "徐（③ 数据工程）",
+    "scope": "解析张分支 subject_requirement 的 second_require 编码；我方契约无此码位",
+    "method": "按 second_require 分组统计 subject_req 的『再选』文本；仅唯一取值才收录",
+    "source": "origin/feature/zhang · data/jiangxi/output/subject_requirement.json",
+    "source_records": 7040,
+    "rule": "严禁猜测：文本不唯一一律进 unresolved，不写入 codes",
+    "note": "该编码为采集平台（掌上高考）内部编码，非国家/考试院官方码；接入前须队长确认可用性"
+  },
+  "codes": [
+    {
+      "code": "70008",
+      "meaning": "不限",
+      "kind": "single",
+      "members": [
+        "未知(70008)"
+      ],
+      "is_unlimited": true,
+      "sample_count": 3513,
+      "evidence": "subject_req 的『再选』段唯一取值：不限"
+    },
+    {
+      "code": "70001",
+      "meaning": "化学",
+      "kind": "single",
+      "members": [
+        "化学"
+      ],
+      "is_unlimited": false,
+      "sample_count": 2595,
+      "evidence": "subject_req 的『再选』段唯一取值：化学"
+    },
+    {
+      "code": "70003",
+      "meaning": "思想政治",
+      "kind": "single",
+      "members": [
+        "思想政治"
+      ],
+      "is_unlimited": false,
+      "sample_count": 386,
+      "evidence": "subject_req 的『再选』段唯一取值：思想政治"
+    },
+    {
+      "code": "70005",
+      "meaning": "地理",
+      "kind": "single",
+      "members": [
+        "地理"
+      ],
+      "is_unlimited": false,
+      "sample_count": 229,
+      "evidence": "subject_req 的『再选』段唯一取值：地理"
+    },
+    {
+      "code": "70002",
+      "meaning": "生物",
+      "kind": "single",
+      "members": [
+        "生物"
+      ],
+      "is_unlimited": false,
+      "sample_count": 180,
+      "evidence": "subject_req 的『再选』段唯一取值：生物"
+    },
+    {
+      "code": "70001,70002",
+      "meaning": "化学、生物(2科必选)",
+      "kind": "combination",
+      "members": [
+        "化学",
+        "生物"
+      ],
+      "is_unlimited": false,
+      "sample_count": 125,
+      "evidence": "subject_req 的『再选』段唯一取值：化学、生物(2科必选)"
+    },
+    {
+      "code": "70003,70005",
+      "meaning": "思想政治、地理(2科必选)",
+      "kind": "combination",
+      "members": [
+        "思想政治",
+        "地理"
+      ],
+      "is_unlimited": false,
+      "sample_count": 9,
+      "evidence": "subject_req 的『再选』段唯一取值：思想政治、地理(2科必选)"
+    },
+    {
+      "code": "70002,70003",
+      "meaning": "生物、思想政治(2科必选)",
+      "kind": "combination",
+      "members": [
+        "生物",
+        "思想政治"
+      ],
+      "is_unlimited": false,
+      "sample_count": 2,
+      "evidence": "subject_req 的『再选』段唯一取值：生物、思想政治(2科必选)"
+    },
+    {
+      "code": "70001,70005",
+      "meaning": "化学、地理(2科必选)",
+      "kind": "combination",
+      "members": [
+        "化学",
+        "地理"
+      ],
+      "is_unlimited": false,
+      "sample_count": 1,
+      "evidence": "subject_req 的『再选』段唯一取值：化学、地理(2科必选)"
+    }
+  ],
+  "unresolved": []
+}
