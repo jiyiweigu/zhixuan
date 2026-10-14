@@ -47,6 +47,9 @@ data/staged/
 # Golden Layer（build_golden_layer.py 产出，可重跑，不入库；~30MB）
 data/staged_golden/
 
+# 张分支接入中间层（build_zhang_layer.py 产出，可重跑，不入库）
+data/staged_golden_zhang/
+
 # 数据本体与考试院官方扫描件（授权/体积原因不入库，本地留档；
 # 重建见 data/DOWNLOAD.md 与 data/MANIFEST.sha256）
 data/school_major_score/school_major_score_*.json
