@@ -16,7 +16,8 @@
   **位置 id 防护**（未知 ``school_id`` 跳过上报而不是降级成 NULL）、
   同键多行的序数幂等。
 
-数据来源是 ③ 随仓库分发的小样本包（``data/samples/``，15/26/12/11/7/10/12/12 条），
+数据来源是 ③ 随仓库分发的小样本包（``data/samples/``），
+来源登记表另取真实表 ``data/sources/source-table.json``（非样本包，规模会增长），
 正是为「② 建表导入联调」准备的，因此本测试不需要下载数据本体。
 
 ⚠️ 院校样本包只有 10 所，而录取分样本引用了院校库 id 243（安徽财经大学），
@@ -83,10 +84,15 @@ shutil.copy(
     ROOT / "school_major_score" / "school_major_score_sample.json",
 )
 
-# 样本包的既定规模
+# 样本包的既定规模。
+# ⚠️ SAMPLE_SOURCES 例外：`data/sources/source-table.json` 是**真实来源登记表**（非样本包），
+#    会随 ③ 新增来源而增长；写死曾导致一次假失败（③ 在 PR #8 把来源从 15 加到 17）。
+#    故从文件读取 —— 断言仍是「读多少就建多少」，但不再与登记表规模耦合。
 SAMPLE_SCHOOLS = 10
 SAMPLE_SEGMENTS = 12
-SAMPLE_SOURCES = 15
+SAMPLE_SOURCES = len(
+    json.loads((DATA / "sources" / "source-table.json").read_text(encoding="utf-8"))["sources"]
+)
 SAMPLE_PATHWAYS = 26
 SAMPLE_REGIONS = 91
 SAMPLE_RULES = 11
@@ -130,7 +136,10 @@ def test_row_accounting() -> None:
         )
 
 
-@case("冷库首次导入：来源 15 / 途径 26 / 区域 91 / 院校 10 / 分段 12")
+@case(
+    f"冷库首次导入：来源 {SAMPLE_SOURCES} / 途径 {SAMPLE_PATHWAYS} / 区域 {SAMPLE_REGIONS}"
+    f" / 院校 {SAMPLE_SCHOOLS} / 分段 {SAMPLE_SEGMENTS}"
+)
 def test_first_run_counts() -> None:
     assert FIRST_BY_NAME["source"].created == SAMPLE_SOURCES
     assert FIRST_BY_NAME["pathway"].created == SAMPLE_PATHWAYS
