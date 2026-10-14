@@ -1,0 +1,330 @@
+{
+  "meta": {
+    "owner": "徐（③ 数据工程）",
+    "purpose": "③ 数据集核实登记表（唯一口径源）：把「核实状态」与契约 data_status 分开登记。产物内 data_status 由本表 apply 写入、可随时重建。",
+    "updated_at": "2026-10-14",
+    "data_status_enum": [
+      "available",
+      "partial",
+      "schema_only",
+      "unavailable"
+    ],
+    "verification_enum": [
+      "verified",
+      "unverified",
+      "partial"
+    ],
+    "forbidden_data_status": [
+      "verified",
+      "pending",
+      "mock"
+    ],
+    "mapping_rule": "已入库 ⇒ 至少 partial；通过 L2 核实 ⇒ available；结构就绪未导入 ⇒ schema_only；无版本 ⇒ unavailable。",
+    "contract_ref": "docs/api-contract.md L41 / L345 / L528",
+    "carrier_note": "data/score_segment/score_segment_*.json 属「数据本体出仓」（.gitignore，不入库）；故权威口径落在本表。",
+    "regen": "python data/scripts/dataset_status.py gen | apply | check"
+  },
+  "entries": [
+    {
+      "dataset": "score_segment",
+      "file": "data/score_segment/score_segment_2022_江西.json",
+      "province": "江西",
+      "province_code": "36",
+      "year": 2022,
+      "subject_type": null,
+      "subject_types": [
+        "文科",
+        "理科"
+      ],
+      "rows": 2615,
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "checked_at": "2026-10-14",
+      "data_status": "partial",
+      "verification_status": "unverified",
+      "evidence": {
+        "channels": [
+          "无第二采集线",
+          "官方页未取得"
+        ],
+        "rows": 2615
+      },
+      "verification_note": "已入库但未做第二通道核实（2615 条）⇒ partial。补核路径：① 按 gaokao.eol.cn 站内同栏目检索对应年份页面，逐一核内容；② 或人工下载省考试院 PDF。两路均须人工确认，不自动采信。"
+    },
+    {
+      "dataset": "score_segment",
+      "file": "data/score_segment/score_segment_2022_河南.json",
+      "province": "河南",
+      "province_code": "41",
+      "year": 2022,
+      "subject_type": null,
+      "subject_types": [
+        "文科",
+        "理科"
+      ],
+      "rows": 1152,
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "checked_at": "2026-10-14",
+      "data_status": "partial",
+      "verification_status": "unverified",
+      "evidence": {
+        "channels": [
+          "无第二采集线",
+          "官方页未取得"
+        ],
+        "rows": 1152
+      },
+      "verification_note": "已入库但未做第二通道核实（1152 条）⇒ partial。补核路径：① 按 gaokao.eol.cn 站内同栏目检索对应年份页面，逐一核内容；② 或人工下载省考试院 PDF。两路均须人工确认，不自动采信。"
+    },
+    {
+      "dataset": "score_segment",
+      "file": "data/score_segment/score_segment_2023_江西.json",
+      "province": "江西",
+      "province_code": "36",
+      "year": 2023,
+      "subject_type": null,
+      "subject_types": [
+        "文科",
+        "理科"
+      ],
+      "rows": 1151,
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "checked_at": "2026-10-14",
+      "data_status": "partial",
+      "verification_status": "unverified",
+      "evidence": {
+        "channels": [
+          "无第二采集线",
+          "官方页未取得"
+        ],
+        "rows": 1151
+      },
+      "verification_note": "已入库但未做第二通道核实（1151 条）⇒ partial。补核路径：① 按 gaokao.eol.cn 站内同栏目检索对应年份页面，逐一核内容；② 或人工下载省考试院 PDF。两路均须人工确认，不自动采信。"
+    },
+    {
+      "dataset": "score_segment",
+      "file": "data/score_segment/score_segment_2023_河南.json",
+      "province": "河南",
+      "province_code": "41",
+      "year": 2023,
+      "subject_type": null,
+      "subject_types": [
+        "文科",
+        "理科"
+      ],
+      "rows": 1193,
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "checked_at": "2026-10-14",
+      "data_status": "available",
+      "verification_status": "verified",
+      "evidence": {
+        "channel_a": {
+          "desc": "张分支第二采集线逐条交叉验证",
+          "consistent": 1193,
+          "mismatch": 0,
+          "counterpart_only": 1,
+          "note": "张多 1 条 (文科,680)。官方转载页该处为 685-750/10/10 → 681/5/15 → 679/4/19，**无 680 行**，系张方解析生成物；我方未漏采、不补。"
+        },
+        "channel_b": {
+          "desc": "vs gaokao.eol.cn 官方转载页全量逐行",
+          "consistent": 1193,
+          "mismatch": 0,
+          "official_only": 0
+        },
+        "urls": {
+          "文科": "https://gaokao.eol.cn/he_nan/dongtai/202306/t20230625_2446851.shtml",
+          "理科": "https://gaokao.eol.cn/he_nan/dongtai/202306/t20230625_2446847.shtml"
+        },
+        "official_source_note": "页面署名「河南省教育厅」，但页脚声明版权属中国教育在线"
+      },
+      "verification_note": "已核实（E3 · 2026-10-14）：通道A（张分支第二采集线）一致 1193、不一致 0；通道B（gaokao.eol.cn 官方转载页逐行）一致 1193、不一致 0、仅官方 0。出处：data/E3_试点核实报告_徐.md"
+    },
+    {
+      "dataset": "score_segment",
+      "file": "data/score_segment/score_segment_2024_江西.json",
+      "province": "江西",
+      "province_code": "36",
+      "year": 2024,
+      "subject_type": null,
+      "subject_types": [
+        "历史类",
+        "物理类"
+      ],
+      "rows": 1148,
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "checked_at": "2026-10-14",
+      "data_status": "available",
+      "verification_status": "verified",
+      "evidence": {
+        "channel_a": {
+          "desc": "张分支第二采集线逐条交叉验证",
+          "consistent": 1148,
+          "mismatch": 0,
+          "counterpart_only": 0
+        },
+        "channel_b": {
+          "desc": "vs gaokao.eol.cn 官方转载页全量逐行",
+          "consistent": 1146,
+          "mismatch": 0,
+          "official_only": 0,
+          "zero_row_count": 2,
+          "note": "官方表缺 历史类 103 / 物理类 114 两行（该分无考生，官方不列）；我方保留，与官方相邻行数值完全自洽 ⇒ 我方更完整，非错误。"
+        },
+        "urls": {
+          "历史类": "https://gaokao.eol.cn/jiang_xi/dongtai/202406/t20240626_2619467.shtml",
+          "物理类": "https://gaokao.eol.cn/jiang_xi/dongtai/202406/t20240626_2619478.shtml"
+        },
+        "official_source_note": "页面署名「江西省教育厅」；官方批注行给出批次线 463/532（历史）、448/520（物理）"
+      },
+      "verification_note": "已核实（E3 · 2026-10-14）：通道A（张分支第二采集线）一致 1148、不一致 0；通道B（gaokao.eol.cn 官方转载页逐行）一致 1146、不一致 0、仅官方 0。出处：data/E3_试点核实报告_徐.md"
+    },
+    {
+      "dataset": "score_segment",
+      "file": "data/score_segment/score_segment_2024_河南.json",
+      "province": "河南",
+      "province_code": "41",
+      "year": 2024,
+      "subject_type": null,
+      "subject_types": [
+        "文科",
+        "理科"
+      ],
+      "rows": 1182,
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "checked_at": "2026-10-14",
+      "data_status": "available",
+      "verification_status": "verified",
+      "evidence": {
+        "channel_a": {
+          "desc": "张分支第二采集线逐条交叉验证",
+          "consistent": 1182,
+          "mismatch": 0,
+          "counterpart_only": 0
+        },
+        "channel_b": {
+          "desc": "vs gaokao.eol.cn 官方转载页全量逐行",
+          "consistent": 1182,
+          "mismatch": 0,
+          "official_only": 0
+        },
+        "urls": {
+          "文科": "https://gaokao.eol.cn/he_nan/dongtai/202406/t20240625_2619212.shtml",
+          "理科": "https://gaokao.eol.cn/he_nan/dongtai/202406/t20240625_2619212_1.shtml"
+        },
+        "official_source_note": "页面署名「河南考试院」"
+      },
+      "verification_note": "已核实（E3 · 2026-10-14）：通道A（张分支第二采集线）一致 1182、不一致 0；通道B（gaokao.eol.cn 官方转载页逐行）一致 1182、不一致 0、仅官方 0。出处：data/E3_试点核实报告_徐.md"
+    },
+    {
+      "dataset": "score_segment",
+      "file": "data/score_segment/score_segment_2025_江西.json",
+      "province": "江西",
+      "province_code": "36",
+      "year": 2025,
+      "subject_type": null,
+      "subject_types": [
+        "历史类",
+        "物理类"
+      ],
+      "rows": 1139,
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "checked_at": "2026-10-14",
+      "data_status": "partial",
+      "verification_status": "unverified",
+      "evidence": {
+        "channels": [
+          "无第二采集线",
+          "官方页未取得"
+        ],
+        "rows": 1139
+      },
+      "verification_note": "已入库但未做第二通道核实（1139 条）⇒ partial。补核路径：① 按 gaokao.eol.cn 站内同栏目检索对应年份页面，逐一核内容；② 或人工下载省考试院 PDF。两路均须人工确认，不自动采信。"
+    },
+    {
+      "dataset": "score_segment",
+      "file": "data/score_segment/score_segment_2025_河南.json",
+      "province": "河南",
+      "province_code": "41",
+      "year": 2025,
+      "subject_type": null,
+      "subject_types": [
+        "历史类",
+        "物理类"
+      ],
+      "rows": 1198,
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "checked_at": "2026-10-14",
+      "data_status": "available",
+      "verification_status": "verified",
+      "evidence": {
+        "channel_a": {
+          "desc": "张分支第二采集线逐条交叉验证",
+          "consistent": 1198,
+          "mismatch": 0,
+          "counterpart_only": 0
+        },
+        "channel_b": {
+          "desc": "vs gaokao.eol.cn 官方转载页全量逐行",
+          "consistent": 1198,
+          "mismatch": 0,
+          "official_only": 0
+        },
+        "urls": {
+          "历史类": "https://gaokao.eol.cn/he_nan/dongtai/202506/t20250625_2676858.shtml",
+          "物理类": "https://gaokao.eol.cn/he_nan/dongtai/202506/t20250625_2676859.shtml"
+        },
+        "official_source_note": "页面署名「河南省教育考试院」；官方表不分批次，批次线以批注形式给出（185/471/552 历史、185/427/535 物理）"
+      },
+      "verification_note": "已核实（E3 · 2026-10-14）：通道A（张分支第二采集线）一致 1198、不一致 0；通道B（gaokao.eol.cn 官方转载页逐行）一致 1198、不一致 0、仅官方 0。出处：data/E3_试点核实报告_徐.md"
+    },
+    {
+      "dataset": "score_segment",
+      "file": "data/score_segment/score_segment_2026_历史类.json",
+      "province": "河南",
+      "province_code": "41",
+      "year": 2026,
+      "subject_type": "历史类",
+      "subject_types": [
+        "历史类"
+      ],
+      "rows": 454,
+      "source_id": "SRC-HENAN-SCORE-SEG-2026",
+      "checked_at": "2026-10-14",
+      "data_status": "partial",
+      "verification_status": "partial",
+      "evidence": {
+        "parse_method": "扫描件 OCR：Tesseract 5.4 + 投影法网格切分 + 并行逐格多阈值识别；分数骨架取自分数列（识别可靠），人数列仅信原始读数锚点，缺口插值并标注置信度",
+        "final_rows": 454,
+        "high_confidence_rows": 441,
+        "interpolated_rows": 13,
+        "gap_count": 61,
+        "source_url": "https://gaokao.haedu.cn/501/552/2026/0625/155639.html"
+      },
+      "verification_note": "OCR 产物：441 高置信 / 13 插值 / 61 个分数无可靠值待人工补录；来源为省考试院官方扫描件，但逐条数值未经第二通道核实 ⇒ partial。OCR 结果，low 置信行与 gaps 需人工复核后方可入库"
+    },
+    {
+      "dataset": "score_segment",
+      "file": "data/score_segment/score_segment_2026_物理类.json",
+      "province": "河南",
+      "province_code": "41",
+      "year": 2026,
+      "subject_type": "物理类",
+      "subject_types": [
+        "物理类"
+      ],
+      "rows": 462,
+      "source_id": "SRC-HENAN-SCORE-SEG-2026",
+      "checked_at": "2026-10-14",
+      "data_status": "partial",
+      "verification_status": "partial",
+      "evidence": {
+        "parse_method": "扫描件 OCR：Tesseract 5.4 + 投影法网格切分 + 并行逐格多阈值识别；分数骨架取自分数列（识别可靠），人数列仅信原始读数锚点，缺口插值并标注置信度",
+        "final_rows": 462,
+        "high_confidence_rows": 441,
+        "interpolated_rows": 21,
+        "gap_count": 63,
+        "source_url": "https://gaokao.haedu.cn/501/552/2026/0625/155639.html"
+      },
+      "verification_note": "OCR 产物：441 高置信 / 21 插值 / 63 个分数无可靠值待人工补录；来源为省考试院官方扫描件，但逐条数值未经第二通道核实 ⇒ partial。OCR 结果，low 置信行与 gaps 需人工复核后方可入库"
+    }
+  ]
+}

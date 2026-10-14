@@ -284,10 +284,11 @@ def main() -> int:
                         "本目录仅含学科门类 01–13 的本科专业。",
             },
             **SOURCE,
-            "data_status": "verified",
+            "data_status": "available",        # ★ 契约 v1.3 四值：官方原件即最高证据 ⇒ available
+                                               #   （原写 "verified" 属契约禁用值，见 docs/api-contract.md L41）
             "data_status_note": (
                 "该文件为教育部正式发布文本的 PDF 原件解析，非渠道流转数据；"
-                "代码/名称逐条来自 PDF 正文，可回源核对。"
+                "代码/名称逐条来自 PDF 正文，可回源核对 ⇒ 契约口径取 available。"
             ),
             "parser": "data/scripts/parse_major_catalog.py",
             "warnings": warnings,

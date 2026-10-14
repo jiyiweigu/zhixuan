@@ -53,6 +53,29 @@ CHANNEL = {
     "source_id": "SRC-GAOKAO-COMPASS",
 }
 
+# ── 数据状态：以 ③ 数据集核实登记表为准 ──────────────────────────────── #
+#   契约 v1.3 的 data_status 只有 available / partial / schema_only / unavailable，
+#   且禁用 verified / pending / mock（docs/api-contract.md L41）。
+#   「是否核实过」是另一个维度，登记在 data/dictionaries/dataset-verification.json，
+#   由 data/scripts/dataset_status.py 维护。
+#   ⚠️ 本脚本原先写死 "pending"（废弃枚举）——重新生成即回归，已改为查表。
+REGISTRY = ROOT / "data" / "dictionaries" / "dataset-verification.json"
+
+
+def data_status_of(province: str, year: int) -> str:
+    """取该 (省, 年) 的契约 data_status；登记表缺项时保守取 partial。"""
+    try:
+        with REGISTRY.open("r", encoding="utf-8") as fh:
+            doc = json.load(fh)
+    except (OSError, json.JSONDecodeError):
+        return "partial"
+    for e in doc.get("entries", []):
+        if (e.get("dataset") == "score_segment"
+                and e.get("province") == province
+                and int(e.get("year", 0)) == int(year)):
+            return e.get("data_status", "partial")
+    return "partial"
+
 
 def to_int(v):
     if v is None:
@@ -120,7 +143,7 @@ def import_one(province: str, year: int, path: Path) -> tuple[list[dict], dict]:
             "score_range": (r.get("score_range") or "").strip() or None,
             "exam_system": es,
             "confidence": "channel",          # 渠道来源，未逐条对官方核实
-            "data_status": "pending",         # 核实通过后才升 available
+            "data_status": data_status_of(province, year),   # ★ 查 ③ 核实登记表
             "source_id": CHANNEL["source_id"],
             "source_name": CHANNEL["source_name"],
             "source_url": "",
@@ -144,7 +167,7 @@ def import_one(province: str, year: int, path: Path) -> tuple[list[dict], dict]:
         "groups": {f"{k[0]}|{k[1]}": len(v) for k, v in sorted(groups.items())},
         "monotonic_breaks": mono_breaks,
         "null_rank": sum(1 for s in segs if s["cumulative_rank"] is None),
-        "data_status": "pending",
+        "data_status": data_status_of(province, year),
         "source_id": CHANNEL["source_id"],
     }
     return segs, stats
@@ -187,8 +210,9 @@ def main() -> int:
                 "cumulative_rank_note": "官方口径：该分数及以上累计人数，即位次。",
                 "batch_note": "★ 老高考一分为多段（本科一批/本科二批/专科批），"
                               "各段累计值连续，合并会丢批次线信息，故必须按 batch 保留。",
-                "data_status": "pending",
-                "verified_note": "渠道来源，未逐条对官方核实。核实通过后才可升 available。",
+                "data_status": data_status_of(prov, yr),
+                "verified_note": "核实状态与依据见 data/dictionaries/dataset-verification.json"
+                                 "（由 data/scripts/dataset_status.py 维护）。",
             },
             "segments": segs,
         }, ensure_ascii=False, indent=2), encoding="utf-8")

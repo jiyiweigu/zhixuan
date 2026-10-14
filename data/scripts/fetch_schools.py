@@ -243,7 +243,8 @@ def build_school_table(rows: List[dict], *, benke_only: bool = True):
             "source_name": SOURCE_NAME,
             "source_url": SOURCE_URL,
             "year": r.get("YEAR", 2026),
-            "data_status": "pending",          # city/type/ownership 待补
+            "data_status": "partial",          # ★ 契约 v1.3 四值：city/type/ownership 待补 ⇒ 部分可用
+                                               #   （原写 "pending" 属废弃枚举，见 docs/api-contract.md L41）
         })
 
     return out, skipped_zk, len(rows)
