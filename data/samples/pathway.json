@@ -21,7 +21,8 @@
       "description": "面向集中连片特困及国家级扶贫开发重点县的农村学生",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "local-special",
@@ -35,7 +36,8 @@
       "description": "面向本省农村户籍学生的专项招生",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "college-special",
@@ -49,7 +51,8 @@
       "description": "95所高校面向实施区域农村学生的专项招生",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "normal-batch",
@@ -63,7 +66,8 @@
       "description": "主干录取路径",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "early-batch",
@@ -77,7 +81,8 @@
       "description": "含军事、公安、司法、师范、行业、其他类",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "vocational-college",
@@ -91,7 +96,8 @@
       "description": "高职高专录取",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "strong-foundation",
@@ -105,7 +111,8 @@
       "description": "聚焦基础学科的国家级招生改革试点",
       "source_name": "教育部阳光高考信息平台",
       "source_url": "https://gaokao.chsi.com.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-MOE-SUNSHINE"
     },
     {
       "id": "comprehensive-eval",
@@ -119,7 +126,8 @@
       "description": "高考成绩+校测+学业水平综合评价录取",
       "source_name": "教育部阳光高考信息平台",
       "source_url": "https://gaokao.chsi.com.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-MOE-SUNSHINE"
     },
     {
       "id": "recommendation",
@@ -133,7 +141,8 @@
       "description": "免试保送入学",
       "source_name": "教育部阳光高考信息平台",
       "source_url": "https://gaokao.chsi.com.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-MOE-SUNSHINE"
     },
     {
       "id": "high-level-athlete",
@@ -147,7 +156,8 @@
       "description": "高校招收高水平运动员",
       "source_name": "教育部阳光高考信息平台",
       "source_url": "https://gaokao.chsi.com.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-MOE-SUNSHINE"
     },
     {
       "id": "high-level-art",
@@ -161,7 +171,8 @@
       "description": "高校招收艺术特长生",
       "source_name": "教育部阳光高考信息平台",
       "source_url": "https://gaokao.chsi.com.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-MOE-SUNSHINE"
     },
     {
       "id": "art",
@@ -175,7 +186,8 @@
       "description": "含艺术本科提前批、艺术本科批、艺术高职批",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "sports",
@@ -189,7 +201,8 @@
       "description": "含体育本科批、体育高职批",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "military",
@@ -203,7 +216,8 @@
       "description": "军队院校招生",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "police",
@@ -217,7 +231,8 @@
       "description": "公安类院校招生",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "judicial",
@@ -231,7 +246,8 @@
       "description": "司法类院校招生",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "fire-rescue",
@@ -245,7 +261,8 @@
       "description": "中国消防救援学院等招生",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "public-funded-teacher",
@@ -259,7 +276,8 @@
       "description": "免学费住宿费并补助，须签订履约任教协议",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "excellent-teacher",
@@ -273,7 +291,8 @@
       "description": "面向脱贫地区定向培养优秀教师",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "free-medical",
@@ -287,7 +306,8 @@
       "description": "中央财政支持中西部农村订单定向免费本科医学生",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "directed-sergeant",
@@ -301,7 +321,8 @@
       "description": "军地联合定向培养",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "ethnic-preparatory",
@@ -315,7 +336,8 @@
       "description": "预科一年后转入本科",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "ethnic-class",
@@ -329,7 +351,8 @@
       "description": "面向少数民族考生的专门班级",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "central-west-coop",
@@ -343,7 +366,8 @@
       "description": "东部高校面向中西部增投计划",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "single-recruit",
@@ -357,7 +381,8 @@
       "description": "高职院校单独招生考试",
       "source_name": "河南省教育考试院",
       "source_url": "https://www.haeea.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-HENAN-EXAM"
     },
     {
       "id": "sino-foreign",
@@ -371,7 +396,8 @@
       "description": "中外合作办学项目与机构招生",
       "source_name": "教育部阳光高考信息平台",
       "source_url": "https://gaokao.chsi.com.cn/",
-      "year": 2025
+      "year": 2025,
+      "source_id": "SRC-MOE-SUNSHINE"
     }
   ]
 }

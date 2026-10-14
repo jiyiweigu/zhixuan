@@ -4,10 +4,10 @@
     "owner": "徐（③ 数据工程）",
     "generated_at": "2026-10-12",
     "nature": "sample — 真实数据截取，非全量，不得用于生产展示",
-    "note": "10 条。含边界：type/website/intro 均为空（待补，见采集报告§5）。",
+    "note": "12 条 = 名校 9 + 边界 3（`type` 空 1 条、`website` 空 3 条、`intro` 空 2 条）⇒ ② 应允许这些字段为 NULL。",
     "target_table": "school"
   },
-  "count": 10,
+  "count": 12,
   "schools": [
     {
       "id": 716,
@@ -16,10 +16,10 @@
       "province": "河南",
       "city": "郑州市",
       "level": "本科",
-      "type": "",
+      "type": "综合",
       "ownership": "公办",
-      "website": "",
-      "intro": "",
+      "website": "http://www.zzu.edu.cn",
+      "intro": "郑州大学由河南省人民政府兴办，法定住所地为河南省郑州市科学大道100号。学校总占地面积8500余亩，主校区位于郑州市科学大道100号，南校区位于郑州市大学北路75号，北校区位于郑州市文化路97号，东校区位于郑州市大学北路40号。学校面向全国招生，现有全日制普通本科生4.3万余人、研究生3万余人，以及来自85个国家的留学生2400余人。郑州大学是国家“211工程”重点建设高校、“双一流”建设高校、部省合建高校和首批高等教育综合改革试点高校。站在新的历史起点上，学校第四次党代会确立了综合性高水平研究型大学办学定位，围绕一流大学建设中长期任务，坚持高质量、内涵式、可持续发展，到2035年力争进入世界一流大学行列。郑州大学医科教育源于1928年的河南中山大学，1952年河南医学院独立建院，开启了河南医学高等教育的先河；原郑州大学创建于1956年，是新中国创办的第一所综合性大学，1996年成为国家“211工程”重点建设高校；郑州工业大学成",
       "_henan_code": "6000",
       "_department": "河南省",
       "_match": "code",
@@ -27,7 +27,29 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "schema_only"
+      "data_status": "schema_only",
+      "_type_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "matched_by": "exact",
+        "official": false
+      },
+      "_website_src": {
+        "discovery": "SRC-SHANGHAIRANKING",
+        "source_type": "高校官网",
+        "source_name": "该校官网（软科候选 + 本机实测校验通过）",
+        "source_url": "https://www.zzu.edu.cn",
+        "year": 2026,
+        "official": true,
+        "http_status": 200,
+        "name_hit": true
+      },
+      "_intro_src": {
+        "source_type": "高校官网",
+        "source_name": "郑州大学官网·学校简介",
+        "source_url": "https://www.zzu.edu.cn/xxgk/xxjj.htm",
+        "year": 2026,
+        "official": true
+      }
     },
     {
       "id": 718,
@@ -36,10 +58,10 @@
       "province": "河南",
       "city": "开封市",
       "level": "本科",
-      "type": "",
+      "type": "综合",
       "ownership": "公办",
-      "website": "",
-      "intro": "",
+      "website": "http://www.henu.edu.cn",
+      "intro": "河南大学是一所办学历史悠久、学科门类齐全、专业特色鲜明、文化底蕴深厚的国家“双一流”建设高校。河南大学创立于1912年，始名河南留学欧美预备学校，首任校长为林伯襄先生，校园选建于河南贡院旧址之上。后历经中州大学、国立开封中山大学（又称国立第五中山大学）、省立河南大学等阶段，1942年升格为国立河南大学。1952年院系调整，部分院系或独立建校，或并入兄弟高校，校本部更名为河南师范学院。后又经开封师范学院、河南师范大学等阶段，1984年恢复河南大学校名。2008年10月，学校进入省部共建高校行列。2017年9月，学校入选首批国家“双一流”建设高校。2022年2月，学校再次入选国家“双一流”建设高校。113年来，学校恪守“明德新民，止于至善”的校训，形成“团结、勤奋、严谨、朴实”的校风和以...",
       "_henan_code": "6005",
       "_department": "河南省",
       "_match": "code",
@@ -47,7 +69,29 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "schema_only"
+      "data_status": "schema_only",
+      "_type_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "matched_by": "exact",
+        "official": false
+      },
+      "_website_src": {
+        "discovery": "SRC-SHANGHAIRANKING",
+        "source_type": "高校官网",
+        "source_name": "该校官网（软科候选 + 本机实测校验通过）",
+        "source_url": "https://www.henu.edu.cn",
+        "year": 2026,
+        "official": true,
+        "http_status": 200,
+        "name_hit": true
+      },
+      "_intro_src": {
+        "source_type": "高校官网",
+        "source_name": "河南大学官网·学校简介",
+        "source_url": "https://www.henu.edu.cn/xxgk.htm",
+        "year": 2026,
+        "official": true
+      }
     },
     {
       "id": 51,
@@ -56,10 +100,10 @@
       "province": "北京",
       "city": "北京",
       "level": "本科",
-      "type": "",
+      "type": "综合",
       "ownership": "公办",
-      "website": "",
-      "intro": "",
+      "website": "http://www.pku.edu.cn",
+      "intro": "北京大学创办于1898年，是戊戌变法的产物，也是中华民族救亡图存、兴学图强的结果，初名京师大学堂，是中国近现代第一所国立综合性大学，辛亥革命后，于1912年改为现名。北京大学“上承太学正统，下立大学祖庭”，既是中华文脉和教育传统的传承者，也标志着中国现代高等教育的开端。其创办之初也是国家最高教育行政机关，对建立中国现代学制作出重要历史贡献。北京大学为民族的振兴和解放、国家的建设和发展、社会的文明和进步作出了突出贡献，在中国走向现代化的进程中起到了重要的先锋作用。爱国、进步、民主、科学的精神和勤奋、严谨、求实、创新的学风在这里生生不息、代代相传。北京大学校长，他“循思想自由原则，取兼容并包主义”，对北京大学进行了卓有成效的改革，促进了思想解放和学术繁荣。陈独秀、李大钊、毛泽东以及鲁迅、胡适、李四光等一批杰出人士都曾在北京大学任教或任职。北京大学与清华大学、南开大学南迁长沙，共同组成国立长沙临时大学。1938年，临时大学又西迁昆明，",
       "_henan_code": "1105",
       "_department": "教育部",
       "_match": "code",
@@ -67,7 +111,29 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "schema_only"
+      "data_status": "schema_only",
+      "_type_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "matched_by": "exact",
+        "official": false
+      },
+      "_website_src": {
+        "discovery": "SRC-SHANGHAIRANKING",
+        "source_type": "高校官网",
+        "source_name": "该校官网（软科候选 + 本机实测校验通过）",
+        "source_url": "https://www.pku.edu.cn",
+        "year": 2026,
+        "official": true,
+        "http_status": 200,
+        "name_hit": true
+      },
+      "_intro_src": {
+        "source_type": "高校官网",
+        "source_name": "北京大学官网·学校简介",
+        "source_url": "https://www.pku.edu.cn/about.html",
+        "year": 2026,
+        "official": true
+      }
     },
     {
       "id": 55,
@@ -76,10 +142,10 @@
       "province": "北京",
       "city": "北京",
       "level": "本科",
-      "type": "",
+      "type": "综合",
       "ownership": "公办",
-      "website": "",
-      "intro": "",
+      "website": "http://www.tsinghua.edu.cn",
+      "intro": "四月的清华园，春水浮绿、春木载荣，到处洋溢着喜庆的氛围。在清华即将迎来115岁生日之际，我们谨代表学校向海内外广大校友和全体师生员工致以亲切的问候和良好的祝愿，向多年来关心支持我校发展的各界朋友表示衷心的感谢！清华大学建校105周年，要求清华面向世界、勇于进取，树立自信、保持特色，广育祖国和人民需要的各类人才。五年前，2021年，习近平总书记来校考察并强调，清华大学秉持自强不息、厚德载物的校训，深化改革、加快创新，各项事业欣欣向荣，科研创新成果与国家发展需要丝丝相扣，展现了清华人的勇毅和担当。全校师生牢记总书记的殷殷嘱托，强化“旗帜”“标杆”意识，锐意进取、团结奋斗。115载风雨兼程，清华以行胜于言铸就自信从容，以守正创新永葆生机活力。清华大学的前身清华学堂始建于1911年，1912年更名为清华学校。1928年更名为国立清华大学。1937年抗日战争全面爆发后南迁长沙，与北京大学、南开大学组建国立长沙临时大学，1938年迁至昆明改",
       "_henan_code": "1115",
       "_department": "教育部",
       "_match": "code",
@@ -87,7 +153,29 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "schema_only"
+      "data_status": "schema_only",
+      "_type_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "matched_by": "exact",
+        "official": false
+      },
+      "_website_src": {
+        "discovery": "SRC-SHANGHAIRANKING",
+        "source_type": "高校官网",
+        "source_name": "该校官网（软科候选 + 本机实测校验通过）",
+        "source_url": "https://www.tsinghua.edu.cn",
+        "year": 2026,
+        "official": true,
+        "http_status": 200,
+        "name_hit": true
+      },
+      "_intro_src": {
+        "source_type": "高校官网",
+        "source_name": "清华大学官网·学校简介",
+        "source_url": "https://www.tsinghua.edu.cn/xxgk.htm",
+        "year": 2026,
+        "official": true
+      }
     },
     {
       "id": 59,
@@ -96,10 +184,10 @@
       "province": "上海",
       "city": "上海",
       "level": "本科",
-      "type": "",
+      "type": "综合",
       "ownership": "公办",
-      "website": "",
-      "intro": "",
+      "website": "http://www.fudan.edu.cn",
+      "intro": "复旦大学校名取自《尚书大传》之“日月光华，旦复旦兮”，始创于1905年，原名复旦公学，1917年定名为复旦大学，是中国人自主创办的第一所高等院校。上海医科大学前身是1927年创办的国立第四中山大学医学院。2000年，复旦大学与上海医科大学合并。目前，学校拥有哲学、经济学、法学、教育学、文学、历史学、理学、工学、医学、管理学、艺术学、交叉学科等12个学科门类；2021年，学校20个学科入选第二轮“双一流”建设学科，比首轮增加3个入选学科。复旦大学有院（系）41个，附属医院17家。学校设有本科专业87个，拥有一级学科博士学位授权点46个，一级学科硕士学位授权点49个（含一级学科博士学位授权点），博士专业学位授权点10个，硕士专业学位授权点41个，博士后科研流动站39个。在校普通本科生16101人，在校研究生37975人（含全日制和非全日制的大陆港澳台生），学历留学生2190人。在校教学科研人员3711人。中国科学院、中国工程院院士4",
       "_henan_code": "1130",
       "_department": "教育部",
       "_match": "code",
@@ -107,7 +195,29 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "schema_only"
+      "data_status": "schema_only",
+      "_type_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "matched_by": "exact",
+        "official": false
+      },
+      "_website_src": {
+        "discovery": "SRC-SHANGHAIRANKING",
+        "source_type": "高校官网",
+        "source_name": "该校官网（软科候选 + 本机实测校验通过）",
+        "source_url": "https://www.fudan.edu.cn",
+        "year": 2026,
+        "official": true,
+        "http_status": 200,
+        "name_hit": true
+      },
+      "_intro_src": {
+        "source_type": "高校官网",
+        "source_name": "复旦大学官网·学校简介",
+        "source_url": "https://www.fudan.edu.cn/18/list.htm",
+        "year": 2026,
+        "official": true
+      }
     },
     {
       "id": 101,
@@ -116,10 +226,10 @@
       "province": "上海",
       "city": "上海",
       "level": "本科",
-      "type": "",
+      "type": "综合",
       "ownership": "公办",
-      "website": "",
-      "intro": "",
+      "website": "http://www.sjtu.edu.cn",
+      "intro": "上海交通大学起源于1896年创立的南洋公学；1921年与唐山工业专门学校、北京铁路管理学校、北京邮电学校合并，组建交通大学；1956年根据国务院决定学校部分迁往西安，分为交通大学上海部分和西安部分；1959年两部分独立建制，上海部分定名为上海交通大学；1999年上海农学院并入；2005年与上海第二医科大学强强合并。上海交通大学为教育部直属高校，是教育部、上海市人民政府、国家国防科技工业局、农业部、国家海洋局和国家卫生健康委员会共建的全国重点大学。",
       "_henan_code": "1290",
       "_department": "教育部",
       "_match": "code",
@@ -127,7 +237,29 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "schema_only"
+      "data_status": "schema_only",
+      "_type_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "matched_by": "exact",
+        "official": false
+      },
+      "_website_src": {
+        "discovery": "SRC-SHANGHAIRANKING",
+        "source_type": "高校官网",
+        "source_name": "该校官网（软科候选 + 本机实测校验通过）",
+        "source_url": "https://www.sjtu.edu.cn",
+        "year": 2026,
+        "official": true,
+        "http_status": 200,
+        "name_hit": true
+      },
+      "_intro_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "source_name": "上海软科教育信息咨询有限公司（软科中国大学排名）",
+        "source_url": "https://www.shanghairanking.cn/institution/shanghai-jiao-tong-university",
+        "year": 2024,
+        "official": false
+      }
     },
     {
       "id": 77,
@@ -136,10 +268,10 @@
       "province": "浙江",
       "city": "杭州市",
       "level": "本科",
-      "type": "",
+      "type": "综合",
       "ownership": "公办",
-      "website": "",
-      "intro": "",
+      "website": "http://www.zju.edu.cn",
+      "intro": "浙江大学的前身求是书院创立于1897年，1928年定名国立浙江大学。1952年全国高等学校院系调整后，留在杭州的主体部分被分为多所单科性院校，后分别发展为原浙江大学、杭州大学、浙江农业大学和浙江医科大学；1998年，同根同源的四校合并，组建了新浙江大学。浙江大学为教育部直属高校，是教育部、浙江省人民政府、国家国防科技工业局、农业部、国家海洋局和国家卫生健康委员会共建的全国重点大学。",
       "_henan_code": "1195",
       "_department": "教育部",
       "_match": "code",
@@ -147,7 +279,29 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "schema_only"
+      "data_status": "schema_only",
+      "_type_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "matched_by": "exact",
+        "official": false
+      },
+      "_website_src": {
+        "discovery": "SRC-SHANGHAIRANKING",
+        "source_type": "高校官网",
+        "source_name": "该校官网（软科候选 + 本机实测校验通过）",
+        "source_url": "https://www.zju.edu.cn",
+        "year": 2026,
+        "official": true,
+        "http_status": 200,
+        "name_hit": true
+      },
+      "_intro_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "source_name": "上海软科教育信息咨询有限公司（软科中国大学排名）",
+        "source_url": "https://www.shanghairanking.cn/institution/zhejiang-university",
+        "year": 2024,
+        "official": false
+      }
     },
     {
       "id": 71,
@@ -156,10 +310,10 @@
       "province": "湖北",
       "city": "武汉市",
       "level": "本科",
-      "type": "",
+      "type": "综合",
       "ownership": "公办",
-      "website": "",
-      "intro": "",
+      "website": "http://www.whu.edu.cn",
+      "intro": "武汉大学是教育部直属重点综合性大学，是国家“985工程”和“211工程”重点建设高校，是首批“双一流”建设高校。武汉大学溯源于1893年清末湖广总督张之洞奏请清政府创办的自强学堂，历经传承演变，1928年定名为国立武汉大学，是近代中国第一批国立大学。1946年，学校已形成文、法、理、工、农、医6大学院并驾齐驱的办学格局。新中国成立后，武汉大学受到党和政府的高度重视。1958年，毛泽东主席亲临武大视察。1993年，武汉大学百年校庆之际，江泽民等党和国家领导人题词祝贺。改革开放以来，武汉大学在国内高校中率先进行教育教学改革，各项事业蓬勃发展，整体实力明显上升。1999年，世界权威期刊《Science》杂志将武汉大学列为“中国最杰出的大学之一”。2000年，武汉大学与武汉水利电力大学、武汉测绘科技大学、湖北医科大学合并组建新的武汉大学，揭开了学校改革发展的崭新一页。合校二十多年来，学校综合实力和核心竞争力不断提升。2025年，学校在泰",
       "_henan_code": "1180",
       "_department": "教育部",
       "_match": "code",
@@ -167,7 +321,29 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "schema_only"
+      "data_status": "schema_only",
+      "_type_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "matched_by": "exact",
+        "official": false
+      },
+      "_website_src": {
+        "discovery": "SRC-SHANGHAIRANKING",
+        "source_type": "高校官网",
+        "source_name": "该校官网（软科候选 + 本机实测校验通过）",
+        "source_url": "https://www.whu.edu.cn",
+        "year": 2026,
+        "official": true,
+        "http_status": 200,
+        "name_hit": true
+      },
+      "_intro_src": {
+        "source_type": "高校官网",
+        "source_name": "武汉大学官网·学校简介",
+        "source_url": "https://www.whu.edu.cn/xxgk/xxjj.htm",
+        "year": 2026,
+        "official": true
+      }
     },
     {
       "id": 82,
@@ -176,12 +352,54 @@
       "province": "广东",
       "city": "广州市",
       "level": "本科",
+      "type": "综合",
+      "ownership": "公办",
+      "website": "http://www.sysu.edu.cn",
+      "intro": "中山大学是伟大的民族英雄、伟大的爱国主义者、中国民主革命的伟大先驱孙中山先生于 1924 年亲手创办，中国共产党早期领导人共同创建的大学，是中国传播马克思主义的重要发源地之一，具有优良革命传统、爱国奋斗精神和卓越品格追求。中山大学起初校名为国立广东大学。孙中山先生逝世后，学校于 1926 年定名为国立中山大学。中山大学，由 1952 年院系调整后分设的中山大学和中山医科大学于 2001 年 10 月合并而成。在党和国家的坚强领导下，在教育部、广东省及广州、深圳、珠海等驻地政府的关怀和支持下，中山大学发扬综合性、研究型、开放式的办学特质，加快建设中国特色世界一流大学。中山大学汇聚一大批蜚声海内外的名家大师，学术文脉积淀深厚。许多著名学者曾在本校任教： 邓植仪、丁颖、冯友兰、郭沫若、鲁迅、傅斯年、顾颉刚、商承祚、陈焕镛、何思敬、杨成志、赵元任、周谷城、梁伯强、陈国达、吴尚时、李达、王亚南、王力、刘节、王起、岑仲勉、陈寅恪、戴镏龄、容",
+      "_henan_code": "1215",
+      "_department": "教育部",
+      "_match": "code",
+      "source_id": "SRC-HENAN-ZSJH",
+      "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
+      "source_url": "https://zsjh.haedu.cn/qwerasd/school",
+      "year": 2026,
+      "data_status": "schema_only",
+      "_type_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "matched_by": "exact",
+        "official": false
+      },
+      "_website_src": {
+        "discovery": "SRC-SHANGHAIRANKING",
+        "source_type": "高校官网",
+        "source_name": "该校官网（软科候选 + 本机实测校验通过）",
+        "source_url": "https://www.sysu.edu.cn",
+        "year": 2026,
+        "official": true,
+        "http_status": 200,
+        "name_hit": true
+      },
+      "_intro_src": {
+        "source_type": "高校官网",
+        "source_name": "中山大学官网·学校简介",
+        "source_url": "https://www.sysu.edu.cn/xxg/zdjj1.htm",
+        "year": 2026,
+        "official": true
+      }
+    },
+    {
+      "id": 22,
+      "name": "中国科学院大学",
+      "code": "14430",
+      "province": "北京",
+      "city": "北京",
+      "level": "本科",
       "type": "",
       "ownership": "公办",
       "website": "",
       "intro": "",
-      "_henan_code": "1215",
-      "_department": "教育部",
+      "_henan_code": "0175",
+      "_department": "中国科学院",
       "_match": "code",
       "source_id": "SRC-HENAN-ZSJH",
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
@@ -190,24 +408,75 @@
       "data_status": "schema_only"
     },
     {
-      "id": 1,
-      "name": "北京体育大学",
-      "code": "10043",
-      "province": "北京",
-      "city": "北京",
+      "id": 7,
+      "name": "上海体育大学",
+      "code": "10277",
+      "province": "上海",
+      "city": "上海",
       "level": "本科",
-      "type": "",
-      "ownership": "",
+      "type": "体育",
+      "ownership": "公办",
       "website": "",
-      "intro": "",
-      "_henan_code": "0001",
-      "_department": "国家体育总局",
+      "intro": "上海体育大学创建于1952年，原名上海体育学院，是新中国成立最早的体育高等学府。学校原为国家体委直属高校，2001年起，由国家体育总局和上海市人民政府共建。2017年以来，入选国家“双一流”和上海市高水平地方高校建设序列。2023年6月，经教育部批准，更名为上海体育大学。学校坚持社会主义办学方向，着力落实立德树人根本任务，建构“五育并举”育人格局。坚持探索人才培养、学术创新、社会服务、文化传承、对外开放发展的体育特色创新发展路径，扎根中国大地建设世界一流体育大学。坚持特色性应用研究型办学定位，秉持“身心一统，兼蓄竞攀”校训，承载“发展体育运动、增强人民体质、弘扬体育文化”的光荣使命，践行“为了师生终身发展”的根本理念和“身心一统、德技相长、文理兼修、服务社会”的办学思想。",
+      "_henan_code": "0015",
+      "_department": "上海市",
       "_match": "code",
       "source_id": "SRC-HENAN-ZSJH",
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "schema_only"
+      "data_status": "schema_only",
+      "_type_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "matched_by": "exact",
+        "official": false
+      },
+      "_website_candidate": {
+        "url": "http://www.sus.edu.cn",
+        "verified": false,
+        "note": "页面未出现校名",
+        "official": false,
+        "discovery": "SRC-SHANGHAIRANKING"
+      },
+      "_intro_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "source_name": "上海软科教育信息咨询有限公司（软科中国大学排名）",
+        "source_url": "https://www.shanghairanking.cn/institution/shanghai-university-of-sport",
+        "year": 2024,
+        "official": false
+      }
+    },
+    {
+      "id": 20,
+      "name": "中央司法警官学院",
+      "code": "11903",
+      "province": "河北",
+      "city": "保定市",
+      "level": "本科",
+      "type": "政法",
+      "ownership": "公办",
+      "website": "",
+      "intro": "",
+      "_henan_code": "0160",
+      "_department": "司法部",
+      "_match": "code",
+      "source_id": "SRC-HENAN-ZSJH",
+      "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
+      "source_url": "https://zsjh.haedu.cn/qwerasd/school",
+      "year": 2026,
+      "data_status": "schema_only",
+      "_type_src": {
+        "source_id": "SRC-SHANGHAIRANKING",
+        "matched_by": "exact",
+        "official": false
+      },
+      "_website_candidate": {
+        "url": "http://www.cicp.edu.cn",
+        "verified": false,
+        "note": "不可达：URLError",
+        "official": false,
+        "discovery": "SRC-SHANGHAIRANKING"
+      }
     }
   ]
 }

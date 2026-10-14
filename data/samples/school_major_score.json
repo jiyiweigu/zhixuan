@@ -4,14 +4,14 @@
     "owner": "徐（③ 数据工程）",
     "generated_at": "2026-10-12",
     "nature": "sample — 真实数据截取，非全量，不得用于生产展示",
-    "note": "12 条。含边界：2 条 school_id 空（院校改名）、2 条 subject_type 空（2024 category 整列缺失）。",
+    "note": "14 条。含边界：2 条 school_id 空（院校改名）、2 条 subject_type 空（2024 category 整列缺失）、2 条 min_score 带小数（上游疑为均值，表列是 INTEGER ⇒ 需取整口径）。",
     "target_table": "school_major_score"
   },
-  "count": 12,
+  "count": 14,
   "scores": [
     {
       "school_id": 243,
-      "major_id": null,
+      "major_id": "120203K",
       "province": "河南",
       "year": 2025,
       "batch": "本科批",
@@ -31,11 +31,19 @@
       "confidence": "channel",
       "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
-      "source_url": ""
+      "source_url": "",
+      "major_match": {
+        "kind": "专业",
+        "matched_name": "会计学",
+        "class_code": "1202",
+        "class_name": "工商管理类",
+        "menlei": "管理学",
+        "via": "exact"
+      }
     },
     {
       "school_id": 243,
-      "major_id": null,
+      "major_id": "120203K",
       "province": "河南",
       "year": 2025,
       "batch": "本科批",
@@ -55,11 +63,19 @@
       "confidence": "channel",
       "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
-      "source_url": ""
+      "source_url": "",
+      "major_match": {
+        "kind": "专业",
+        "matched_name": "会计学",
+        "class_code": "1202",
+        "class_name": "工商管理类",
+        "menlei": "管理学",
+        "via": "exact"
+      }
     },
     {
       "school_id": 243,
-      "major_id": null,
+      "major_id": "120604T",
       "province": "河南",
       "year": 2025,
       "batch": "本科批",
@@ -79,11 +95,19 @@
       "confidence": "channel",
       "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
-      "source_url": ""
+      "source_url": "",
+      "major_match": {
+        "kind": "专业",
+        "matched_name": "供应链管理",
+        "class_code": "1206",
+        "class_name": "物流管理与工程类",
+        "menlei": "管理学",
+        "via": "exact"
+      }
     },
     {
       "school_id": 243,
-      "major_id": null,
+      "major_id": "080904K",
       "province": "河南",
       "year": 2025,
       "batch": "本科批",
@@ -103,11 +127,19 @@
       "confidence": "channel",
       "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
-      "source_url": ""
+      "source_url": "",
+      "major_match": {
+        "kind": "专业",
+        "matched_name": "信息安全",
+        "class_code": "0809",
+        "class_name": "计算机类",
+        "menlei": "工学",
+        "via": "exact"
+      }
     },
     {
       "school_id": 243,
-      "major_id": null,
+      "major_id": "1204",
       "province": "河南",
       "year": 2025,
       "batch": "本科批",
@@ -127,11 +159,19 @@
       "confidence": "channel",
       "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
-      "source_url": ""
+      "source_url": "",
+      "major_match": {
+        "kind": "专业类",
+        "matched_name": "公共管理类",
+        "class_code": "1204",
+        "class_name": "公共管理类",
+        "menlei": "管理学",
+        "via": "exact"
+      }
     },
     {
       "school_id": 243,
-      "major_id": null,
+      "major_id": "1204",
       "province": "河南",
       "year": 2025,
       "batch": "本科批",
@@ -151,11 +191,19 @@
       "confidence": "channel",
       "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
-      "source_url": ""
+      "source_url": "",
+      "major_match": {
+        "kind": "专业类",
+        "matched_name": "公共管理类",
+        "class_code": "1204",
+        "class_name": "公共管理类",
+        "menlei": "管理学",
+        "via": "exact"
+      }
     },
     {
       "school_id": 243,
-      "major_id": null,
+      "major_id": "050262",
       "province": "河南",
       "year": 2025,
       "batch": "本科批",
@@ -175,11 +223,19 @@
       "confidence": "channel",
       "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
-      "source_url": ""
+      "source_url": "",
+      "major_match": {
+        "kind": "专业",
+        "matched_name": "商务英语",
+        "class_code": "0502",
+        "class_name": "外国语言文学类",
+        "menlei": "文学",
+        "via": "exact"
+      }
     },
     {
       "school_id": 243,
-      "major_id": null,
+      "major_id": "120205",
       "province": "河南",
       "year": 2025,
       "batch": "本科批",
@@ -199,59 +255,83 @@
       "confidence": "channel",
       "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
-      "source_url": ""
+      "source_url": "",
+      "major_match": {
+        "kind": "专业",
+        "matched_name": "国际商务",
+        "class_code": "1202",
+        "class_name": "工商管理类",
+        "menlei": "管理学",
+        "via": "exact"
+      }
     },
     {
       "school_id": null,
-      "major_id": null,
+      "major_id": "100201K",
       "province": "河南",
       "year": 2025,
       "batch": "本科批",
       "pathway_id": null,
       "subject_type": "物理类",
-      "min_score": 569.0,
-      "min_rank": 87297,
+      "min_score": 542.0,
+      "min_rank": 131568,
       "avg_score": null,
       "source_id": "SRC-GAOKAO-COMPASS",
-      "major_code": "14",
-      "major_name": "中医学",
-      "major_note": "（办学地点：烟台校区；不招收色盲、色弱考生）",
-      "group_code": "107",
-      "admit_count": null,
-      "match_via": "name",
-      "exam_system": "3+1+2",
-      "confidence": "channel",
-      "data_status": "schema_only",
-      "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
-      "source_url": ""
-    },
-    {
-      "school_id": null,
-      "major_id": null,
-      "province": "河南",
-      "year": 2025,
-      "batch": "本科批",
-      "pathway_id": null,
-      "subject_type": "物理类",
-      "min_score": 596.0,
-      "min_rank": 50521,
-      "avg_score": null,
-      "source_id": "SRC-GAOKAO-COMPASS",
-      "major_code": "2",
+      "major_code": "12",
       "major_name": "临床医学",
-      "major_note": "（卓越班）（办学地点：烟台校区；不招收色盲、色弱考生）",
-      "group_code": "101",
-      "admit_count": null,
-      "match_via": "name",
+      "major_note": "（不招色盲、色弱考生）",
+      "group_code": "102",
+      "admit_count": 6,
+      "match_via": null,
       "exam_system": "3+1+2",
       "confidence": "channel",
       "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
-      "source_url": ""
+      "source_url": "",
+      "major_match": {
+        "kind": "专业",
+        "matched_name": "临床医学",
+        "class_code": "1002",
+        "class_name": "临床医学类",
+        "menlei": "医学",
+        "via": "exact"
+      }
+    },
+    {
+      "school_id": null,
+      "major_id": "081302",
+      "province": "河南",
+      "year": 2025,
+      "batch": "本科批",
+      "pathway_id": null,
+      "subject_type": "物理类",
+      "min_score": 542.0,
+      "min_rank": 131568,
+      "avg_score": null,
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "major_code": "10",
+      "major_name": "制药工程",
+      "major_note": "（不招色盲、色弱考生）",
+      "group_code": "102",
+      "admit_count": 4,
+      "match_via": null,
+      "exam_system": "3+1+2",
+      "confidence": "channel",
+      "data_status": "schema_only",
+      "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
+      "source_url": "",
+      "major_match": {
+        "kind": "专业",
+        "matched_name": "制药工程",
+        "class_code": "0813",
+        "class_name": "化工与制药类",
+        "menlei": "工学",
+        "via": "exact"
+      }
     },
     {
       "school_id": 55,
-      "major_id": null,
+      "major_id": "0809",
       "province": "河南",
       "year": 2024,
       "batch": "本一",
@@ -271,7 +351,15 @@
       "confidence": "channel",
       "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
-      "source_url": ""
+      "source_url": "",
+      "major_match": {
+        "kind": "专业类",
+        "matched_name": "计算机类",
+        "class_code": "0809",
+        "class_name": "计算机类",
+        "menlei": "工学",
+        "via": "exact"
+      }
     },
     {
       "school_id": 51,
@@ -295,7 +383,72 @@
       "confidence": "channel",
       "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
-      "source_url": ""
+      "source_url": "",
+      "major_match": null
+    },
+    {
+      "school_id": 622,
+      "major_id": "050101",
+      "province": "河南",
+      "year": 2022,
+      "batch": "本科二批",
+      "pathway_id": null,
+      "subject_type": "文科",
+      "min_score": 509.12,
+      "min_rank": 36213,
+      "avg_score": null,
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "major_code": null,
+      "major_name": "汉语言文学",
+      "major_note": "(师范)",
+      "group_code": null,
+      "admit_count": null,
+      "match_via": "name",
+      "exam_system": "文理科",
+      "confidence": "channel",
+      "data_status": "schema_only",
+      "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
+      "source_url": "",
+      "major_match": {
+        "kind": "专业",
+        "matched_name": "汉语言文学",
+        "class_code": "0501",
+        "class_name": "中国语言文学类",
+        "menlei": "文学",
+        "via": "exact"
+      }
+    },
+    {
+      "school_id": 622,
+      "major_id": "020101",
+      "province": "河南",
+      "year": 2022,
+      "batch": "本科二批",
+      "pathway_id": null,
+      "subject_type": "文科",
+      "min_score": 507.11,
+      "min_rank": 37767,
+      "avg_score": null,
+      "source_id": "SRC-GAOKAO-COMPASS",
+      "major_code": null,
+      "major_name": "经济学",
+      "major_note": null,
+      "group_code": null,
+      "admit_count": null,
+      "match_via": "name",
+      "exam_system": "文理科",
+      "confidence": "channel",
+      "data_status": "schema_only",
+      "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
+      "source_url": "",
+      "major_match": {
+        "kind": "专业",
+        "matched_name": "经济学",
+        "class_code": "0201",
+        "class_name": "经济学类",
+        "menlei": "经济学",
+        "via": "exact"
+      }
     }
   ]
 }
