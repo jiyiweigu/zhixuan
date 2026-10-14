@@ -15,12 +15,24 @@
 | `data/school_major_score/school_major_score_*.json` | 院校专业录取分（2022/2024/2025 × 河南/江西，6 个） | 78.8 MB | 渠道数据（Gaokao-Compass-11M） |
 | `data/score_segment/score_segment_*.json` | 一分一段表（2022–2025 × 河南/江西 + 2026 历史/物理，10 个） | 8.6 MB | 渠道数据 + 考试院扫描件 OCR |
 | `data/score_segment/review_*.html` | 一分一段人工复核工作台（2 个） | 2.9 MB | 解析产物（可重跑） |
-| `data/schools/*.json` | 院校库原始/合并数据（7 个） | 3.9 MB | 官方源采集 + 合并产物 |
+| `data/schools/*.json` | 院校库原始/合并数据 —— **队长 2026-10-14 复议后改为随仓库分发**（唯一例外见下） | — | 官方源采集 + 合并产物 |
 | `data/samples/raw/` | 考试院官方一分一段扫描件（2 个 PDF + 16 张页面 JPEG） | 4.3 MB | 官方扫描件（版权归考试院） |
 
 合计 **43 个文件、约 100.1 MB**（未压缩）。完整清单与 SHA256 见 `data/MANIFEST.sha256`。
 
 > ⚠️ 上述文件**仅在仓库中移出**，本地保留一份；`.gitignore` 已加规则防止再次误提交。
+>
+> ✅ **2026-10-14 队长复议（仅院校库）**：`data/schools/` 下的院校库 JSON **改为随仓库分发**。
+> 理由：院校库是本作品任务 2.1 的主产物，且采集/合并脚本（`merge_schools`、`build_school_*`、
+> `analyze_school_unmatched`、`build_school_aliases`）直接依赖 `schools_raw.json` /
+> `moe_schools.json` 等输入，移出后无法离线复跑。
+> **唯一例外**：上海软科（ShanghaiRanking）三个榜单 `shanghairanking_2024.json` /
+> `shanghai_top300.json` / `shanghai_top300_inhenan.json`（合计 651 KB）属第三方
+> 版权数据，仍按上表移出、不入库；重建见 `data/scripts/fetch_shanghairanking.py` 与
+> `data/scripts/intersect_shanghai_henan.py`。
+> 移出后随仓库分发的院校库 JSON 为 **14 个 / 13.2 MB**。
+> `data/MANIFEST.sha256` **未改动**：它仍是这 43 个原始导出物的基线摘要，
+> 其中院校库相关文件的摘要现在可直接与仓库内副本校验。
 
 ---
 

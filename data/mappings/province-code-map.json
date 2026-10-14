@@ -1,0 +1,805 @@
+{
+  "meta": {
+    "title": "省级行政区划三向映射（中文省名 ↔ 2 位码 ↔ 6 位码）",
+    "purpose": "让 ② 在契约接口（2 位码）与 ③ 产物（6 位码 + 中文省名）之间无损转换，并识别「河南省 / 河南」这类同省异写",
+    "owner": "徐（③ 数据工程）",
+    "generated_at": "2026-10-13",
+    "standard": "GB/T 2260《中华人民共和国行政区划代码》",
+    "issue": "契约 G6",
+    "contract_refs": [
+      "docs/api-contract.md 8.3 GET /api/provinces/{code}/rules —— code 为两位码（河南 41、江西 36）",
+      "docs/api-contract.md 8.6 GET /api/majors/{id}/requirements —— province 用省级行政区划代码",
+      "docs/api-contract.md 8.7 规则表唯一键 —— province_code 同上"
+    ],
+    "usage": "① 请求参数：接口要 2 位码 → 取 province_code；② 落库：规则类表按契约存 2 位码，事实表（score_segment / school_major_score）模型字段是 province 字符串 → 建议统一存**中文简称**（河南 / 江西）；③ 名称清洗：用 aliases 把「河南省」归一为「河南」。",
+    "coverage": {
+      "provinces_total": 31,
+      "provinces_in_current_data": [
+        "36",
+        "41"
+      ],
+      "unmapped_names": []
+    }
+  },
+  "provinces": [
+    {
+      "province_code": "11",
+      "province_code6": "110000",
+      "province_name": "北京市",
+      "short_name": "北京",
+      "aliases": [
+        "北京",
+        "北京市"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "12",
+      "province_code6": "120000",
+      "province_name": "天津市",
+      "short_name": "天津",
+      "aliases": [
+        "天津",
+        "天津市"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "13",
+      "province_code6": "130000",
+      "province_name": "河北省",
+      "short_name": "河北",
+      "aliases": [
+        "河北",
+        "河北省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "14",
+      "province_code6": "140000",
+      "province_name": "山西省",
+      "short_name": "山西",
+      "aliases": [
+        "山西",
+        "山西省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "15",
+      "province_code6": "150000",
+      "province_name": "内蒙古自治区",
+      "short_name": "内蒙古",
+      "aliases": [
+        "内蒙古",
+        "内蒙古自治区",
+        "內蒙古"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "21",
+      "province_code6": "210000",
+      "province_name": "辽宁省",
+      "short_name": "辽宁",
+      "aliases": [
+        "辽宁",
+        "辽宁省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "22",
+      "province_code6": "220000",
+      "province_name": "吉林省",
+      "short_name": "吉林",
+      "aliases": [
+        "吉林",
+        "吉林省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "23",
+      "province_code6": "230000",
+      "province_name": "黑龙江省",
+      "short_name": "黑龙江",
+      "aliases": [
+        "黑龙江",
+        "黑龙江省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "31",
+      "province_code6": "310000",
+      "province_name": "上海市",
+      "short_name": "上海",
+      "aliases": [
+        "上海",
+        "上海市"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "32",
+      "province_code6": "320000",
+      "province_name": "江苏省",
+      "short_name": "江苏",
+      "aliases": [
+        "江苏",
+        "江苏省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "33",
+      "province_code6": "330000",
+      "province_name": "浙江省",
+      "short_name": "浙江",
+      "aliases": [
+        "浙江",
+        "浙江省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "34",
+      "province_code6": "340000",
+      "province_name": "安徽省",
+      "short_name": "安徽",
+      "aliases": [
+        "安徽",
+        "安徽省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "35",
+      "province_code6": "350000",
+      "province_name": "福建省",
+      "short_name": "福建",
+      "aliases": [
+        "福建",
+        "福建省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "36",
+      "province_code6": "360000",
+      "province_name": "江西省",
+      "short_name": "江西",
+      "aliases": [
+        "江西",
+        "江西省"
+      ],
+      "in_current_data": true,
+      "data_forms": [
+        "江西"
+      ]
+    },
+    {
+      "province_code": "37",
+      "province_code6": "370000",
+      "province_name": "山东省",
+      "short_name": "山东",
+      "aliases": [
+        "山东",
+        "山东省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "41",
+      "province_code6": "410000",
+      "province_name": "河南省",
+      "short_name": "河南",
+      "aliases": [
+        "河南",
+        "河南省"
+      ],
+      "in_current_data": true,
+      "data_forms": [
+        "河南",
+        "河南省"
+      ]
+    },
+    {
+      "province_code": "42",
+      "province_code6": "420000",
+      "province_name": "湖北省",
+      "short_name": "湖北",
+      "aliases": [
+        "湖北",
+        "湖北省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "43",
+      "province_code6": "430000",
+      "province_name": "湖南省",
+      "short_name": "湖南",
+      "aliases": [
+        "湖南",
+        "湖南省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "44",
+      "province_code6": "440000",
+      "province_name": "广东省",
+      "short_name": "广东",
+      "aliases": [
+        "广东",
+        "广东省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "45",
+      "province_code6": "450000",
+      "province_name": "广西壮族自治区",
+      "short_name": "广西",
+      "aliases": [
+        "广西",
+        "广西壮族自治区",
+        "广西省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "46",
+      "province_code6": "460000",
+      "province_name": "海南省",
+      "short_name": "海南",
+      "aliases": [
+        "海南",
+        "海南省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "50",
+      "province_code6": "500000",
+      "province_name": "重庆市",
+      "short_name": "重庆",
+      "aliases": [
+        "重庆",
+        "重庆市"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "51",
+      "province_code6": "510000",
+      "province_name": "四川省",
+      "short_name": "四川",
+      "aliases": [
+        "四川",
+        "四川省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "52",
+      "province_code6": "520000",
+      "province_name": "贵州省",
+      "short_name": "贵州",
+      "aliases": [
+        "贵州",
+        "贵州省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "53",
+      "province_code6": "530000",
+      "province_name": "云南省",
+      "short_name": "云南",
+      "aliases": [
+        "云南",
+        "云南省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "54",
+      "province_code6": "540000",
+      "province_name": "西藏自治区",
+      "short_name": "西藏",
+      "aliases": [
+        "西藏",
+        "西藏自治区"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "61",
+      "province_code6": "610000",
+      "province_name": "陕西省",
+      "short_name": "陕西",
+      "aliases": [
+        "陕西",
+        "陕西省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "62",
+      "province_code6": "620000",
+      "province_name": "甘肃省",
+      "short_name": "甘肃",
+      "aliases": [
+        "甘肃",
+        "甘肃省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "63",
+      "province_code6": "630000",
+      "province_name": "青海省",
+      "short_name": "青海",
+      "aliases": [
+        "青海",
+        "青海省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "64",
+      "province_code6": "640000",
+      "province_name": "宁夏回族自治区",
+      "short_name": "宁夏",
+      "aliases": [
+        "宁夏",
+        "宁夏回族自治区",
+        "宁夏省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    },
+    {
+      "province_code": "65",
+      "province_code6": "650000",
+      "province_name": "新疆维吾尔自治区",
+      "short_name": "新疆",
+      "aliases": [
+        "新疆",
+        "新疆维吾尔自治区",
+        "新疆省"
+      ],
+      "in_current_data": false,
+      "data_forms": []
+    }
+  ],
+  "by_code2": {
+    "11": "110000",
+    "12": "120000",
+    "13": "130000",
+    "14": "140000",
+    "15": "150000",
+    "21": "210000",
+    "22": "220000",
+    "23": "230000",
+    "31": "310000",
+    "32": "320000",
+    "33": "330000",
+    "34": "340000",
+    "35": "350000",
+    "36": "360000",
+    "37": "370000",
+    "41": "410000",
+    "42": "420000",
+    "43": "430000",
+    "44": "440000",
+    "45": "450000",
+    "46": "460000",
+    "50": "500000",
+    "51": "510000",
+    "52": "520000",
+    "53": "530000",
+    "54": "540000",
+    "61": "610000",
+    "62": "620000",
+    "63": "630000",
+    "64": "640000",
+    "65": "650000"
+  },
+  "by_code6": {
+    "110000": "11",
+    "120000": "12",
+    "130000": "13",
+    "140000": "14",
+    "150000": "15",
+    "210000": "21",
+    "220000": "22",
+    "230000": "23",
+    "310000": "31",
+    "320000": "32",
+    "330000": "33",
+    "340000": "34",
+    "350000": "35",
+    "360000": "36",
+    "370000": "37",
+    "410000": "41",
+    "420000": "42",
+    "430000": "43",
+    "440000": "44",
+    "450000": "45",
+    "460000": "46",
+    "500000": "50",
+    "510000": "51",
+    "520000": "52",
+    "530000": "53",
+    "540000": "54",
+    "610000": "61",
+    "620000": "62",
+    "630000": "63",
+    "640000": "64",
+    "650000": "65"
+  },
+  "by_name": {
+    "北京": [
+      "11",
+      "110000",
+      "北京市"
+    ],
+    "北京市": [
+      "11",
+      "110000",
+      "北京市"
+    ],
+    "天津": [
+      "12",
+      "120000",
+      "天津市"
+    ],
+    "天津市": [
+      "12",
+      "120000",
+      "天津市"
+    ],
+    "河北": [
+      "13",
+      "130000",
+      "河北省"
+    ],
+    "河北省": [
+      "13",
+      "130000",
+      "河北省"
+    ],
+    "山西": [
+      "14",
+      "140000",
+      "山西省"
+    ],
+    "山西省": [
+      "14",
+      "140000",
+      "山西省"
+    ],
+    "内蒙古": [
+      "15",
+      "150000",
+      "内蒙古自治区"
+    ],
+    "内蒙古自治区": [
+      "15",
+      "150000",
+      "内蒙古自治区"
+    ],
+    "內蒙古": [
+      "15",
+      "150000",
+      "内蒙古自治区"
+    ],
+    "辽宁": [
+      "21",
+      "210000",
+      "辽宁省"
+    ],
+    "辽宁省": [
+      "21",
+      "210000",
+      "辽宁省"
+    ],
+    "吉林": [
+      "22",
+      "220000",
+      "吉林省"
+    ],
+    "吉林省": [
+      "22",
+      "220000",
+      "吉林省"
+    ],
+    "黑龙江": [
+      "23",
+      "230000",
+      "黑龙江省"
+    ],
+    "黑龙江省": [
+      "23",
+      "230000",
+      "黑龙江省"
+    ],
+    "上海": [
+      "31",
+      "310000",
+      "上海市"
+    ],
+    "上海市": [
+      "31",
+      "310000",
+      "上海市"
+    ],
+    "江苏": [
+      "32",
+      "320000",
+      "江苏省"
+    ],
+    "江苏省": [
+      "32",
+      "320000",
+      "江苏省"
+    ],
+    "浙江": [
+      "33",
+      "330000",
+      "浙江省"
+    ],
+    "浙江省": [
+      "33",
+      "330000",
+      "浙江省"
+    ],
+    "安徽": [
+      "34",
+      "340000",
+      "安徽省"
+    ],
+    "安徽省": [
+      "34",
+      "340000",
+      "安徽省"
+    ],
+    "福建": [
+      "35",
+      "350000",
+      "福建省"
+    ],
+    "福建省": [
+      "35",
+      "350000",
+      "福建省"
+    ],
+    "江西": [
+      "36",
+      "360000",
+      "江西省"
+    ],
+    "江西省": [
+      "36",
+      "360000",
+      "江西省"
+    ],
+    "山东": [
+      "37",
+      "370000",
+      "山东省"
+    ],
+    "山东省": [
+      "37",
+      "370000",
+      "山东省"
+    ],
+    "河南": [
+      "41",
+      "410000",
+      "河南省"
+    ],
+    "河南省": [
+      "41",
+      "410000",
+      "河南省"
+    ],
+    "湖北": [
+      "42",
+      "420000",
+      "湖北省"
+    ],
+    "湖北省": [
+      "42",
+      "420000",
+      "湖北省"
+    ],
+    "湖南": [
+      "43",
+      "430000",
+      "湖南省"
+    ],
+    "湖南省": [
+      "43",
+      "430000",
+      "湖南省"
+    ],
+    "广东": [
+      "44",
+      "440000",
+      "广东省"
+    ],
+    "广东省": [
+      "44",
+      "440000",
+      "广东省"
+    ],
+    "广西": [
+      "45",
+      "450000",
+      "广西壮族自治区"
+    ],
+    "广西壮族自治区": [
+      "45",
+      "450000",
+      "广西壮族自治区"
+    ],
+    "广西省": [
+      "45",
+      "450000",
+      "广西壮族自治区"
+    ],
+    "海南": [
+      "46",
+      "460000",
+      "海南省"
+    ],
+    "海南省": [
+      "46",
+      "460000",
+      "海南省"
+    ],
+    "重庆": [
+      "50",
+      "500000",
+      "重庆市"
+    ],
+    "重庆市": [
+      "50",
+      "500000",
+      "重庆市"
+    ],
+    "四川": [
+      "51",
+      "510000",
+      "四川省"
+    ],
+    "四川省": [
+      "51",
+      "510000",
+      "四川省"
+    ],
+    "贵州": [
+      "52",
+      "520000",
+      "贵州省"
+    ],
+    "贵州省": [
+      "52",
+      "520000",
+      "贵州省"
+    ],
+    "云南": [
+      "53",
+      "530000",
+      "云南省"
+    ],
+    "云南省": [
+      "53",
+      "530000",
+      "云南省"
+    ],
+    "西藏": [
+      "54",
+      "540000",
+      "西藏自治区"
+    ],
+    "西藏自治区": [
+      "54",
+      "540000",
+      "西藏自治区"
+    ],
+    "陕西": [
+      "61",
+      "610000",
+      "陕西省"
+    ],
+    "陕西省": [
+      "61",
+      "610000",
+      "陕西省"
+    ],
+    "甘肃": [
+      "62",
+      "620000",
+      "甘肃省"
+    ],
+    "甘肃省": [
+      "62",
+      "620000",
+      "甘肃省"
+    ],
+    "青海": [
+      "63",
+      "630000",
+      "青海省"
+    ],
+    "青海省": [
+      "63",
+      "630000",
+      "青海省"
+    ],
+    "宁夏": [
+      "64",
+      "640000",
+      "宁夏回族自治区"
+    ],
+    "宁夏回族自治区": [
+      "64",
+      "640000",
+      "宁夏回族自治区"
+    ],
+    "宁夏省": [
+      "64",
+      "640000",
+      "宁夏回族自治区"
+    ],
+    "新疆": [
+      "65",
+      "650000",
+      "新疆维吾尔自治区"
+    ],
+    "新疆维吾尔自治区": [
+      "65",
+      "650000",
+      "新疆维吾尔自治区"
+    ],
+    "新疆省": [
+      "65",
+      "650000",
+      "新疆维吾尔自治区"
+    ]
+  }
+}

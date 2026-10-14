@@ -63,6 +63,7 @@ ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / "data" / "raw"
 OUT = ROOT / "data" / "school_major_score"
 SCHOOLS = ROOT / "data" / "schools" / "schools_merged.json"
+SCHOOL_ALIASES = ROOT / "data" / "schools" / "school_aliases.json"
 
 FIRST_NEW_GAOKAO = {"河南": 2025, "江西": 2024}
 
@@ -152,10 +153,9 @@ def normalize_school_name(name: str) -> str:
 
     1. 全角括号 → 半角
     2. 去掉所有空格
-    3. 去掉结尾的「学院/大学」不带——不改语义后缀
 
     ⚠️ 明确**不做**的事：不把「XX学院」猜成「XX大学」，不拆分/合并院校。
-    那些属于院校改名，必须逐条核实（见 rename 表），不得自动推断。
+    那些属于院校改名，一律走 `school_aliases.json`（经核实）。
     """
     s = (name or "").strip()
     s = s.replace("（", "(").replace("）", ")")
@@ -163,23 +163,41 @@ def normalize_school_name(name: str) -> str:
     return s
 
 
+def core_name(name: str) -> str:
+    """去尾部括号的关键名：`江西水利电力大学(原南昌工程学院)` → `江西水利电力大学`。
+
+    院校库在 2026 招生计划里把改名校记作 `新名(原旧名)`，
+    而录取分数据用**旧名**或**裸新名**，故需以核心名兜底匹配。
+    """
+    base = normalize_school_name(name)
+    prev = None
+    while prev != base:
+        prev = base
+        base = re.sub(r"\([^()]*\)$", "", base)
+    return base
+
+
 # ─────────────────────────────────────────────────────────
 # 院校索引
 # ─────────────────────────────────────────────────────────
 
 class SchoolIndex:
-    """把院校库构造成两套可映射索引：河南省代号 / 校名。"""
+    """把院校库构造成多套可映射索引：河南省代号 / 全名 / 归一化名 / 核心名。
 
-    def __init__(self, path: Path):
+    核心名索引用于吸收院校库的 `新名(原旧名)` 写法
+    （如 `江西水利电力大学(原南昌工程学院)` → 核心名 `江西水利电力大学`）。
+    """
+
+    def __init__(self, path: Path, exclude=None):
         data = json.loads(path.read_text(encoding="utf-8"))
         self.records = data.get("records", [])
         self.unmatched = data.get("unmatched", [])
-        # 河南省代号（_henan_code，唯一）
+        if exclude is not None:
+            self.records = [r for r in self.records if not exclude(r)]
         self.by_henan_code: dict[str, int] = {}
-        # 校名 → id（取首个；重名极少）
         self.by_name: dict[str, int] = {}
-        # 归一化校名 → id（用于吸收括号/空格差异）
         self.by_norm_name: dict[str, int] = {}
+        self.by_core_name: dict[str, int] = {}
         for r in self.records:
             hc = str(r.get("_henan_code") or "").strip()
             if hc:
@@ -190,7 +208,9 @@ class SchoolIndex:
             nn = normalize_school_name(nm)
             if nn and nn not in self.by_norm_name:
                 self.by_norm_name[nn] = r["id"]
-        # 在籍院校 id 集合（用于校验映射结果确实在库内）
+            cn = core_name(nm)
+            if cn and cn not in self.by_core_name:
+                self.by_core_name[cn] = r["id"]
         self.valid_ids = {r["id"] for r in self.records}
 
     def resolve_henan(self, code: str) -> int | None:
@@ -200,13 +220,60 @@ class SchoolIndex:
         return self.by_henan_code.get(c.zfill(4))
 
     def resolve_name(self, name: str) -> int | None:
+        """逐级兜底：全名 → 归一化名 → 核心名（剥离尾部括号）。"""
         nm = (name or "").strip()
         if not nm:
             return None
         if nm in self.by_name:
             return self.by_name[nm]
-        # 退化到归一化匹配（仅吸收括号全半角/空格差异）
-        return self.by_norm_name.get(normalize_school_name(nm))
+        nn = normalize_school_name(nm)
+        if nn in self.by_norm_name:
+            return self.by_norm_name[nn]
+        cn = core_name(nm)
+        if cn in self.by_core_name:
+            return self.by_core_name[cn]
+        return None
+
+
+class AliasIndex:
+    """院校别名表（`school_aliases.json`）：旧名 → 现名。
+
+    另合并加载 `school_fact_supplement.json` 的 **名称修复表**（`name_repair`）——
+    即 N21 从事实数据中清理出的「源污染名 / 脏名 / 结构性改名旧名 → 正名」映射，
+    使所有导入与聚合脚本的名称匹配链**自动受益**（无需各自打补丁）。
+    """
+
+    def __init__(self, path: Path):
+        self.aliases: dict[str, str] = {}
+        self.strip_patterns: list[str] = []
+        self.repairs: dict[str, str] = {}
+        if path.exists():
+            d = json.loads(path.read_text(encoding="utf-8"))
+            self.aliases = d.get("aliases", {})
+            self.strip_patterns = d.get("strip_suffix_patterns", [])
+        rp = path.parent / "school_fact_supplement.json"
+        if rp.exists():
+            self.repairs = json.loads(rp.read_text(encoding="utf-8")).get("name_repair", {})
+
+    def resolve(self, name: str) -> str | None:
+        """返回该旧名/脏名对应的正名；无映射则 None。
+
+        查询顺序：原名 → 原名(去尾部括号) → 别名表 → 修复表。
+        """
+        n = (name or "").strip()
+        if not n:
+            return None
+        if n in self.aliases:
+            return self.aliases[n]
+        if n in self.repairs:
+            return self.repairs[n]
+        c = core_name(n)
+        if c != n:
+            if c in self.aliases:
+                return self.aliases[c]
+            if c in self.repairs:
+                return self.repairs[c]
+        return None
 
 
 # ─────────────────────────────────────────────────────────
@@ -251,7 +318,7 @@ def discover() -> list[tuple[str, int, Path]]:
 # 单文件导入
 # ─────────────────────────────────────────────────────────
 
-def import_one(province: str, year: int, path: Path, idx: SchoolIndex,
+def import_one(province: str, year: int, path: Path, idx: SchoolIndex, alias: AliasIndex,
                keep_prep: bool, keep_art: bool) -> tuple[list[dict], dict]:
     rows = list(csv.DictReader(path.open(encoding="utf-8-sig")))
     es = exam_system_of(province, year)
@@ -280,6 +347,12 @@ def import_one(province: str, year: int, path: Path, idx: SchoolIndex,
             continue
 
         # ── 院校映射 ──
+        # 顺序（依次兜底，任一命中即停）：
+        #   1) 河南：`university_code` zfill(4) → 院校库「河南代号」
+        #   2) 院校名 → 院校库（归一化）
+        #   3) 招生代号 → 跨年反查校名 → 院校库
+        #   4) ★ 别名表（院校改名）：旧名 → 新名 → 院校库
+        # ⚠️ 不能只走 1)：2022 河南有 42.5% 的行 `university_code` 为空，只有校名。
         raw_code = (r.get("university_code") or "").strip()
         raw_name = (r.get("university_name") or "").strip()
         if raw_name.upper() == "<NA>":
@@ -287,15 +360,27 @@ def import_one(province: str, year: int, path: Path, idx: SchoolIndex,
 
         school_id = None
         match_via = None
-        if province == "河南":
+        if province == "河南" and raw_code:
             school_id = idx.resolve_henan(raw_code)
-            match_via = "henan_code"
-        # 江西：招生代号非国标码，靠「代号→校名」反查再对院校库校名
-        if school_id is None:
-            nm = raw_name or code2name.get(raw_code, "")
-            if nm:
-                school_id = idx.resolve_name(nm)
+            if school_id is not None:
+                match_via = "henan_code"
+        if school_id is None and raw_name:
+            school_id = idx.resolve_name(raw_name)
+            if school_id is not None:
                 match_via = "name"
+        if school_id is None and raw_code:
+            nm_by_code = code2name.get(raw_code)
+            if nm_by_code:
+                school_id = idx.resolve_name(nm_by_code)
+                if school_id is not None:
+                    match_via = "code2name"
+        # ── 别名表：院校改名兜底（旧名 → 现名） ──
+        if school_id is None and raw_name:
+            canon = alias.resolve(raw_name)
+            if canon:
+                school_id = idx.resolve_name(canon)
+                if school_id is not None:
+                    match_via = "alias"
         if school_id is None and raw_code:
             unresolved_codes.add(raw_code)
 
@@ -404,8 +489,11 @@ def main() -> int:
         print(f"✗ 院校库不存在：{SCHOOLS}", file=sys.stderr)
         return 2
     idx = SchoolIndex(SCHOOLS)
+    alias = AliasIndex(SCHOOL_ALIASES)
     print(f"院校库：{len(idx.records)} 所（河南代号 {len(idx.by_henan_code)}，"
-          f"校名 {len(idx.by_name)}）\n")
+          f"校名 {len(idx.by_name)}，核心名 {len(idx.by_core_name)}）")
+    print(f"别名表：{len(alias.aliases)} 条"
+          f"{'（未找到 school_aliases.json，改名院校将无法匹配）' if not alias.aliases else ''}\n")
 
     all_stats = []
     OUT.mkdir(parents=True, exist_ok=True)
@@ -423,7 +511,7 @@ def main() -> int:
             })
             continue
 
-        segs, st = import_one(prov, yr, p, idx, args.keep_prep, args.keep_art)
+        segs, st = import_one(prov, yr, p, idx, alias, args.keep_prep, args.keep_art)
         fn = OUT / f"school_major_score_{yr}_{prov}.json"
         fn.write_text(json.dumps({
             "meta": {

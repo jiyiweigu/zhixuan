@@ -29,7 +29,7 @@
       "match_via": "henan_code",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
     },
@@ -53,7 +53,7 @@
       "match_via": "henan_code",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
     },
@@ -77,7 +77,7 @@
       "match_via": "henan_code",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
     },
@@ -101,7 +101,7 @@
       "match_via": "henan_code",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
     },
@@ -125,7 +125,7 @@
       "match_via": "henan_code",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
     },
@@ -149,7 +149,7 @@
       "match_via": "henan_code",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
     },
@@ -173,7 +173,7 @@
       "match_via": "henan_code",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
     },
@@ -197,7 +197,7 @@
       "match_via": "henan_code",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
     },
@@ -221,7 +221,7 @@
       "match_via": "name",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
     },
@@ -245,7 +245,7 @@
       "match_via": "name",
       "exam_system": "3+1+2",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
     },
@@ -269,7 +269,7 @@
       "match_via": "henan_code",
       "exam_system": "文理科",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
     },
@@ -293,7 +293,7 @@
       "match_via": "henan_code",
       "exam_system": "文理科",
       "confidence": "channel",
-      "data_status": "pending",
+      "data_status": "schema_only",
       "source_name": "河南省教育考试院 / 江西省教育考试院（上游）",
       "source_url": ""
     }

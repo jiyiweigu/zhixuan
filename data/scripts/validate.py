@@ -22,6 +22,25 @@
   # 严格模式（把 schema_only/partial/unavailable 也视为错误）
   python validate.py ../samples/ --strict
 
+目录模式的扫描范围（2026-10-13 修订）
+====================================
+**目录**模式下会自动跳过「不是事实表」的东西，避免假阳性淹没真实失败：
+
+  ============================================  ==========================
+  跳过对象                                       理由
+  ============================================  ==========================
+  ``mappings/`` 目录（口径归一映射表）            辅助查找表，无来源三要素
+  ``.`` 开头的文件/目录（``.ocrcache_*`` 等）     中间缓存，非交付产物
+  ``_`` 开头的文件（``_manifest.json`` 等）       描述/报告文件，非事实表
+  ============================================  ==========================
+
+**单文件模式不受任何过滤影响** —— 显式传路径时一定会被校验。
+故校验映射表请显式指定文件：``python validate.py data/mappings/batch-code-map.json``。
+
+⚠️ **已知局限**：``data/raw/``（上游原始层）与各事实表的 ``.csv`` 同名导出
+**仍在扫描范围内**。前者是 ETL 输入、后者往往不携带来源列，按 kind 校验会报 FAIL。
+如造成干扰，请用「按 kind 指定对应目录」的方式调用（见《建库任务清单》复现命令）。
+
 退出码：
   0  全部通过
   1  存在不合规记录（拒绝入库）
@@ -48,6 +67,11 @@ REQUIRED_SOURCE_FIELDS = ("source_name", "source_url", "year")
 SOURCE_FK_FIELD = "source_id"
 
 # 数据状态枚举（契约四值，见 docs/api-contract.md §8.1）
+#   available   当前接口所必需的字段齐全且有正式来源
+#   partial     只有部分可用（部分字段已核实，其余待补）
+#   schema_only 结构已就绪、数值尚未导入
+#   unavailable 没有匹配的数据版本
+# ★ 禁止再使用 verified / pending / mock 等写法（数据工程内部中间状态须先映射）
 DATA_STATUS_AVAILABLE = "available"
 DATA_STATUS_PARTIAL = "partial"
 DATA_STATUS_SCHEMA_ONLY = "schema_only"
@@ -93,6 +117,7 @@ SCHEMA_BY_KIND: Dict[str, List[str]] = {
     "score_segment": ["province", "year", "subject_type", "score", "cumulative_rank"],
     "school_profile": ["school_id"],
     "school_life": ["school_id", "category", "content", "source_type", "reliability"],
+    "enrollment_rule": ["school_id", "year"],
     "source": ["source_name", "source_url", "year", "source_type"],
     "province_exam_rule": ["province", "year", "batch", "mode"],
 }
@@ -101,7 +126,43 @@ SCHEMA_BY_KIND: Dict[str, List[str]] = {
 # 这类记录只要带非空 source_id 即视为满足来源要求
 SOURCE_ID_KINDS = {"pathway_region", "pathway_eligibility", "pathway_score",
                    "school_major_score", "score_segment", "enrollment_rule",
-                   "discipline_eval", "pathway"}
+                   "discipline_eval", "pathway", "major"}
+
+# ★ 字段别名：③ 侧采集产物的字段名 → 第 7 章建表字段名
+#   背景：③ 的产物忠实于**原始数据源**（如教育部专业目录给的是
+#   `code / name / class_name / menlei`），而第 7 章 `major` 表用的是
+#   `id / name / code / category / first_class`。二者语义相同、命名不同。
+#   校验器按第 7 章口径检查，但允许通过别名找到实际字段，**避免为迎合
+#   校验器而扭曲采集产物的原始字段名**。
+#   ⚠️ 别名只在**语义确实相同**时才允许（2026-10-13 订正过一次：曾把
+#   `first_class` 错别名到 `class_name`，二者语义不同，已删除）。
+FIELD_ALIASES: Dict[str, Dict[str, List[str]]] = {
+    "major": {
+        # category = 学科门类。依据前端契约 frontend/src/mocks/index.ts：
+        #   majors.items[0] = {name:'计算机类', code:'0809', category:'工学'}
+        # 即「专业类名 + 类码 + 学科门类」。
+        # ⚠️ 注意：constraint_seed.py 的演示种子把 category 填成了「医学类 / 计算机类」
+        #   （专业类），与前端契约不一致 —— 那是②的演示口径，正式入库以契约（menlei）为准。
+        "category": ["menlei"],                   # 学科门类
+        "id": ["code"],                           # 用国标专业代码作业务主键
+        # ★ 不再把 first_class 别名到 class_name（2026-10-13 订正）：
+        #   模型注释明写 first_class = 「是否一流本科专业建设点」，与「专业类」是两回事；
+        #   ③ 无「一流专业建设点」来源 → 该字段留空，不映射。
+        #   由此产生的缺口：「专业类(class_name)」在第 7 章 major 表中**无对应列**，
+        #   已登记为待裁项（用 4 位类码前缀可推得，但未落列）。
+    },
+}
+
+
+def _resolve_field(rec: Dict[str, Any], kind: str, field_name: str) -> Any:
+    """按别名表解析字段值；找不到返回 None"""
+    if field_name in rec:
+        return rec[field_name]
+    for alt in FIELD_ALIASES.get(kind, {}).get(field_name, []):
+        if alt in rec:
+            return rec[alt]
+    return None
+
 
 # 有年份语义的字段（需做区间校验）
 YEAR_FIELDS = {"year"}
@@ -220,10 +281,11 @@ def _check_url(value: str) -> List[str]:
 
 
 def check_required(rec: Dict[str, Any], kind: str) -> List[str]:
-    """校验该类型要求的必填字段"""
+    """校验该类型要求的必填字段（支持 FIELD_ALIASES 别名回退）"""
     errors = []
     for f in SCHEMA_BY_KIND.get(kind, []):
-        if f not in rec or _is_blank(rec[f]):
+        val = _resolve_field(rec, kind, f)
+        if val is None or _is_blank(val):
             errors.append(f"缺少必填字段 `{f}`")
     return errors
 
@@ -344,7 +406,8 @@ def read_records_with_meta(path: str) -> "tuple[List[Dict[str, Any]], Dict[str, 
             meta = data.get("meta") if isinstance(data.get("meta"), dict) else {}
             # 优先按已知包装键取数组
             for key in ("records", "items", "data", "pathways", "regions",
-                        "counties", "sources", "rules", "segments", "list"):
+                        "counties", "sources", "rules", "segments", "list",
+                        "majors", "classes", "schools", "scores", "rows"):
                 if key in data and isinstance(data[key], list):
                     return data[key], meta
             # 兜底：若 dict 中"唯一"的 list 值就有记录数组，则取之
@@ -370,14 +433,44 @@ def read_records_with_meta(path: str) -> "tuple[List[Dict[str, Any]], Dict[str, 
 # 主流程
 # ─────────────────────────────────────────────────────────
 
+# ★ 不参与「三要素」校验的辅助目录（2026-10-13 新增）
+#   理由：`data/mappings/` 下是**口径归一映射表**（省码/批次码/科类/来源 id），
+#   属**辅助查找表**，不是事实表 —— 天然没有 source_name/source_url/year。
+#   若一并扫描，会一次性报出十几条 FAIL 假阳性，**淹没真正的失败**。
+#   需要校验它们时，直接传具体文件路径（单文件模式不受此表影响）。
+AUX_DIR_SKIP = ("mappings",)
+
+# ★ 辅助文件前缀（2026-10-13 新增）
+#   仓库既有约定：`data/raw/_manifest.json` 描述原始层各文件、
+#   `data/score_segment/_score_segment_import_report.json` 是导入报告 ——
+#   它们是**描述文件**，不是事实表，不该按事实表的三要素校验。
+AUX_FILE_PREFIX = "_"
+
+
+def _is_aux_file(fn: str) -> bool:
+    return fn.startswith(".") or fn.startswith(AUX_FILE_PREFIX)
+
+
 def collect_files(target: str) -> List[str]:
-    """收集待校验文件"""
+    """收集待校验文件。
+
+    目录模式会跳过：
+      - 隐藏文件与隐藏目录（``.ocrcache_*`` 等中间缓存）
+      - ``AUX_DIR_SKIP`` 下的辅助目录（``mappings/``）
+      - ``AUX_FILE_PREFIX`` 开头的辅助/报告文件（``_manifest.json`` 等）
+
+    **单文件模式不受任何过滤影响** —— 显式指定路径时一定会被校验。
+    """
     if os.path.isfile(target):
         return [target]
     if os.path.isdir(target):
         out = []
-        for root, _dirs, files in os.walk(target):
+        for root, dirs, files in os.walk(target):
+            dirs[:] = [d for d in dirs
+                       if d not in AUX_DIR_SKIP and not d.startswith(".")]
             for fn in sorted(files):
+                if _is_aux_file(fn):
+                    continue
                 if fn.lower().endswith((".csv", ".json")):
                     out.append(os.path.join(root, fn))
         return out

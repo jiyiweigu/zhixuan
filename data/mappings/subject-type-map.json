@@ -1,0 +1,198 @@
+{
+  "meta": {
+    "title": "科类归一映射（老高考 / 新高考 / 艺术类）",
+    "purpose": "把老高考「理科 / 文科」与新高考「物理类 / 历史类」纳入统一口径，使跨年查询与趋势对比可用；同时显式隔离不可归一的脏值",
+    "owner": "徐（③ 数据工程）",
+    "generated_at": "2026-10-13",
+    "issue": "新发现（非契约原文，模型口径）",
+    "evidence": "backend/app/models/base_data.py：ScoreSegment.subject_type 注释「科类：物理类 / 历史类」；索引 ix_score_segment_lookup = (province, year, subject_type, score)",
+    "decision": "★ 归并口径为「同一序列的历年趋势对比」，**不是**等价替换：老高考「理科」为理化生固定组合，新高考「物理类」为首选物理 + 2 门任选，二者考生结构不同 ⇒ 位次不可直接换算、投档规则不可复用。凡是涉及录取概率预测的接口，必须先按「同年同科类」取数，不得跨口径混用。",
+    "coverage": {
+      "raw_values_in_data": 8,
+      "normalized_values": [
+        "历史类",
+        "物理类",
+        "艺术类"
+      ],
+      "invalid_values": [
+        {
+          "raw": "文",
+          "rows": 3
+        },
+        {
+          "raw": "科",
+          "rows": 6
+        }
+      ]
+    }
+  },
+  "map": {
+    "历史类": "历史类",
+    "文": null,
+    "文科": "历史类",
+    "物理类": "物理类",
+    "理科": "物理类",
+    "科": null,
+    "艺术(不分科目类)": "艺术类",
+    "艺术文": "艺术类"
+  },
+  "equivalent_flag": {
+    "历史类": true,
+    "文": false,
+    "文科": false,
+    "物理类": true,
+    "理科": false,
+    "科": false,
+    "艺术(不分科目类)": true,
+    "艺术文": true
+  },
+  "rows": [
+    {
+      "raw_subject": "历史类",
+      "normalized": "历史类",
+      "display_name": "历史类",
+      "equivalent": true,
+      "confidence": "high",
+      "occurrences": 52174,
+      "evidence_files": [
+        "data/raw/2024_jiangxi_enrollment-plan.csv",
+        "data/raw/2025_henan_enrollment-plan.csv",
+        "data/raw/2025_jiangxi_enrollment-plan.csv",
+        "data/school_major_score/school_major_score_2025_江西.json",
+        "data/school_major_score/school_major_score_2025_河南.json",
+        "data/score_segment/score_segment_2024_江西.json",
+        "data/score_segment/score_segment_2025_江西.json",
+        "data/score_segment/score_segment_2025_河南.json",
+        "data/score_segment/score_segment_2026_历史类.json"
+      ],
+      "note": "新高考首选历史，原样保留"
+    },
+    {
+      "raw_subject": "文",
+      "normalized": null,
+      "display_name": null,
+      "equivalent": false,
+      "confidence": "invalid",
+      "occurrences": 3,
+      "evidence_files": [
+        "data/raw/2023_henan_enrollment-plan.csv"
+      ],
+      "note": "2023 河南招生计划 3 条，疑为「文科」被截断。**不猜**，标为脏值待重采"
+    },
+    {
+      "raw_subject": "文科",
+      "normalized": "历史类",
+      "display_name": "历史类",
+      "equivalent": false,
+      "confidence": "medium",
+      "occurrences": 95248,
+      "evidence_files": [
+        "data/raw/2022_henan_enrollment-plan.csv",
+        "data/raw/2022_jiangxi_enrollment-plan.csv",
+        "data/raw/2023_henan_enrollment-plan.csv",
+        "data/raw/2023_jiangxi_enrollment-plan.csv",
+        "data/raw/2024_henan_enrollment-plan.csv",
+        "data/school_major_score/school_major_score_2022_江西.json",
+        "data/school_major_score/school_major_score_2022_河南.json",
+        "data/score_segment/score_segment_2022_江西.json",
+        "data/score_segment/score_segment_2022_河南.json",
+        "data/score_segment/score_segment_2023_江西.json",
+        "data/score_segment/score_segment_2023_河南.json",
+        "data/score_segment/score_segment_2024_河南.json"
+      ],
+      "note": "★ 非严格等价：老高考「文科」= 政史地固定组合，新高考「历史类」= 首选历史 + 2 门任选。同上，仅可用于趋势对比。"
+    },
+    {
+      "raw_subject": "物理类",
+      "normalized": "物理类",
+      "display_name": "物理类",
+      "equivalent": true,
+      "confidence": "high",
+      "occurrences": 109087,
+      "evidence_files": [
+        "data/raw/2024_jiangxi_enrollment-plan.csv",
+        "data/raw/2025_henan_enrollment-plan.csv",
+        "data/raw/2025_jiangxi_enrollment-plan.csv",
+        "data/school_major_score/school_major_score_2025_江西.json",
+        "data/school_major_score/school_major_score_2025_河南.json",
+        "data/score_segment/score_segment_2024_江西.json",
+        "data/score_segment/score_segment_2025_江西.json",
+        "data/score_segment/score_segment_2025_河南.json",
+        "data/score_segment/score_segment_2026_物理类.json"
+      ],
+      "note": "新高考首选物理，原样保留"
+    },
+    {
+      "raw_subject": "理科",
+      "normalized": "物理类",
+      "display_name": "物理类",
+      "equivalent": false,
+      "confidence": "medium",
+      "occurrences": 174031,
+      "evidence_files": [
+        "data/raw/2022_henan_enrollment-plan.csv",
+        "data/raw/2022_jiangxi_enrollment-plan.csv",
+        "data/raw/2023_henan_enrollment-plan.csv",
+        "data/raw/2023_jiangxi_enrollment-plan.csv",
+        "data/raw/2024_henan_enrollment-plan.csv",
+        "data/school_major_score/school_major_score_2022_江西.json",
+        "data/school_major_score/school_major_score_2022_河南.json",
+        "data/score_segment/score_segment_2022_江西.json",
+        "data/score_segment/score_segment_2022_河南.json",
+        "data/score_segment/score_segment_2023_江西.json",
+        "data/score_segment/score_segment_2023_河南.json",
+        "data/score_segment/score_segment_2024_河南.json"
+      ],
+      "note": "★ 非严格等价：老高考「理科」= 理化生固定组合，新高考「物理类」= 首选物理 + 2 门任选。仅可用于「同一序列的历年趋势对比」，**不得**当作同一科类做位次直接换算或投档规则复用。"
+    },
+    {
+      "raw_subject": "科",
+      "normalized": null,
+      "display_name": null,
+      "equivalent": false,
+      "confidence": "invalid",
+      "occurrences": 6,
+      "evidence_files": [
+        "data/raw/2023_henan_enrollment-plan.csv"
+      ],
+      "note": "2023 河南招生计划 6 条，疑为「理科」被截断。**不猜**，标为脏值待重采"
+    },
+    {
+      "raw_subject": "艺术(不分科目类)",
+      "normalized": "艺术类",
+      "display_name": "艺术类",
+      "equivalent": true,
+      "confidence": "high",
+      "occurrences": 647,
+      "evidence_files": [
+        "data/raw/2025_jiangxi_enrollment-plan.csv"
+      ],
+      "note": "2025 江西招生计划出现 647 条；官方已声明「不分科目类」，艺术类单列"
+    },
+    {
+      "raw_subject": "艺术文",
+      "normalized": "艺术类",
+      "display_name": "艺术类",
+      "equivalent": true,
+      "confidence": "high",
+      "occurrences": 4,
+      "evidence_files": [
+        "data/raw/2024_henan_enrollment-plan.csv"
+      ],
+      "note": "2024 河南招生计划出现 4 条；艺术类单列，不并入普通文理"
+    },
+    {
+      "raw_subject": "",
+      "normalized": null,
+      "display_name": null,
+      "equivalent": null,
+      "confidence": null,
+      "occurrences": 53995,
+      "evidence_files": [
+        "data/school_major_score/school_major_score_2024_江西.json",
+        "data/school_major_score/school_major_score_2024_河南.json"
+      ],
+      "note": "空科类同样属**数据缺失**，不得由分数反推（已在《录取分导入说明》§4 记录）。实测出现在：school_major_score_2024_河南（31,214 行）与 school_major_score_2024_江西（22,781 行）两表 subject_type **整列为空**。"
+    }
+  ]
+}

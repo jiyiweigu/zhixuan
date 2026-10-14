@@ -63,7 +63,7 @@
         "count": 38,
         "note": "county_codes 与 data/dictionaries/pathway-regions.json 中 pathway_id=national-special 的行严格一致（38 条）。已通过一致性校验脚本比对。"
       },
-      "data_status": "verified",
+      "data_status": "available",
       "source_id": "SRC-HENAN-SPECIAL-REGION"
     },
     {
@@ -79,7 +79,7 @@
         "household_type_required": null,
         "note": "国家专项不要求农村户籍（与高校专项的区别）"
       },
-      "data_status": "verified",
+      "data_status": "available",
       "source_id": "SRC-HENAN-SPECIAL-REGION"
     },
     {
@@ -93,7 +93,7 @@
         "school_continuous": true,
         "school_in_same_county": true
       },
-      "data_status": "verified",
+      "data_status": "available",
       "source_id": "SRC-HENAN-SPECIAL-REGION"
     },
     {
@@ -107,7 +107,7 @@
         "min_score_rule": ">=批次控制线",
         "note": "具体分数线以当年官方公布为准，引擎需查 score_segment / 控制线数据"
       },
-      "data_status": "verified",
+      "data_status": "available",
       "source_id": "SRC-HENAN-EXAM"
     },
     {
@@ -123,7 +123,7 @@
         "superset_of": "national-special",
         "note": "53 县 = 国家专项 38 县 + 省定扶贫开发工作重点县 15 县。county_codes 见 pathway-regions.json 中 pathway_id=college-special 的 53 行，此处不重复展开。"
       },
-      "data_status": "verified",
+      "data_status": "available",
       "source_id": "SRC-HENAN-SPECIAL-REGION"
     },
     {
@@ -139,7 +139,7 @@
         "household_type_required": "农村",
         "note": "高校专项【必须】农村户籍，这是与国家专项的核心差异"
       },
-      "data_status": "verified",
+      "data_status": "available",
       "source_id": "SRC-HENAN-SPECIAL-REGION"
     },
     {
@@ -153,7 +153,7 @@
         "school_continuous": true,
         "school_in_same_county": true
       },
-      "data_status": "verified",
+      "data_status": "available",
       "source_id": "SRC-HENAN-SPECIAL-REGION"
     },
     {
@@ -166,7 +166,7 @@
         "batch": "特殊类型招生",
         "min_score_rule": ">=特殊类型招生控制线"
       },
-      "data_status": "verified",
+      "data_status": "available",
       "source_id": "SRC-HENAN-EXAM"
     },
     {
@@ -181,7 +181,7 @@
         "county_restriction": null,
         "note": "地方专项不限定具体县，只要河南省农村户籍即可（与另两类专项的关键差异）"
       },
-      "data_status": "verified",
+      "data_status": "available",
       "source_id": "SRC-HENAN-SPECIAL-REGION"
     },
     {
@@ -194,7 +194,7 @@
         "batch": "本科批",
         "min_score_rule": ">=批次控制线"
       },
-      "data_status": "verified",
+      "data_status": "available",
       "source_id": "SRC-HENAN-EXAM"
     },
     {
@@ -207,7 +207,7 @@
         "eligibility_restriction": "none",
         "batch": "本科批"
       },
-      "data_status": "verified",
+      "data_status": "available",
       "source_id": "SRC-HENAN-EXAM"
     }
   ]

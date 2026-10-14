@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "数据来源登记表（source）",
-    "generated_at": "2026-10-12",
+    "generated_at": "2026-10-13",
     "owner": "徐（③ 数据工程）",
     "target_table": "source",
     "table_fields": "id, source_name, source_url, year, source_type, fetched_at",
@@ -187,6 +187,33 @@
       "crawl_note": "★ 渠道来源，非官方。经国内镜像 hf-mirror.com 下载，无需 token、无频率限制（官方 huggingface.co 本机不可达）。数据集为 MIT 许可，可再分发，须保留 DOI 引用。",
       "content": "31 省 × 2017–2025 高考结构化数据：招生计划（含选科要求）、院校投档线（含最低位次/985/211）、专业级录取（含最高/平均分）、一分一段表。共 1132 万行。",
       "plan": "作品内事实结论的 source_url 须指向省考试院/阳光高考，不指向本数据集；本表仅作为获取渠道登记。已用于 score_segment（2022–2025 河南/江西）与 school_major_score 导入。"
+    },
+    {
+      "id": "SRC-MOE-ZHUANYE-2025",
+      "source_name": "中华人民共和国教育部《普通高等学校本科专业目录（2025年）》",
+      "source_url": "https://www.moe.gov.cn/srcsite/A08/moe_1034/s4930/202504/W020250422312780837078.pdf",
+      "year": 2025,
+      "source_type": "官方",
+      "fetched_at": "2026-10-12",
+      "crawl_status": "ok",
+      "crawl_note": "教育部官网 PDF 可直接下载（825,783 字节）。文号 教高函〔2025〕3 号。",
+      "mirror_urls": [
+        "https://edu.hainan.gov.cn/edu/zpxx/202508/ea191714a5ad4b5db87afb5c48ccc5ae/files/6e98f3b892f245d7a9430572db818b28.pdf"
+      ],
+      "content": "93 个专业类 / 845 种本科专业的专业代码、专业名称、学科门类、专业类、学位授予注、T（特设）/K（国家控制布点）标记",
+      "plan": "已解析入库：data/majors/majors.json（845 条）；解析脚本 data/scripts/parse_major_catalog.py"
+    },
+    {
+      "id": "SRC-HENAN-SCORE-SEG-2026",
+      "source_name": "河南省教育考试院（经河南省阳光高考信息平台发布）",
+      "source_url": "https://gaokao.haedu.cn/501/552/2026/0625/155639.html",
+      "year": 2026,
+      "source_type": "官方",
+      "fetched_at": "2026-10-11",
+      "crawl_status": "manual_download_verified",
+      "crawl_note": "★ 官方原文页：栏目「政策发布 > 省教育考试院」，标题《2026年河南省普通高招分数段统计表》，发布时间 2026-06-25 08:29:41，HTTP 200 直连可访问（无 WAF）。附件为**扫描件 PDF**（无文本层，pypdf 抽取为空），须 OCR 解析；页码 data-aid=155639 与 URL 尾号一致。原始文件在库：data/samples/raw/分数段统计表_2026_历史类.pdf、分数段统计表_2026_物理类.pdf（各 8 页，794×1123 DCTDecode）；PDF /Author=/Creator=「河南省招生办公室」，原始生成路径 E:\\普通高招\\2026\\成绩处理\\普通类\\Create_CJK\\FSD2026\\3FSD2PDF\\PDF\\…（CreationDate 2026-06-23）。复核脚本：data/scripts/verify_score_segment_2026_source.py。",
+      "content": "2026 年河南省普通高招分数段统计表（历史类 / 物理类）。表体仅「分数」「考生人数」两列；官方注明「考生人数」为加入政策性照顾分后对应总分及以上考生累计人数（即位次）。★ 官方表**不分批次，无批次列**。",
+      "plan": "已产出 score_segment：score_segment_2026_历史类.json（454 行）、score_segment_2026_物理类.json（462 行）；解析脚本 data/scripts/parse_score_segment.py（OCR + LIS 锚点）。"
     }
   ]
 }
