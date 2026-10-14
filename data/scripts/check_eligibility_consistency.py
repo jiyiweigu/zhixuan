@@ -8,14 +8,17 @@
 `pathway-regions.json` 抄来的。人工抄写已实测出错（多了一个 411322 方城县，
 它属省定 15 县、不在国家专项内）。
 
-为杜绝这类错误，本脚本做两件事：
+  为杜绝这类错误，本脚本做三件事：
 1. **校验**：比对两份文件中的县码集合是否严格一致；
-2. **修复**：`--fix` 时用区域表的权威结果回写 eligibility 文件。
+2. **修复**：`--fix` 时用区域表的权威结果回写 eligibility 文件；
+3. **引用完整性**：`pathway-eligibility.json` / `pathway-regions.json` 中每条 `pathway_id`
+   必须存在于 `pathways-26.json`（途字字典）。**只报不改** —— id 改名属口径判断，
+   须人工确认后手改（避免脚本猜出一个错的 id 反而把错误固化）。
 
 运行
 ----
     python data/scripts/check_eligibility_consistency.py          # 只校验
-    python data/scripts/check_eligibility_consistency.py --fix    # 校验并回写
+    python data/scripts/check_eligibility_consistency.py --fix    # 校验并回写县码
 """
 
 from __future__ import annotations
@@ -27,6 +30,7 @@ import sys
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 REGION_FILE = os.path.join(BASE_DIR, "dictionaries", "pathway-regions.json")
 ELIG_FILE = os.path.join(BASE_DIR, "dictionaries", "pathway-eligibility.json")
+PATHWAY_FILE = os.path.join(BASE_DIR, "dictionaries", "pathways-26.json")
 
 
 def load(path: str) -> dict:
@@ -43,6 +47,44 @@ def find_region_rule(rules: list, pathway_id: str) -> dict | None:
         if rule.get("pathway_id") == pathway_id and rule.get("rule_type") == "区域":
             return rule
     return None
+
+
+def pathway_ids() -> set[str]:
+    """途字字典（权威 id 清单）。"""
+    return {p["id"] for p in load(PATHWAY_FILE)["pathways"]}
+
+
+def check_pathway_refs(regions: list, rules: list, placeholders: list) -> bool:
+    """`pathway_id` 引用完整性：必须存在于 pathways-26.json。
+
+    placeholders 例外 —— 它们本就 `data_status=schema_only`、`source_id=null`，
+    是刻意保留的「骨架占位」，允许不出现在 26 条字典中。
+
+    只报不改：悬空 id 的正确值属口径判断，脚本不猜。
+    """
+    ids = pathway_ids()
+    print(f"[途字字典] pathways-26 = {len(ids)} 条")
+
+    ok = True
+    for label, rows in (("regions", regions), ("rules", rules)):
+        dangling = sorted({r["pathway_id"] for r in rows} - ids)
+        if dangling:
+            ok = False
+            print(f"❌ {label} 悬空 pathway_id {len(dangling)} 个：{dangling}")
+            for r in rows:
+                if r["pathway_id"] in dangling:
+                    print(f"     · {r['pathway_id']} | "
+                          f"{r.get('pathway_name') or r.get('county_name') or r.get('province')}"
+                          f" | rule_type={r.get('rule_type')}")
+            print("     处置：确认为字典中哪一条后**手改 id**（本脚本不自动改名，避免猜错固化）")
+        else:
+            n = len({r["pathway_id"] for r in rows})
+            print(f"✅ {label} pathway_id 引用完整（{n} 个 id 引用，全部在字典内）")
+
+    ph_dangling = sorted({r["pathway_id"] for r in placeholders} - ids)
+    print(f"ℹ️  placeholders 占位 {len(placeholders)} 条"
+          f"（不在字典内 {len(ph_dangling)} 个：{ph_dangling}，设计允许）")
+    return ok
 
 
 def main() -> int:
@@ -105,6 +147,11 @@ def main() -> int:
     else:
         ok = False
         print(f"❌ 集合包含关系不成立：多出 {sorted(nat_codes - col_codes)}")
+
+    # ── 引用完整性：pathway_id 必须存在于途字字典 ──
+    print()
+    if not check_pathway_refs(regions, rules, elig_doc.get("placeholders") or []):
+        ok = False
 
     print()
     print("结论：" + ("✅ 全部一致" if ok else "❌ 存在不一致"))

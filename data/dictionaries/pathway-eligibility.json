@@ -17,6 +17,8 @@
       "河南省": "河南",
       "江西省": "江西"
     },
+    "d8_fix_at": "2026-10-14",
+    "d8_fix_note": "悬空外键修复（G1）：末条规则原 pathway_id='general-batch'、pathway_name='普通本科批'，二者在 pathway 字典（pathways-26.json 26 条）中均不存在，仅在 pathway-regions.json 中存在 college-special/national-special。经逐项比对，该规则 source_id=SRC-HENAN-EXAM、batch=本科批、语义「无资格限制的普通本科批」与字典中 normal-batch（普通批（本科批）／普通录取／本科批／同源 SRC-HENAN-EXAM）逐项吻合，且 26 条中「普通批」类唯一，属确定性映射而非推断，故改为 normal-batch。此改仅动 id 字面，未增删任何规则、未改 params 与 rule_desc。若 ② 规则引擎另有 general-batch 口径，可整行回滚（git diff 仅 2 行）。",
     "year_basis": "取所属途径字典的年份 pathway.year=2025：资格规则是对途径的资格限定，与途径字典同版本。备选为 2026（P0 两省高考年份，与 province_exam_rule 一致）；若规则引擎按高考年份取值，需队长裁定后统一为 2026。"
   },
   "rules": [
@@ -219,8 +221,8 @@
       "year": 2025
     },
     {
-      "pathway_id": "general-batch",
-      "pathway_name": "普通本科批",
+      "pathway_id": "normal-batch",
+      "pathway_name": "普通批（本科批）",
       "province": "河南",
       "rule_type": "成绩",
       "rule_desc": "无资格限制，达到相应批次控制分数线即可填报",
