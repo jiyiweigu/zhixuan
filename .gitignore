@@ -52,13 +52,23 @@ data/score_segment/review_*.html
 data/schools/*.json
 data/samples/raw/
 
-# ★ ③ 特例（仅 feature/xu 分支）：院校库 JSON **保留入库**，与上一条「数据本体移出」不同。
+# ★ ③ 特例：院校库 JSON **保留入库**，与上一条「数据本体移出」不同。
 #   理由：院校库是 2.1 主产物，且采集/合并脚本（merge_schools、build_school_*、
 #   analyze_school_unmatched、build_school_aliases）直接依赖 schools_raw.json /
-#   moe_schools.json / shanghairanking_2024.json 等输入，移出后无法离线复跑。
-#   开 PR 前需与队长复议；渠道录取分（school_major_score）与一分一段（score_segment）
-#   因体积/授权原因，仍按 develop 策略移出（重建见 data/DOWNLOAD.md）。
+#   moe_schools.json 等输入，移出后无法离线复跑。
+#   ✅ 队长 2026-10-14 复议：**准予入库**（唯一例外见下）。
+#   渠道录取分（school_major_score）与一分一段（score_segment）因体积/授权原因，
+#   仍按原策略移出（重建见 data/DOWNLOAD.md）。
 !data/schools/*.json
+
+# ⛔ 上海软科（ShanghaiRanking）榜单：第三方版权数据，公开仓库再分发有争议，
+#    仅本地留档、不入库 —— 队长 2026-10-14 复议指定的唯一例外。
+#    下面三条必须留在 !data/schools/*.json **之后**（git 后匹配者胜出）。
+#    重建：python data/scripts/fetch_shanghairanking.py
+#          python data/scripts/intersect_shanghai_henan.py
+data/schools/shanghairanking_2024.json
+data/schools/shanghai_top300.json
+data/schools/shanghai_top300_inhenan.json
 
 # 采集脚本的原始页面缓存（可复现，不入库）
 data/**/.cache/
