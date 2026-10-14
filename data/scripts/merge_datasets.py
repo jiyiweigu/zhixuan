@@ -77,9 +77,15 @@ EXAM_TYPE_MAP = {
     "艺术类 / 体育类": "艺术",
 }
 
-# 985 / 211（全国公开名单，用于校验张的数据，不用于补徐的院校库）
-HENAN_985 = 0
-HENAN_211 = {"郑州大学"}
+# 院校层次名单（985 / 211 / 双一流）：教育部公开名单，随合并脚本一起进仓库。
+# 院校层次是「冲稳保」与院校筛选的核心维度，而三个数据源单独都不够：
+#   · 张的院校库只有河南本地 183 校（覆盖 1367 所中的 139 所，且 is_985 命中 0）
+#   · 徐的院校库无该字段
+#   · 徐的软科榜（594 校）只标了 37 / 97 / 112，低排名的 211（如西藏大学）不在榜内
+# 故按教育部名单补齐；本表待徐复核后可原地替换，脚本无需改动。
+TIERS_PATH = Path(__file__).resolve().parent.parent / "dictionaries" / "school_tiers.json"
+
+TIER_FLAG_LABEL = {"is_985": "is_985", "is_211": "is_211", "dual_class": "双一流"}
 
 
 def _norm_name(value: str) -> str:
@@ -87,6 +93,67 @@ def _norm_name(value: str) -> str:
     s = re.sub(r"[\s\u3000]+", "", str(value or ""))
     s = re.sub(r"[（(].*?[)）]", "", s)
     return s
+
+
+def _norm_full(value: str) -> str:
+    """归一但**保留**括号内容（括号统一为半角），用于区分中国石油大学(北京)/(华东)。"""
+    s = re.sub(r"[\s\u3000]+", "", str(value or ""))
+    return s.replace("（", "(").replace("）", ")")
+
+
+def _norm_base(value: str) -> str:
+    """归一并删掉括号内容，用于「中外合作办学 / 分校区」继承母体层次。"""
+    return re.sub(r"\(.*?\)", "", _norm_full(value))
+
+
+def _tier_index() -> tuple[dict[str, set[str]], dict]:
+    """把三份名单摊平成 {归一院校名: {层次标记}}，别名与校区继承做展开。
+
+    同一所院校在 985 / 211 / 双一流 三份名单里的名字可能不同
+    （国防科技大学 vs 国防科学技术大学、上海体育大学 vs 上海体育学院），
+    故把 aka 双向登记，使所有写法都指向同一组层次标记。
+    """
+    doc = _load(TIERS_PATH)
+    aka = doc.get("aka") or {}
+    bidir: dict[str, set[str]] = {}
+    for primary, alts in aka.items():
+        for a in alts:
+            bidir.setdefault(primary, set()).add(a)
+            bidir.setdefault(a, set()).add(primary)
+
+    def keys(name: str) -> set[str]:
+        return {k for k in (_norm_full(name), _norm_base(name)) if k}
+
+    idx: dict[str, set[str]] = defaultdict(set)
+    for tier, flag in (("985", "is_985"), ("211", "is_211"), ("dual_class", "dual_class")):
+        for name in doc.get(tier) or []:
+            all_keys = keys(name)
+            for alt in bidir.get(name, ()):
+                all_keys |= keys(alt)
+            for k in all_keys:
+                idx[k].add(flag)
+    return idx, doc
+
+
+def _tier_flags(idx: dict[str, set[str]], name: str,
+                inherit: dict[str, str] | None = None) -> dict:
+    got = {"is_985": False, "is_211": False, "dual_class": ""}
+    marks: set[str] = set()
+    for k in (_norm_full(name), _norm_base(name)):
+        marks |= idx.get(k, set())
+    # 非独立法人的分校区 / 直属医学院：显式白名单继承母体层次（独立学院不在白名单内）
+    if not marks and inherit and name in inherit:
+        parent = inherit[name]
+        for k in (_norm_full(parent), _norm_base(parent)):
+            marks |= idx.get(k, set())
+    if "is_985" in marks:
+        got["is_985"] = True
+        got["is_211"] = True  # 985 ⊂ 211，兜底保持一致
+    elif "is_211" in marks:
+        got["is_211"] = True
+    if "dual_class" in marks:
+        got["dual_class"] = "双一流"
+    return got
 
 
 def _int_or_none(value):
@@ -205,9 +272,31 @@ class Merger:
             profiles = []
         prof_by_code = {str(p.get("school_code")): p for p in profiles if p.get("school_code")}
 
+        # 徐的软科榜：第三方已标注的 985/211/双一流（交叉校验源，也可直接采信）
+        sane: dict[str, dict] = {}
+        sane_path = self.xu / "schools" / "shanghai_top300_inhenan.json"
+        if sane_path.exists():
+            for x in _load(sane_path)["records"]:
+                tags = set(x.get("tags") or [])
+                item = {"tags": tags, "name": x.get("name")}
+                if x.get("hn_code"):
+                    sane.setdefault("code:" + str(x["hn_code"]), item)
+                sane.setdefault("name:" + _norm_base(x.get("hn_name") or x.get("name")), item)
+
+        # 教育部名单（985/211/双一流）
+        tiers, tiers_doc = _tier_index()
+        inherit_map = (tiers_doc.get("inherit") or {}).get("map") or {}
+        known_no_inherit = set(
+            (tiers_doc.get("inherit") or {}).get("known_not_inherited", {}).get("names") or [])
+        tiers_used: set[str] = set()
+        inherited: list[dict] = []
+
         records, hit_code, hit_name, miss = [], 0, 0, []
         henan_codes: dict[int, str] = {}
-        flag_985, flag_211, flag_dual, intro_filled = 0, 0, 0, 0
+        intro_filled = 0
+        src_count = Counter()  # 每个来源各自贡献了多少条标记
+        inherit_review: list[dict] = []  # 疑似「分校区/合作办学未继承母体层次」待人工确认
+        confirmed_no_inherit: list[dict] = []  # 已核实为独立学院，刻意不继承
         for r in recs:
             z = by_code.get(str(r.get("code"))) or by_name.get(_norm_name(r.get("name")))
             if z:
@@ -222,15 +311,79 @@ class Merger:
             website = str(p.get("website") or r.get("website") or "").strip()
             if intro:
                 intro_filled += 1
-            is_985 = bool(z.get("is_985")) if z else False
-            is_211 = bool(z.get("is_211")) if z else False
-            dual = str((z or {}).get("dual_class") or "").strip()
-            flag_985 += is_985
-            flag_211 += is_211
-            flag_dual += 1 if dual else 0
+
+            name = r.get("name") or ""
+            # 来源 A0：非独立法人的分校区 / 直属医学院，显式白名单继承母体层次
+            base_flags = _tier_flags(tiers, name)
+            if not any(base_flags.values()) and name in inherit_map:
+                inherited.append({"name": name, "code": str(r.get("code") or ""),
+                                  "inherits": inherit_map[name]})
+            # 来源 A：教育部名单（权威、覆盖全）
+            flags = _tier_flags(tiers, name, inherit_map)
+            from_tiers = {k for k, v in flags.items() if v}
+            if from_tiers:
+                for k in (_norm_full(name), _norm_base(name)):
+                    if tiers.get(k):
+                        tiers_used.add(k)
+                if name not in tiers_used:
+                    parent = inherit_map.get(name)
+                    if parent:
+                        for k in (_norm_full(parent), _norm_base(parent)):
+                            if tiers.get(k):
+                                tiers_used.add(k)
+            # 来源 B：徐的软科榜（第三方标注，用于交叉校验）
+            s = sane.get("code:" + str(r.get("code"))) or sane.get(
+                "name:" + _norm_base(name))
+            from_sane = set()
+            if s:
+                if "985" in s["tags"]:
+                    flags["is_985"] = flags["is_211"] = True
+                    from_sane |= {"is_985", "is_211"}
+                elif "211" in s["tags"]:
+                    flags["is_211"] = True
+                    from_sane.add("is_211")
+                if "双一流" in s["tags"] and not flags["dual_class"]:
+                    flags["dual_class"] = "双一流"
+                    from_sane.add("dual_class")
+            # 来源 C：张的院校库（只覆盖河南本地，但含中外合作/校区等特殊单位）
+            from_zhang = set()
+            if z:
+                if z.get("is_985") and not flags["is_985"]:
+                    flags["is_985"] = flags["is_211"] = True
+                    from_zhang |= {"is_985", "is_211"}
+                if z.get("is_211") and not flags["is_211"]:
+                    flags["is_211"] = True
+                    from_zhang.add("is_211")
+                if str(z.get("dual_class") or "").strip() and not flags["dual_class"]:
+                    flags["dual_class"] = "双一流"
+                    from_zhang.add("dual_class")
+
+            if from_tiers:
+                src_count["教育部名单"] += 1
+            if from_sane:
+                src_count["软科榜"] += 1
+            if from_zhang:
+                src_count["张的院校库"] += 1
+
+            # 疑似漏继承：校名以某所层次院校开头但不完全相等（分校区/合作办学/独立学院）
+            if not any(flags.values()):
+                base = _norm_base(name)
+                for cut in range(len(base) - 2, 3, -1):
+                    if tiers.get(base[:cut]):
+                        item = {
+                            "name": name, "code": str(r.get("code") or ""),
+                            "looks_like": base[:cut],
+                            "hint": "分校区/合作办学可继承母体层次；独立学院不可。需人工确认。",
+                        }
+                        if name in known_no_inherit:
+                            confirmed_no_inherit.append(item)
+                        else:
+                            inherit_review.append(item)
+                        break
+
             records.append({
                 "id": r["id"],
-                "name": r.get("name") or "",
+                "name": name,
                 "code": str(r.get("code") or ""),
                 "province": r.get("province") or "",
                 "city": r.get("city") or "",
@@ -239,16 +392,20 @@ class Merger:
                 "ownership": r.get("ownership") or "",
                 "website": website,
                 "intro": intro,
-                "is_985": is_985,
-                "is_211": is_211,
-                "dual_class": dual,
+                "is_985": flags["is_985"],
+                "is_211": flags["is_211"],
+                "dual_class": flags["dual_class"],
             })
             # 非列字段：河南招生代号（考生填志愿用的是它）另存 meta，保持 records 可直接装载
             henan_codes[r["id"]] = str(r.get("_henan_code") or "")
 
-        # 交叉验证：河南 985/211 是公开硬事实
-        # 注意：招生库会把「郑州大学(中外合作办学)」「郑州大学惠灵顿学院」这类
-        # 中外合作/分校项目单列成独立招生单位，它们继承母体的 211 标记是正确的。
+        flag_985 = sum(1 for r in records if r["is_985"])
+        flag_211 = sum(1 for r in records if r["is_211"])
+        flag_dual = sum(1 for r in records if r["dual_class"])
+
+        # 交叉验证 1：河南 985/211 是公开硬事实
+        # 注意：招生库会把「郑州大学(中外合作办学)」这类项目单列成独立招生单位，
+        # 它们继承母体的 211 标记是正确的。
         henan = [r for r in records if r["province"] == "河南"]
         got_985_norm = sorted({_norm_name(r["name"]) for r in henan if r["is_985"]})
         got_211_norm = sorted({_norm_name(r["name"]) for r in henan if r["is_211"]})
@@ -256,21 +413,56 @@ class Merger:
         assert got_211_norm and all("郑州大学" in n for n in got_211_norm), (
             f"河南唯一的 211 是郑州大学（含其学院/合作办学项目），实际出现 {got_211_norm}"
         )
-        dual_norm = sorted({_norm_name(r["name"]) for r in henan if r["dual_class"]})
-        self.note(f"交叉验证通过：河南 985=0、211 全部属郑州大学、双一流(去重)={dual_norm}")
+        # 交叉验证 2：教育部名单里标了 985 的，必须也被标 211；标了 211 的必须也是双一流
+        assert all(r["is_211"] for r in records if r["is_985"]), "存在 is_985 但非 is_211 的行"
+        assert all(r["dual_class"] for r in records if r["is_211"]), "存在 is_211 但不是双一流的行"
+        # 交叉验证 3：名单里的院校只要在库内就必须被标上（覆盖率）
+        tiers_matched = sorted(tiers_used)
+        tiers_names = sum(len(tiers_doc.get(k) or [])
+                          for k in ("985", "211", "dual_class"))
+        henan_dual = sorted({_norm_name(r["name"]) for r in henan if r["dual_class"]})
+        self.note("交叉验证通过：河南 985=0、211 全部属郑州大学、"
+                  f"双一流(去重)={henan_dual}")
+        self.note(f"层次标记命中：985={flag_985}、211={flag_211}、双一流={flag_dual}"
+                  f"（覆盖 1367 所中 {sum(1 for r in records if any((r['is_985'], r['is_211'], r['dual_class'])))} 所）")
+        self.note(f"来源贡献：{dict(src_count)}（三源取并集，去重后见上）")
+        if inherit_review:
+            self.note(f"⚠️ {len(inherit_review)} 所校名疑似为分校区/合作办学/独立学院，未自动继承层次，见 meta")
+        self.note(f"分校区/直属医学院继承母体层次：{len(inherited)} 所 {[x['name'] for x in inherited]}")
+        self.note(f"已核实为独立学院、刻意不继承：{len(confirmed_no_inherit)} 所")
 
         self.write("school", records, {
             "primary_source": "徐 · schools_merged.json（在豫招生本科院校）",
-            "enriched_by": "张 · school.json（985/211/双一流）+ school_profile.json（简介/官网）",
+            "enriched_by": (
+                "① 教育部 985/211/双一流 名单（data/dictionaries/school_tiers.json）"
+                "；② 徐 · shanghai_top300_inhenan.json（软科榜 tags，交叉校验）"
+                "；③ 张 · school.json + school_profile.json（河南本地 183 校的层次与简介/官网）"
+            ),
             "match": {"by_code": hit_code, "by_name": hit_name, "unmatched": len(miss)},
             "flags": {"is_985": flag_985, "is_211": flag_211, "dual_class": flag_dual,
                       "intro_filled": intro_filled},
+            "flag_source_contribution": dict(src_count),
+            "tier_lists": {
+                "file": "data/dictionaries/school_tiers.json",
+                "declared_counts": tiers_doc.get("counts"),
+                "matched_names_in_library": len(tiers_matched),
+                "declared_names_total": tiers_names,
+                "note": "declared_names_total 是 985(39)+211(112)+双一流(147) 的条目数之和，"
+                        "含跨名单重复，故不宜直接与 matched_names_in_library 相减。",
+            },
             "unmatched": miss[:50],
+            "inherit_review": inherit_review[:80],
+            "inherited_from_parent": inherited,
+            "confirmed_independent_college": confirmed_no_inherit[:80],
             "extra": {"henan_code_by_school_id": henan_codes},
             "notes": [
                 "院校 id 沿用徐的 1..N，使 school_major_score 的外键无需重映射。",
                 "「在豫招生」≠「河南本地」：本表是面向河南考生可报考的全国院校集合（徐口径），"
                 "不是河南本地高校名单（张口径 183 所）。",
+                "层次标记口径：985 ⊂ 211 ⊂ 双一流；标记来源为教育部公开名单，"
+                "软科榜与张的院校库仅作交叉校验与补充。",
+                "inherit_review 里是校名形如「母体校名 + 后缀」但未自动继承层次的院校 —— "
+                "分校区/合作办学可继承、独立学院不可，二者无法靠字符串区分，故一律不猜，登记待人工确认。",
                 "records 只含后端 school 表的列、可直接装载；河南招生代号（考生填志愿用的是它）"
                 "另存 meta.extra.henan_code_by_school_id，待决定落列或单开 "
                 "school_enrollment_code 表后启用。",
