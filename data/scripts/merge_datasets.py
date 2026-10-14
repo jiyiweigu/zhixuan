@@ -34,7 +34,7 @@ from datetime import datetime
 from pathlib import Path
 
 # --------------------------------------------------------------------------- #
-# 词表归一（与 docs/api-contract.md v1.3 第 8 节、app/models/constants.py 同源）
+# 词表归一（与 docs/api-contract.md v1.4 第 8 节、app/models/constants.py 同源）
 # --------------------------------------------------------------------------- #
 PROVINCE_CODE_BY_NAME = {"河南": "41", "江西": "36"}
 

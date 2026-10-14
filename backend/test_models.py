@@ -57,6 +57,8 @@ EXPECTED_COLUMNS: dict[str, set[str]] = {
         "source_id", "created_at", "updated_at",
         # 0008：院校专业组代码（河南志愿表按专业组渲染）
         "group_code",
+        # 0009：一行录取分的真实身份 —— 专业代号 / 专业名 / 考试制度
+        "major_code", "major_name", "exam_system",
     },
     "score_segment": {
         "id", "province", "year", "subject_type", "score", "cumulative_rank",
@@ -187,7 +189,7 @@ EXPECTED_TABLES = set(EXPECTED_COLUMNS) | BASE_TABLES
 EXPECTED_INDEXES: dict[str, set[str]] = {
     "school": {"ix_school_province", "ix_school_level", "ix_school_name"},
     "major": {"ix_major_category", "ix_major_name"},
-    "school_major_score": {"ix_school_major_score_lookup"},
+    "school_major_score": {"ix_school_major_score_lookup", "ix_school_major_score_identity"},
     "score_segment": {"ix_score_segment_lookup"},
     # 7.6 报考约束三表的关键索引
     "province_exam_rule": {"ix_province_exam_rule_lookup"},
@@ -306,6 +308,9 @@ def test_unmatched_rows_can_be_loaded() -> None:
     数据工程实测有 **1,983 行无 school_id（1.71%）**、**2,200 行无 major_id（1.90%）**，
     合计 4,183 行（3.6%）。项目红线是「**宁可缺，不可猜**」——未匹配行必须留 `null`
     原样入库并如实登记原因，而不是被 NOT NULL 挡下导致整批失败。
+
+    同时验收 0009：身份列 ``major_code`` / ``major_name`` / ``exam_system`` 齐备，
+    且与 ``group_code`` 一同写成一行「同校同年同批次同分、仅专业不同」的真实记录。
     """
     engine = create_engine(os.environ["ZHIXUAN_DATABASE_URL"])
     insp = inspect(engine)
@@ -316,13 +321,16 @@ def test_unmatched_rows_can_be_loaded() -> None:
 
     columns = {c["name"] for c in insp.get_columns("school_major_score")}
     assert "group_code" in columns, "school_major_score.group_code 缺失（0008）"
+    assert {"major_code", "major_name", "exam_system"} <= columns, \
+        "school_major_score 身份三列缺失（0009）"
     assert "same_score_count" in {
         c["name"] for c in insp.get_columns("score_segment")
     }, "score_segment.same_score_count 缺失（0008）"
     school_cols = {c["name"] for c in insp.get_columns("school")}
     assert {"is_985", "is_211", "dual_class"} <= school_cols, "school 院校层次三列缺失（0008）"
 
-    # 真写一行未匹配记录，验证约束确实放宽；事务回滚，不给后续 downgrade 留数据
+    # 真写两行未匹配记录（同校同年同批次同分，仅专业不同），验证约束确实放宽；
+    # 事务回滚，不给后续 downgrade 留数据
     with engine.connect() as conn:
         trans = conn.begin()
         try:
@@ -334,22 +342,30 @@ def test_unmatched_rows_can_be_loaded() -> None:
                 )
             )
             sid = conn.execute(text("SELECT max(id) FROM source")).scalar()
-            conn.execute(
-                text(
-                    "INSERT INTO school_major_score "
-                    "(school_id, major_id, province, year, batch, group_code, subject_type, "
-                    " min_score, source_id, created_at, updated_at) "
-                    "VALUES (NULL, NULL, '河南', 2025, '本科批', '101', '物理类', 594, "
-                    f"{sid}, '2026-01-01', '2026-01-01')"
+            for major_code, major_name in (("14", "公共管理类"), ("12", "国际商务")):
+                conn.execute(
+                    text(
+                        "INSERT INTO school_major_score "
+                        "(school_id, major_id, province, year, batch, group_code, "
+                        " major_code, major_name, exam_system, subject_type, "
+                        " min_score, source_id, created_at, updated_at) "
+                        "VALUES (NULL, NULL, '河南', 2025, '本科批', '101', "
+                        f":mc, :mn, '3+1+2', '物理类', 560, {sid}, "
+                        "'2026-01-01', '2026-01-01')"
+                    ),
+                    {"mc": major_code, "mn": major_name},
                 )
-            )
             got = conn.execute(
                 text(
                     "SELECT count(*) FROM school_major_score "
                     "WHERE school_id IS NULL AND major_id IS NULL"
                 )
             ).scalar()
-            assert got == 1, f"未匹配行应能写入，实际 {got} 行"
+            assert got == 2, f"未匹配行应能写入，实际 {got} 行"
+            distinct = conn.execute(
+                text("SELECT count(DISTINCT major_code) FROM school_major_score")
+            ).scalar()
+            assert distinct == 2, f"身份列应能区分同学科同分两行，实际 {distinct}"
         finally:
             trans.rollback()
 
