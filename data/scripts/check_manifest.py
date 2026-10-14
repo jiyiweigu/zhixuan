@@ -18,11 +18,13 @@ develop `766f10e`（2026-10-13）把「数据本体」移出公开仓库，改�
                     —— 本仓为契约 v1.3 迁移（`pending`→`schema_only`）所致，属预期
 - `内容演进`       ：与 develop 基线**不等价**（本方分支产出了更多字段/行）
                     —— 如 `school_major_score` 的 `major_id` 回填、`schools_merged` 的 N21 补录
+- `已知移出`       ：队长 `840dfa7`（2026-10-14）裁定**移出仓库**的上海软科榜单 3 文件，
+                    不计入「缺失」；仍显式列出，避免静默忽略掩盖真实缺失
 - `缺失`          ：本地不存在
 
 退出码
 ------
-0 = 无「缺失」且无「未知差异」
+0 = 无「缺失」且无「未知差异」（`已知移出` 不计入失败）
 1 = 存在「缺失」，或存在无法归类的差异（需人工介入）
 
 用法
@@ -50,6 +52,15 @@ MANIFEST = REPO / "data" / "MANIFEST.sha256"
 # 差异归类的对照版本：develop 移出时的内容 / 本方分支合并前基线
 REV_DEVELOP = "766f10e^"
 REV_BRANCH = "ab6f2f8"
+
+# ★ 队长 2026-10-14 复议（commit 840dfa7）：上海软科榜单 3 文件**移出仓库**，
+#   不再作为本地留档要求。这里从「缺失」判定中剔除，但**显式列出**（不静默忽略），
+#   以免掩盖真实缺失。
+KNOWN_REMOVED: dict[str, str] = {
+    "data/schools/shanghairanking_2024.json":    "队长 840dfa7 裁定移出仓库",
+    "data/schools/shanghai_top300.json":         "队长 840dfa7 裁定移出仓库",
+    "data/schools/shanghai_top300_inhenan.json": "队长 840dfa7 裁定移出仓库",
+}
 
 _RE_STATUS = re.compile(rb'"data_status":(\s*)"\w+"')
 
@@ -139,17 +150,21 @@ def main() -> int:
 
     rows = []
     for expect, rel in entries:
+        if rel in KNOWN_REMOVED:
+            rows.append({"path": rel, "class": "已知移出", "expected": expect,
+                         "note": KNOWN_REMOVED[rel]})
+            continue
         present = (REPO / rel).exists()
         cls, note = classify(rel, expect, present, blob_cache)
         rows.append({"path": rel, "class": cls, "expected": expect, **note})
 
     stats = collections.Counter(r["class"] for r in rows)
     unknown = [r for r in rows if r["class"] not in
-               ("一致", "枚举/行尾差异", "内容演进", "缺失")]
+               ("一致", "枚举/行尾差异", "内容演进", "已知移出", "缺失")]
     missing = [r for r in rows if r["class"] == "缺失"]
 
     print(f"MANIFEST 共 {len(rows)} 条")
-    for k in ("一致", "枚举/行尾差异", "内容演进", "缺失"):
+    for k in ("一致", "枚举/行尾差异", "内容演进", "已知移出", "缺失"):
         if stats.get(k):
             print(f"  ├ {k:<12} {stats[k]:>3}")
 
@@ -159,6 +174,11 @@ def main() -> int:
             print("\n--- 内容演进（本方分支相对 develop 基线的真实差异）---")
             for r in ev:
                 print(f"   {r['path']}")
+        removed = [r for r in rows if r["class"] == "已知移出"]
+        if removed:
+            print("\n--- 已知移出（队长裁定移出仓库，不计入缺失）---")
+            for r in removed:
+                print(f"   {r['path']}  —— {r.get('note', '')}")
         if missing:
             print("\n--- 缺失（重建校验会直接失败）---")
             for r in missing:
@@ -183,7 +203,8 @@ def main() -> int:
 
     print(f"\n{'[FAIL]' if fail else '[OK]'}  "
           f"一致 {stats.get('一致', 0)} ｜ 枚举/行尾 {stats.get('枚举/行尾差异', 0)} ｜ "
-          f"内容演进 {stats.get('内容演进', 0)} ｜ 缺失 {stats.get('缺失', 0)}")
+          f"内容演进 {stats.get('内容演进', 0)} ｜ 已知移出 {stats.get('已知移出', 0)} ｜ "
+          f"缺失 {stats.get('缺失', 0)}")
     return 1 if fail else 0
 
 

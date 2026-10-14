@@ -45,7 +45,10 @@ AUTO_FIELDS = {"id", "created_at", "updated_at"}
 # 未列出的表视为「尚无数据」。
 DATA_MAP: dict[str, tuple[str, str | None]] = {
     "school":              ("data/schools/schools_merged.json", "records"),
-    "major":               ("data/majors/majors.json", "majors"),
+    # ⚠️ major 必须指向 D1 补齐后的产物。`data/majors/majors.json`（845 条）是补字段**之前**
+    #    的旧版，缺 category/duration/degree/is_category 等 12 个模型字段 ⇒ 指向它会把
+    #    「已解决」误报成 12 项硬缺口（B-6d 即由此误判）。
+    "major":               ("data/majors/major_table_rows.json", "rows"),
     "school_major_score":  ("data/school_major_score/school_major_score_2025_河南.json", "scores"),
     "score_segment":       ("data/score_segment/score_segment_2025_河南.json", "segments"),
     "pathway":             ("data/dictionaries/pathways-26.json", "pathways"),
@@ -53,6 +56,10 @@ DATA_MAP: dict[str, tuple[str, str | None]] = {
     "pathway_eligibility": ("data/dictionaries/pathway-eligibility.json", "rules"),
     "province_exam_rule":  ("data/dictionaries/province-exam-rule.json", "rules"),
     "source":              ("data/sources/source-table.json", "sources"),
+    # D3/D4 产物落在 data/schools/ 下（而非 data/{kind}/）⇒ 此前漏登记，被误报为「尚无数据产物」。
+    "school_profile":      ("data/schools/school_profile_rows.json", "records"),
+    "school_life":         ("data/schools/school_life_rows.json", "records"),
+    "enrollment_rule":     ("data/schools/enrollment_rule_rows.json", "records"),
 }
 
 # 表 → 责任方（见产品书 9.1 角色-模块矩阵）
@@ -97,7 +104,10 @@ TABLE_CN = {
 
 RE_CLASS = re.compile(r"^class\s+(\w+)\s*\(Base\)", re.M)
 RE_TABLE = re.compile(r'__tablename__\s*=\s*["\'](\w+)["\']')
-RE_COL = re.compile(r"^\s{4}(\w+)\s*:\s*Mapped\[([^\]]+)\]", re.M)
+# ⚠️ 用 `(.+?)\]\s*=` 而非 `([^\]]+)`：后者遇到 `Mapped[dict[str, Any] | None]`
+#    这类**嵌套泛型**会在内层 `]` 处截断（截成 `dict[str, Any`），导致 `None` 判不出、
+#    可空列被误报为 NOT NULL 硬阻塞。
+RE_COL = re.compile(r"^\s{4}(\w+)\s*:\s*Mapped\[(.+?)\]\s*=", re.M)
 RE_FK = re.compile(r'ForeignKey\(\s*["\'](\w+)\.(\w+)["\']')
 
 
@@ -120,10 +130,20 @@ def parse_models() -> dict[str, dict]:
             fields: dict[str, dict] = {}
             for cm in RE_COL.finditer(body):
                 name, typ = cm.group(1), cm.group(2)
-                # 取该列附近的片段判断 ForeignKey / nullable
-                seg = body[cm.start(): cm.start() + 400]
-                line_end = seg.find("\n")
-                decl = seg[: line_end if line_end > 0 else len(seg)]
+                # 取**整条 `mapped_column(...)` 调用**判断 ForeignKey / nullable / default。
+                # ⚠️ 不能只取首行：`default=` 常写在第二行（跨行声明），只取首行会漏判，
+                #    把有 ORM 默认值的列误报成「硬阻塞 NOT NULL」。
+                seg = body[cm.start(): cm.start() + 600]
+                depth, cut = 0, -1
+                for i, ch in enumerate(seg):
+                    if ch == "(":
+                        depth += 1
+                    elif ch == ")":
+                        depth -= 1
+                        if depth == 0:
+                            cut = i + 1
+                            break
+                decl = seg[:cut] if cut > 0 else seg.split("\n", 1)[0]
                 fk = RE_FK.search(decl)
                 fields[name] = {
                     "type": typ.strip(),
@@ -257,6 +277,10 @@ def main() -> int:
     if blockers:
         print(f"⛔ 硬阻塞 {len(blockers)} 个: {', '.join(blockers)}")
         print("   → 需 ② / 队长裁决或 ③ 补数据后，灌数才能成功。")
+        if any(b.endswith("(type)") for b in blockers):
+            print("   注：`(type)` 类冲突属 B-4 族（产物用 `SRC-XXX` 字符串、模型为 int 外键）。")
+            print("        ③ 的金层 loader 已通过 `source` 表映射解决，不影响实际入库")
+            print("        （见 `data/灌库执行报告_徐.md`）—— 但**原始产物不可直灌**。")
     else:
         print("✅ 无硬阻塞")
     if warnings:
