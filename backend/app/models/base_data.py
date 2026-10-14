@@ -60,6 +60,12 @@ class School(Base):
     ownership: Mapped[str] = mapped_column(String(32), default="", comment="办学性质：公办 / 民办")
     website: Mapped[str] = mapped_column(String(200), default="")
     intro: Mapped[str] = mapped_column(Text, default="", comment="院校简介")
+    # 0008：院校层次 —— 冲稳保推荐与家长决策的核心维度
+    is_985: Mapped[bool] = mapped_column(Boolean, default=False, comment="是否 985")
+    is_211: Mapped[bool] = mapped_column(Boolean, default=False, comment="是否 211")
+    dual_class: Mapped[str] = mapped_column(
+        String(32), default="", comment="双一流：一流大学建设高校 / 一流学科建设高校"
+    )
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow, onupdate=utcnow)
 
@@ -101,12 +107,30 @@ class Major(Base):
     interview_required: Mapped[bool] = mapped_column(
         Boolean, default=False, comment="是否要求面试"
     )
+    # 0008：专业简介（数据库侧产出的正文，产品端「专业介绍」直接可用）
+    intro: Mapped[str] = mapped_column(Text, default="", comment="专业简介")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow, onupdate=utcnow)
 
 
 class SchoolMajorScore(Base):
-    """院校专业录取分（历年录取数据，tasks.md 2.2）。"""
+    """院校专业录取分（历年录取数据，tasks.md 2.2）。
+
+    ``school_id`` / ``major_id`` 可空，依据 ``data/建表清单与数据来源对照表.md`` §四-3、§1.8：
+    录取分是 2022–2025、院校库是 2026 招生计划，院校改名等原因导致约 2.5% 的行挂不上院校；
+    专业库（任务 2.1）尚未建，``major_id`` 首期全空。两者都是**客观缺失**，
+    必须保留成行并留空，不得因此拒绝入库或猜测填充。
+
+    身份列（超出产品书第 7 章，由 ② 依据 ③ 的实际产物补充）：
+    ``major_code`` / ``major_name`` / ``group_code`` / ``exam_system``。
+    原因见 ``data/school_major_score/录取分导入说明.md`` §三：
+    ③ 的产物里 ``major_id`` 恒空，鉴别一行录取分的实际是
+    「专业组 ``group_code`` + 专业 ``major_code``」，缺这两列则
+    （a）无法区分同校同年同批次下的不同专业，
+    （b）幂等键无法定义；
+    ``exam_system`` 则是 ③ §2.3 的硬要求——老高考「文理科」与新高考「3+1+2」
+    不得跨制度比较，只靠 ``subject_type`` 无法区分。
+    """
 
     __tablename__ = "school_major_score"
     __table_args__ = (
@@ -116,19 +140,44 @@ class SchoolMajorScore(Base):
             name="min_score_range",
         ),
         Index("ix_school_major_score_lookup", "province", "year", "batch", "pathway_id"),
+        # 0009：与导入层按身份键 upsert 的取数路径一致
+        Index(
+            "ix_school_major_score_identity",
+            "school_id", "province", "year", "batch", "subject_type",
+            "group_code", "major_code",
+        ),
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    school_id: Mapped[int] = mapped_column(ForeignKey("school.id"), index=True)
-    major_id: Mapped[int] = mapped_column(ForeignKey("major.id"), index=True)
+    # 0008：两个外键放宽为可空 —— 项目红线「宁可缺，不可猜」，
+    # 未匹配到院校库 / 专业库的行留 null 并如实登记原因，不猜测补全。
+    school_id: Mapped[int | None] = mapped_column(
+        ForeignKey("school.id"), default=None, index=True,
+        comment="院校 id；院校改名等客观缺失时留空",
+    )
+    major_id: Mapped[int | None] = mapped_column(
+        ForeignKey("major.id"), default=None, index=True, comment="专业 id；专业库未建时留空"
+    )
     province: Mapped[str] = mapped_column(String(PROVINCE_MAX_LENGTH), comment="招生省份")
     year: Mapped[int] = mapped_column(Integer, comment="录取年份")
-    batch: Mapped[str] = mapped_column(String(32), default="", comment="录取批次")
+    batch: Mapped[str] = mapped_column(String(32), default="", comment="录取批次；批次线不同不可合并")
+    group_code: Mapped[str] = mapped_column(
+        String(32), default="", comment="院校专业组代号（河南为院校专业组志愿模式；③ 已做括号归一化）"
+    )
+    # 0009：一行的真实身份是「专业组 + 专业」——
+    # 官方样本同校同年同批次同分同位次出现两行，仅 major_code 不同，缺此则无法区分行
+    major_code: Mapped[str] = mapped_column(
+        String(32), default="", comment="专业代号（③ 的 major_code）；将来据此回挂 major_id"
+    )
+    major_name: Mapped[str] = mapped_column(String(NAME_MAX_LENGTH), default="", comment="专业名称")
+    exam_system: Mapped[str] = mapped_column(
+        String(16), default="", comment="考试制度：文理科 / 3+1+2；跨制度不得比较"
+    )
     pathway_id: Mapped[str | None] = mapped_column(
         String(32), ForeignKey("pathway.id"), default=None, comment="对应升学途径，可空"
     )
     subject_type: Mapped[str] = mapped_column(
-        String(SUBJECT_TYPE_MAX_LENGTH), default="", comment="科类：物理类 / 历史类"
+        String(SUBJECT_TYPE_MAX_LENGTH), default="", comment="科类：物理类 / 历史类；2024 两省整列缺失故允许空串"
     )
     min_score: Mapped[int | None] = mapped_column(Integer, default=None, comment="最低录取分")
     min_rank: Mapped[int | None] = mapped_column(Integer, default=None, comment="最低位次")
@@ -155,8 +204,16 @@ class ScoreSegment(Base):
     province: Mapped[str] = mapped_column(String(PROVINCE_MAX_LENGTH))
     year: Mapped[int] = mapped_column(Integer)
     subject_type: Mapped[str] = mapped_column(String(SUBJECT_TYPE_MAX_LENGTH))
+    batch: Mapped[str] = mapped_column(
+        String(32),
+        default="",
+        comment="录取批次；老高考一分一段是「一条连续曲线被批次线切段」，合并会丢批次线信息",
+    )
     score: Mapped[int] = mapped_column(Integer, comment="分数")
     cumulative_rank: Mapped[int] = mapped_column(Integer, comment="累计人数（位次）")
+    same_score_count: Mapped[int | None] = mapped_column(
+        Integer, default=None, comment="同分人数（0008 补列）"
+    )
     source_id: Mapped[int] = mapped_column(ForeignKey("source.id"))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow, onupdate=utcnow)
