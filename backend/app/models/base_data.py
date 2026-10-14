@@ -60,6 +60,12 @@ class School(Base):
     ownership: Mapped[str] = mapped_column(String(32), default="", comment="办学性质：公办 / 民办")
     website: Mapped[str] = mapped_column(String(200), default="")
     intro: Mapped[str] = mapped_column(Text, default="", comment="院校简介")
+    # 0008：院校层次 —— 冲稳保推荐与家长决策的核心维度
+    is_985: Mapped[bool] = mapped_column(Boolean, default=False, comment="是否 985")
+    is_211: Mapped[bool] = mapped_column(Boolean, default=False, comment="是否 211")
+    dual_class: Mapped[str] = mapped_column(
+        String(32), default="", comment="双一流：一流大学建设高校 / 一流学科建设高校"
+    )
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow, onupdate=utcnow)
 
@@ -101,6 +107,8 @@ class Major(Base):
     interview_required: Mapped[bool] = mapped_column(
         Boolean, default=False, comment="是否要求面试"
     )
+    # 0008：专业简介（数据库侧产出的正文，产品端「专业介绍」直接可用）
+    intro: Mapped[str] = mapped_column(Text, default="", comment="专业简介")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow, onupdate=utcnow)
 
@@ -119,11 +127,20 @@ class SchoolMajorScore(Base):
     )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    school_id: Mapped[int] = mapped_column(ForeignKey("school.id"), index=True)
-    major_id: Mapped[int] = mapped_column(ForeignKey("major.id"), index=True)
+    # 0008：两个外键放宽为可空 —— 项目红线「宁可缺，不可猜」，
+    # 未匹配到院校库 / 专业库的行留 null 并如实登记原因，不猜测补全。
+    school_id: Mapped[int | None] = mapped_column(
+        ForeignKey("school.id"), default=None, index=True, comment="未匹配到院校库时留空"
+    )
+    major_id: Mapped[int | None] = mapped_column(
+        ForeignKey("major.id"), default=None, index=True, comment="未匹配到专业库时留空"
+    )
     province: Mapped[str] = mapped_column(String(PROVINCE_MAX_LENGTH), comment="招生省份")
     year: Mapped[int] = mapped_column(Integer, comment="录取年份")
     batch: Mapped[str] = mapped_column(String(32), default="", comment="录取批次")
+    group_code: Mapped[str] = mapped_column(
+        String(32), default="", comment="院校专业组代码（河南为院校专业组志愿模式）"
+    )
     pathway_id: Mapped[str | None] = mapped_column(
         String(32), ForeignKey("pathway.id"), default=None, comment="对应升学途径，可空"
     )
@@ -155,8 +172,14 @@ class ScoreSegment(Base):
     province: Mapped[str] = mapped_column(String(PROVINCE_MAX_LENGTH))
     year: Mapped[int] = mapped_column(Integer)
     subject_type: Mapped[str] = mapped_column(String(SUBJECT_TYPE_MAX_LENGTH))
+    batch: Mapped[str] = mapped_column(
+        String(32), default="", comment="批次（老高考一分为多段，必须按 batch 保留）"
+    )
     score: Mapped[int] = mapped_column(Integer, comment="分数")
     cumulative_rank: Mapped[int] = mapped_column(Integer, comment="累计人数（位次）")
+    same_score_count: Mapped[int | None] = mapped_column(
+        Integer, default=None, comment="同分人数（0008 补列）"
+    )
     source_id: Mapped[int] = mapped_column(ForeignKey("source.id"))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow, onupdate=utcnow)
