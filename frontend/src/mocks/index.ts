@@ -9,8 +9,9 @@ const planItems=[
  {tier:'稳',order:2,school_id:'demo-3',school_name:'演示院校丙',group_code:'03',major_ids:['major-3'],major_names:['网络工程'],min_score_ref:616,min_rank_ref:21000,ref_year:2025,gap_rank:3000,source_note:'演示数据（非官方）',...cite},
  {tier:'保',order:1,school_id:'demo-4',school_name:'演示院校丁',group_code:'04',major_ids:['major-1','major-2'],major_names:['计算机科学与技术','软件工程'],min_score_ref:598,min_rank_ref:42000,ref_year:2025,gap_rank:24000,source_note:'演示数据（非官方）',...cite}
 ]
-export const fixtures={
- auth:{login:{token:'mock-token',expires_in:86400,user:{user_id:'u-demo',username:'demo',role:'user'}},admin:{token:'mock-admin-token',expires_in:86400,admin:{admin_id:'a-demo',username:'admin',role:'admin'}},error:{code:1002,message:'用户名或密码错误',data:null,trace_id:'mock-auth-error'}},
+// 管理端·审核任务项 = review.task_item（列表与详情共用同一形状）
+const adminReviewTask={task_id:1,qa_log_id:101,question:'示例问题：620 分能报哪些专业？',answer:'示例回答（演示数据，不代表招生事实）。',confidence:'low',trigger_reason:'低置信、涉规则',status:'pending',reviewer:null,created_at:now}
+export const fixtures={ auth:{login:{token:'mock-token',expires_in:86400,user:{user_id:'u-demo',username:'demo',role:'user'}},admin:{token:'mock-admin-token',expires_in:86400,admin:{admin_id:'a-demo',username:'admin',role:'admin'}},error:{code:1002,message:'用户名或密码错误',data:null,trace_id:'mock-auth-error'}},
  // 契约 2：GET/PUT /api/user/profile 的 data 为完整 Profile，并附 completeness{percent,missing}
  profile:{profile:{profile_id:1,province:'河南',exam_type:'普通',first_subject:'物理',second_subjects:['化学','生物'],subject_type:'物理类',score:620,rank:18000,household_type:'农村',home_county:'示例县',home_county_code:'000000',school_years:3,enrollment_county:null,household_years:3,enrollment_years:3,parent_household_local:true,has_national_special:false,has_local_special:false,has_college_special:false,special_marks:[],preferred_cities:['郑州','武汉'],preferred_majors:['计算机类'],tuition_budget:15000,batch_preference:['本科批'],accept_adjustment:true,updated_at:now,completeness:{percent:42,missing:['color_vision','vision_left','vision_right','height','weight','hepatitis_b','hearing','smell','stutter']}},empty:null},
  // 契约 3：pathway_id 为字符串 slug；data_status 取 available|partial|schema_only|unavailable
@@ -25,5 +26,31 @@ export const fixtures={
  school:{list:{items:[{school_id:'demo-1',name:'演示院校甲',code:'00001',province:'河南',city:'郑州',level:'本科',type:'综合',ownership:'公办',intro:'此为演示内容。',sources:[cite],citations:[cite]}],total:1,page:1,page_size:20},detail:{school_id:'demo-1',name:'演示院校甲',code:'00001',province:'河南',city:'郑州',level:'本科',type:'综合',ownership:'公办',intro:'此为演示内容。',citations:[cite]},profile:{available:false,tuition_range:'待官方数据接入',accommodation_fee:null,campus_list:[],established_year:null,master_phd_points:null,first_class_major_count:null,faculty_count:null,student_faculty_ratio:null,source_note:'演示数据（非官方）',citations:[cite]},life:{items:[{category:'校园生活',content:'演示生活信息',source_type:'公开网络',source_name:cite.source_name,source_url:cite.source_url,year:cite.year,reliability:'low'}]}},
  majors:{list:{items:[{major_id:'demo-major',name:'计算机类',code:'0809',category:'工学',degree:'工学学士',intro:'演示专业介绍',first_class_schools:['演示院校甲']}],total:1,page:1,page_size:20},detail:{major_id:'demo-major',name:'计算机类',code:'0809',category:'工学',degree:'工学学士',intro:'演示专业介绍',first_class_schools:['演示院校甲']}},
  favorites:{items:[{favorite_id:1,target_type:'school',target_id:'demo-1',target_name:'演示院校甲',created_at:now}]},plans:{items:[],detail:{plan_id:1,name:'我的演示方案',strategy:'major',items:planItems}},
- admin:{docs:{items:[],total:0,page:1,page_size:20},task:{task_id:1,qa_log_id:101,question:'示例问题',answer:'示例回答',confidence:'low',trigger_reason:'低置信度',created_at:now,citations:[cite]},stats:{doc_count:0,chunk_count:0,qa_count:0,low_confidence_count:0,review_pending_count:0,coverage_by_pathway:[]}}
+ // 管理端 fixtures：形状与后端真实 DTO 一一对应（corpus.doc_item / indexing.task_state /
+ // pathway_admin.* / review.task_item / stats.overview / rule_admin.*），关闭 Mock 后页面不变形。
+ admin:{
+  // 语料列表项 = corpus.doc_item（doc_id/title/source_name/source_url/year/doc_type/province/pathway_id/chunk_count/created_at）
+  docs:{items:[{doc_id:1,title:'河南省 2026 年普通高校招生工作规定（演示）',source_name:cite.source_name,source_url:cite.source_url,year:2026,doc_type:'政策',province:'河南',pathway_id:'regular-batch',chunk_count:3,created_at:now}],total:1,page:1,page_size:20},
+  // 索引任务 = indexing.task_state（progress 为对象，非数字）
+  indexTask:{task_id:1,status:'completed',progress:{total:120,processed:120,embedded:96,pending_embedding:0,failed:0,percent:100},scope:'all',doc_ids:[],incremental:true,message:'演示：向量化由索引服务负责。',embedder_ready:false,operator:'admin',created_at:now,started_at:now,finished_at:now},
+  // 途径字典项 = pathway_admin.pathway_item（source 为来源三要素对象）
+  pathways:[{pathway_id:'regular-batch',name:'普通批',category:'普通类',batch:'本科批',target_group:'普通高考考生',apply_time:'以当年官方安排为准',description:'演示条目，资格以官方审核为准。',priority:'P0',data_status:'available',year:2026,source:cite},{pathway_id:'national-plan',name:'国家专项计划',category:'专项类',batch:'本科批',target_group:'符合政策条件的考生',apply_time:'以当年官方安排为准',description:'演示条目。',priority:'P0',data_status:'schema_only',year:2026,source:cite}],
+  // 资格规则项 = pathway_admin.rule_item
+  pathwayRules:[{rule_id:1,pathway_id:'national-plan',province:'河南',rule_type:'户籍',rule_desc:'考生本人具有实施区域当地连续 3 年以上户籍，其父亲或母亲或法定监护人具有当地户籍（演示）。',params:{},year:2026,source:cite}],
+  // 专项实施区域项 = pathway_admin.region_item
+  regions:[{region_id:1,pathway_id:'national-plan',province:'河南',county_name:'固始县',county_code:'411525',year:2026,source_name:cite.source_name,source_url:cite.source_url}],
+  // 审核列表/详情 = review.task_item(+detail 追加字段)
+  reviewList:{items:[adminReviewTask],total:1,page:1,page_size:20},
+  reviewDetail:{...adminReviewTask,citations:[{...cite,index:1,chunk_id:'mock-chunk'}],degraded:true,session_id:'session-demo',user_id:null,original_answer:adminReviewTask.answer,corrected_answer:null,comment:null,reviewed_at:null,qa_created_at:now},
+  // 统计 = stats.overview
+  stats:{doc_count:1,chunk_count:3,qa_count:12,low_confidence_count:2,review_pending_count:1,coverage_by_pathway:[{pathway_id:'regular-batch',pathway_name:'普通批',priority:'P0',doc_count:1,chunk_count:3,covered:true},{pathway_id:'national-plan',pathway_name:'国家专项计划',priority:'P0',doc_count:0,chunk_count:0,covered:false}]},
+  // 契约 8.8：规则集状态（rule_admin.rule_dataset_status_item）与五组规则列表（分页包）
+  ruleDatasetStatus:{items:[
+   {rule_id:1,province_code:'41',year:2026,batch_code:'undergraduate_regular',exam_type:'普通',dataset:'province_exam_rule',status:'available',note:'由导入/维护覆盖率校验自动得出（契约 8.8）。',updated_at:now},
+   {rule_id:2,province_code:'41',year:2026,batch_code:'undergraduate_regular',exam_type:'普通',dataset:'subject_requirement',status:'unavailable',note:'选科要求数据尚未导入。',updated_at:now},
+   {rule_id:3,province_code:'41',year:2026,batch_code:'undergraduate_regular',exam_type:'普通',dataset:'physical_restriction',status:'unavailable',note:'体检限制映射表尚未建立。',updated_at:now}
+  ],total:3,page:1,page_size:20},
+  ruleProvinceRules:{items:[{rule_id:1,province_code:'41',province:'河南',year:2026,batch_code:'undergraduate_regular',batch:'本科批',exam_type:'普通',mode:'group',volunteer_count:45,majors_per_group:6,has_adjust:true,admit_method:'parallel',ratio:'1:1',tie_rule:'同分依次比较语文数学外语（演示）。',mutex_groups:[],collect_count:null,source:cite}],total:1,page:1,page_size:20},
+  ruleEmpty:{items:[],total:0,page:1,page_size:20}
+ }
 }
