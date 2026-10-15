@@ -9,6 +9,8 @@
 背景（同 T4）：`backend/app/services/rule_admin.py` 无 `RULE_DATASETS` 注册表；
 实际通道 = `_IMPORT_BUILDERS[DATASET_PHYSICAL_RESTRICTION]`（`constants.py` 已注册）
 + 导入接口。无需改后端。
+离线可复跑（红线）：仓库内 `data/majors/majors.json` 为必需基线，仓库外
+`merged/major.json` 可选并入（口径同 `build_physical_restriction.py`）。
 
 行展开规则（对齐 `PhysicalRestriction` 表；模型注释明确『空省码=全国』）：
   1. skip：scope=universal（体检结论类，档案无法覆盖，仅供展示）；
@@ -44,6 +46,10 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent          # data/
 DICT_PATH = BASE_DIR / "dictionaries" / "physical-restriction.json"
+# 离线可复跑（红线，与 build_physical_restriction.py 同口径）：
+#   仓库内 data/majors/majors.json（845 专业 / 93 专业类 / 12 门类）为必需基线；
+#   仓库外整合产物 merged/major.json 若在本机则并入（仅扩大覆盖，缺失只提示）。
+CATALOG_MAJOR = BASE_DIR / "majors" / "majors.json"
 MERGE_MAJOR = Path(r"C:\Users\Administrator\Desktop\智选志愿_数据整合\merged\major.json")
 STAGED_DIR = BASE_DIR / "staged" / "physical-restriction-import"
 CHUNK = 500
@@ -90,13 +96,39 @@ SCOPE_PREFIX = {"military": "军检：", "police": "警检："}
 
 
 def load_menlei_map() -> dict[str, list[str]]:
-    d = json.loads(MERGE_MAJOR.read_text(encoding="utf-8"))
-    recs = d.get("records") or d.get("rows") or []
+    """门类 → 专业类展开面。
+
+    **离线可复跑（红线）**：仓库内 ``data/majors/majors.json`` 为必需基线
+    （缺失即报错）；仓库外 ``merged/major.json`` 存在则并入（口径同
+    ``build_physical_restriction.py::load_major_index``，已核验两者对
+    93 类 / 12 门类展开面逐项一致）。
+    """
+    catalog = json.loads(CATALOG_MAJOR.read_text(encoding="utf-8"))
+    if not catalog.get("majors"):
+        raise SystemExit(f"[err] 专业库为空：{CATALOG_MAJOR}（离线可复跑依赖此文件）")
+
     m: dict[str, set] = {}
-    for r in recs:
-        men, cls = (r.get("category") or "").strip(), (r.get("first_class") or "").strip()
+
+    def _feed(men: str, cls: str) -> None:
         if men and cls:
             m.setdefault(men, set()).add(cls)
+
+    for r in catalog.get("majors", []):                       # 基线：仓库内
+        _feed((r.get("menlei") or "").strip(), (r.get("class_name") or "").strip())
+
+    if MERGE_MAJOR.exists():                                  # 可选：仓库外整合产物
+        merged = json.loads(MERGE_MAJOR.read_text(encoding="utf-8"))
+        recs = merged.get("records") or merged.get("rows") or []
+        for r in recs:
+            _feed((r.get("category") or "").strip(), (r.get("first_class") or "").strip())
+        print(f"[lib ] 并入仓库外整合产物 {MERGE_MAJOR}（{len(recs)} 专业）")
+    else:
+        print(f"[lib ] 仓库外整合产物不在本机（{MERGE_MAJOR}）——"
+              f"按仓库内基线 {CATALOG_MAJOR.name} 运行，产出不受影响")
+
+    if not m:
+        raise SystemExit(f"[err] 门类展开面为空：{CATALOG_MAJOR}")
+    print(f"[lib ] 门类 {len(m)} / 专业类 {len({c for v in m.values() for c in v})}")
     return {k: sorted(v) for k, v in m.items()}
 
 
