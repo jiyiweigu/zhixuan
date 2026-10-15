@@ -106,6 +106,14 @@ python data/scripts/parse_subject_req.py --scan
 # 选科要求 → 管理端 rule-datasets/import 导入包（→ data/staged/，中间层）
 python data/scripts/build_subject_requirement_import.py
 
+# 体检专业限制映射表（规则内容内置，依据 教学〔2003〕3号 / 教学厅〔2010〕2号 /
+#   军队·公安体检标准；专业库用仓库内 data/majors/majors.json，**离线可复跑**，
+#   仓库外整合产物 merged/major.json 若在机则并入扩大覆盖面、缺失不影响产出）
+python data/scripts/build_physical_restriction.py
+
+# 体检映射表 → 管理端 rule-datasets/import 导入包（→ data/staged/，中间层，按省一份）
+python data/scripts/build_physical_restriction_import.py
+
 # 通用数据集导入（→ data/staged/，中间层，可重跑）
 python data/scripts/import_dataset.py
 
