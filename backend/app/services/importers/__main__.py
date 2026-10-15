@@ -21,11 +21,14 @@ from sqlalchemy.orm import Session
 
 from app.services.importers import ImportReport, SourceRegistry, data_root
 from app.services.importers.eligibility import import_eligibility
+from app.services.importers.enrollment_rules import import_enrollment_rules
 from app.services.importers.majors import import_majors
 from app.services.importers.major_links import import_major_links
 from app.services.importers.pathway_regions import import_pathway_regions
 from app.services.importers.pathways import import_pathways
 from app.services.importers.province_exam_rule import import_province_exam_rules
+from app.services.importers.school_life import import_school_life
+from app.services.importers.school_profiles import import_school_profiles
 from app.services.importers.schools import import_schools
 from app.services.importers.score_segment import import_score_segments
 from app.services.importers.school_major_score import import_school_major_scores
@@ -52,6 +55,12 @@ def run_all(session: Session, root: Path) -> list[ImportReport]:
             session, root / "dictionaries" / "province-exam-rule.json", registry
         ),
         import_schools(session, root / "schools" / "schools_merged.json", registry),
+        # 画像 / 生活信息 / 招生章程要点：均以 school 为前提（数据文件同为 ③ 的产出物）
+        import_school_profiles(session, root / "schools" / "school_profile_rows.json", registry),
+        import_school_life(session, root / "schools" / "school_life_rows.json", registry),
+        import_enrollment_rules(
+            session, root / "schools" / "enrollment_rule_rows.json", registry
+        ),
         import_majors(session, root / "majors" / "majors.json", registry),
         import_score_segments(session, root / "score_segment", registry),
         import_school_major_scores(session, root / "school_major_score", registry),
