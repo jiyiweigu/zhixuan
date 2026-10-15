@@ -32,10 +32,12 @@ os.environ["ZHIXUAN_SECRET_KEY"] = "test-secret-key-school-suite-at-least-32-byt
 os.environ["ZHIXUAN_ENV"] = "test"
 
 from fastapi.testclient import TestClient  # noqa: E402
+from sqlalchemy import update  # noqa: E402
 
 from app.core import dataset  # noqa: E402
 from app.db.session import SessionLocal, create_all  # noqa: E402
 from app.main import app  # noqa: E402
+from app.models.base_data import School  # noqa: E402
 from app.services.school_seed import seed_demo  # noqa: E402
 
 create_all()
@@ -526,6 +528,46 @@ def _() -> None:
     result = post_data("/api/schools/compare", {"school_ids": ids})
     assert result["count"] == 5
     assert [item["school_id"] for item in result["items"]] == ids
+
+
+@case("43 院校层次：列表项带标记，支持按 985 / 211 / 双一流 筛选")
+def _() -> None:
+    # 列表项必须带层次字段（缺数据时如实为 false / ""，不推断）
+    items = data("/api/schools")["items"]
+    assert all({"is_985", "is_211", "dual_class"} <= set(item) for item in items)
+
+    # 演示数据未标层次：is_985=true 命中 0（而非报错或返回全部）
+    assert data("/api/schools", is_985=True)["total"] == 0
+    assert data("/api/schools", is_985=False)["total"] == TOTAL_SCHOOLS
+
+    zzu = school_id_by_name("郑州大学")
+    with SessionLocal() as db:
+        db.execute(
+            update(School)
+            .where(School.id == zzu)
+            .values(is_985=True, is_211=True, dual_class="双一流")
+        )
+        db.commit()
+    try:
+        assert data("/api/schools", is_985=True)["total"] == 1
+        assert data("/api/schools", is_211=True)["total"] == 1
+        assert data("/api/schools", dual_class="双一流")["total"] == 1
+        assert data("/api/schools", is_985=False)["total"] == TOTAL_SCHOOLS - 1
+        # 层次与其它条件为「与」关系
+        assert data("/api/schools", is_985=True, keyword="郑州")["total"] == 1
+        assert data("/api/schools", is_985=True, province="湖北")["total"] == 0
+        marked = data("/api/schools", keyword="郑州大学")["items"][0]
+        assert marked["is_985"] is True and marked["is_211"] is True
+        assert marked["dual_class"] == "双一流"
+    finally:
+        with SessionLocal() as db:
+            db.execute(
+                update(School)
+                .where(School.id == zzu)
+                .values(is_985=False, is_211=False, dual_class="")
+            )
+            db.commit()
+    assert data("/api/schools", is_985=True)["total"] == 0
 
 
 def main() -> int:

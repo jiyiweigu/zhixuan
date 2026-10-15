@@ -129,7 +129,13 @@ def _source_note(source: Source | None) -> str:
 # 序列化
 # --------------------------------------------------------------------------- #
 def school_summary(school: School) -> dict[str, Any]:
-    """院校基础字段（产品书 6.5.1 的 items[] 字段集）。"""
+    """院校基础字段（产品书 6.5.1 的 items[] 字段集）。
+
+    含院校层次（``is_985`` / ``is_211`` / ``dual_class``）：层次是「冲稳保」与院校筛选的
+    核心维度，原先三份数据源都没给全，2026-10-14 已由数据整合补齐并落库
+    （口径见 ``data/scripts/backfill_school_tiers.py``）。缺标记时如实为
+    ``false`` / ``""``，不推断。
+    """
     return {
         "school_id": school.id,
         "name": school.name,
@@ -139,6 +145,9 @@ def school_summary(school: School) -> dict[str, Any]:
         "level": school.level,
         "type": school.type,
         "ownership": school.ownership,
+        "is_985": bool(school.is_985),
+        "is_211": bool(school.is_211),
+        "dual_class": school.dual_class or "",
     }
 
 
@@ -218,6 +227,9 @@ def search_schools(
     level: str = "",
     school_type: str = "",
     ownership: str = "",
+    is_985: bool | None = None,
+    is_211: bool | None = None,
+    dual_class: str = "",
     page: int = pagination.PAGE_DEFAULT,
     page_size: int = pagination.PAGE_SIZE_DEFAULT,
 ) -> dict[str, Any]:
@@ -225,6 +237,13 @@ def search_schools(
 
     条件之间为「与」关系；``keyword`` 在名称、城市、简介三处做模糊匹配。
     空条件表示不限制，因此无参调用返回全部院校（分页）。
+
+    层次筛选（2026-10-14 新增）：``is_985`` / ``is_211`` 为 ``None`` 表示不限制，
+    ``True`` 只返回该校层次的院校、``False`` 只返回非该校层次的院校；
+    ``dual_class`` 传非空值按层次标记精确匹配（如「双一流」）。
+    层次数据尚未覆盖到的院校，标记为假值，会被 ``is_985=False`` 命中 ——
+    这是「库内如实记录」而非「推断为普通院校」，调用方需要区分时应结合
+    ``data_status`` 判断，不在本层做猜测。
     """
     conditions = []
     if province.strip():
@@ -235,6 +254,12 @@ def search_schools(
         conditions.append(School.type == school_type.strip())
     if ownership.strip():
         conditions.append(School.ownership == ownership.strip())
+    if is_985 is not None:
+        conditions.append(School.is_985.is_(bool(is_985)))
+    if is_211 is not None:
+        conditions.append(School.is_211.is_(bool(is_211)))
+    if dual_class.strip():
+        conditions.append(School.dual_class == dual_class.strip())
     if keyword.strip():
         like = f"%{keyword.strip()}%"
         conditions.append(

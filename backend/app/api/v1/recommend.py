@@ -14,8 +14,9 @@ from __future__ import annotations
 from typing import Any
 
 from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
-from app.core.deps import get_current_user
+from app.core.deps import get_current_user, get_db
 from app.core.response import ok
 from app.models.user import User
 from app.schemas.core import RecommendRequest, RiskCheckRequest
@@ -25,9 +26,13 @@ router = APIRouter(tags=["推荐与风险体检"])
 
 
 @router.post("/recommend", summary="冲稳保推荐（游客可用，不落库）")
-def recommend(payload: RecommendRequest) -> dict[str, Any]:
-    """契约 6.1：Auth no；结果必须带来源与免责声明（由 build_plan 统一附加）。"""
-    return ok(plans_service.build_plan(payload.to_plan_request()))
+def recommend(payload: RecommendRequest, db: Session = Depends(get_db)) -> dict[str, Any]:
+    """契约 6.1：Auth no；结果必须带来源与免责声明（由 build_plan 统一附加）。
+
+    候选优先取库内真实录取分（``school_major_score``），库内无匹配数据时回落演示数据，
+    并在 ``data_status`` / ``data_note`` 中如实标注。
+    """
+    return ok(plans_service.build_plan(payload.to_plan_request(), db=db))
 
 
 @router.post("/plan/risk-check", summary="志愿方案风险体检")
