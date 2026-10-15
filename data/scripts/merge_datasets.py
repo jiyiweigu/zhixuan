@@ -291,6 +291,22 @@ class Merger:
         tiers_used: set[str] = set()
         inherited: list[dict] = []
 
+        # 院校行的「来源闸门」id（写入每行，供 importer 的 SourceRegistry 解析）。
+        # 主来源 = 阳光高考招生计划系统（SRC-HENAN-ZSJH），其登记 plan 明确写
+        # 「已产出 school 表数据（1367 所本科）」；province/city/level/ownership 由
+        # SRC-MOE-SCHOOL-LIST 补全、层次由教育部名单补全、intro 由张 school_profile 补全
+        # —— 均为真实已登记来源，列于 meta 供追溯。院校表本身无 source_id 列，importer
+        # 仅用此值做「三要素缺一不入库」闸门校验，故戳真实来源即可，绝不编造。
+        school_src_id = (
+            self.srcid_map.get("SRC-HENAN-ZSJH")
+            or self.srcid_map.get("SRC-MOE-SCHOOL-LIST")
+        )
+        if school_src_id is None:
+            raise AssertionError(
+                "院校来源未登记：source-table.json 缺少 SRC-HENAN-ZSJH / "
+                "SRC-MOE-SCHOOL-LIST，请在来源登记表登记「在豫招生院校清单」来源后再合并。"
+            )
+
         records, hit_code, hit_name, miss = [], 0, 0, []
         henan_codes: dict[int, str] = {}
         intro_filled = 0
@@ -383,6 +399,7 @@ class Merger:
 
             records.append({
                 "id": r["id"],
+                "source_id": school_src_id,
                 "name": name,
                 "code": str(r.get("code") or ""),
                 "province": r.get("province") or "",
@@ -433,6 +450,7 @@ class Merger:
 
         self.write("school", records, {
             "primary_source": "徐 · schools_merged.json（在豫招生本科院校）",
+            "row_source_id": school_src_id,
             "enriched_by": (
                 "① 教育部 985/211/双一流 名单（data/dictionaries/school_tiers.json）"
                 "；② 徐 · shanghai_top300_inhenan.json（软科榜 tags，交叉校验）"
@@ -466,6 +484,11 @@ class Merger:
                 "records 只含后端 school 表的列、可直接装载；河南招生代号（考生填志愿用的是它）"
                 "另存 meta.extra.henan_code_by_school_id，待决定落列或单开 "
                 "school_enrollment_code 表后启用。",
+                "行级来源（meta.row_source_id）：院校表本身无 source_id 列，importer 仅以该值"
+                "做「三要素缺一不入库」闸门校验。戳的是真实已登记来源 SRC-HENAN-ZSJH"
+                "（阳光高考招生计划系统，登记 plan 明确「已产出 school 表数据 1367 所本科」）；"
+                "province/city/level/ownership 由 SRC-MOE-SCHOOL-LIST 补全、层次由教育部名单"
+                "补全、intro 由张 school_profile 补全，均为真实来源。",
             ],
         })
 
@@ -481,6 +504,14 @@ class Merger:
         records: list[dict] = []
         code_to_id: dict[str, int] = {}
         intro_filled = 0
+        # 专业行的「来源闸门」id：专业目录（SRC-MOE-ZHUANYE-2025）已登记于徐的 source-table，
+        # importer 的 SourceRegistry 靠此值做「三要素缺一不入库」校验，戳真实来源即可，绝不编造。
+        major_src_id = self.srcid_map.get("SRC-MOE-ZHUANYE-2025")
+        if major_src_id is None:
+            raise AssertionError(
+                "专业来源未登记：source-table.json 缺少 SRC-MOE-ZHUANYE-2025，请先登记"
+                "《普通高等学校本科专业目录（2025年）》来源后再合并。"
+            )
         # 3.1 具体专业（845）
         for m in xu_major["majors"]:
             mid = len(records) + 1
@@ -491,6 +522,7 @@ class Merger:
                 intro_filled += 1
             records.append({
                 "id": mid,
+                "source_id": major_src_id,
                 "name": m.get("name") or "",
                 "code": code,
                 "category": m.get("menlei") or "",
@@ -514,6 +546,7 @@ class Merger:
             cid = len(records) + 1
             records.append({
                 "id": cid,
+                "source_id": major_src_id,
                 "name": c.get("class_name") or "",
                 "code": ccode,
                 "category": c.get("menlei") or "",
@@ -582,6 +615,10 @@ class Merger:
                     stats["school_id_null"] += 1
                 elif not school_code:
                     stats["school_id_not_in_library"] += 1
+                    # 院校库外/非法 id：置空并如实计数，绝不猜归属。
+                    # 不置空会产出悬空外键；若脏值超出 int64（实发现在一例 35 位乱码），
+                    # 装载时 SQLAlchemy 直接 OverflowError 崩掉整个导入。
+                    xu_school_id = None
 
                 raw_major = s.get("major_id")
                 major_id = None
@@ -775,6 +812,9 @@ class Merger:
                 "batch": BATCH_CODE_TO_DISPLAY.get(batch_code, r.get("batch") or ""),
                 "batch_code": batch_code,
                 "exam_type": exam_type,
+                # 行级完备度（徐的源行带 available/schema_only，属跨层词表）——
+                # 漏拷会让 importer 因「data_status 不在词表」整表跳过（真实发生过，7 行全丢）
+                "data_status": str(r.get("data_status") or "").strip(),
                 "mode": r.get("mode") or "",
                 "volunteer_count": _int_or_none(r.get("volunteer_count")) or 0,
                 "majors_per_group": _int_or_none(r.get("majors_per_group")),

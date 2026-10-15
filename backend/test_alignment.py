@@ -147,6 +147,11 @@ def frontend_paths() -> list[tuple[str, str]]:
     found: list[tuple[str, str]] = []
     for match in re.finditer(r"['\"`](/api/[^'\"`]*)['\"`]", text):
         raw = match.group(1)
+        # 模板串可能在表达式内部的引号处提前截断（如 ${qs({status:'pending',...q})}），
+        # 残留的 ``${…`` 不闭合；此时只保留表达式前的静态前缀，避免把截断残片当路径。
+        # （已闭合的表达式由 _normalize_frontend_path 统一归一）
+        if "${" in raw and not _iter_template_expressions(raw):
+            raw = raw[: raw.index("${")]
         found.append((normalize_route(_normalize_frontend_path(raw)), raw))
     return found
 

@@ -544,6 +544,63 @@ def test_major_links() -> None:
     assert again.skipped == report.skipped, again.describe()
 
 
+@case("专业库（合并数据集格式）：records + 显式 id 落库，下游 major_id 引用不错位")
+def test_majors_merged_format() -> None:
+    """合并数据集的主源形态：行自带 id，必须显式落 id（见 importers/majors.py docstring）。"""
+    from app.services.importers.majors import import_majors
+
+    folder = _WORK / "merged_major"
+    folder.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "meta": {
+            "source_name": "教育部《普通高等学校本科专业目录（2025年）》",
+            "source_url": (
+                "https://www.moe.gov.cn/srcsite/A08/moe_1034/s4930/202504/"
+                "W020250422312780837078.pdf"
+            ),
+            "year": 2025,
+        },
+        "records": [
+            {"id": 9101, "name": "合并格式专业甲", "code": "998001T", "category": "工学",
+             "first_class": "机械类", "degree": "", "intro": "", "is_category": False},
+            {"id": 9102, "name": "合并格式专业类乙", "code": "9980", "category": "工学",
+             "first_class": "", "degree": "", "intro": "", "is_category": True},
+        ],
+    }
+    target = folder / "major.json"
+    target.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+
+    with SessionLocal() as db:
+        registry = SourceRegistry(db)
+        registry.load_registry(ROOT / "sources" / "source-table.json")
+        report = import_majors(db, target, registry)
+        db.commit()
+        row_a = db.get(Major, 9101)
+        row_b = db.get(Major, 9102)
+
+    assert report.read == 2 and report.created == 2, report.describe()
+    # 显式 id 生效：按合并数据集分配的 id 能原样取到
+    assert row_a is not None and row_a.name == "合并格式专业甲", report.describe()
+    assert row_b is not None and row_b.is_category is True, report.describe()
+
+    # 二次装载幂等（code 命中更新分支，且不重置 id）
+    with SessionLocal() as db:
+        registry = SourceRegistry(db)
+        registry.load_registry(ROOT / "sources" / "source-table.json")
+        again = import_majors(db, target, registry)
+        db.commit()
+    assert again.created == 0 and again.updated == 0, again.describe()
+    assert again.unchanged == 2, again.describe()
+
+    # 清理本用例构造的行（保持既有用例的全局计数断言语义）
+    with SessionLocal() as db:
+        for code in ("998001T", "9980"):
+            row = db.scalar(select(Major).where(Major.code == code))
+            if row is not None:
+                db.delete(row)
+        db.commit()
+
+
 def main() -> int:
     failures: list[tuple[str, str]] = []
     for title, fn in CASES:

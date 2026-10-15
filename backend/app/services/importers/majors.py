@@ -1,33 +1,35 @@
 """专业基础库导入（``major``，845 个专业 + 93 个专业类 = **938 行**）。
 
-数据文件：``data/majors/majors.json``（键 ``majors`` / ``classes``；文件级 ``meta`` 自带
-来源三要素：教育部《普通高等学校本科专业目录（2025年）》，教高函〔2025〕3 号）。
+兼容两种数据文件形态（同一张表、两代数据集）：
 
-业务键：``code``
---------------
-专业用 6–9 位国标代码（后缀 T=特设 / K=国控 / TK=兼具，脚本不剥离），专业类用 4 位代码；
-实测 938 行代码与名称**均无重复**（含「专业类 vs 专业」之间也不重名），故直接以 ``code``
-为幂等键、``name`` 为业务键双保险。
+**① 合并数据集（装载链路的主源）** ``merged/major.json``：键 ``records``，
+行自带 ``id``（合并脚本显式分配：专业 1..845、专业类 846..938）与 ``source_id``。
+``school_major_score.major_id`` 直接引用这套 id，故此时必须**显式落 id**——与 ``school``
+同理，否则一旦有行被跳过，自增主键整体错位，11 万行引用会静默全错（最难发现的一类错误）。
 
-为什么专业类也落 ``major`` 表
-------------------------------
-产品端会把「按专业类招生」当成一个可检索、可填报的条目（录取分里 ``major_name`` 就大量
-是「××类」），故 93 个专业类作为 ``is_category=True`` 的行一并落库，与 845 个专业共用一张表、
-一套检索接口。**专业与专业类的从属关系由代码前缀表达**（专业 ``080901`` → 专业类 ``0809``），
-不额外落列；需要时可 ``code`` 前 4 位 join。
+**② 原始专业库（随仓库分发）** ``data/majors/majors.json``：键 ``classes`` / ``majors``
+（无 id）；以 ``code`` 为幂等键落库（自增分配），来源从文件级 ``meta`` 三要素解析。
 
-字段映射（``category`` 存**学科门类**，与 ``/api/majors?category=`` 的精确匹配语义一致）
-------------------------------------------------------------------------------
-``name`` ← ``name`` / ``class_name``；``code`` ← ``code`` / ``class_code``；
-``category`` ← ``menlei``（12 个门类之一，非专业类名）；``degree`` ← ``degree_note``
-（如「可授经济学或管理学学士学位」，缺则留空）；``is_category`` ← 专业类 True。
-``first_class`` / ``intro`` / 学费等约束字段本文件没有 → 留空，等 ③ 的画像数据（tasks.md 2.5）。
+两态共用规则
+------------
+- ``code`` 幂等 + ``name`` 防重：同名不同码 → 跳过上报，不覆盖既有行；
+- ``category`` 存**学科门类**（与 ``/api/majors?category=`` 的精确匹配语义一致）；
+- 93 个专业类作为 ``is_category=True`` 的行一并落库——录取分里「按类招生」的条目
+  就是它们；专业 → 专业类的从属关系由 ``code`` 前 4 位表达（``080901`` → ``0809``），
+  不额外落列；
+- 行级来源优先、回退文件级 ``meta`` 三要素；缺来源的行跳过上报（三要素红线）。
 
 未落库的字段（如实上报，不静默）
 --------------------------------
-- ``is_special``（493 行特设）、``is_state_controlled``（154 行国控）、``code_len``、
-  ``code_type``：``major`` 表无对应列，仅在报告中说明；
-- 12 个 ``menlei``（学科门类本身）：不是可填报条目，不入库，仅用于给专业打 ``category``。
+- ``is_special``（特设）/ ``is_state_controlled``（国控）/ ``code_len`` / ``code_type``：
+  ``major`` 表无对应列，仅在报告中说明；
+- 12 个学科门类本身不是可填报条目，不入库，仅用于给专业打 ``category``；
+- 合并数据的 ``first_class``（专业类名）：``major.first_class`` 的语义是
+  「一流本科专业建设点」，两者不是一回事，不落列（归属关系用 code 前 4 位表达）。
+
+⚠️ **切换数据源（①↔②）时应清库重装**：两态的 id 分配顺序不同（②按 classes→majors
+自增，①按专业→专业类显式），混装会令下游 ``major_id`` 引用错位。混装时的 id 冲突
+会被检测并计数上报（``id_conflicts``），不会静默覆盖。
 """
 
 from __future__ import annotations
@@ -42,16 +44,26 @@ from app.models.base_data import Major
 from app.services.importers import (
     ImportReport,
     SourceRegistry,
+    int_of,
     load_dataset,
     rows_of,
     text_of,
 )
 
-_WRITABLE = ("name", "code", "category", "degree")
+# 可被数据文件覆盖的字段（幂等更新白名单）。
+# 注意：不含 ``id``（幂等键）、不含 ``first_class``（语义见模块 docstring）。
+_WRITABLE = ("name", "code", "category", "degree", "intro")
 
 
 def _row_pairs(payload: dict[str, Any]) -> list[tuple[dict[str, Any], bool]]:
-    """返回 ``[(行, 是否专业类)]``；专业类在前，专业在后（稳定顺序，便于复核）。"""
+    """返回 ``[(行, 是否专业类)]``（稳定顺序，便于复核）。
+
+    合并数据集（``records``）按文件顺序；原始库 ``classes`` 在前、``majors`` 在后。
+    """
+    merged = rows_of(payload, "records")
+    if merged:
+        return [(dict(row), bool(row.get("is_category"))) for row in merged]
+
     pairs: list[tuple[dict[str, Any], bool]] = []
     for row in rows_of(payload, "classes"):
         pairs.append(({**row, "name": row.get("class_name"), "code": row.get("class_code")}, True))
@@ -72,22 +84,25 @@ def import_majors(db: Session, path: Path, registry: SourceRegistry) -> ImportRe
     special = 0
     controlled = 0
     classes = 0
+    explicit_ids = 0
+    id_conflicts = 0
     for row, is_class in _row_pairs(payload):
         report.read += 1
 
-        name = text_of(row, "name")
-        code = text_of(row, "code")
+        name = text_of(row, "name") or text_of(row, "class_name")
+        code = text_of(row, "code") or text_of(row, "class_code")
         if not name or not code:
             report.skip("missing_name_or_code")
             continue
 
-        menlei = text_of(row, "menlei")
-        if not menlei:
+        category = text_of(row, "category") or text_of(row, "menlei")
+        if not category:
             # category 是检索的精确匹配键，缺门类会让该行筛不出来 → 跳过并上报
             report.skip("missing_category")
             continue
 
-        # 来源随记录登记（major 属基础字典，表内无 source_id 列）；用文件级 meta 解析
+        # 来源随记录登记（major 属基础字典，表内无 source_id 列）；
+        # 行级来源优先，回退文件级 meta 三要素
         if registry.resolve(row, meta) is None:
             report.skip("unresolvable_source")
             continue
@@ -99,12 +114,12 @@ def import_majors(db: Session, path: Path, registry: SourceRegistry) -> ImportRe
         if is_class:
             classes += 1
 
-        degree = text_of(row, "degree_note")
         values = {
             "name": name,
             "code": code,
-            "category": menlei,
-            "degree": degree,
+            "category": category,
+            "degree": text_of(row, "degree") or text_of(row, "degree_note"),
+            "intro": text_of(row, "intro"),
         }
 
         existing = db.scalar(select(Major).where(Major.code == code))
@@ -115,6 +130,12 @@ def import_majors(db: Session, path: Path, registry: SourceRegistry) -> ImportRe
                 report.skip("name_conflict")
                 continue
             entity = Major(**values, is_category=is_class)
+            rid = int_of(row, "id")
+            if rid is not None and db.get(Major, rid) is None:
+                entity.id = rid  # 显式落 id：下游 major_id 引用按此对齐
+                explicit_ids += 1
+            elif rid is not None:
+                id_conflicts += 1  # id 已被占用（跨数据源混装），保留既有行、如实上报
             db.add(entity)
             report.created += 1
             continue
@@ -137,7 +158,14 @@ def import_majors(db: Session, path: Path, registry: SourceRegistry) -> ImportRe
 
     db.flush()
     report.note(f"数据文件：{path}（业务键 code；专业类 {classes} 行 is_category=True）")
-    report.note("category 存学科门类（menlei）；专业与专业类的从属关系由 code 前 4 位表达")
+    report.note("category 存学科门类；专业与专业类的从属关系由 code 前 4 位表达")
+    if explicit_ids:
+        report.note(f"显式落 id {explicit_ids} 行（合并数据集格式；下游 major_id 直接引用）")
+    if id_conflicts:
+        report.note(
+            f"⚠ {id_conflicts} 行的显式 id 已被占用（疑似跨数据源混装），"
+            "已保留既有行、未覆盖——如属数据源切换请清库重装"
+        )
     if special or controlled:
         report.note(
             f"is_special（特设）{special} 行、is_state_controlled（国控）{controlled} 行："
