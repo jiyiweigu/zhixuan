@@ -46,7 +46,7 @@ os.environ["ZHIXUAN_ENV"] = "test"
 from sqlalchemy import delete, func, select  # noqa: E402
 
 from app.db.session import SessionLocal, create_all  # noqa: E402
-from app.models.base_data import School, SchoolMajorScore, ScoreSegment  # noqa: E402
+from app.models.base_data import Major, School, SchoolMajorScore, ScoreSegment  # noqa: E402
 from app.models.constraints import ProvinceExamRule, RuleDatasetStatus  # noqa: E402
 from app.models.pathway import Pathway, PathwayEligibility, PathwayRegion  # noqa: E402
 from app.models.source import Source  # noqa: E402
@@ -68,6 +68,7 @@ ROOT = _WORK / "data_root"
 (ROOT / "schools").mkdir(parents=True, exist_ok=True)
 (ROOT / "score_segment").mkdir(parents=True, exist_ok=True)
 (ROOT / "school_major_score").mkdir(parents=True, exist_ok=True)
+(ROOT / "majors").mkdir(parents=True, exist_ok=True)
 
 shutil.copy(DATA / "sources" / "source-table.json", ROOT / "sources" / "source-table.json")
 for name in (
@@ -83,6 +84,8 @@ shutil.copy(
     SAMPLES / "school_major_score.json",
     ROOT / "school_major_score" / "school_major_score_sample.json",
 )
+# 专业库（845 专业 + 93 专业类）随仓库分发，是录取分专业挂接的前置
+shutil.copy(DATA / "majors" / "majors.json", ROOT / "majors" / "majors.json")
 
 # 样本包的既定规模。
 # ⚠️ SAMPLE_SOURCES 例外：`data/sources/source-table.json` 是**真实来源登记表**（非样本包），
@@ -98,6 +101,8 @@ SAMPLE_REGIONS = 91
 SAMPLE_RULES = 11
 SAMPLE_EXAM_RULES = 7
 SAMPLE_MAJOR_SCORES = 12
+SAMPLE_MAJORS = 845
+SAMPLE_MAJOR_CLASSES = 93
 
 CASES: list[tuple[str, Callable[[], None]]] = []
 
@@ -498,6 +503,45 @@ def test_major_score_sources_present() -> None:
         used = set(db.scalars(select(SchoolMajorScore.source_id)).all())
     assert used, "录取分未导入"
     assert used <= source_ids, used - source_ids
+
+
+@case(f"专业库：导入 {SAMPLE_MAJORS} 专业 + {SAMPLE_MAJOR_CLASSES} 专业类，零跳过且幂等")
+def test_majors_imported() -> None:
+    report = FIRST_BY_NAME["major"]
+    assert report.read == SAMPLE_MAJORS + SAMPLE_MAJOR_CLASSES, report.describe()
+    assert report.created == SAMPLE_MAJORS + SAMPLE_MAJOR_CLASSES, report.describe()
+    assert report.skipped == 0, report.describe()
+    # 第二次执行必须零新增（幂等）
+    again = SECOND_BY_NAME["major"]
+    assert again.created == 0 and again.updated == 0, again.describe()
+    assert again.unchanged == SAMPLE_MAJORS + SAMPLE_MAJOR_CLASSES, again.describe()
+
+    with SessionLocal() as db:
+        total = db.scalar(select(func.count()).select_from(Major))
+        classes = db.scalar(
+            select(func.count()).select_from(Major).where(Major.is_category.is_(True))
+        )
+        # category 存学科门类；专业类与专业不重名，代码唯一
+        sample = db.scalar(select(Major).where(Major.code == "0101"))
+    assert total == SAMPLE_MAJORS + SAMPLE_MAJOR_CLASSES, total
+    assert classes == SAMPLE_MAJOR_CLASSES, classes
+    assert sample is not None and sample.name == "哲学类" and sample.is_category is True
+
+
+@case("录取分专业挂接：只处理已入库行、未匹配不猜、二次执行零写入")
+def test_major_links() -> None:
+    landed = FIRST_BY_NAME["school_major_score"].created
+    report = FIRST_BY_NAME["school_major_score.major_id"]
+    # 挂接只处理**已入库**的行（样本 12 行里 8 行因院校 id 不存在被跳过）
+    assert report.read == landed, (report.describe(), landed)
+    assert report.created == 0, report.describe()
+    assert report.skipped == report.skip_reasons.get("unmatched_major_name", 0), report.describe()
+    assert report.updated + report.skipped == report.read, report.describe()
+    # 匹配口径与行级语义（只填空值 / 未命中留 NULL）见 test_major_links.py
+    again = SECOND_BY_NAME["school_major_score.major_id"]
+    assert again.updated == 0, again.describe()
+    assert again.unchanged == report.updated, (again.describe(), report.describe())
+    assert again.skipped == report.skipped, again.describe()
 
 
 def main() -> int:

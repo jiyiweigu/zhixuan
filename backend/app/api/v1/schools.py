@@ -33,13 +33,23 @@ def search_schools(
     level: str = Query("", description="办学层次：本科 / 专科"),
     school_type: str = Query("", alias="type", description="院校类型：综合 / 理工 / 师范…"),
     ownership: str = Query("", description="办学性质：公办 / 民办"),
+    is_985: bool | None = Query(
+        None, description="院校层次：true 仅 985，false 仅非 985，不传不限制"
+    ),
+    is_211: bool | None = Query(
+        None, description="院校层次：true 仅 211，false 仅非 211，不传不限制"
+    ),
+    dual_class: str = Query("", description="院校层次标记精确匹配，如 双一流"),
     page: int = Query(pagination.PAGE_DEFAULT, ge=1, description="页码，从 1 开始"),
     page_size: int = Query(
         pagination.PAGE_SIZE_DEFAULT, ge=1, le=pagination.PAGE_SIZE_MAX, description="每页条数"
     ),
     db: Session = Depends(get_db),
 ) -> dict[str, Any]:
-    """组合条件筛选（条件之间为「与」），结果分页返回，每项带来源三要素。"""
+    """组合条件筛选（条件之间为「与」），结果分页返回，每项带来源三要素。
+
+    每项同时返回院校层次 ``is_985`` / ``is_211`` / ``dual_class``（2026-10-14 起可用）。
+    """
     return ok(
         schools_service.search_schools(
             db,
@@ -48,6 +58,9 @@ def search_schools(
             level=level,
             school_type=school_type,
             ownership=ownership,
+            is_985=is_985,
+            is_211=is_211,
+            dual_class=dual_class,
             page=page,
             page_size=page_size,
         )

@@ -18,7 +18,7 @@ from sqlalchemy.orm import Session
 
 from app.core import pagination
 from app.models.base_data import Major
-from app.models.constants import DATA_STATUS_SCHEMA_ONLY
+from app.models.constants import DATA_STATUS_PARTIAL
 
 __all__ = [
     "get_major",
@@ -28,8 +28,9 @@ __all__ = [
 
 # 6.5.7 中暂无数据来源的字段说明（随响应返回，前端可据此隐藏对应区块）
 MISSING_FIELD_NOTE = (
-    "intro（专业介绍）与 first_class_schools（一流专业建设点院校）暂无数据来源："
-    "第 7 章 major 表无对应列，待数据工程与队长确认后补充"
+    "intro（专业介绍）列已存在（迁移 0008 已加 major.intro），但目前无数据来源"
+    "（张的专业简介未入库）；first_class_schools（一流专业建设点院校）既无对应列也无来源。"
+    "核心字段（名称 / 代码 / 学科门类 / 学位）来自教育部《普通高等学校本科专业目录（2025年）》。"
 )
 
 
@@ -79,11 +80,13 @@ def get_major(db: Session, major_id: int) -> dict[str, Any] | None:
     major = db.get(Major, major_id)
     if major is None:
         return None
+    intro = (major.intro or "").strip()
     return {
         **major_summary(major),
-        "intro": "",
+        "intro": intro,
         "first_class_schools": [],
         # data_status 只用契约「跨层词表」四值；说明文字放 data_note，不塞进枚举字段
-        "data_status": DATA_STATUS_SCHEMA_ONLY,
+        # 专业库已按教育部目录落库（938 行）：intro 有值即 partial 之上，仍缺一流专业建设点院校
+        "data_status": DATA_STATUS_PARTIAL,
         "data_note": MISSING_FIELD_NOTE,
     }

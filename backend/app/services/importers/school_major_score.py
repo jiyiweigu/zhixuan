@@ -57,7 +57,9 @@ _ROW_KEYS = ("scores", "records")
 
 # 可被新行覆盖的字段（身份键字段与自增主键不在内）
 _MUTABLE = (
-    "major_id",
+    # 注意：``major_id`` 不在此列 —— 它由 ``import_major_links`` 按专业名挂接产生，
+    # 属**派生值**而非文件字段。放进 _MUTABLE 会让二次导入把挂接结果重置回 NULL
+    # （破坏幂等，且丢失挂接成果）。
     "major_name",
     "min_score",
     "min_rank",
@@ -116,6 +118,8 @@ def import_school_major_score_file(
 
     meta = payload.get("meta") if isinstance(payload.get("meta"), dict) else {}
 
+    unresolved_major_ids = 0
+
     rows: list[dict[str, Any]] = []
     for key in _ROW_KEYS:
         rows = rows_of(payload, key)
@@ -157,10 +161,14 @@ def import_school_major_score_file(
             report.skip("unknown_school_id")
             continue
 
-        major_id = int_of(row, "major_id")
+        raw_major_id = int_of(row, "major_id")
+        major_id = raw_major_id
         if major_id is not None and db.get(Major, major_id) is None:
-            report.skip("unknown_major_id")
-            continue
+            # ③ 文件侧的 major_id 是**专业代码**（见 data/scripts/backfill_major_id.py），
+            # 与库内指向 major.id 的整数外键不同源。解析不到时不丢行、不猜 id，
+            # 按 NULL 落库，交给 ``import_major_links`` 按专业名挂接。
+            major_id = None
+            unresolved_major_ids += 1
 
         pathway_id = text_of(row, "pathway_id") or None
         if pathway_id is not None and db.get(Pathway, pathway_id) is None:
@@ -223,6 +231,11 @@ def import_school_major_score_file(
 
     db.flush()
     report.note(f"数据文件：{path.name}")
+    if unresolved_major_ids:
+        report.note(
+            f"文件携带的 major_id 有 {unresolved_major_ids} 行无法解析为库内 major.id"
+            "（③ 文件侧用的是专业代码），已按 NULL 落库，改由 import_major_links 按专业名挂接"
+        )
     if admit_count_carried:
         report.note(
             f"③ 携带 admit_count 的行 {admit_count_carried} 行——第 7 章无此列，未入库（待裁决）"

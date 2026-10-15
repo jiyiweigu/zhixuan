@@ -312,7 +312,14 @@ Auth: yes；**方案生成的唯一入口**。
 
 ### GET `/api/schools?keyword=郑州&province=河南&page=1&page_size=20`
 Auth: no；**返回分页包** `{ items, total, page, page_size }`，每项含 `school_id`、`name`、
-`province`、`citations`。可选过滤：`level`（本科/专科）、`type`（院校类型）、`ownership`（公办/民办）。
+`province`、`city`、`level`、`type`、`ownership`、`is_985`、`is_211`、`dual_class`、`citations`。
+可选过滤：`level`（本科/专科）、`type`（院校类型）、`ownership`（公办/民办）、
+`is_985` / `is_211`（`true` 仅该校层次、`false` 仅非该校层次、不传不限制）、
+`dual_class`（层次标记精确匹配，如 `双一流`）。
+
+> 院校层次（`is_985` / `is_211` / `dual_class`）自 v1.5 起可用：取值来源为教育部
+> 985 / 211 / 双一流 公开名单，落库口径见 `data/scripts/backfill_school_tiers.py`。
+> 未标注层次的院校如实返回 `false` / `""`，**不推断**为普通院校。
 
 > ⚠️ **破坏性变更**：v1.1 及其之前本接口返回**数组**，v1.2 起返回分页包（产品书 6.0.3 要求）。
 > 前端取数处需从 `data` 改为 `data.items`。
@@ -324,7 +331,7 @@ Auth: no；**返回分页包** `{ items, total, page, page_size }`，每项含 `
 
 | 接口 | Auth | 说明 |
 |---|---|---|
-| `POST /api/recommend` | no | **冲稳保推荐**，游客可用，不落库。请求同 5 节 `POST /api/plans`，但 `profile` 可省略：允许**扁平写法** `{province, score, subject_type, strategy, ...}`；两者混用时显式值优先。`strategy` 取 `school`/`major`/`city` 时按排序倾向解释（等价于 `priority` 的 `院校优先`/`专业优先`/`城市优先`），此时档位回退为 `稳`。响应 `data` 同 5 节。 |
+| `POST /api/recommend` | no | **冲稳保推荐**，游客可用，不落库。请求同 5 节 `POST /api/plans`，但 `profile` 可省略：允许**扁平写法** `{province, score, subject_type, strategy, ...}`；两者混用时显式值优先。`strategy` 取 `school`/`major`/`city` 时按排序倾向解释（等价于 `priority` 的 `院校优先`/`专业优先`/`城市优先`），此时档位回退为 `稳`。响应 `data` 同 5 节。**候选数据源**：优先取库内真实录取分（`school_major_score` × `school`，普通本科批、科类精确匹配、按院校最低录取分分档）；库内无匹配数据时回落演示数据，`data_status` 记 `available` / `schema_only`，并附 `candidate_source`（`db` / `demo` / `injected`）与 `data_note` 说明。 |
 | `POST /api/plan/risk-check` | yes | **方案风险体检**。请求 `{ profile: Profile, items: PlanItem[] }`；`items` 为空时返回空 `risks`。**不重新生成方案**，只对给定条目体检，与 5 节复用同一套规则。响应 `data: { risks: Risk[] }`。 |
 | `GET /api/scores/segment?province=&year=&subject_type=&score=&rank=` | no | **一分一段**。`score` 与 `rank` **至少提供一个**，二者都缺返回 `1001`。响应 `data` 含 `score`、`cumulative_rank`、`same_score_count`、`citations`、`data_status`。数据未导入时返回 `schema_only` 且数值为 `null`（不得编造位次）；该省/年/科类无对应版本时返回 `unavailable`。 |
 | `GET /api/schools/{school_id}` | no | 院校详情 + `citations`；不存在返回 `1001`。 |
