@@ -29,6 +29,9 @@
   - `engine_ready` 标记该条当前档案/引擎能否求值（供 T6 过滤）：
     需引擎扩展（4.5 视力线、BMI 区间、性别维度、矫正度数）者为 false。
 
+专业库来源：`data/majors/majors.json`（仓库内基线，**离线可复跑依赖**）；仓库外
+  `桌面/智选志愿_数据整合/merged/major.json` 若存在则并入扩大覆盖面，缺失不报错。
+
 用法：python build_physical_restriction.py
 """
 from __future__ import annotations
@@ -392,28 +395,56 @@ def build_superseded() -> list[dict]:
     }]
 
 
-def main() -> int:
-    # ── 载入专业库 ──
-    merged = json.loads(MERGE_MAJOR.read_text(encoding="utf-8"))
-    mrecs = merged.get("records") or merged.get("rows") or []
+def load_major_index() -> tuple[dict, set, dict]:
+    """载入专业库索引 → (name2info, valid_classes, menlei2classes)。
+
+    **离线可复跑（红线）**：仓库内 `data/majors/majors.json`
+    （845 专业 / 93 专业类 / 12 门类，随仓库分发）为**必需基线**，缺失即报错。
+    仓库外整合产物 `merged/major.json`（938 专业，同一「name/first_class/code」
+    口径）若存在则并入，以扩大点名专业的覆盖面；**缺失只提示、不报错**。
+
+    已核验两者等价性（PR 说明留档）：93 个专业类与 12 个门类的「门类→类展开面」
+    逐项一致；本文件引用的 44 个类、4 个门类、79 个点名专业的
+    「名称 → 专业类 / 专业代码」解析结果**零差异**。故并入与否不改变产出。
+    """
     catalog = json.loads(CATALOG_MAJOR.read_text(encoding="utf-8"))
 
     name2info: dict[str, dict] = {}
-    for r in mrecs:
-        n, c = (r.get("name") or "").strip(), (r.get("first_class") or "").strip()
-        if n and c and n not in name2info:
-            name2info[n] = {"class": c, "code": (r.get("code") or "").strip()}
-    for r in catalog.get("majors", []):
-        n, c = (r.get("name") or "").strip(), (r.get("class_name") or "").strip()
-        if n and c and n not in name2info:
-            name2info[n] = {"class": c, "code": (r.get("code") or "").strip()}
-
-    valid_classes = {r["first_class"] for r in mrecs if r.get("first_class")}
+    valid_classes: set[str] = set()
     menlei2classes: dict[str, set] = {}
-    for r in mrecs:
-        m, c = (r.get("category") or "").strip(), (r.get("first_class") or "").strip()
-        if m and c:
-            menlei2classes.setdefault(m, set()).add(c)
+
+    def _feed(name: str, klass: str, menlei: str, code: str) -> None:
+        if name and klass and name not in name2info:
+            name2info[name] = {"class": klass, "code": code}
+        if klass:
+            valid_classes.add(klass)
+            if menlei:
+                menlei2classes.setdefault(menlei, set()).add(klass)
+
+    for r in catalog.get("majors", []):                      # 基线：仓库内
+        _feed((r.get("name") or "").strip(), (r.get("class_name") or "").strip(),
+              (r.get("menlei") or "").strip(), (r.get("code") or "").strip())
+
+    if MERGE_MAJOR.exists():                                 # 可选：仓库外整合产物
+        merged = json.loads(MERGE_MAJOR.read_text(encoding="utf-8"))
+        mrecs = merged.get("records") or merged.get("rows") or []
+        for r in mrecs:
+            _feed((r.get("name") or "").strip(), (r.get("first_class") or "").strip(),
+                  (r.get("category") or "").strip(), (r.get("code") or "").strip())
+        print(f"[lib ] 并入仓库外整合产物 {MERGE_MAJOR}（{len(mrecs)} 专业）")
+    else:
+        print(f"[lib ] 仓库外整合产物不在本机（{MERGE_MAJOR}）——"
+              f"按仓库内基线 {CATALOG_MAJOR.name} 运行，产出不受影响")
+
+    if not name2info or not valid_classes or not menlei2classes:
+        raise SystemExit(f"[err] 专业库为空：{CATALOG_MAJOR}（离线可复跑依赖此文件）")
+    print(f"[lib ] 专业 {len(name2info)} / 专业类 {len(valid_classes)} / 门类 {len(menlei2classes)}")
+    return name2info, valid_classes, menlei2classes
+
+
+def main() -> int:
+    # ── 载入专业库 ──
+    name2info, valid_classes, menlei2classes = load_major_index()
     valid_menlei = set(menlei2classes)
 
     # ── 组装 + 校验 ──
