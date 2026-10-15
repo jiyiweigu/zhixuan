@@ -12,6 +12,8 @@
 
 | 目录 | 内容 | 体积 | 性质 |
 |---|---|---|---|
+| `data/raw/*_enrollment-plan.csv` | 河南+江西 2022–2025 招生计划原始切片（8 个，选科要求解析输入） | 40.1 MB | 渠道数据（Gaokao-Compass-11M） |
+| `data/raw/subject-requirement.full.json` | 选科要求数据集完整版（17,492 行，`subject-requirement.json` 超 5MB 上限故仅样本入库） | 9.9 MB | 解析产物（可重跑） |
 | `data/school_major_score/school_major_score_*.json` | 院校专业录取分（2022/2024/2025 × 河南/江西，6 个） | 78.8 MB | 渠道数据（Gaokao-Compass-11M） |
 | `data/score_segment/score_segment_*.json` | 一分一段表（2022–2025 × 河南/江西 + 2026 历史/物理，10 个） | 8.6 MB | 渠道数据 + 考试院扫描件 OCR |
 | `data/score_segment/review_*.html` | 一分一段人工复核工作台（2 个） | 2.9 MB | 解析产物（可重跑） |
@@ -71,6 +73,9 @@
 ### 3.1 下载 Gaokao-Compass-11M（推荐走国内镜像）
 
 ```bash
+# 选科要求原始切片（河南+江西 2022–2025 enrollment-plan，幂等 + 断点续传）
+python data/scripts/fetch_gaokao_compass.py
+
 # 国内网络建议走 HF 镜像
 export HF_ENDPOINT=https://hf-mirror.com        # Windows: set HF_ENDPOINT=https://hf-mirror.com
 
@@ -93,6 +98,21 @@ python data/scripts/import_score_segment.py
 
 # 院校专业录取分（渠道数据 → data/school_major_score/）
 python data/scripts/import_major_score.py
+
+# 选科要求落盘（解析器 --scan → data/dictionaries/subject-requirement.json 样本
+#              + data/raw/subject-requirement.full.json 完整版；须先跑上面的取数脚本）
+python data/scripts/parse_subject_req.py --scan
+
+# 选科要求 → 管理端 rule-datasets/import 导入包（→ data/staged/，中间层）
+python data/scripts/build_subject_requirement_import.py
+
+# 体检专业限制映射表（规则内容内置，依据 教学〔2003〕3号 / 教学厅〔2010〕2号 /
+#   军队·公安体检标准；专业库用仓库内 data/majors/majors.json，**离线可复跑**，
+#   仓库外整合产物 merged/major.json 若在机则并入扩大覆盖面、缺失不影响产出）
+python data/scripts/build_physical_restriction.py
+
+# 体检映射表 → 管理端 rule-datasets/import 导入包（→ data/staged/，中间层，按省一份）
+python data/scripts/build_physical_restriction_import.py
 
 # 通用数据集导入（→ data/staged/，中间层，可重跑）
 python data/scripts/import_dataset.py

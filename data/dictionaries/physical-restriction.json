@@ -1,0 +1,2971 @@
+{
+ "meta": {
+  "title": "体检专业限制映射表（physical_restriction，闸门③弹药）",
+  "generated_at": "2026-10-15",
+  "contract_ref": "docs/api-contract.md §8.7 physical_restriction；引擎消费：backend/app/engine/constraints.py physical_check / 种子形状：backend/app/services/constraint_seed.py PHYSICAL_RULES",
+  "sources": [
+   {
+    "id": "SRC-MOE-PHYSICAL-GUIDE",
+    "name": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号）",
+    "url": "https://gaokao.chsi.com.cn/zxdy/view--qid-436737,method-listBulletin,showCurrent-ggq1,year-2005,start-0.dhtml",
+    "year": 2003,
+    "source_type": "官方",
+    "note": "教育部、卫生部、中国残联印发；现行版全文经地方政府2026年体检通知附件核对。"
+   },
+   {
+    "id": "SRC-MOE-HEPB-2010",
+    "name": "教育部办公厅、卫生部办公厅《关于普通高等学校招生学生入学身体检查取消乙肝项目检测有关问题的通知》（教学厅〔2010〕2号）",
+    "url": "https://www.moe.gov.cn/srcsite/A15/moe_776/s3258/201002/t20100225_87433.html",
+    "year": 2010,
+    "source_type": "官方",
+    "note": "取消乙肝限制条款与乙肝检测，保留 ALT。"
+   },
+   {
+    "id": "SRC-ARMY-MEDICAL-STD",
+    "name": "《军队选拔军官和文职人员体检标准》（军队院校招生执行，经教育部阳光高考平台转载摘录）",
+    "url": "https://gaokao.chsi.com.cn/gkxx/zc/ss/202506/20250619/2293390263.html",
+    "year": 2025,
+    "source_type": "官方",
+    "note": "军检单独组织，属专项资格。"
+   },
+   {
+    "id": "SRC-MPS-POLICE-MEDICAL",
+    "name": "《公安院校公安专业招生体检标准》（公安部，2025年执行版，经教育部阳光高考平台转载）",
+    "url": "https://gaokao.chsi.com.cn/gkxx/zc/ss/202506/20250624/2293390562.html",
+    "year": 2025,
+    "source_type": "官方",
+    "note": "警检单独组织，属专项资格。"
+   }
+  ],
+  "分级口径": {
+   "blocker": "原文『学校（有关专业）可不予录取』——报得上可能被退档（拒绝录取）",
+   "warning": "原文『不宜就读』——知情提示；原文明确『学校不得以此为依据，拒绝录取达到相关要求的考生』，**绝不拦截**",
+   "铁律": "不得把 warning 错标成 blocker，反之亦然；scope=military/police 的条目仅适用于军校/公安院校（单独军检警检），**不得用于普通批次志愿判档**"
+  },
+  "范围口径": {
+   "专业库": "本科专业目录（major 表 938 专业 / 93 专业类）；专科专业清单见原文，不在本表",
+   "类级 vs 点名": "原文点名『X类各专业』→ major_categories（类级）；原文枚举具体专业 → major_names（专业级，不上卷到类，避免过度拦截）",
+   "门类级": "原文『工学/农学/医学/法学各专业』→ major_menlei（导入时按专业库展开到类）"
+  },
+  "engine_integration": {
+   "当前可求值（engine_ready=true）": "色系（色弱/色盲/不能识别）三类、裸眼视力 5.0/4.8 两线、听力/嗅觉/口吃（二值粗判）、公安 4.8 线",
+   "需 T6 引擎扩展后才可求值": [
+    "PR-ARMY-03（4.5 视力线：_VISION_THRESHOLDS 需加 '<4.5'，否则默认 5.0 会误拦）",
+    "PR-ARMY-02 / PR-POLICE-02（BMI 区间：现有 weight 判定为单边 min 比较）",
+    "PR-ARMY-01 / PR-POLICE-01（身高含性别维度：需档案补 gender 并按性别过滤规则）",
+    "PR-2003-3-04/05/06（矫正度数：档案无『矫正度数』字段）"
+   ],
+   "不导入不判档": "superseded 区（PR-HIST-HEPB）、PR-ARMY-05（占位）、universal 条目（体检结论类，档案无法覆盖，仅供展示）",
+   "库表约定": "national/military/police 条目入库时 province_code=''（全国通用，管理端列表接口对空省码按通用返回）；军校/公安条目 condition 入库时加后缀『（军队院校）/（公安院校）』以与普适同类条件区分"
+  },
+  "self_check": {
+   "每条规则有 basis": true,
+   "blocker/warning 与指导意见三部分对应": "一/二部分→blocker，三部分→warning",
+   "色觉条目覆盖主要受限类": [
+    "医学类（门类展开）",
+    "化学类",
+    "生物科学类",
+    "公安技术类",
+    "药学类",
+    "地质学类"
+   ],
+   "乙肝条目": "已被教学厅〔2010〕2号取代 —— 保留于 superseded 区并注明废止依据，**不按 blocker 导入**（任务书自查项据此修正，政策依据见 status_basis）",
+   "河南/江西体检表项目覆盖": [
+    "视力→裸眼视力/矫正视力条目",
+    "色觉→色弱/色盲/不能识别",
+    "身高→军队/公安条目",
+    "肝功能→PR-2003-1-05（ALT 口径）",
+    "听力/嗅觉→第三部分条目"
+   ],
+   "未取到依据未编造": [
+    "军队色觉条款（PR-ARMY-05 占位，待标准全文）",
+    "师范类身高（无国家统一标准，属院校章程事项，不录）"
+   ]
+  }
+ },
+ "rules": [
+  {
+   "rule_id": "PR-2003-1-01",
+   "condition": "严重心脏病、心肌病、高血压病",
+   "condition_group": "心血管",
+   "severity": "blocker",
+   "scope": "universal",
+   "mapping_level": "universal",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 一、1",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "先天性心脏病经手术治愈、房室间隔缺损分流量少、动脉导管未闭返流血量少且经二级以上医院确认无需手术者除外；属体检结论/档案核查项。",
+   "engine_ready": false,
+   "engine_note": "档案无对应字段，属体检结论核查项。",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-2003-1-02",
+   "condition": "重症支气管扩张、哮喘、恶性肿瘤、慢性肾炎、尿毒症",
+   "condition_group": "呼吸/肿瘤/泌尿",
+   "severity": "blocker",
+   "scope": "universal",
+   "mapping_level": "universal",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 一、2",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "属体检结论/档案核查项，不映射专业类。",
+   "engine_ready": false,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-2003-1-03",
+   "condition": "严重的血液、内分泌及代谢系统疾病、风湿性疾病",
+   "condition_group": "血液/内分泌/风湿",
+   "severity": "blocker",
+   "scope": "universal",
+   "mapping_level": "universal",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 一、3",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "属体检结论/档案核查项，不映射专业类。",
+   "engine_ready": false,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-2003-1-04",
+   "condition": "重症或难治性癫痫、严重精神病未治愈、精神活性物质滥用和依赖",
+   "condition_group": "神经/精神",
+   "severity": "blocker",
+   "scope": "universal",
+   "mapping_level": "universal",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 一、4",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "属体检结论/档案核查项，不映射专业类。",
+   "engine_ready": false,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-2003-1-05",
+   "condition": "慢性肝炎且肝功能不正常",
+   "condition_group": "肝功能",
+   "severity": "blocker",
+   "scope": "universal",
+   "mapping_level": "universal",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 一、5",
+   "source_id": "SRC-MOE-HEPB-2010",
+   "remark": "肝炎病原携带者但肝功能正常者除外；『肝功能不正常』判定标准见卫医政管便函〔2010〕76号：ALT 超过参考值上限 2 倍以上（含）应 B 超复查。教学厅〔2010〕2号取消乙肝项目检测，保留转氨酶（ALT）检测。",
+   "engine_ready": false,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-2003-1-06",
+   "condition": "结核病（除已硬结稳定等三种例外情形外）",
+   "condition_group": "结核",
+   "severity": "blocker",
+   "scope": "universal",
+   "mapping_level": "universal",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 一、6",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "例外情形：①原发型/浸润性肺结核已硬结稳定、结核型胸膜炎已治愈或遗有胸膜肥厚；②肺外结核/血行播散型肺结核治愈一年以上未复发且专科检查无变化；③淋巴腺结核临床治愈无症状。属体检结论/档案核查项。",
+   "engine_ready": false,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-2003-2-01",
+   "condition": "色弱",
+   "condition_group": "色觉",
+   "severity": "blocker",
+   "scope": "national",
+   "mapping_level": "class+major",
+   "major_categories": [
+    "化学类",
+    "化工与制药类",
+    "药学类",
+    "生物科学类",
+    "公安技术类",
+    "地质学类"
+   ],
+   "major_menlei": [
+    "医学"
+   ],
+   "major_names": [
+    "生物工程",
+    "生物医学工程",
+    "动物医学",
+    "动物科学",
+    "野生动物与自然保护区管理",
+    "心理学",
+    "应用心理学",
+    "生态学",
+    "侦察学",
+    "特种能源工程与烟火技术",
+    "考古学",
+    "海洋科学",
+    "海洋技术",
+    "轮机工程",
+    "食品科学与工程",
+    "轻化工程",
+    "林产化工",
+    "农学",
+    "园艺",
+    "植物保护",
+    "茶学",
+    "林学",
+    "园林",
+    "蚕学",
+    "农业资源与环境",
+    "水产养殖学",
+    "海洋渔业科学与技术",
+    "材料化学",
+    "环境工程",
+    "高分子材料与工程",
+    "过程装备与控制工程",
+    "学前教育",
+    "特殊教育",
+    "体育教育",
+    "运动训练",
+    "运动人体科学",
+    "民族传统体育"
+   ],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 二、1",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：轻度色觉异常（俗称色弱）不能录取【类级】化学类、化工与制药类、药学类、生物科学类、公安技术类、地质学类各专业，医学类各专业；【点名专业】见 major_names；专科专业清单见原文（本表按本科专业目录口径）。",
+   "engine_ready": true,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [
+    {
+     "name_in_text": "生物工程",
+     "catalog_name": "生物工程",
+     "class": "生物工程类",
+     "code": "083001"
+    },
+    {
+     "name_in_text": "生物医学工程",
+     "catalog_name": "生物医学工程",
+     "class": "生物医学工程类",
+     "code": "082601"
+    },
+    {
+     "name_in_text": "动物医学",
+     "catalog_name": "动物医学",
+     "class": "动物医学类",
+     "code": "090401"
+    },
+    {
+     "name_in_text": "动物科学",
+     "catalog_name": "动物科学",
+     "class": "动物生产类",
+     "code": "090301"
+    },
+    {
+     "name_in_text": "野生动物与自然保护区管理",
+     "catalog_name": "野生动物与自然保护区管理",
+     "class": "自然保护与环境生态类",
+     "code": "090202"
+    },
+    {
+     "name_in_text": "心理学",
+     "catalog_name": "心理学",
+     "class": "心理学类",
+     "code": "071101"
+    },
+    {
+     "name_in_text": "应用心理学",
+     "catalog_name": "应用心理学",
+     "class": "心理学类",
+     "code": "071102"
+    },
+    {
+     "name_in_text": "生态学",
+     "catalog_name": "生态学",
+     "class": "生物科学类",
+     "code": "071004"
+    },
+    {
+     "name_in_text": "侦察学",
+     "catalog_name": "侦查学",
+     "class": "公安学类",
+     "code": "030602K"
+    },
+    {
+     "name_in_text": "特种能源工程与烟火技术",
+     "catalog_name": "特种能源技术与工程",
+     "class": "兵器类",
+     "code": "082105"
+    },
+    {
+     "name_in_text": "考古学",
+     "catalog_name": "考古学",
+     "class": "历史学类",
+     "code": "060103"
+    },
+    {
+     "name_in_text": "海洋科学",
+     "catalog_name": "海洋科学",
+     "class": "海洋科学类",
+     "code": "070701"
+    },
+    {
+     "name_in_text": "海洋技术",
+     "catalog_name": "海洋技术",
+     "class": "海洋科学类",
+     "code": "070702"
+    },
+    {
+     "name_in_text": "轮机工程",
+     "catalog_name": "轮机工程",
+     "class": "交通运输类",
+     "code": "081804K"
+    },
+    {
+     "name_in_text": "食品科学与工程",
+     "catalog_name": "食品科学与工程",
+     "class": "食品科学与工程类",
+     "code": "082701"
+    },
+    {
+     "name_in_text": "轻化工程",
+     "catalog_name": "轻化工程",
+     "class": "轻工类",
+     "code": "081701"
+    },
+    {
+     "name_in_text": "林产化工",
+     "catalog_name": "林产化工",
+     "class": "林业工程类",
+     "code": "082403"
+    },
+    {
+     "name_in_text": "农学",
+     "catalog_name": "农学",
+     "class": "植物生产类",
+     "code": "090101"
+    },
+    {
+     "name_in_text": "园艺",
+     "catalog_name": "园艺",
+     "class": "植物生产类",
+     "code": "090102"
+    },
+    {
+     "name_in_text": "植物保护",
+     "catalog_name": "植物保护",
+     "class": "植物生产类",
+     "code": "090103"
+    },
+    {
+     "name_in_text": "茶学",
+     "catalog_name": "茶学",
+     "class": "植物生产类",
+     "code": "090107T"
+    },
+    {
+     "name_in_text": "林学",
+     "catalog_name": "林学",
+     "class": "林学类",
+     "code": "090501"
+    },
+    {
+     "name_in_text": "园林",
+     "catalog_name": "园林",
+     "class": "林学类",
+     "code": "090502"
+    },
+    {
+     "name_in_text": "蚕学",
+     "catalog_name": "蚕学",
+     "class": "动物生产类",
+     "code": "090302T"
+    },
+    {
+     "name_in_text": "农业资源与环境",
+     "catalog_name": "农业资源与环境",
+     "class": "自然保护与环境生态类",
+     "code": "090201"
+    },
+    {
+     "name_in_text": "水产养殖学",
+     "catalog_name": "水产养殖学",
+     "class": "水产类",
+     "code": "090601"
+    },
+    {
+     "name_in_text": "海洋渔业科学与技术",
+     "catalog_name": "海洋渔业科学与技术",
+     "class": "水产类",
+     "code": "090602"
+    },
+    {
+     "name_in_text": "材料化学",
+     "catalog_name": "材料化学",
+     "class": "材料类",
+     "code": "080403"
+    },
+    {
+     "name_in_text": "环境工程",
+     "catalog_name": "环境工程",
+     "class": "环境科学与工程类",
+     "code": "082502"
+    },
+    {
+     "name_in_text": "高分子材料与工程",
+     "catalog_name": "高分子材料与工程",
+     "class": "材料类",
+     "code": "080407"
+    },
+    {
+     "name_in_text": "过程装备与控制工程",
+     "catalog_name": "过程装备与控制工程",
+     "class": "机械类",
+     "code": "080206"
+    },
+    {
+     "name_in_text": "学前教育",
+     "catalog_name": "学前教育",
+     "class": "教育学类",
+     "code": "040106"
+    },
+    {
+     "name_in_text": "特殊教育",
+     "catalog_name": "特殊教育",
+     "class": "教育学类",
+     "code": "040108"
+    },
+    {
+     "name_in_text": "体育教育",
+     "catalog_name": "体育教育",
+     "class": "体育学类",
+     "code": "040201"
+    },
+    {
+     "name_in_text": "运动训练",
+     "catalog_name": "运动训练",
+     "class": "体育学类",
+     "code": "040202K"
+    },
+    {
+     "name_in_text": "运动人体科学",
+     "catalog_name": "运动人体科学",
+     "class": "体育学类",
+     "code": "040205"
+    },
+    {
+     "name_in_text": "民族传统体育",
+     "catalog_name": "武术与民族传统体育",
+     "class": "体育学类",
+     "code": "040204K"
+    }
+   ],
+   "major_classes_expanded": [
+    "中医学类",
+    "中药学类",
+    "中西医结合类",
+    "临床医学类",
+    "交通运输类",
+    "体育学类",
+    "公共卫生与预防医学类",
+    "公安学类",
+    "公安技术类",
+    "兵器类",
+    "动物医学类",
+    "动物生产类",
+    "化学类",
+    "化工与制药类",
+    "医学技术类",
+    "历史学类",
+    "口腔医学类",
+    "地质学类",
+    "基础医学类",
+    "心理学类",
+    "护理学类",
+    "教育学类",
+    "机械类",
+    "材料类",
+    "林业工程类",
+    "林学类",
+    "植物生产类",
+    "水产类",
+    "法医学类",
+    "海洋科学类",
+    "环境科学与工程类",
+    "生物医学工程类",
+    "生物工程类",
+    "生物科学类",
+    "自然保护与环境生态类",
+    "药学类",
+    "轻工类",
+    "食品科学与工程类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-2-02",
+   "condition": "色盲",
+   "condition_group": "色觉",
+   "severity": "blocker",
+   "scope": "national",
+   "mapping_level": "class+major",
+   "major_categories": [
+    "化学类",
+    "化工与制药类",
+    "药学类",
+    "生物科学类",
+    "公安技术类",
+    "地质学类"
+   ],
+   "major_menlei": [
+    "医学"
+   ],
+   "major_names": [
+    "生物工程",
+    "生物医学工程",
+    "动物医学",
+    "动物科学",
+    "野生动物与自然保护区管理",
+    "心理学",
+    "应用心理学",
+    "生态学",
+    "侦察学",
+    "特种能源工程与烟火技术",
+    "考古学",
+    "海洋科学",
+    "海洋技术",
+    "轮机工程",
+    "食品科学与工程",
+    "轻化工程",
+    "林产化工",
+    "农学",
+    "园艺",
+    "植物保护",
+    "茶学",
+    "林学",
+    "园林",
+    "蚕学",
+    "农业资源与环境",
+    "水产养殖学",
+    "海洋渔业科学与技术",
+    "材料化学",
+    "环境工程",
+    "高分子材料与工程",
+    "过程装备与控制工程",
+    "学前教育",
+    "特殊教育",
+    "体育教育",
+    "运动训练",
+    "运动人体科学",
+    "民族传统体育",
+    "美术学",
+    "绘画",
+    "艺术设计",
+    "摄影",
+    "动画",
+    "博物馆学",
+    "应用物理学",
+    "天文学",
+    "地理科学",
+    "应用气象学",
+    "材料物理",
+    "矿物加工工程",
+    "资源勘探工程",
+    "冶金工程",
+    "无机非金属材料工程",
+    "交通运输",
+    "油气储运工程"
+   ],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 二、2",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：色觉异常Ⅱ度（俗称色盲）不能录取的专业，除同轻度色觉异常外，还包括 major_names 中标注（色盲新增）的 17 个点名专业。",
+   "engine_ready": true,
+   "engine_note": "",
+   "extends": "PR-2003-2-01",
+   "major_trace": [
+    {
+     "name_in_text": "生物工程",
+     "catalog_name": "生物工程",
+     "class": "生物工程类",
+     "code": "083001"
+    },
+    {
+     "name_in_text": "生物医学工程",
+     "catalog_name": "生物医学工程",
+     "class": "生物医学工程类",
+     "code": "082601"
+    },
+    {
+     "name_in_text": "动物医学",
+     "catalog_name": "动物医学",
+     "class": "动物医学类",
+     "code": "090401"
+    },
+    {
+     "name_in_text": "动物科学",
+     "catalog_name": "动物科学",
+     "class": "动物生产类",
+     "code": "090301"
+    },
+    {
+     "name_in_text": "野生动物与自然保护区管理",
+     "catalog_name": "野生动物与自然保护区管理",
+     "class": "自然保护与环境生态类",
+     "code": "090202"
+    },
+    {
+     "name_in_text": "心理学",
+     "catalog_name": "心理学",
+     "class": "心理学类",
+     "code": "071101"
+    },
+    {
+     "name_in_text": "应用心理学",
+     "catalog_name": "应用心理学",
+     "class": "心理学类",
+     "code": "071102"
+    },
+    {
+     "name_in_text": "生态学",
+     "catalog_name": "生态学",
+     "class": "生物科学类",
+     "code": "071004"
+    },
+    {
+     "name_in_text": "侦察学",
+     "catalog_name": "侦查学",
+     "class": "公安学类",
+     "code": "030602K"
+    },
+    {
+     "name_in_text": "特种能源工程与烟火技术",
+     "catalog_name": "特种能源技术与工程",
+     "class": "兵器类",
+     "code": "082105"
+    },
+    {
+     "name_in_text": "考古学",
+     "catalog_name": "考古学",
+     "class": "历史学类",
+     "code": "060103"
+    },
+    {
+     "name_in_text": "海洋科学",
+     "catalog_name": "海洋科学",
+     "class": "海洋科学类",
+     "code": "070701"
+    },
+    {
+     "name_in_text": "海洋技术",
+     "catalog_name": "海洋技术",
+     "class": "海洋科学类",
+     "code": "070702"
+    },
+    {
+     "name_in_text": "轮机工程",
+     "catalog_name": "轮机工程",
+     "class": "交通运输类",
+     "code": "081804K"
+    },
+    {
+     "name_in_text": "食品科学与工程",
+     "catalog_name": "食品科学与工程",
+     "class": "食品科学与工程类",
+     "code": "082701"
+    },
+    {
+     "name_in_text": "轻化工程",
+     "catalog_name": "轻化工程",
+     "class": "轻工类",
+     "code": "081701"
+    },
+    {
+     "name_in_text": "林产化工",
+     "catalog_name": "林产化工",
+     "class": "林业工程类",
+     "code": "082403"
+    },
+    {
+     "name_in_text": "农学",
+     "catalog_name": "农学",
+     "class": "植物生产类",
+     "code": "090101"
+    },
+    {
+     "name_in_text": "园艺",
+     "catalog_name": "园艺",
+     "class": "植物生产类",
+     "code": "090102"
+    },
+    {
+     "name_in_text": "植物保护",
+     "catalog_name": "植物保护",
+     "class": "植物生产类",
+     "code": "090103"
+    },
+    {
+     "name_in_text": "茶学",
+     "catalog_name": "茶学",
+     "class": "植物生产类",
+     "code": "090107T"
+    },
+    {
+     "name_in_text": "林学",
+     "catalog_name": "林学",
+     "class": "林学类",
+     "code": "090501"
+    },
+    {
+     "name_in_text": "园林",
+     "catalog_name": "园林",
+     "class": "林学类",
+     "code": "090502"
+    },
+    {
+     "name_in_text": "蚕学",
+     "catalog_name": "蚕学",
+     "class": "动物生产类",
+     "code": "090302T"
+    },
+    {
+     "name_in_text": "农业资源与环境",
+     "catalog_name": "农业资源与环境",
+     "class": "自然保护与环境生态类",
+     "code": "090201"
+    },
+    {
+     "name_in_text": "水产养殖学",
+     "catalog_name": "水产养殖学",
+     "class": "水产类",
+     "code": "090601"
+    },
+    {
+     "name_in_text": "海洋渔业科学与技术",
+     "catalog_name": "海洋渔业科学与技术",
+     "class": "水产类",
+     "code": "090602"
+    },
+    {
+     "name_in_text": "材料化学",
+     "catalog_name": "材料化学",
+     "class": "材料类",
+     "code": "080403"
+    },
+    {
+     "name_in_text": "环境工程",
+     "catalog_name": "环境工程",
+     "class": "环境科学与工程类",
+     "code": "082502"
+    },
+    {
+     "name_in_text": "高分子材料与工程",
+     "catalog_name": "高分子材料与工程",
+     "class": "材料类",
+     "code": "080407"
+    },
+    {
+     "name_in_text": "过程装备与控制工程",
+     "catalog_name": "过程装备与控制工程",
+     "class": "机械类",
+     "code": "080206"
+    },
+    {
+     "name_in_text": "学前教育",
+     "catalog_name": "学前教育",
+     "class": "教育学类",
+     "code": "040106"
+    },
+    {
+     "name_in_text": "特殊教育",
+     "catalog_name": "特殊教育",
+     "class": "教育学类",
+     "code": "040108"
+    },
+    {
+     "name_in_text": "体育教育",
+     "catalog_name": "体育教育",
+     "class": "体育学类",
+     "code": "040201"
+    },
+    {
+     "name_in_text": "运动训练",
+     "catalog_name": "运动训练",
+     "class": "体育学类",
+     "code": "040202K"
+    },
+    {
+     "name_in_text": "运动人体科学",
+     "catalog_name": "运动人体科学",
+     "class": "体育学类",
+     "code": "040205"
+    },
+    {
+     "name_in_text": "民族传统体育",
+     "catalog_name": "武术与民族传统体育",
+     "class": "体育学类",
+     "code": "040204K"
+    },
+    {
+     "name_in_text": "美术学",
+     "catalog_name": "美术学",
+     "class": "美术学类",
+     "code": "130401"
+    },
+    {
+     "name_in_text": "绘画",
+     "catalog_name": "绘画",
+     "class": "美术学类",
+     "code": "130402"
+    },
+    {
+     "name_in_text": "艺术设计",
+     "catalog_name": "视觉传达设计",
+     "class": "设计学类",
+     "code": "130502"
+    },
+    {
+     "name_in_text": "摄影",
+     "catalog_name": "摄影",
+     "class": "美术学类",
+     "code": "130404"
+    },
+    {
+     "name_in_text": "动画",
+     "catalog_name": "动画",
+     "class": "戏剧与影视学类",
+     "code": "130310"
+    },
+    {
+     "name_in_text": "博物馆学",
+     "catalog_name": "文物与博物馆学",
+     "class": "历史学类",
+     "code": "060104"
+    },
+    {
+     "name_in_text": "应用物理学",
+     "catalog_name": "应用物理学",
+     "class": "物理学类",
+     "code": "070202"
+    },
+    {
+     "name_in_text": "天文学",
+     "catalog_name": "天文学",
+     "class": "天文学类",
+     "code": "070401"
+    },
+    {
+     "name_in_text": "地理科学",
+     "catalog_name": "地理科学",
+     "class": "地理科学类",
+     "code": "070501"
+    },
+    {
+     "name_in_text": "应用气象学",
+     "catalog_name": "应用气象学",
+     "class": "大气科学类",
+     "code": "070602"
+    },
+    {
+     "name_in_text": "材料物理",
+     "catalog_name": "材料物理",
+     "class": "材料类",
+     "code": "080402"
+    },
+    {
+     "name_in_text": "矿物加工工程",
+     "catalog_name": "矿物加工工程",
+     "class": "矿业类",
+     "code": "081503"
+    },
+    {
+     "name_in_text": "资源勘探工程",
+     "catalog_name": "资源勘查工程",
+     "class": "地质类",
+     "code": "081403K"
+    },
+    {
+     "name_in_text": "冶金工程",
+     "catalog_name": "冶金工程",
+     "class": "材料类",
+     "code": "080404"
+    },
+    {
+     "name_in_text": "无机非金属材料工程",
+     "catalog_name": "无机非金属材料工程",
+     "class": "材料类",
+     "code": "080406"
+    },
+    {
+     "name_in_text": "交通运输",
+     "catalog_name": "交通运输",
+     "class": "交通运输类",
+     "code": "081801"
+    },
+    {
+     "name_in_text": "油气储运工程",
+     "catalog_name": "油气储运工程",
+     "class": "矿业类",
+     "code": "081504"
+    }
+   ],
+   "major_classes_expanded": [
+    "中医学类",
+    "中药学类",
+    "中西医结合类",
+    "临床医学类",
+    "交通运输类",
+    "体育学类",
+    "公共卫生与预防医学类",
+    "公安学类",
+    "公安技术类",
+    "兵器类",
+    "动物医学类",
+    "动物生产类",
+    "化学类",
+    "化工与制药类",
+    "医学技术类",
+    "历史学类",
+    "口腔医学类",
+    "地理科学类",
+    "地质学类",
+    "地质类",
+    "基础医学类",
+    "大气科学类",
+    "天文学类",
+    "心理学类",
+    "戏剧与影视学类",
+    "护理学类",
+    "教育学类",
+    "机械类",
+    "材料类",
+    "林业工程类",
+    "林学类",
+    "植物生产类",
+    "水产类",
+    "法医学类",
+    "海洋科学类",
+    "物理学类",
+    "环境科学与工程类",
+    "生物医学工程类",
+    "生物工程类",
+    "生物科学类",
+    "矿业类",
+    "美术学类",
+    "自然保护与环境生态类",
+    "药学类",
+    "设计学类",
+    "轻工类",
+    "食品科学与工程类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-2-03",
+   "condition": "不能识别红黄绿蓝紫任一色",
+   "condition_group": "色觉",
+   "severity": "blocker",
+   "scope": "national",
+   "mapping_level": "class+major",
+   "major_categories": [
+    "化学类",
+    "化工与制药类",
+    "药学类",
+    "生物科学类",
+    "公安技术类",
+    "地质学类",
+    "经济学类",
+    "管理科学与工程类",
+    "工商管理类",
+    "公共管理类",
+    "农业经济管理类",
+    "图书情报与档案管理类",
+    "计算机类"
+   ],
+   "major_menlei": [
+    "医学"
+   ],
+   "major_names": [
+    "生物工程",
+    "生物医学工程",
+    "动物医学",
+    "动物科学",
+    "野生动物与自然保护区管理",
+    "心理学",
+    "应用心理学",
+    "生态学",
+    "侦察学",
+    "特种能源工程与烟火技术",
+    "考古学",
+    "海洋科学",
+    "海洋技术",
+    "轮机工程",
+    "食品科学与工程",
+    "轻化工程",
+    "林产化工",
+    "农学",
+    "园艺",
+    "植物保护",
+    "茶学",
+    "林学",
+    "园林",
+    "蚕学",
+    "农业资源与环境",
+    "水产养殖学",
+    "海洋渔业科学与技术",
+    "材料化学",
+    "环境工程",
+    "高分子材料与工程",
+    "过程装备与控制工程",
+    "学前教育",
+    "特殊教育",
+    "体育教育",
+    "运动训练",
+    "运动人体科学",
+    "民族传统体育",
+    "美术学",
+    "绘画",
+    "艺术设计",
+    "摄影",
+    "动画",
+    "博物馆学",
+    "应用物理学",
+    "天文学",
+    "地理科学",
+    "应用气象学",
+    "材料物理",
+    "矿物加工工程",
+    "资源勘探工程",
+    "冶金工程",
+    "无机非金属材料工程",
+    "交通运输",
+    "油气储运工程"
+   ],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 二、3",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：不能准确识别红、黄、绿、蓝、紫各种颜色中任何一种颜色的导线、按键、信号灯、几何图形者不能录取的专业，除同前两类外，还包括经济学类、管理科学与工程类、工商管理类、公共管理类、农业经济管理类、图书档案学类各专业；不能准确在显示器上识别各颜色的数码、字母者不能录取到计算机科学与技术等专业（类级映射为计算机类，粒度差异已注明）。",
+   "engine_ready": true,
+   "engine_note": "",
+   "extends": "PR-2003-2-02",
+   "major_trace": [
+    {
+     "name_in_text": "生物工程",
+     "catalog_name": "生物工程",
+     "class": "生物工程类",
+     "code": "083001"
+    },
+    {
+     "name_in_text": "生物医学工程",
+     "catalog_name": "生物医学工程",
+     "class": "生物医学工程类",
+     "code": "082601"
+    },
+    {
+     "name_in_text": "动物医学",
+     "catalog_name": "动物医学",
+     "class": "动物医学类",
+     "code": "090401"
+    },
+    {
+     "name_in_text": "动物科学",
+     "catalog_name": "动物科学",
+     "class": "动物生产类",
+     "code": "090301"
+    },
+    {
+     "name_in_text": "野生动物与自然保护区管理",
+     "catalog_name": "野生动物与自然保护区管理",
+     "class": "自然保护与环境生态类",
+     "code": "090202"
+    },
+    {
+     "name_in_text": "心理学",
+     "catalog_name": "心理学",
+     "class": "心理学类",
+     "code": "071101"
+    },
+    {
+     "name_in_text": "应用心理学",
+     "catalog_name": "应用心理学",
+     "class": "心理学类",
+     "code": "071102"
+    },
+    {
+     "name_in_text": "生态学",
+     "catalog_name": "生态学",
+     "class": "生物科学类",
+     "code": "071004"
+    },
+    {
+     "name_in_text": "侦察学",
+     "catalog_name": "侦查学",
+     "class": "公安学类",
+     "code": "030602K"
+    },
+    {
+     "name_in_text": "特种能源工程与烟火技术",
+     "catalog_name": "特种能源技术与工程",
+     "class": "兵器类",
+     "code": "082105"
+    },
+    {
+     "name_in_text": "考古学",
+     "catalog_name": "考古学",
+     "class": "历史学类",
+     "code": "060103"
+    },
+    {
+     "name_in_text": "海洋科学",
+     "catalog_name": "海洋科学",
+     "class": "海洋科学类",
+     "code": "070701"
+    },
+    {
+     "name_in_text": "海洋技术",
+     "catalog_name": "海洋技术",
+     "class": "海洋科学类",
+     "code": "070702"
+    },
+    {
+     "name_in_text": "轮机工程",
+     "catalog_name": "轮机工程",
+     "class": "交通运输类",
+     "code": "081804K"
+    },
+    {
+     "name_in_text": "食品科学与工程",
+     "catalog_name": "食品科学与工程",
+     "class": "食品科学与工程类",
+     "code": "082701"
+    },
+    {
+     "name_in_text": "轻化工程",
+     "catalog_name": "轻化工程",
+     "class": "轻工类",
+     "code": "081701"
+    },
+    {
+     "name_in_text": "林产化工",
+     "catalog_name": "林产化工",
+     "class": "林业工程类",
+     "code": "082403"
+    },
+    {
+     "name_in_text": "农学",
+     "catalog_name": "农学",
+     "class": "植物生产类",
+     "code": "090101"
+    },
+    {
+     "name_in_text": "园艺",
+     "catalog_name": "园艺",
+     "class": "植物生产类",
+     "code": "090102"
+    },
+    {
+     "name_in_text": "植物保护",
+     "catalog_name": "植物保护",
+     "class": "植物生产类",
+     "code": "090103"
+    },
+    {
+     "name_in_text": "茶学",
+     "catalog_name": "茶学",
+     "class": "植物生产类",
+     "code": "090107T"
+    },
+    {
+     "name_in_text": "林学",
+     "catalog_name": "林学",
+     "class": "林学类",
+     "code": "090501"
+    },
+    {
+     "name_in_text": "园林",
+     "catalog_name": "园林",
+     "class": "林学类",
+     "code": "090502"
+    },
+    {
+     "name_in_text": "蚕学",
+     "catalog_name": "蚕学",
+     "class": "动物生产类",
+     "code": "090302T"
+    },
+    {
+     "name_in_text": "农业资源与环境",
+     "catalog_name": "农业资源与环境",
+     "class": "自然保护与环境生态类",
+     "code": "090201"
+    },
+    {
+     "name_in_text": "水产养殖学",
+     "catalog_name": "水产养殖学",
+     "class": "水产类",
+     "code": "090601"
+    },
+    {
+     "name_in_text": "海洋渔业科学与技术",
+     "catalog_name": "海洋渔业科学与技术",
+     "class": "水产类",
+     "code": "090602"
+    },
+    {
+     "name_in_text": "材料化学",
+     "catalog_name": "材料化学",
+     "class": "材料类",
+     "code": "080403"
+    },
+    {
+     "name_in_text": "环境工程",
+     "catalog_name": "环境工程",
+     "class": "环境科学与工程类",
+     "code": "082502"
+    },
+    {
+     "name_in_text": "高分子材料与工程",
+     "catalog_name": "高分子材料与工程",
+     "class": "材料类",
+     "code": "080407"
+    },
+    {
+     "name_in_text": "过程装备与控制工程",
+     "catalog_name": "过程装备与控制工程",
+     "class": "机械类",
+     "code": "080206"
+    },
+    {
+     "name_in_text": "学前教育",
+     "catalog_name": "学前教育",
+     "class": "教育学类",
+     "code": "040106"
+    },
+    {
+     "name_in_text": "特殊教育",
+     "catalog_name": "特殊教育",
+     "class": "教育学类",
+     "code": "040108"
+    },
+    {
+     "name_in_text": "体育教育",
+     "catalog_name": "体育教育",
+     "class": "体育学类",
+     "code": "040201"
+    },
+    {
+     "name_in_text": "运动训练",
+     "catalog_name": "运动训练",
+     "class": "体育学类",
+     "code": "040202K"
+    },
+    {
+     "name_in_text": "运动人体科学",
+     "catalog_name": "运动人体科学",
+     "class": "体育学类",
+     "code": "040205"
+    },
+    {
+     "name_in_text": "民族传统体育",
+     "catalog_name": "武术与民族传统体育",
+     "class": "体育学类",
+     "code": "040204K"
+    },
+    {
+     "name_in_text": "美术学",
+     "catalog_name": "美术学",
+     "class": "美术学类",
+     "code": "130401"
+    },
+    {
+     "name_in_text": "绘画",
+     "catalog_name": "绘画",
+     "class": "美术学类",
+     "code": "130402"
+    },
+    {
+     "name_in_text": "艺术设计",
+     "catalog_name": "视觉传达设计",
+     "class": "设计学类",
+     "code": "130502"
+    },
+    {
+     "name_in_text": "摄影",
+     "catalog_name": "摄影",
+     "class": "美术学类",
+     "code": "130404"
+    },
+    {
+     "name_in_text": "动画",
+     "catalog_name": "动画",
+     "class": "戏剧与影视学类",
+     "code": "130310"
+    },
+    {
+     "name_in_text": "博物馆学",
+     "catalog_name": "文物与博物馆学",
+     "class": "历史学类",
+     "code": "060104"
+    },
+    {
+     "name_in_text": "应用物理学",
+     "catalog_name": "应用物理学",
+     "class": "物理学类",
+     "code": "070202"
+    },
+    {
+     "name_in_text": "天文学",
+     "catalog_name": "天文学",
+     "class": "天文学类",
+     "code": "070401"
+    },
+    {
+     "name_in_text": "地理科学",
+     "catalog_name": "地理科学",
+     "class": "地理科学类",
+     "code": "070501"
+    },
+    {
+     "name_in_text": "应用气象学",
+     "catalog_name": "应用气象学",
+     "class": "大气科学类",
+     "code": "070602"
+    },
+    {
+     "name_in_text": "材料物理",
+     "catalog_name": "材料物理",
+     "class": "材料类",
+     "code": "080402"
+    },
+    {
+     "name_in_text": "矿物加工工程",
+     "catalog_name": "矿物加工工程",
+     "class": "矿业类",
+     "code": "081503"
+    },
+    {
+     "name_in_text": "资源勘探工程",
+     "catalog_name": "资源勘查工程",
+     "class": "地质类",
+     "code": "081403K"
+    },
+    {
+     "name_in_text": "冶金工程",
+     "catalog_name": "冶金工程",
+     "class": "材料类",
+     "code": "080404"
+    },
+    {
+     "name_in_text": "无机非金属材料工程",
+     "catalog_name": "无机非金属材料工程",
+     "class": "材料类",
+     "code": "080406"
+    },
+    {
+     "name_in_text": "交通运输",
+     "catalog_name": "交通运输",
+     "class": "交通运输类",
+     "code": "081801"
+    },
+    {
+     "name_in_text": "油气储运工程",
+     "catalog_name": "油气储运工程",
+     "class": "矿业类",
+     "code": "081504"
+    }
+   ],
+   "major_classes_expanded": [
+    "中医学类",
+    "中药学类",
+    "中西医结合类",
+    "临床医学类",
+    "交通运输类",
+    "体育学类",
+    "公共卫生与预防医学类",
+    "公共管理类",
+    "公安学类",
+    "公安技术类",
+    "兵器类",
+    "农业经济管理类",
+    "动物医学类",
+    "动物生产类",
+    "化学类",
+    "化工与制药类",
+    "医学技术类",
+    "历史学类",
+    "口腔医学类",
+    "图书情报与档案管理类",
+    "地理科学类",
+    "地质学类",
+    "地质类",
+    "基础医学类",
+    "大气科学类",
+    "天文学类",
+    "工商管理类",
+    "心理学类",
+    "戏剧与影视学类",
+    "护理学类",
+    "教育学类",
+    "机械类",
+    "材料类",
+    "林业工程类",
+    "林学类",
+    "植物生产类",
+    "水产类",
+    "法医学类",
+    "海洋科学类",
+    "物理学类",
+    "环境科学与工程类",
+    "生物医学工程类",
+    "生物工程类",
+    "生物科学类",
+    "矿业类",
+    "管理科学与工程类",
+    "经济学类",
+    "美术学类",
+    "自然保护与环境生态类",
+    "药学类",
+    "计算机类",
+    "设计学类",
+    "轻工类",
+    "食品科学与工程类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-2-04",
+   "condition": "裸眼视力",
+   "condition_group": "视力",
+   "severity": "blocker",
+   "scope": "national",
+   "mapping_level": "major",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [
+    "飞行技术",
+    "航海技术",
+    "消防工程",
+    "刑事科学技术",
+    "侦察学"
+   ],
+   "threshold": "<5.0",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 二、4",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：裸眼视力任何一眼低于 5.0 者不能录取飞行技术、航海技术、消防工程、刑事科学技术、侦察。专科：海洋船舶驾驶及民航空中交通管制等（见原文）。点名的 5 个专业分属交通运输类/公安技术类/公安学类，**不上卷到类**（上卷会误伤同类的交通工程、公安视听技术等）。",
+   "engine_ready": true,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [
+    {
+     "name_in_text": "飞行技术",
+     "catalog_name": "飞行技术",
+     "class": "交通运输类",
+     "code": "081805K"
+    },
+    {
+     "name_in_text": "航海技术",
+     "catalog_name": "航海技术",
+     "class": "交通运输类",
+     "code": "081803K"
+    },
+    {
+     "name_in_text": "消防工程",
+     "catalog_name": "消防工程",
+     "class": "公安技术类",
+     "code": "083102K"
+    },
+    {
+     "name_in_text": "刑事科学技术",
+     "catalog_name": "刑事科学技术",
+     "class": "公安技术类",
+     "code": "083101K"
+    },
+    {
+     "name_in_text": "侦察学",
+     "catalog_name": "侦查学",
+     "class": "公安学类",
+     "code": "030602K"
+    }
+   ],
+   "major_classes_expanded": [
+    "交通运输类",
+    "公安学类",
+    "公安技术类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-2-05",
+   "condition": "裸眼视力",
+   "condition_group": "视力",
+   "severity": "blocker",
+   "scope": "national",
+   "mapping_level": "major",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [
+    "轮机工程",
+    "运动训练",
+    "民族传统体育"
+   ],
+   "threshold": "<4.8",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 二、5",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：裸眼视力任何一眼低于 4.8 者不能录取轮机工程、运动训练、民族传统体育。专科：烹饪与营养、烹饪工艺等（见原文）。点名专业不上卷到类。",
+   "engine_ready": true,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [
+    {
+     "name_in_text": "轮机工程",
+     "catalog_name": "轮机工程",
+     "class": "交通运输类",
+     "code": "081804K"
+    },
+    {
+     "name_in_text": "运动训练",
+     "catalog_name": "运动训练",
+     "class": "体育学类",
+     "code": "040202K"
+    },
+    {
+     "name_in_text": "民族传统体育",
+     "catalog_name": "武术与民族传统体育",
+     "class": "体育学类",
+     "code": "040204K"
+    }
+   ],
+   "major_classes_expanded": [
+    "交通运输类",
+    "体育学类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-3-01",
+   "condition": "主要脏器手术史/相关病史（心脏病除外情形等）",
+   "condition_group": "手术史/脏器",
+   "severity": "warning",
+   "scope": "national",
+   "mapping_level": "class+major",
+   "major_categories": [
+    "地质类",
+    "矿业类",
+    "水利类",
+    "交通运输类",
+    "能源动力类",
+    "公安学类",
+    "体育学类",
+    "海洋科学类",
+    "大气科学类",
+    "水产类",
+    "测绘类",
+    "海洋工程类",
+    "林业工程类",
+    "兵器类",
+    "林学类",
+    "环境科学与工程类",
+    "自然保护与环境生态类",
+    "旅游管理类",
+    "草学类"
+   ],
+   "major_menlei": [],
+   "major_names": [
+    "土木工程",
+    "消防工程",
+    "农业水利工程",
+    "农学",
+    "法医学",
+    "水土保持与荒漠化防治",
+    "动物科学"
+   ],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 三、1",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：肺、肝、肾、脾、胃肠等动过较大手术功能恢复良好，或曾患心肌炎、胃或十二指肠溃疡、慢性支气管炎、风湿性关节炎等病史，甲状腺机能亢进已治愈一年者，不宜就读本文所列专业。**不宜就读≠不予录取**：原文明确『学校不得以此为依据，拒绝录取达到相关要求的考生』。",
+   "engine_ready": false,
+   "engine_note": "档案无手术史/病史字段，仅供展示/人工核查，不参与判档。",
+   "extends": null,
+   "major_trace": [
+    {
+     "name_in_text": "土木工程",
+     "catalog_name": "土木工程",
+     "class": "土木类",
+     "code": "081001"
+    },
+    {
+     "name_in_text": "消防工程",
+     "catalog_name": "消防工程",
+     "class": "公安技术类",
+     "code": "083102K"
+    },
+    {
+     "name_in_text": "农业水利工程",
+     "catalog_name": "农业水利工程",
+     "class": "农业工程类",
+     "code": "082305"
+    },
+    {
+     "name_in_text": "农学",
+     "catalog_name": "农学",
+     "class": "植物生产类",
+     "code": "090101"
+    },
+    {
+     "name_in_text": "法医学",
+     "catalog_name": "法医学",
+     "class": "法医学类",
+     "code": "100901K"
+    },
+    {
+     "name_in_text": "水土保持与荒漠化防治",
+     "catalog_name": "水土保持与荒漠化防治",
+     "class": "自然保护与环境生态类",
+     "code": "090203"
+    },
+    {
+     "name_in_text": "动物科学",
+     "catalog_name": "动物科学",
+     "class": "动物生产类",
+     "code": "090301"
+    }
+   ],
+   "major_classes_expanded": [
+    "交通运输类",
+    "体育学类",
+    "公安学类",
+    "公安技术类",
+    "兵器类",
+    "农业工程类",
+    "动物生产类",
+    "土木类",
+    "地质类",
+    "大气科学类",
+    "旅游管理类",
+    "林业工程类",
+    "林学类",
+    "植物生产类",
+    "水产类",
+    "水利类",
+    "法医学类",
+    "测绘类",
+    "海洋工程类",
+    "海洋科学类",
+    "环境科学与工程类",
+    "矿业类",
+    "能源动力类",
+    "自然保护与环境生态类",
+    "草学类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-3-02",
+   "condition": "先天性心脏病经手术治愈（或确认无需手术者）",
+   "condition_group": "心血管",
+   "severity": "warning",
+   "scope": "national",
+   "mapping_level": "class+major",
+   "major_categories": [
+    "地质类",
+    "矿业类",
+    "水利类",
+    "交通运输类",
+    "能源动力类",
+    "公安学类",
+    "体育学类",
+    "海洋科学类",
+    "大气科学类",
+    "水产类",
+    "测绘类",
+    "海洋工程类",
+    "林业工程类",
+    "兵器类",
+    "林学类",
+    "环境科学与工程类",
+    "自然保护与环境生态类",
+    "旅游管理类",
+    "草学类"
+   ],
+   "major_menlei": [],
+   "major_names": [
+    "土木工程",
+    "消防工程",
+    "农业水利工程",
+    "农学",
+    "法医学",
+    "水土保持与荒漠化防治",
+    "动物科学"
+   ],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 三、2",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：不宜就读的专业同第三部分第 1 条。",
+   "engine_ready": false,
+   "engine_note": "档案无对应字段，仅供展示/人工核查，不参与判档。",
+   "extends": "PR-2003-3-01",
+   "major_trace": [
+    {
+     "name_in_text": "土木工程",
+     "catalog_name": "土木工程",
+     "class": "土木类",
+     "code": "081001"
+    },
+    {
+     "name_in_text": "消防工程",
+     "catalog_name": "消防工程",
+     "class": "公安技术类",
+     "code": "083102K"
+    },
+    {
+     "name_in_text": "农业水利工程",
+     "catalog_name": "农业水利工程",
+     "class": "农业工程类",
+     "code": "082305"
+    },
+    {
+     "name_in_text": "农学",
+     "catalog_name": "农学",
+     "class": "植物生产类",
+     "code": "090101"
+    },
+    {
+     "name_in_text": "法医学",
+     "catalog_name": "法医学",
+     "class": "法医学类",
+     "code": "100901K"
+    },
+    {
+     "name_in_text": "水土保持与荒漠化防治",
+     "catalog_name": "水土保持与荒漠化防治",
+     "class": "自然保护与环境生态类",
+     "code": "090203"
+    },
+    {
+     "name_in_text": "动物科学",
+     "catalog_name": "动物科学",
+     "class": "动物生产类",
+     "code": "090301"
+    }
+   ],
+   "major_classes_expanded": [
+    "交通运输类",
+    "体育学类",
+    "公安学类",
+    "公安技术类",
+    "兵器类",
+    "农业工程类",
+    "动物生产类",
+    "土木类",
+    "地质类",
+    "大气科学类",
+    "旅游管理类",
+    "林业工程类",
+    "林学类",
+    "植物生产类",
+    "水产类",
+    "水利类",
+    "法医学类",
+    "测绘类",
+    "海洋工程类",
+    "海洋科学类",
+    "环境科学与工程类",
+    "矿业类",
+    "能源动力类",
+    "自然保护与环境生态类",
+    "草学类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-3-03",
+   "condition": "肢体残疾（不继续恶化）",
+   "condition_group": "肢体",
+   "severity": "warning",
+   "scope": "national",
+   "mapping_level": "class+major",
+   "major_categories": [
+    "地质类",
+    "矿业类",
+    "水利类",
+    "交通运输类",
+    "能源动力类",
+    "公安学类",
+    "体育学类",
+    "海洋科学类",
+    "大气科学类",
+    "水产类",
+    "测绘类",
+    "海洋工程类",
+    "林业工程类",
+    "兵器类",
+    "林学类",
+    "环境科学与工程类",
+    "自然保护与环境生态类",
+    "旅游管理类",
+    "草学类"
+   ],
+   "major_menlei": [],
+   "major_names": [
+    "土木工程",
+    "消防工程",
+    "农业水利工程",
+    "农学",
+    "法医学",
+    "水土保持与荒漠化防治",
+    "动物科学"
+   ],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 三、3",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：不宜就读的专业同第三部分第 1 条。另注：指导意见总则明确高校不得以不具备办学条件为由拒收确能进行所报专业学习的残疾考生（补充规定须在招生章程公布）。",
+   "engine_ready": false,
+   "engine_note": "档案无对应字段，仅供展示/人工核查，不参与判档（亦不得据此拦截）。",
+   "extends": "PR-2003-3-01",
+   "major_trace": [
+    {
+     "name_in_text": "土木工程",
+     "catalog_name": "土木工程",
+     "class": "土木类",
+     "code": "081001"
+    },
+    {
+     "name_in_text": "消防工程",
+     "catalog_name": "消防工程",
+     "class": "公安技术类",
+     "code": "083102K"
+    },
+    {
+     "name_in_text": "农业水利工程",
+     "catalog_name": "农业水利工程",
+     "class": "农业工程类",
+     "code": "082305"
+    },
+    {
+     "name_in_text": "农学",
+     "catalog_name": "农学",
+     "class": "植物生产类",
+     "code": "090101"
+    },
+    {
+     "name_in_text": "法医学",
+     "catalog_name": "法医学",
+     "class": "法医学类",
+     "code": "100901K"
+    },
+    {
+     "name_in_text": "水土保持与荒漠化防治",
+     "catalog_name": "水土保持与荒漠化防治",
+     "class": "自然保护与环境生态类",
+     "code": "090203"
+    },
+    {
+     "name_in_text": "动物科学",
+     "catalog_name": "动物科学",
+     "class": "动物生产类",
+     "code": "090301"
+    }
+   ],
+   "major_classes_expanded": [
+    "交通运输类",
+    "体育学类",
+    "公安学类",
+    "公安技术类",
+    "兵器类",
+    "农业工程类",
+    "动物生产类",
+    "土木类",
+    "地质类",
+    "大气科学类",
+    "旅游管理类",
+    "林业工程类",
+    "林学类",
+    "植物生产类",
+    "水产类",
+    "水利类",
+    "法医学类",
+    "测绘类",
+    "海洋工程类",
+    "海洋科学类",
+    "环境科学与工程类",
+    "矿业类",
+    "能源动力类",
+    "自然保护与环境生态类",
+    "草学类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-3-04",
+   "condition": "矫正视力",
+   "condition_group": "视力",
+   "severity": "warning",
+   "scope": "national",
+   "mapping_level": "major",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [
+    "海洋技术",
+    "海洋科学",
+    "测控技术与仪器",
+    "核工程与核技术",
+    "生物医学工程",
+    "服装设计与工程",
+    "飞行器制造工程"
+   ],
+   "threshold": "矫正到4.8镜片度数>400度",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 三、4",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：屈光不正任何一眼矫正到 4.8、镜片度数大于 400 度，不宜就读本文所列专业。档案暂无『矫正度数』字段——需 T6/T8 视情况扩展档案后再挂载。",
+   "engine_ready": false,
+   "engine_note": "档案缺『矫正度数』字段，建议 T6 暂不挂载（保持不判档）或补档案字段。**严禁用裸眼视力字段替代矫正度数求值**。",
+   "extends": null,
+   "major_trace": [
+    {
+     "name_in_text": "海洋技术",
+     "catalog_name": "海洋技术",
+     "class": "海洋科学类",
+     "code": "070702"
+    },
+    {
+     "name_in_text": "海洋科学",
+     "catalog_name": "海洋科学",
+     "class": "海洋科学类",
+     "code": "070701"
+    },
+    {
+     "name_in_text": "测控技术与仪器",
+     "catalog_name": "测控技术与仪器",
+     "class": "仪器类",
+     "code": "080301"
+    },
+    {
+     "name_in_text": "核工程与核技术",
+     "catalog_name": "核工程与核技术",
+     "class": "核工程类",
+     "code": "082201"
+    },
+    {
+     "name_in_text": "生物医学工程",
+     "catalog_name": "生物医学工程",
+     "class": "生物医学工程类",
+     "code": "082601"
+    },
+    {
+     "name_in_text": "服装设计与工程",
+     "catalog_name": "服装设计与工程",
+     "class": "纺织类",
+     "code": "081602"
+    },
+    {
+     "name_in_text": "飞行器制造工程",
+     "catalog_name": "飞行器制造工程",
+     "class": "航空航天类",
+     "code": "082003"
+    }
+   ],
+   "major_classes_expanded": [
+    "仪器类",
+    "核工程类",
+    "海洋科学类",
+    "生物医学工程类",
+    "纺织类",
+    "航空航天类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-3-05",
+   "condition": "矫正视力",
+   "condition_group": "视力",
+   "severity": "warning",
+   "scope": "national",
+   "mapping_level": "class+major",
+   "major_categories": [
+    "地质类",
+    "矿业类",
+    "水利类",
+    "土木类",
+    "建筑类",
+    "动物生产类",
+    "水产类",
+    "材料类",
+    "能源动力类",
+    "化工与制药类",
+    "兵器类",
+    "农业工程类",
+    "林业工程类",
+    "植物生产类",
+    "林学类",
+    "自然保护与环境生态类",
+    "心理学类",
+    "环境科学与工程类",
+    "安全科学与工程类",
+    "电子信息类",
+    "地质学类",
+    "大气科学类"
+   ],
+   "major_menlei": [
+    "医学"
+   ],
+   "major_names": [
+    "地理科学",
+    "测绘工程",
+    "交通工程",
+    "交通运输",
+    "油气储运工程",
+    "船舶与海洋工程",
+    "生物工程",
+    "草业科学",
+    "动物医学"
+   ],
+   "threshold": "矫正到4.8镜片度数>800度",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 三、5",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：任何一眼矫正到 4.8、镜片度数大于 800 度，不宜就读本文所列专业。档案暂无『矫正度数』字段，同 PR-2003-3-04。",
+   "engine_ready": false,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [
+    {
+     "name_in_text": "地理科学",
+     "catalog_name": "地理科学",
+     "class": "地理科学类",
+     "code": "070501"
+    },
+    {
+     "name_in_text": "测绘工程",
+     "catalog_name": "测绘工程",
+     "class": "测绘类",
+     "code": "081201"
+    },
+    {
+     "name_in_text": "交通工程",
+     "catalog_name": "交通工程",
+     "class": "交通运输类",
+     "code": "081802"
+    },
+    {
+     "name_in_text": "交通运输",
+     "catalog_name": "交通运输",
+     "class": "交通运输类",
+     "code": "081801"
+    },
+    {
+     "name_in_text": "油气储运工程",
+     "catalog_name": "油气储运工程",
+     "class": "矿业类",
+     "code": "081504"
+    },
+    {
+     "name_in_text": "船舶与海洋工程",
+     "catalog_name": "船舶与海洋工程",
+     "class": "海洋工程类",
+     "code": "081901"
+    },
+    {
+     "name_in_text": "生物工程",
+     "catalog_name": "生物工程",
+     "class": "生物工程类",
+     "code": "083001"
+    },
+    {
+     "name_in_text": "草业科学",
+     "catalog_name": "草业科学",
+     "class": "草学类",
+     "code": "090701"
+    },
+    {
+     "name_in_text": "动物医学",
+     "catalog_name": "动物医学",
+     "class": "动物医学类",
+     "code": "090401"
+    }
+   ],
+   "major_classes_expanded": [
+    "中医学类",
+    "中药学类",
+    "中西医结合类",
+    "临床医学类",
+    "交通运输类",
+    "公共卫生与预防医学类",
+    "兵器类",
+    "农业工程类",
+    "动物医学类",
+    "动物生产类",
+    "化工与制药类",
+    "医学技术类",
+    "口腔医学类",
+    "土木类",
+    "地理科学类",
+    "地质学类",
+    "地质类",
+    "基础医学类",
+    "大气科学类",
+    "安全科学与工程类",
+    "建筑类",
+    "心理学类",
+    "护理学类",
+    "材料类",
+    "林业工程类",
+    "林学类",
+    "植物生产类",
+    "水产类",
+    "水利类",
+    "法医学类",
+    "测绘类",
+    "海洋工程类",
+    "环境科学与工程类",
+    "生物工程类",
+    "电子信息类",
+    "矿业类",
+    "能源动力类",
+    "自然保护与环境生态类",
+    "草学类",
+    "药学类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-3-06",
+   "condition": "矫正视力",
+   "condition_group": "视力",
+   "severity": "warning",
+   "scope": "national",
+   "mapping_level": "class+major",
+   "major_categories": [],
+   "major_menlei": [
+    "工学",
+    "农学",
+    "医学",
+    "法学"
+   ],
+   "major_names": [
+    "应用物理学",
+    "应用化学",
+    "生物技术",
+    "地质学",
+    "生态学",
+    "环境科学",
+    "海洋科学",
+    "海洋技术",
+    "生物科学",
+    "应用心理学"
+   ],
+   "threshold": "一眼失明另一眼矫正到4.8镜片度数>400度",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 三、6",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：一眼失明另一眼矫正 4.8、镜片度数大于 400 度，不宜就读工学、农学、医学、法学各专业及应用物理学、应用化学、生物技术、地质学、生态学、环境科学、海洋科学、海洋技术、生物科学、应用心理学等专业。门类级（工学/农学/医学/法学）按现行专业目录展开到类。",
+   "engine_ready": false,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [
+    {
+     "name_in_text": "应用物理学",
+     "catalog_name": "应用物理学",
+     "class": "物理学类",
+     "code": "070202"
+    },
+    {
+     "name_in_text": "应用化学",
+     "catalog_name": "应用化学",
+     "class": "化学类",
+     "code": "070302"
+    },
+    {
+     "name_in_text": "生物技术",
+     "catalog_name": "生物技术",
+     "class": "生物科学类",
+     "code": "071002"
+    },
+    {
+     "name_in_text": "地质学",
+     "catalog_name": "地质学",
+     "class": "地质学类",
+     "code": "070901"
+    },
+    {
+     "name_in_text": "生态学",
+     "catalog_name": "生态学",
+     "class": "生物科学类",
+     "code": "071004"
+    },
+    {
+     "name_in_text": "环境科学",
+     "catalog_name": "环境科学",
+     "class": "环境科学与工程类",
+     "code": "082503"
+    },
+    {
+     "name_in_text": "海洋科学",
+     "catalog_name": "海洋科学",
+     "class": "海洋科学类",
+     "code": "070701"
+    },
+    {
+     "name_in_text": "海洋技术",
+     "catalog_name": "海洋技术",
+     "class": "海洋科学类",
+     "code": "070702"
+    },
+    {
+     "name_in_text": "生物科学",
+     "catalog_name": "生物科学",
+     "class": "生物科学类",
+     "code": "071001"
+    },
+    {
+     "name_in_text": "应用心理学",
+     "catalog_name": "应用心理学",
+     "class": "心理学类",
+     "code": "071102"
+    }
+   ],
+   "major_classes_expanded": [
+    "中医学类",
+    "中药学类",
+    "中西医结合类",
+    "临床医学类",
+    "交叉工程类",
+    "交通运输类",
+    "仪器类",
+    "公共卫生与预防医学类",
+    "公安学类",
+    "公安技术类",
+    "兵器类",
+    "农业工程类",
+    "力学类",
+    "动物医学类",
+    "动物生产类",
+    "化学类",
+    "化工与制药类",
+    "医学技术类",
+    "口腔医学类",
+    "土木类",
+    "地质学类",
+    "地质类",
+    "基础医学类",
+    "安全科学与工程类",
+    "建筑类",
+    "心理学类",
+    "护理学类",
+    "政治学类",
+    "机械类",
+    "材料类",
+    "林业工程类",
+    "林学类",
+    "核工程类",
+    "植物生产类",
+    "民族学类",
+    "水产类",
+    "水利类",
+    "法医学类",
+    "法学类",
+    "测绘类",
+    "海洋工程类",
+    "海洋科学类",
+    "物理学类",
+    "环境科学与工程类",
+    "生物医学工程类",
+    "生物工程类",
+    "生物科学类",
+    "电子信息类",
+    "电气类",
+    "矿业类",
+    "社会学类",
+    "纺织类",
+    "能源动力类",
+    "自动化类",
+    "自然保护与环境生态类",
+    "航空航天类",
+    "草学类",
+    "药学类",
+    "计算机类",
+    "轻工类",
+    "食品科学与工程类",
+    "马克思主义理论类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-3-07",
+   "condition": "听力",
+   "condition_group": "听力",
+   "severity": "warning",
+   "scope": "national",
+   "mapping_level": "class+major",
+   "major_categories": [
+    "法学类",
+    "外国语言文学类"
+   ],
+   "major_menlei": [
+    "医学"
+   ],
+   "major_names": [
+    "外交学",
+    "新闻学",
+    "侦查学",
+    "学前教育",
+    "音乐学",
+    "录音艺术",
+    "土木工程",
+    "交通运输",
+    "动物医学",
+    "动物科学"
+   ],
+   "threshold": "两耳听力均<3米，或一耳5米另一耳全聋",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 三、7",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：不宜就读法学各专业、外国语言文学各专业以及外交学、新闻学、侦察学、学前教育、音乐学、录音艺术、土木工程、交通运输、动物医学各专业、医学各专业。档案为二元状态（正常/异常），引擎按粗粒度求值（异常即提示），不能区分 3 米/5 米。",
+   "engine_ready": true,
+   "engine_note": "档案 hearing 仅『正常/异常』二值，无法区分 3 米/5 米阈值——属**粗判**，提示文案须写明『以实际听力检查结论为准』。",
+   "extends": null,
+   "major_trace": [
+    {
+     "name_in_text": "外交学",
+     "catalog_name": "外交学",
+     "class": "政治学类",
+     "code": "030203"
+    },
+    {
+     "name_in_text": "新闻学",
+     "catalog_name": "新闻学",
+     "class": "新闻传播学类",
+     "code": "050301"
+    },
+    {
+     "name_in_text": "侦查学",
+     "catalog_name": "侦查学",
+     "class": "公安学类",
+     "code": "030602K"
+    },
+    {
+     "name_in_text": "学前教育",
+     "catalog_name": "学前教育",
+     "class": "教育学类",
+     "code": "040106"
+    },
+    {
+     "name_in_text": "音乐学",
+     "catalog_name": "音乐学",
+     "class": "音乐与舞蹈学类",
+     "code": "130202"
+    },
+    {
+     "name_in_text": "录音艺术",
+     "catalog_name": "录音艺术",
+     "class": "戏剧与影视学类",
+     "code": "130308"
+    },
+    {
+     "name_in_text": "土木工程",
+     "catalog_name": "土木工程",
+     "class": "土木类",
+     "code": "081001"
+    },
+    {
+     "name_in_text": "交通运输",
+     "catalog_name": "交通运输",
+     "class": "交通运输类",
+     "code": "081801"
+    },
+    {
+     "name_in_text": "动物医学",
+     "catalog_name": "动物医学",
+     "class": "动物医学类",
+     "code": "090401"
+    },
+    {
+     "name_in_text": "动物科学",
+     "catalog_name": "动物科学",
+     "class": "动物生产类",
+     "code": "090301"
+    }
+   ],
+   "major_classes_expanded": [
+    "中医学类",
+    "中药学类",
+    "中西医结合类",
+    "临床医学类",
+    "交通运输类",
+    "公共卫生与预防医学类",
+    "公安学类",
+    "动物医学类",
+    "动物生产类",
+    "医学技术类",
+    "口腔医学类",
+    "土木类",
+    "基础医学类",
+    "外国语言文学类",
+    "戏剧与影视学类",
+    "护理学类",
+    "政治学类",
+    "教育学类",
+    "新闻传播学类",
+    "法医学类",
+    "法学类",
+    "药学类",
+    "音乐与舞蹈学类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-3-08a",
+   "condition": "嗅觉",
+   "condition_group": "嗅觉",
+   "severity": "warning",
+   "scope": "national",
+   "mapping_level": "class+major",
+   "major_categories": [
+    "教育学类",
+    "公安学类"
+   ],
+   "major_menlei": [],
+   "major_names": [
+    "外交学",
+    "法学",
+    "新闻学",
+    "音乐表演",
+    "表演"
+   ],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 三、8",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文同一条款：嗅觉迟钝、口吃、步态异常、驼背，面部有疤痕、血管瘤、黑色素痣、白癜风的，不宜就读教育学类、公安学类各专业以及外交学、法学、新闻学、音乐表演、表演各专业。按可核查性拆分为三个条件条目（拆分不改语义）。",
+   "engine_ready": true,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [
+    {
+     "name_in_text": "外交学",
+     "catalog_name": "外交学",
+     "class": "政治学类",
+     "code": "030203"
+    },
+    {
+     "name_in_text": "法学",
+     "catalog_name": "法学",
+     "class": "法学类",
+     "code": "030101K"
+    },
+    {
+     "name_in_text": "新闻学",
+     "catalog_name": "新闻学",
+     "class": "新闻传播学类",
+     "code": "050301"
+    },
+    {
+     "name_in_text": "音乐表演",
+     "catalog_name": "音乐表演",
+     "class": "音乐与舞蹈学类",
+     "code": "130201"
+    },
+    {
+     "name_in_text": "表演",
+     "catalog_name": "表演",
+     "class": "戏剧与影视学类",
+     "code": "130301"
+    }
+   ],
+   "major_classes_expanded": [
+    "公安学类",
+    "戏剧与影视学类",
+    "政治学类",
+    "教育学类",
+    "新闻传播学类",
+    "法学类",
+    "音乐与舞蹈学类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-3-08b",
+   "condition": "口吃",
+   "condition_group": "口吃",
+   "severity": "warning",
+   "scope": "national",
+   "mapping_level": "class+major",
+   "major_categories": [
+    "教育学类",
+    "公安学类"
+   ],
+   "major_menlei": [],
+   "major_names": [
+    "外交学",
+    "法学",
+    "新闻学",
+    "音乐表演",
+    "表演"
+   ],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 三、8",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文同一条款：嗅觉迟钝、口吃、步态异常、驼背，面部有疤痕、血管瘤、黑色素痣、白癜风的，不宜就读教育学类、公安学类各专业以及外交学、法学、新闻学、音乐表演、表演各专业。按可核查性拆分为三个条件条目（拆分不改语义）。",
+   "engine_ready": true,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [
+    {
+     "name_in_text": "外交学",
+     "catalog_name": "外交学",
+     "class": "政治学类",
+     "code": "030203"
+    },
+    {
+     "name_in_text": "法学",
+     "catalog_name": "法学",
+     "class": "法学类",
+     "code": "030101K"
+    },
+    {
+     "name_in_text": "新闻学",
+     "catalog_name": "新闻学",
+     "class": "新闻传播学类",
+     "code": "050301"
+    },
+    {
+     "name_in_text": "音乐表演",
+     "catalog_name": "音乐表演",
+     "class": "音乐与舞蹈学类",
+     "code": "130201"
+    },
+    {
+     "name_in_text": "表演",
+     "catalog_name": "表演",
+     "class": "戏剧与影视学类",
+     "code": "130301"
+    }
+   ],
+   "major_classes_expanded": [
+    "公安学类",
+    "戏剧与影视学类",
+    "政治学类",
+    "教育学类",
+    "新闻传播学类",
+    "法学类",
+    "音乐与舞蹈学类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-3-08c",
+   "condition": "步态异常/驼背/面部疤痕等外观情形",
+   "condition_group": "外观",
+   "severity": "warning",
+   "scope": "national",
+   "mapping_level": "class+major",
+   "major_categories": [
+    "教育学类",
+    "公安学类"
+   ],
+   "major_menlei": [],
+   "major_names": [
+    "外交学",
+    "法学",
+    "新闻学",
+    "音乐表演",
+    "表演"
+   ],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 三、8",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文同一条款：嗅觉迟钝、口吃、步态异常、驼背，面部有疤痕、血管瘤、黑色素痣、白癜风的，不宜就读教育学类、公安学类各专业以及外交学、法学、新闻学、音乐表演、表演各专业。按可核查性拆分为三个条件条目（拆分不改语义）。",
+   "engine_ready": false,
+   "engine_note": "档案无对应字段，仅供展示。",
+   "extends": null,
+   "major_trace": [
+    {
+     "name_in_text": "外交学",
+     "catalog_name": "外交学",
+     "class": "政治学类",
+     "code": "030203"
+    },
+    {
+     "name_in_text": "法学",
+     "catalog_name": "法学",
+     "class": "法学类",
+     "code": "030101K"
+    },
+    {
+     "name_in_text": "新闻学",
+     "catalog_name": "新闻学",
+     "class": "新闻传播学类",
+     "code": "050301"
+    },
+    {
+     "name_in_text": "音乐表演",
+     "catalog_name": "音乐表演",
+     "class": "音乐与舞蹈学类",
+     "code": "130201"
+    },
+    {
+     "name_in_text": "表演",
+     "catalog_name": "表演",
+     "class": "戏剧与影视学类",
+     "code": "130301"
+    }
+   ],
+   "major_classes_expanded": [
+    "公安学类",
+    "戏剧与影视学类",
+    "政治学类",
+    "教育学类",
+    "新闻传播学类",
+    "法学类",
+    "音乐与舞蹈学类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-3-09a",
+   "condition": "斜视",
+   "condition_group": "视力",
+   "severity": "warning",
+   "scope": "national",
+   "mapping_level": "class",
+   "major_categories": [],
+   "major_menlei": [
+    "医学"
+   ],
+   "major_names": [],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 三、9",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：斜视、嗅觉迟钝、口吃的，不宜就读医学类专业。按可核查性拆分（拆分不改语义）。",
+   "engine_ready": false,
+   "engine_note": "档案无对应字段，仅供展示。",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": [
+    "中医学类",
+    "中药学类",
+    "中西医结合类",
+    "临床医学类",
+    "公共卫生与预防医学类",
+    "医学技术类",
+    "口腔医学类",
+    "基础医学类",
+    "护理学类",
+    "法医学类",
+    "药学类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-3-09b",
+   "condition": "嗅觉",
+   "condition_group": "嗅觉",
+   "severity": "warning",
+   "scope": "national",
+   "mapping_level": "class",
+   "major_categories": [],
+   "major_menlei": [
+    "医学"
+   ],
+   "major_names": [],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 三、9",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：斜视、嗅觉迟钝、口吃的，不宜就读医学类专业。按可核查性拆分（拆分不改语义）。",
+   "engine_ready": true,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": [
+    "中医学类",
+    "中药学类",
+    "中西医结合类",
+    "临床医学类",
+    "公共卫生与预防医学类",
+    "医学技术类",
+    "口腔医学类",
+    "基础医学类",
+    "护理学类",
+    "法医学类",
+    "药学类"
+   ]
+  },
+  {
+   "rule_id": "PR-2003-3-09c",
+   "condition": "口吃",
+   "condition_group": "口吃",
+   "severity": "warning",
+   "scope": "national",
+   "mapping_level": "class",
+   "major_categories": [],
+   "major_menlei": [
+    "医学"
+   ],
+   "major_names": [],
+   "threshold": "",
+   "basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 三、9",
+   "source_id": "SRC-MOE-PHYSICAL-GUIDE",
+   "remark": "原文：斜视、嗅觉迟钝、口吃的，不宜就读医学类专业。按可核查性拆分（拆分不改语义）。",
+   "engine_ready": true,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": [
+    "中医学类",
+    "中药学类",
+    "中西医结合类",
+    "临床医学类",
+    "公共卫生与预防医学类",
+    "医学技术类",
+    "口腔医学类",
+    "基础医学类",
+    "护理学类",
+    "法医学类",
+    "药学类"
+   ]
+  },
+  {
+   "rule_id": "PR-ARMY-01",
+   "condition": "身高",
+   "condition_group": "身高体重",
+   "severity": "blocker",
+   "scope": "military",
+   "mapping_level": "institution",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "男<162cm；女<158cm",
+   "basis": "《军队选拔军官和文职人员体检标准》（军队院校招生执行） 第二章第三节 第三条",
+   "source_id": "SRC-ARMY-MEDICAL-STD",
+   "remark": "军队院校招收普通高中毕业生执行该标准（军检单独组织）。女性标准 158cm（注意部分旧文引 2017 版为 160cm，本表按现行版）。",
+   "engine_ready": false,
+   "engine_note": "档案无性别字段且引擎身高判定无性别维度——T6 挂载前需补性别过滤。",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-ARMY-02",
+   "condition": "体重指数",
+   "condition_group": "身高体重",
+   "severity": "blocker",
+   "scope": "military",
+   "mapping_level": "institution",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "男 BMI<17.5 或 ≥30；女 BMI<17 或 ≥24",
+   "basis": "《军队选拔军官和文职人员体检标准》（军队院校招生执行） 第二章第三节 第四条",
+   "source_id": "SRC-ARMY-MEDICAL-STD",
+   "remark": "原文为 BMI 区间不合格（附空腹血糖/糖化血红蛋白条件），超出引擎单边体重比较能力，需引擎扩展后求值。",
+   "engine_ready": false,
+   "engine_note": "引擎 weight 判定为单边 min 比较，不支持 BMI 区间；需 T6 扩展（身高+体重求 BMI）。",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-ARMY-03",
+   "condition": "裸眼视力",
+   "condition_group": "视力",
+   "severity": "blocker",
+   "scope": "military",
+   "mapping_level": "institution",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "<4.5",
+   "basis": "《军队选拔军官和文职人员体检标准》（军队院校招生执行） 第二章第三节 眼科项目",
+   "source_id": "SRC-ARMY-MEDICAL-STD",
+   "remark": "双眼中任何一眼裸眼视力小于 4.5，不合格。",
+   "engine_ready": false,
+   "engine_note": "引擎视力判定线仅支持 5.0/4.8，**4.5 线需 T6 在 _VISION_THRESHOLDS 增加**，否则会按默认 5.0 误拦（过度拦截）。",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-ARMY-04",
+   "condition": "裸眼视力",
+   "condition_group": "视力",
+   "severity": "blocker",
+   "scope": "military",
+   "mapping_level": "institution",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "裸眼4.5~4.8 且矫正<4.8 或矫正度数>600度",
+   "basis": "《军队选拔军官和文职人员体检标准》（军队院校招生执行） 第二章第三节 眼科项目",
+   "source_id": "SRC-ARMY-MEDICAL-STD",
+   "remark": "双眼中任何一眼裸眼视力小于 4.8 时需进行矫正视力检查，任何一眼矫正视力低于 4.8 或矫正度数超过 600 度，不合格。档案无矫正度数字段。",
+   "engine_ready": false,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-ARMY-05",
+   "condition": "色弱、色盲",
+   "condition_group": "色觉",
+   "severity": "blocker",
+   "scope": "military",
+   "mapping_level": "institution",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "",
+   "basis": "《军队选拔军官和文职人员体检标准》（军队院校招生执行）",
+   "source_id": "SRC-ARMY-MEDICAL-STD",
+   "remark": "军队体检色觉标准原文未完整核到（本轮资料仅核到通用标准外科/眼科摘录），**宁缺不猜**：色觉具体条款待取到标准全文后补充；本条为占位提示，不参与判档。",
+   "engine_ready": false,
+   "engine_note": "占位条目：原文未核到，不导入、不判档。",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-POLICE-01",
+   "condition": "身高",
+   "condition_group": "身高体重",
+   "severity": "blocker",
+   "scope": "police",
+   "mapping_level": "institution",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "男<170cm；女<160cm",
+   "basis": "《公安院校公安专业招生体检标准》（公安部，2025年执行版） 第一章 第一条",
+   "source_id": "SRC-MPS-POLICE-MEDICAL",
+   "remark": "男性身高小于 170 厘米、女性小于 160 厘米不合格（警检单独组织）。",
+   "engine_ready": false,
+   "engine_note": "同 PR-ARMY-01：需性别维度。",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-POLICE-02",
+   "condition": "体重指数",
+   "condition_group": "身高体重",
+   "severity": "blocker",
+   "scope": "police",
+   "mapping_level": "institution",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "男 BMI<17.3 或 >27.3；女 BMI<17.1 或 >25.7",
+   "basis": "《公安院校公安专业招生体检标准》（公安部，2025年执行版） 第一章 第二条",
+   "source_id": "SRC-MPS-POLICE-MEDICAL",
+   "remark": "BMI 区间不合格，需引擎扩展后求值。",
+   "engine_ready": false,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-POLICE-03",
+   "condition": "裸眼视力",
+   "condition_group": "视力",
+   "severity": "blocker",
+   "scope": "police",
+   "mapping_level": "institution",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "<4.8",
+   "basis": "《公安院校公安专业招生体检标准》（公安部，2025年执行版） 第三章 眼科",
+   "source_id": "SRC-MPS-POLICE-MEDICAL",
+   "remark": "双眼中任何一眼裸眼视力小于 4.8 不合格（2025 版标准）。",
+   "engine_ready": true,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-POLICE-04",
+   "condition": "色弱",
+   "condition_group": "色觉",
+   "severity": "blocker",
+   "scope": "police",
+   "mapping_level": "institution",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "",
+   "basis": "《公安院校公安专业招生体检标准》（公安部，2025年执行版） 第三章 眼科",
+   "source_id": "SRC-MPS-POLICE-MEDICAL",
+   "remark": "色弱不合格（针对公安院校公安专业，非普适类专业限制）。",
+   "engine_ready": true,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-POLICE-05",
+   "condition": "色盲",
+   "condition_group": "色觉",
+   "severity": "blocker",
+   "scope": "police",
+   "mapping_level": "institution",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "",
+   "basis": "《公安院校公安专业招生体检标准》（公安部，2025年执行版） 第三章 眼科",
+   "source_id": "SRC-MPS-POLICE-MEDICAL",
+   "remark": "色盲不合格（针对公安院校公安专业，非普适类专业限制）。",
+   "engine_ready": true,
+   "engine_note": "",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  },
+  {
+   "rule_id": "PR-POLICE-06",
+   "condition": "听力",
+   "condition_group": "听力",
+   "severity": "blocker",
+   "scope": "police",
+   "mapping_level": "institution",
+   "major_categories": [],
+   "major_menlei": [],
+   "major_names": [],
+   "threshold": "",
+   "basis": "《公安院校公安专业招生体检标准》（公安部，2025年执行版） 第四章 耳鼻咽喉科",
+   "source_id": "SRC-MPS-POLICE-MEDICAL",
+   "remark": "双耳中任何一耳耳语听力小于 5 米不合格。档案 hearing 为二值，粗判。",
+   "engine_ready": true,
+   "engine_note": "档案 hearing 仅『正常/异常』二值——粗判，提示文案须写明以实际检查为准。",
+   "extends": null,
+   "major_trace": [],
+   "major_classes_expanded": []
+  }
+ ],
+ "superseded": [
+  {
+   "rule_id": "PR-HIST-HEPB",
+   "condition": "乙肝表面抗原携带",
+   "condition_group": "传染性疾病",
+   "severity_original": "blocker",
+   "status": "superseded",
+   "status_basis": "《教育部办公厅 卫生部办公厅关于普通高等学校招生学生入学身体检查取消乙肝项目检测有关问题的通知》（教学厅〔2010〕2号）第一条：取消『乙型肝炎表面抗原携带者不能录取学前教育、航海技术、飞行技术、面点工艺、西餐工艺、烹饪与营养、烹饪工艺、食品科学与工程专业』的限制；第二条：取消乙肝项目检测（乙肝五项/HBV-DNA），保留丙氨酸氨基转移酶（ALT）检测。",
+   "original_basis": "《普通高等学校招生体检工作指导意见》（教学〔2003〕3号） 二、6（2003 年原文）",
+   "remark": "该条 2010 年起不再执行，**不得导入规则库、不得参与判档**（否则属过度拦截）。现档案字段 hepatitis_b 无有效规则对应；『慢性肝炎且肝功能不正常』见 PR-2003-1-05（ALT 口径）。此条保留仅为评审溯源展示与测试反例之用。"
+  }
+ ]
+}
