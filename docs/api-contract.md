@@ -1,4 +1,4 @@
-# 智选志愿 API Contract v1.4
+# 智选志愿 API Contract v1.5
 
 > **本文件是前后端与数据库的唯一 DTO 基线。** 契约、产品书、Mock 三者冲突时以本文件为准，
 > 并回头修正产品书与 Mock。字段名一律 `snake_case`。
@@ -18,6 +18,14 @@
 > `school_major_score` 的**身份列**（`group_code` / `major_code` / `major_name` /
 > `exam_system`）与**导入键**写入契约，并明确 `school_id` 的位置耦合红线。
 > 四列均为第 7 章基础表之外的补充，由后端依据数据工程的实际产物提出、经队长确认。
+>
+> **v1.5 变更要点（相对 v1.4）**：附录 A 对账补漏与例外声明（均为追加式，不改字段形状）：
+> ① 补登 `POST /api/admin/review/enqueue`（刷新待审队列，后端已实现且幂等，管理端已接入）；
+> ② 附录 A 补登 §8.8 后四组 `admission-requirements` / `major-tuition` /
+> `rule-dataset-status` / `rule-datasets/import` 及对应前端方法名；
+> ③ 分页包统一约定新增**例外**：管理端途径字典三接口
+> （`/admin/pathways`、`/admin/pathway-rules`、`/admin/pathway-regions`）返回**裸数组**
+> （字典类小表全量返回 + query 过滤，不分页，与用户端 6.2.1 形状一致）。
 
 ## 统一约定
 
@@ -38,6 +46,9 @@
 - 事实数据必须带 `source_name`、`source_url`、`year`。问答必须返回 `citations`
   与 0~1 的 `confidence`；缺引用的结论不得展示。
 - 分页包统一为 `{ items, total, page, page_size }`（`page` 从 1 起，`page_size` 上限 100）。
+  - **例外（v1.5）**：`GET /api/admin/pathways`、`GET /api/admin/pathway-rules`、
+    `GET /api/admin/pathway-regions` 返回**裸数组** —— 字典类小表全量返回、仅支持
+    query 过滤不分页，与用户端 6.2.1 途径列表形状一致；除此之外的列表接口仍一律分页包。
 
 ### 跨层词表（唯一取值，禁止各层自造）
 
@@ -639,10 +650,11 @@ Auth: no。`province` 使用省级行政区划代码，`year` 必填。返回该
 | `rebuildIndex` / `indexTask` | `/api/admin/index/...` | admin | `api/v1/admin/index.py` |
 | `adminPathways` / `savePathway` / `rules` / `saveRule` / `pathwayRegions` | `/api/admin/pathways*`、`/api/admin/pathway-rules*`、`/api/admin/pathway-regions` | admin | `api/v1/admin/pathways.py` |
 | `reviewTasks` / `reviewTask` / `reviewAction` | `/api/admin/review/tasks[/{id}]` | admin | `api/v1/admin/review.py` |
+| `reviewEnqueue` | `POST /api/admin/review/enqueue` | admin | `api/v1/admin/review.py`（刷新待审队列，扫描日志补建任务，幂等） |
 | `adminStats` | `GET /api/admin/stats` | admin | `api/v1/admin/stats.py` |
 | — | `/api/provinces/{code}/rules` | no | `api/v1/eligibility.py`（8.3） |
 | — | `/api/majors/{id}/requirements` | no | `api/v1/eligibility.py`（8.6） |
-| — | `/api/admin/{province-rules,subject-requirements,physical-restrictions}` | admin | `api/v1/admin/rules.py`（8.8） |
+| `ruleProvinceRules` / `ruleSubjectRequirements` / `rulePhysicalRestrictions` / `ruleAdmissionRequirements` / `ruleMajorTuitions` / `ruleDatasetStatus` / `importRuleDataset` | `/api/admin/{province-rules,subject-requirements,physical-restrictions,admission-requirements,major-tuition,rule-dataset-status,rule-datasets/import}` | admin | `api/v1/admin/rules.py`（8.8） |
 
 > 未实现但已被产品书提及、**明确留待后续能力建设**的接口（当前不在契约内，前端不得调用）：
 > `GET /api/schools/{id}/life` 之外的生活信息细分类别扩展、
