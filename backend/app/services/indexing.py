@@ -4,11 +4,12 @@
 
 - **② 负责本模块的全部内容**——重建范围判定（增量 / 全量 / 指定文档）、任务态与进度落库、
   后台线程执行。请求线程只建单不干活，因此**重建期间问答链路照常响应**（8.3 的验收条件）；
-- **④ 负责真正的向量计算**（tasks.md 5.2）：完成 ``bge-small-zh-v1.5`` 接入后调用
-  ``register_embedder`` 注入即可，本模块的编排、进度与落库逻辑无需改动。
+- **④ 负责真正的向量计算**（tasks.md 5.2）：本模块通过 ``register_embedder`` 接收
+  适配器。默认使用离线确定性的 FakeEmbedder；配置 BGE 或 OpenAI-compatible 服务后可切换
+  到实际向量模型，本模块的编排、进度与落库逻辑无需改动。
 
-**未注入 embedder 时不假装重建成功**：任务以 ``partial`` 结束，``pending_embedding`` 如实等于
-待向量化切片数，``message`` 明写「向量化未接入（待 ④ 号 5.2）」，绝不让界面以为索引进度已完成。
+**显式注销 embedder 时不假装重建成功**：任务以 ``partial`` 结束，``pending_embedding`` 如实等于
+待向量化切片数，``message`` 明写「向量化未接入」，不会让界面以为索引已完成。
 
 增量语义（如实定义）：``incremental=True`` 只处理 ``embedding IS NULL`` 的切片。
 若将来 ④ 需要「按文档更新时间判定陈旧」，在此函数内加条件即可。
@@ -40,6 +41,7 @@ from app.models.knowledge import (
     AdminUser,
 )
 from app.services import audit as audit_service
+from app.rag.embedder import register_default_embedder, validate_vectors
 
 __all__ = [
     "SCOPE_ALL",
@@ -60,18 +62,20 @@ ACTIVE_STATUSES = (INDEX_STATUS_PENDING, INDEX_STATUS_RUNNING)
 
 BATCH_SIZE = 200
 MESSAGE_MAX = 300
-MESSAGE_NO_EMBEDDER = "向量化未接入（待 ④ 号 5.2）：本次仅完成切片清点与增量判定"
+MESSAGE_NO_EMBEDDER = "向量化未接入：本次仅完成切片清点与增量判定"
 
 # 后台线程串行执行：SQLite 写锁下并发重建只会互相拖慢，且无业务收益
 _WORKER_LOCK = threading.Lock()
 
 # ④ 号 5.2 的接入点：接收切片正文，返回定长向量（本模块负责 L2 归一化后落库）
-Embedder = Callable[[str], "list[float] | None"]
-_embedder: Embedder | None = None
+Embedder = Callable[[str], "list[float] | None"] | Any
+# Default to an offline deterministic adapter. Tests or operators can explicitly
+# disable embedding with ``register_embedder(None)`` to preserve partial semantics.
+_embedder: Embedder | None = register_default_embedder()
 
 
 def register_embedder(embedder: Embedder | None) -> None:
-    """④ 号 5.2 完成后注入向量化实现；传 ``None`` 可注销（测试用）。"""
+    """注册向量化实现；传 ``None`` 可显式注销（无 embedder 时任务会以 partial 结束）。"""
     global _embedder
     _embedder = embedder
 
@@ -92,9 +96,12 @@ def _embed(text: str) -> list[float] | None:
     """调用已注入的 embedder；未注入或返回空则返回 ``None``（如实计入待向量化）。"""
     if _embedder is None:
         return None
-    raw = _embedder(text)
+    # Batch adapters expose ``embed``; legacy test/application callables remain supported.
+    raw = _embedder.embed([text])[0] if hasattr(_embedder, "embed") else _embedder(text)
     if not raw:
         return None
+    if hasattr(_embedder, "dim") and len(raw) != int(_embedder.dim):
+        raise ValueError(f"embedding dimension mismatch: expected {_embedder.dim}, got {len(raw)}")
     return _normalize(list(raw))
 
 
@@ -290,20 +297,54 @@ def _run_rebuild(task_id: int, chunk_ids: list[int]) -> None:
                 return
 
             processed = embedded = pending = failed = 0
+            failure_messages: list[str] = []
             for start in range(0, len(chunk_ids), BATCH_SIZE):
-                for chunk_id in chunk_ids[start : start + BATCH_SIZE]:
+                batch_chunks = [db.get(KnowledgeChunk, chunk_id) for chunk_id in chunk_ids[start : start + BATCH_SIZE]]
+                processable = [chunk for chunk in batch_chunks if chunk is not None]
+                missing = len(batch_chunks) - len(processable)
+                failed += missing
+                for chunk in batch_chunks:
                     processed += 1
-                    chunk = db.get(KnowledgeChunk, chunk_id)
-                    if chunk is None:  # 期间被删除
-                        failed += 1
-                        continue
-                    # 先算向量（耗时且不持写锁）再落库
-                    vector = _embed(chunk.content)
-                    if vector is None:
-                        pending += 1
-                        continue
-                    chunk.embedding = vector
-                    embedded += 1
+                    if chunk is None:
+                        failure_messages.append("chunk deleted before embedding")
+
+                try:
+                    if hasattr(_embedder, "embed") and processable:
+                        raw_vectors = _embedder.embed([chunk.content for chunk in processable])
+                        vectors = validate_vectors(raw_vectors, len(processable), int(_embedder.dim))
+                    else:
+                        vectors = [_embed(chunk.content) for chunk in processable]
+                    for chunk, vector in zip(processable, vectors):
+                        if vector is None:
+                            pending += 1
+                        else:
+                            chunk.embedding = vector
+                            embedded += 1
+                except Exception:  # identify failures per chunk and continue the batch
+                    if hasattr(_embedder, "embed"):
+                        for chunk in processable:
+                            try:
+                                vector = _embed(chunk.content)
+                                if vector is None:
+                                    pending += 1
+                                else:
+                                    chunk.embedding = vector
+                                    embedded += 1
+                            except Exception as chunk_exc:  # noqa: BLE001 - failure is persisted per chunk
+                                failed += 1
+                                failure_messages.append(f"chunk {chunk.id}: {type(chunk_exc).__name__}: {chunk_exc}")
+                    else:
+                        for chunk in processable:
+                            try:
+                                vector = _embed(chunk.content)
+                                if vector is None:
+                                    pending += 1
+                                else:
+                                    chunk.embedding = vector
+                                    embedded += 1
+                            except Exception as chunk_exc:  # noqa: BLE001
+                                failed += 1
+                                failure_messages.append(f"chunk {chunk.id}: {type(chunk_exc).__name__}: {chunk_exc}")
                 _save_progress(
                     db,
                     task_id,
@@ -312,13 +353,17 @@ def _run_rebuild(task_id: int, chunk_ids: list[int]) -> None:
                     embedded=embedded,
                     pending=pending,
                     failed=failed,
+                    message="; ".join(failure_messages[-3:]),
                 )
 
-            message = "" if pending == 0 else f"仍有 {pending} 条切片未向量化（embedder 返回空）"
+            messages = failure_messages[-3:]
+            if pending:
+                messages.append(f"仍有 {pending} 条切片未向量化（embedder 返回空）")
+            message = "; ".join(messages)
             _save_progress(
                 db,
                 task_id,
-                status=INDEX_STATUS_DONE if pending == 0 else INDEX_STATUS_PARTIAL,
+                status=INDEX_STATUS_DONE if pending == 0 and failed == 0 else INDEX_STATUS_PARTIAL,
                 processed=processed,
                 embedded=embedded,
                 pending=pending,

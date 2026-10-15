@@ -1,0 +1,431 @@
+{
+  "meta": {
+    "title": "批次码归一映射（中文批次原值 → batch_code）",
+    "purpose": "把各省各年的中文批次叫法归一到跨省语义 batch_code，使契约 8.3 / 8.7 的「唯一键」在跨省合并后不产生重复批次",
+    "owner": "徐（③ 数据工程）",
+    "generated_at": "2026-10-13",
+    "issue": "契约 G7",
+    "contract_refs": [
+      "docs/api-contract.md 第 38 行：batch_code 是机器键（示例 HE-UG），batch 仅作展示",
+      "docs/api-contract.md 8.3：规则表与导入以 batch_code 作唯一键，同一批次的历史别名不得当作不同批次",
+      "docs/api-contract.md 504-505 行：各省叫法差异经 batch_code 归一后不得再区分"
+    ],
+    "decision": "★ 采用**跨省语义码**（undergraduate_regular 等），不采用带省前缀的 HE-UG 风格。理由：504-505 行是强制要求（跨省归一后不得再区分），而带省前缀会在同一批次上产生 HE-UG / JX-UG 两个码，正好违反该条。契约第 38 行的 `HE-UG` 示例与 504-505 行**自相矛盾**，已列入待裁项 N7。",
+    "naming": {
+      "pattern": "{level}_{batch}（下划线小写）",
+      "level": {
+        "undergraduate": "本科",
+        "vocational": "高职（专科）"
+      },
+      "batch": [
+        "early（提前批）",
+        "first（一批，仅老高考）",
+        "second（二批，仅老高考）",
+        "regular（普通批 / 合并批）",
+        "art_sport（艺术体育）",
+        "special（特殊类型选拔）"
+      ]
+    },
+    "legacy_contract_example": {
+      "HE-UG": {
+        "maps_to": "undergraduate_regular",
+        "province": "河南",
+        "note": "契约第 38 行示例；仅在队长选择「省前缀方案」时启用，届时江西为 JX-UG"
+      },
+      "note": "其余批次契约未给示例，不臆造省前缀码"
+    },
+    "coverage": {
+      "raw_values_in_data": 21,
+      "batch_codes_registered": 8,
+      "batch_codes_appearing": [
+        "undergraduate_art_sport",
+        "undergraduate_early",
+        "undergraduate_first",
+        "undergraduate_regular",
+        "undergraduate_second",
+        "undergraduate_special",
+        "vocational_early",
+        "vocational_regular"
+      ],
+      "batch_codes_registered_only": [],
+      "unmapped_raw_values": []
+    }
+  },
+  "map": {
+    "专科批": "vocational_regular",
+    "提前本科": "undergraduate_early",
+    "提前高职(专科)": "vocational_early",
+    "普通本科批": "undergraduate_regular",
+    "普通本科提前批": "undergraduate_early",
+    "普通高职（专科）批": "vocational_regular",
+    "本一": "undergraduate_first",
+    "本二": "undergraduate_second",
+    "本科": "undergraduate_regular",
+    "本科一批": "undergraduate_first",
+    "本科二批": "undergraduate_second",
+    "本科批": "undergraduate_regular",
+    "本科批次": "undergraduate_regular",
+    "本科提前批": "undergraduate_early",
+    "本科第一批": "undergraduate_first",
+    "本科第二批": "undergraduate_second",
+    "艺术类/体育类本科批次": "undergraduate_art_sport",
+    "高校特殊选拔本科": "undergraduate_special",
+    "高职(专科)": "vocational_regular",
+    "高职专科批": "vocational_regular",
+    "高职（专科）批次": "vocational_regular"
+  },
+  "rows": [
+    {
+      "raw_batch": "专科批",
+      "batch_code": "vocational_regular",
+      "level": "专科",
+      "display_name": "高职（专科）批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 101281,
+      "evidence_files": [
+        "data/raw/2022_henan_enrollment-plan.csv",
+        "data/raw/2022_jiangxi_enrollment-plan.csv",
+        "data/raw/2023_jiangxi_enrollment-plan.csv",
+        "data/raw/2024_henan_enrollment-plan.csv",
+        "data/raw/2025_henan_enrollment-plan.csv",
+        "data/score_segment/score_segment_2022_江西.json",
+        "data/score_segment/score_segment_2022_河南.json",
+        "data/score_segment/score_segment_2023_江西.json",
+        "data/score_segment/score_segment_2023_河南.json",
+        "data/score_segment/score_segment_2024_江西.json",
+        "data/score_segment/score_segment_2024_河南.json",
+        "data/score_segment/score_segment_2025_江西.json",
+        "data/score_segment/score_segment_2025_河南.json"
+      ],
+      "note": ""
+    },
+    {
+      "raw_batch": "提前本科",
+      "batch_code": "undergraduate_early",
+      "level": "本科",
+      "display_name": "普通本科提前批",
+      "confidence": "medium",
+      "in_current_data": true,
+      "occurrences": 2667,
+      "evidence_files": [
+        "data/raw/2024_jiangxi_enrollment-plan.csv",
+        "data/raw/2025_jiangxi_enrollment-plan.csv"
+      ],
+      "note": "江西 2024/2025 招生计划写法；疑为「提前批本科」的倒装，需 ② 确认"
+    },
+    {
+      "raw_batch": "提前高职(专科)",
+      "batch_code": "vocational_early",
+      "level": "专科",
+      "display_name": "高职（专科）提前批",
+      "confidence": "medium",
+      "in_current_data": true,
+      "occurrences": 642,
+      "evidence_files": [
+        "data/raw/2024_jiangxi_enrollment-plan.csv",
+        "data/raw/2025_jiangxi_enrollment-plan.csv"
+      ],
+      "note": "江西 2024/2025 招生计划写法；需 ② 确认与本科提前批的分立口径"
+    },
+    {
+      "raw_batch": "普通本科批",
+      "batch_code": "undergraduate_regular",
+      "level": "本科",
+      "display_name": "普通本科批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 1,
+      "evidence_files": [
+        "data/dictionaries/province-exam-rule.json"
+      ],
+      "note": "河南省教育考试院 2025 官方叫法"
+    },
+    {
+      "raw_batch": "普通本科提前批",
+      "batch_code": "undergraduate_early",
+      "level": "本科",
+      "display_name": "普通本科提前批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 1,
+      "evidence_files": [
+        "data/dictionaries/province-exam-rule.json"
+      ],
+      "note": "河南省教育考试院 2025 官方叫法"
+    },
+    {
+      "raw_batch": "普通高职（专科）批",
+      "batch_code": "vocational_regular",
+      "level": "专科",
+      "display_name": "高职（专科）批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 1,
+      "evidence_files": [
+        "data/dictionaries/province-exam-rule.json"
+      ],
+      "note": "河南省教育考试院 2025 官方叫法"
+    },
+    {
+      "raw_batch": "本一",
+      "batch_code": "undergraduate_first",
+      "level": "本科",
+      "display_name": "本科一批",
+      "confidence": "medium",
+      "in_current_data": true,
+      "occurrences": 13324,
+      "evidence_files": [
+        "data/school_major_score/school_major_score_2024_河南.json"
+      ],
+      "note": "2024 河南录取分文件的简称写法；需 ② 确认无其他含义"
+    },
+    {
+      "raw_batch": "本二",
+      "batch_code": "undergraduate_second",
+      "level": "本科",
+      "display_name": "本科二批",
+      "confidence": "medium",
+      "in_current_data": true,
+      "occurrences": 17890,
+      "evidence_files": [
+        "data/school_major_score/school_major_score_2024_河南.json"
+      ],
+      "note": "2024 河南录取分文件的简称写法；需 ② 确认无其他含义"
+    },
+    {
+      "raw_batch": "本科",
+      "batch_code": "undergraduate_regular",
+      "level": "本科",
+      "display_name": "普通本科批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 68143,
+      "evidence_files": [
+        "data/raw/2024_jiangxi_enrollment-plan.csv",
+        "data/raw/2025_jiangxi_enrollment-plan.csv",
+        "data/school_major_score/school_major_score_2024_江西.json"
+      ],
+      "note": "江西 2024 起新高考本科批次合并后的官方批次名"
+    },
+    {
+      "raw_batch": "本科一批",
+      "batch_code": "undergraduate_first",
+      "level": "本科",
+      "display_name": "本科一批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 60602,
+      "evidence_files": [
+        "data/dictionaries/province-exam-rule.json",
+        "data/raw/2022_henan_enrollment-plan.csv",
+        "data/raw/2022_jiangxi_enrollment-plan.csv",
+        "data/raw/2023_jiangxi_enrollment-plan.csv",
+        "data/raw/2024_henan_enrollment-plan.csv",
+        "data/school_major_score/school_major_score_2022_江西.json",
+        "data/school_major_score/school_major_score_2022_河南.json",
+        "data/score_segment/score_segment_2022_江西.json",
+        "data/score_segment/score_segment_2022_河南.json",
+        "data/score_segment/score_segment_2023_江西.json",
+        "data/score_segment/score_segment_2023_河南.json",
+        "data/score_segment/score_segment_2024_河南.json"
+      ],
+      "note": ""
+    },
+    {
+      "raw_batch": "本科二批",
+      "batch_code": "undergraduate_second",
+      "level": "本科",
+      "display_name": "本科二批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 79736,
+      "evidence_files": [
+        "data/raw/2022_henan_enrollment-plan.csv",
+        "data/raw/2022_jiangxi_enrollment-plan.csv",
+        "data/raw/2023_jiangxi_enrollment-plan.csv",
+        "data/raw/2024_henan_enrollment-plan.csv",
+        "data/school_major_score/school_major_score_2022_江西.json",
+        "data/school_major_score/school_major_score_2022_河南.json",
+        "data/score_segment/score_segment_2022_江西.json",
+        "data/score_segment/score_segment_2022_河南.json",
+        "data/score_segment/score_segment_2023_江西.json",
+        "data/score_segment/score_segment_2023_河南.json",
+        "data/score_segment/score_segment_2024_河南.json"
+      ],
+      "note": ""
+    },
+    {
+      "raw_batch": "本科批",
+      "batch_code": "undergraduate_regular",
+      "level": "本科",
+      "display_name": "普通本科批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 59225,
+      "evidence_files": [
+        "data/raw/2025_henan_enrollment-plan.csv",
+        "data/school_major_score/school_major_score_2025_江西.json",
+        "data/school_major_score/school_major_score_2025_河南.json",
+        "data/score_segment/score_segment_2024_江西.json",
+        "data/score_segment/score_segment_2025_江西.json",
+        "data/score_segment/score_segment_2025_河南.json"
+      ],
+      "note": "河南 2025 新高考本科批（一分一段 / 招生计划 / 录取分同用）"
+    },
+    {
+      "raw_batch": "本科批次",
+      "batch_code": "undergraduate_regular",
+      "level": "本科",
+      "display_name": "普通本科批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 1,
+      "evidence_files": [
+        "data/dictionaries/province-exam-rule.json"
+      ],
+      "note": "江西省教育考试院官方叫法；与河南「普通本科批」同批"
+    },
+    {
+      "raw_batch": "本科提前批",
+      "batch_code": "undergraduate_early",
+      "level": "本科",
+      "display_name": "普通本科提前批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 7,
+      "evidence_files": [
+        "data/raw/2024_henan_enrollment-plan.csv"
+      ],
+      "note": "河南 2024 招生计划写法"
+    },
+    {
+      "raw_batch": "本科第一批",
+      "batch_code": "undergraduate_first",
+      "level": "本科",
+      "display_name": "本科一批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 12042,
+      "evidence_files": [
+        "data/raw/2023_henan_enrollment-plan.csv"
+      ],
+      "note": "河南 2023 招生计划写法，与「本科一批」同批"
+    },
+    {
+      "raw_batch": "本科第二批",
+      "batch_code": "undergraduate_second",
+      "level": "本科",
+      "display_name": "本科二批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 18307,
+      "evidence_files": [
+        "data/raw/2023_henan_enrollment-plan.csv"
+      ],
+      "note": "河南 2023 招生计划写法，与「本科二批」同批"
+    },
+    {
+      "raw_batch": "艺术类/体育类本科批次",
+      "batch_code": "undergraduate_art_sport",
+      "level": "本科",
+      "display_name": "艺术类/体育类本科批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 1,
+      "evidence_files": [
+        "data/dictionaries/province-exam-rule.json"
+      ],
+      "note": "江西省教育考试院 2026 规则文件叫法"
+    },
+    {
+      "raw_batch": "高校特殊选拔本科",
+      "batch_code": "undergraduate_special",
+      "level": "本科",
+      "display_name": "特殊类型选拔本科",
+      "confidence": "medium",
+      "in_current_data": true,
+      "occurrences": 1048,
+      "evidence_files": [
+        "data/raw/2024_jiangxi_enrollment-plan.csv",
+        "data/raw/2025_jiangxi_enrollment-plan.csv"
+      ],
+      "note": "江西 2024/2025 招生计划写法（高校专项 / 高水平艺术团等），需 ② 确认归并口径"
+    },
+    {
+      "raw_batch": "高职(专科)",
+      "batch_code": "vocational_regular",
+      "level": "专科",
+      "display_name": "高职（专科）批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 25650,
+      "evidence_files": [
+        "data/raw/2024_jiangxi_enrollment-plan.csv",
+        "data/raw/2025_jiangxi_enrollment-plan.csv"
+      ],
+      "note": "江西 2024/2025 招生计划写法（半角括号）"
+    },
+    {
+      "raw_batch": "高职专科批",
+      "batch_code": "vocational_regular",
+      "level": "专科",
+      "display_name": "高职（专科）批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 22216,
+      "evidence_files": [
+        "data/raw/2023_henan_enrollment-plan.csv"
+      ],
+      "note": "河南 2023 招生计划写法"
+    },
+    {
+      "raw_batch": "高职（专科）批次",
+      "batch_code": "vocational_regular",
+      "level": "专科",
+      "display_name": "高职（专科）批",
+      "confidence": "high",
+      "in_current_data": true,
+      "occurrences": 1,
+      "evidence_files": [
+        "data/dictionaries/province-exam-rule.json"
+      ],
+      "note": "江西省教育考试院官方叫法（全角括号 + 批次）"
+    },
+    {
+      "raw_batch": "",
+      "batch_code": null,
+      "level": null,
+      "display_name": null,
+      "confidence": null,
+      "in_current_data": true,
+      "occurrences": 2416,
+      "evidence_files": [
+        "data/score_segment/score_segment_2022_江西.json",
+        "data/score_segment/score_segment_2026_历史类.json",
+        "data/score_segment/score_segment_2026_物理类.json"
+      ],
+      "note": "空值不是映射问题而是**数据缺失**，按铁律「宁可缺，不可猜」保持原样，不得反推批次。实测出现在：① score_segment_2026_物理类/历史类（共 916 行，全部无批次，且整表缺来源三要素）；② score_segment_2022_江西（1,500 行）。"
+    }
+  ],
+  "registered_batch_codes": [
+    "undergraduate_art_sport",
+    "undergraduate_early",
+    "undergraduate_first",
+    "undergraduate_regular",
+    "undergraduate_second",
+    "undergraduate_special",
+    "vocational_early",
+    "vocational_regular"
+  ],
+  "display_names": {
+    "undergraduate_art_sport": "艺术类/体育类本科批",
+    "undergraduate_early": "普通本科提前批",
+    "undergraduate_first": "本科一批",
+    "undergraduate_regular": "普通本科批",
+    "undergraduate_second": "本科二批",
+    "undergraduate_special": "特殊类型选拔本科",
+    "vocational_early": "高职（专科）提前批",
+    "vocational_regular": "高职（专科）批"
+  }
+}

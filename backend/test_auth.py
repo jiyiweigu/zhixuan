@@ -375,7 +375,10 @@ def _() -> None:
     data = body["data"]
     assert data["province"] == "河南"
     assert data["score"] == 0
-    assert data["household_type"] == "未知"
+    # 契约 §8.1：可空档案项在 API 层统一用 null 表示未提供。
+    # 数据库列历史上用哨兵 "未知"/"未填" 承载同一语义，服务层已收敛为 None。
+    assert data["household_type"] is None
+    assert data["hearing"] is None
     assert data["special_marks"] == []
     assert data["preferences"]["strategy"] == "稳"
 

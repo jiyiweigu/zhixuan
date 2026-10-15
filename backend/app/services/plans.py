@@ -9,17 +9,23 @@
 - 风险预警（6.5）：声明式规则解释执行，见 app/data/plans/risk_rules.json，
   每条风险附等级、说明与规则来源；无来源的规则在加载阶段即被拒绝。
 
-候选数据源当前为演示数据（app/data/plans/candidates_demo.json）。
-接入 tasks.md 2.1、2.2 的真实录取数据时，只需替换 dataset.load_candidates 的实现，
-本模块的分档、排序与风险逻辑无需改动。
+候选数据源：库内真实录取分（``school_major_score`` × ``school``）优先，
+口径见 ``app/services/candidates.py``；库内无匹配数据（省份/科类/批次未覆盖）时
+回落到演示数据 ``app/data/plans/candidates_demo.json``，并在 ``data_status`` /
+``data_note`` 中如实标注。本模块的分档、排序与风险逻辑与数据来源无关。
 """
 
 from __future__ import annotations
 
-from typing import Any, Callable, Mapping
+from collections.abc import Callable, Mapping, Sequence
+from typing import Any
+
+from sqlalchemy.orm import Session
 
 from app.core import dataset
 from app.core.dataset import citation_of
+from app.models.constants import DATA_STATUS_AVAILABLE, DATA_STATUS_SCHEMA_ONLY
+from app.services import candidates as candidates_service
 
 TIER_ORDER = ("冲", "稳", "保")
 PRIORITY_OPTIONS = ("院校优先", "专业优先", "城市优先")
@@ -134,6 +140,26 @@ def _item_sort_key(item: dict[str, Any], ctx: _PlanContext) -> tuple[int, int]:
     ):
         matched = 1
     return (-matched, -item["min_score"])
+
+
+def _tier_note(candidate: Mapping[str, Any]) -> str:
+    """院校层次依据说明。
+
+    层次来自 ``school.is_985`` / ``is_211`` / ``dual_class``（数据整合期按教育部公开名单
+    补齐并已落库）；候选未带层次字段（演示数据）时返回空串，不推断。
+    """
+    marks: list[str] = []
+    if candidate.get("is_985"):
+        marks.append("985")
+    if candidate.get("is_211"):
+        marks.append("211")
+    dual = str(candidate.get("dual_class") or "").strip()
+    if dual:
+        marks.append(dual)
+    if not marks:
+        return ""
+    unique = list(dict.fromkeys(marks))
+    return f"该校为 {' / '.join(unique)}（院校层次依据教育部公开名单）。"
 
 
 def _order_items(items: list[dict[str, Any]], ctx: _PlanContext) -> list[dict[str, Any]]:
@@ -260,6 +286,9 @@ def _collect_risks(rule_data: tuple[dict[str, Any], ...], ctx: _PlanContext) -> 
         risks.append(
             {
                 "code": rule["code"],
+                # 契约 6.1 要求每条风险给出「级别 / 类型 / 目标 / 说明 / 规则来源」
+                "type": rule["code"],
+                "target": str((rule.get("params") or {}).get("tier") or "plan"),
                 "level": rule["level"],
                 "title": rule["title"],
                 "detail": rule["detail"],
@@ -302,6 +331,102 @@ def _dedupe(citations: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 
 # --------------------------------------------------------------------------- #
+# 风险体检（契约 6.1 POST /api/plan/risk-check）
+# --------------------------------------------------------------------------- #
+def _int_or_none(value: Any) -> int | None:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _normalize_risk_item(
+    raw: Mapping[str, Any], ctx: _PlanContext, strategies: list[dict[str, Any]]
+) -> dict[str, Any]:
+    """把外部传入的志愿条目收敛为风险检查所需的内部形状。
+
+    字段名兼容生成接口的条目（``name`` / ``min_score``）与前端 ``PlanItem``
+    （``school_name`` / ``min_score_ref`` / ``major_names``）。
+    ``tier`` 缺失或非法时，按与 ``build_plan`` 相同的「分差档位」口径推断，
+    避免把已经排好档的志愿误报为「某档为空」。
+    """
+    majors = raw.get("major_names")
+    major = ""
+    if isinstance(majors, (list, tuple)) and majors:
+        major = str(majors[0])
+    elif raw.get("major"):
+        major = str(raw["major"])
+
+    min_score = _int_or_none(raw.get("min_score", raw.get("min_score_ref"))) or 0
+    tier = str(raw.get("tier") or "").strip()
+    if tier not in TIER_ORDER and ctx.score:
+        inferred = _classify(ctx.score - min_score, strategies)
+        if inferred is not None:
+            tier = str(inferred["label"])
+
+    return {
+        "school_id": raw.get("school_id"),
+        "name": str(raw.get("school_name") or raw.get("name") or ""),
+        "province": str(raw.get("province") or ""),
+        "city": str(raw.get("city") or ""),
+        "major": major,
+        "subject_requirement": str(raw.get("subject_requirement") or ""),
+        "tier": tier if tier in TIER_ORDER else "",
+        "min_score": min_score,
+        "risk_level": TIER_RISK_LEVEL.get(tier, "medium"),
+        "reasons": [],
+        "citations": [],
+    }
+
+
+def check_risks(
+    profile: Any,
+    items: Sequence[Mapping[str, Any]],
+    *,
+    priority: str = "院校优先",
+    batch_line: Any = None,
+    risk_rules: Any = None,
+    strategies: Any = None,
+) -> list[dict[str, Any]]:
+    """对调用方给出的志愿条目做风险体检，**不重新生成方案**（契约 6.1）。
+
+    与 ``build_plan`` 复用同一套声明式规则（app/data/plans/risk_rules.json），
+    因此两处的风险口径必然一致；每条风险都携带规则来源。
+    """
+    profile_data = profile.model_dump() if hasattr(profile, "model_dump") else dict(profile or {})
+    ctx = _PlanContext(
+        {
+            "profile": profile_data,
+            "strategy": "稳",
+            "priority": priority,
+            "limit": max(1, len(items)),
+            "major_adjust": profile_data.get("accept_adjustment"),
+            "batch_line": batch_line,
+        }
+    )
+    strategy_list: list[dict[str, Any]] = list(
+        (dict(strategies) if strategies is not None else dataset.load_strategy_config()).get(
+            "strategies"
+        )
+        or []
+    )
+    ctx.items = [
+        _normalize_risk_item(raw, ctx, strategy_list)
+        for raw in items
+        if isinstance(raw, Mapping)
+    ]
+    ctx.total = len(ctx.items)
+    ctx.tier_counts = {
+        label: sum(1 for item in ctx.items if item["tier"] == label) for label in TIER_ORDER
+    }
+
+    rule_data = tuple(risk_rules if risk_rules is not None else dataset.load_risk_rules())
+    return _collect_risks(rule_data, ctx) if ctx.total else []
+
+
+
+
+# --------------------------------------------------------------------------- #
 # 主流程
 # --------------------------------------------------------------------------- #
 def build_plan(
@@ -310,10 +435,13 @@ def build_plan(
     candidates: Any = None,
     strategies: Any = None,
     risk_rules: Any = None,
+    db: Session | None = None,
 ) -> dict[str, Any]:
     """生成冲—稳—保志愿方案并给出风险预警。
 
     candidates / strategies / risk_rules 可注入，供测试与管理端复用；缺省从数据文件加载。
+    ``db`` 提供时优先用库内真实录取分作候选（见 ``app/services/candidates.py``），
+    库内无匹配数据或未传 ``db`` 时回落演示数据，并在 ``data_status`` / ``data_note`` 说明。
     """
     strategy_config: dict[str, Any] = (
         dict(strategies) if strategies is not None else dataset.load_strategy_config()
@@ -321,10 +449,23 @@ def build_plan(
     strategy_list: list[dict[str, Any]] = list(strategy_config.get("strategies") or [])
     plan_profiles: dict[str, Any] = dict(strategy_config.get("plan_profiles") or {})
     out_of_range: dict[str, str] = dict(strategy_config.get("out_of_range") or {})
-    candidate_data = tuple(candidates if candidates is not None else dataset.load_candidates())
     rule_data = tuple(risk_rules if risk_rules is not None else dataset.load_risk_rules())
 
     ctx = _PlanContext(payload)
+
+    # —— 候选数据源：真实库优先，缺数据回落演示 ——
+    source_meta: dict[str, Any] = {"source": "demo", "notes": []}
+    if candidates is not None:
+        candidate_data = tuple(candidates)
+        source_meta["source"] = "injected"
+    else:
+        real: tuple[dict[str, Any], ...] = ()
+        if db is not None:
+            real, source_meta = candidates_service.db_candidates(
+                db, province=ctx.province, subject_type=ctx.subject_type
+            )
+            source_meta["source"] = "db" if real else "demo"
+        candidate_data = real if real else dataset.load_candidates()
 
     # —— 分档 ——
     classified: list[dict[str, Any]] = []
@@ -377,6 +518,9 @@ def build_plan(
         )
         if subject_note:
             item["reasons"].append(subject_note)
+        tier_note = _tier_note(candidate)
+        if tier_note:
+            item["reasons"].append(tier_note)
         classified.append(item)
 
     # —— 排序：先档间，后档内 ——
@@ -414,7 +558,7 @@ def build_plan(
                 f"命中偏好地区（{item['province']}{item['city']}），在『{item['tier']}』档内优先排列。"
             )
         elif ctx.priority == "院校优先":
-            item["reasons"].append("按录取分由高到低排列（办学层次数据待 tasks.md 2.5 接入）。")
+            item["reasons"].append("按录取分由高到低排列（院校层次仅作出处说明，不参与排序）。")
 
     # —— 风险预警 ——
     # 空方案不逐条报"缺少某档"，否则会堆出多条同源提示；此时由 summary 说明原因
@@ -444,6 +588,24 @@ def build_plan(
         f"排序采用『{ctx.priority}』。"
     ) if ctx.total else "当前条件下未匹配到可纳入方案的志愿，请检查分数与省份设置。"
 
+    from_db = source_meta.get("source") == "db"
+    if from_db:
+        years = "、".join(str(y) for y in (source_meta.get("years") or []))
+        data_status = DATA_STATUS_AVAILABLE
+        notes = list(source_meta.get("notes") or [])
+        data_note = (
+            f"候选来自库内真实录取分（{ctx.province}{ctx.subject_type or ''}，"
+            f"普通本科批，数据年份 {years}；分档按院校最低录取分口径）。"
+            "选科要求数据尚未接入，subject_status 为 unknown 属数据缺口而非未选科。"
+        )
+        if notes:
+            data_note += " 说明：" + "；".join(notes)
+    else:
+        data_status = DATA_STATUS_SCHEMA_ONLY
+        data_note = "演示数据（非官方），真实录取数据请以省教育考试院发布为准"
+        if source_meta.get("notes"):
+            data_note += "。库内未取到真实候选：" + "；".join(source_meta["notes"])
+
     return {
         # —— 契约字段（docs/api-contract.md 第 5 节）——
         "items": selected,
@@ -458,6 +620,9 @@ def build_plan(
         "excluded": excluded,
         "risks": risks,
         "summary": summary,
-        "data_status": "演示数据（非官方），真实录取数据请以省教育考试院发布为准",
+        # data_status 只用契约「跨层词表」四值；"演示数据（非官方）" 这类说明放 data_note
+        "data_status": data_status,
+        "data_note": data_note,
+        "candidate_source": source_meta.get("source", "demo"),
         "disclaimer": DISCLAIMER,
     }

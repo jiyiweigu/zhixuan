@@ -1,0 +1,88 @@
+{
+  "meta": {
+    "target_table": "school",
+    "purpose": "补 schools_merged.json 中源 B（教育部全国高校名单）未覆盖的 31 所院校的 city / ownership",
+    "policy": "city 依官方来源（国防部 / 教育部阳光高考 / 省市政府 / 院校官网）填写；ownership：军队院校与内地分校按「公办」填并标注依据，港澳院校按当地办学性质映射并标注。严禁凭空填写。",
+    "generated_at": "2026-10-13",
+    "record_count": 31,
+    "group_count": { "军队院校": 22, "母体高校分校/校区": 7, "港澳台院校": 2 },
+    "sources": [
+      {
+        "id": "SRC-MILITARY-22",
+        "name": "湖北省襄阳市人民政府门户网站（2025 年 22 所军队院校面向普通高中毕业生招生名单）",
+        "url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml",
+        "type": "官方",
+        "year": 2026,
+        "covers": "22 所军队院校校本部所在城市"
+      },
+      {
+        "id": "SRC-MILITARY-NEW3",
+        "name": "中华人民共和国国防部（调整组建陆军兵种大学、信息支援部队工程大学、联勤保障部队工程大学 3 所院校公告）",
+        "url": "https://www.mod.gov.cn/gfbw/gffw/16387107.html",
+        "type": "官方",
+        "year": 2025,
+        "covers": "3 所新组建院校校本部（合肥 / 武汉 / 重庆）"
+      },
+      {
+        "id": "SRC-MOE-SUNSHINE-MIL-2026",
+        "name": "教育部阳光高考信息平台（2026 年军队院校报考指南）",
+        "url": "https://gaokao.chsi.com.cn/gkxx/zc/ss/202606/20260612/2293727916.html",
+        "type": "官方",
+        "year": 2026,
+        "covers": "军队院校在各省招生名单；注明「院校名称后标注的城市为校本部所在地」"
+      },
+      {
+        "id": "SRC-CUHK-OFFICIAL",
+        "name": "香港中文大学官网（公帑资助 / UGC-funded）",
+        "url": "https://www.cuhk.edu.hk/",
+        "type": "高校官网",
+        "year": 2026,
+        "covers": "香港中文大学办学性质"
+      },
+      {
+        "id": "SRC-CHUHAI-OFFICIAL",
+        "name": "香港珠海学院官网（校长的话：自资院校 / 私立大学）",
+        "url": "https://www.chuhai.edu.hk/",
+        "type": "高校官网",
+        "year": 2026,
+        "covers": "香港珠海学院办学性质"
+      }
+    ],
+    "note": "军队院校与内地分校的 ownership 依据「国家办学」填『公办』，港校按当地性质映射；均已在记录 note 中标注，供队长复核（见 N15）。"
+  },
+  "records": [
+    { "name": "国防科技大学", "code": "91002", "city": "长沙市", "ownership": "公办", "ownership_basis": "军队院校（中央军委直属）", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "陆军工程大学", "code": "91004", "city": "南京市", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "陆军步兵学院", "code": "91005", "city": "南昌市", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "陆军兵种大学", "code": "91007", "city": "合肥市", "ownership": "公办", "ownership_basis": "军队院校（2025 年新组建）", "source_id": "SRC-MILITARY-NEW3", "source_url": "https://www.mod.gov.cn/gfbw/gffw/16387107.html" },
+    { "name": "陆军防化学院", "code": "91011", "city": "北京", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "陆军军医大学", "code": "91012", "city": "重庆", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "联勤保障部队工程大学", "code": "91014", "city": "重庆", "ownership": "公办", "ownership_basis": "军队院校（2025 年新组建）", "source_id": "SRC-MILITARY-NEW3", "source_url": "https://www.mod.gov.cn/gfbw/gffw/16387107.html" },
+    { "name": "海军工程大学", "code": "91016", "city": "武汉市", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "海军大连舰艇学院", "code": "91017", "city": "大连市", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "海军潜艇学院", "code": "91018", "city": "青岛市", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "海军航空大学", "code": "91019", "city": "烟台市", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "海军军医大学", "code": "91020", "city": "上海", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "空军工程大学", "code": "91024", "city": "西安市", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "空军航空大学", "code": "91025", "city": "长春市", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "空军预警学院", "code": "91026", "city": "武汉市", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "空军军医大学", "code": "91030", "city": "西安市", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "火箭军工程大学", "code": "91034", "city": "西安市", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "军事航天部队航天工程大学", "code": "91036", "city": "北京", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "网络空间部队信息工程大学", "code": "91037", "city": "郑州市", "ownership": "公办", "ownership_basis": "军队院校", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "武警工程大学", "code": "91039", "city": "西安市", "ownership": "公办", "ownership_basis": "军队院校（武警部队）", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "武警警官学院", "code": "91040", "city": "成都市", "ownership": "公办", "ownership_basis": "军队院校（武警部队）", "source_id": "SRC-MILITARY-22", "source_url": "http://xy.xiangyang.gov.cn/zmhd/hygq/202506/t20250611_3824857.shtml" },
+    { "name": "信息支援部队工程大学", "code": "92035", "city": "武汉市", "ownership": "公办", "ownership_basis": "军队院校（2025 年新组建）", "source_id": "SRC-MILITARY-NEW3", "source_url": "https://www.mod.gov.cn/gfbw/gffw/16387107.html" },
+
+    { "name": "复旦大学医学院", "code": "19246", "city": "上海", "ownership": "公办", "ownership_basis": "继承母体复旦大学（教育部直属）", "source_id": "SRC-MOE-SCHOOL-LIST", "source_url": "https://hudong.moe.gov.cn/qggxmd/" },
+    { "name": "浙江大学医学院", "code": "19335", "city": "杭州市", "ownership": "公办", "ownership_basis": "继承母体浙江大学（教育部直属）", "source_id": "SRC-MOE-SCHOOL-LIST", "source_url": "https://hudong.moe.gov.cn/qggxmd/" },
+    { "name": "山东大学威海分校", "code": "19422", "city": "威海市", "ownership": "公办", "ownership_basis": "继承母体山东大学（教育部直属）", "source_id": "SRC-MOE-SCHOOL-LIST", "source_url": "https://hudong.moe.gov.cn/qggxmd/" },
+    { "name": "东北大学秦皇岛分校", "code": "19145", "city": "秦皇岛市", "ownership": "公办", "ownership_basis": "继承母体东北大学（教育部直属）", "source_id": "SRC-MOE-SCHOOL-LIST", "source_url": "https://hudong.moe.gov.cn/qggxmd/" },
+    { "name": "中国石油大学(北京)克拉玛依校区", "code": "19414", "city": "克拉玛依市", "ownership": "公办", "ownership_basis": "继承母体中国石油大学(北京)（教育部直属）", "source_id": "SRC-MOE-SCHOOL-LIST", "source_url": "https://hudong.moe.gov.cn/qggxmd/" },
+    { "name": "内蒙古科技大学包头师范学院", "code": "18127", "city": "包头市", "ownership": "公办", "ownership_basis": "继承母体内蒙古科技大学（内蒙古自治区）", "source_id": "SRC-MOE-SCHOOL-LIST", "source_url": "https://hudong.moe.gov.cn/qggxmd/" },
+    { "name": "内蒙古科技大学包头医学院", "code": "19127", "city": "包头市", "ownership": "公办", "ownership_basis": "继承母体内蒙古科技大学（内蒙古自治区）", "source_id": "SRC-MOE-SCHOOL-LIST", "source_url": "https://hudong.moe.gov.cn/qggxmd/" },
+
+    { "name": "香港中文大学", "code": "81002", "city": "中国香港", "ownership": "公办", "ownership_basis": "公帑资助（UGC-funded university）", "source_id": "SRC-CUHK-OFFICIAL", "source_url": "https://www.cuhk.edu.hk/" },
+    { "name": "香港珠海学院", "code": "81012", "city": "中国香港", "ownership": "民办", "ownership_basis": "校方自述「自资院校 / 私立大学」", "source_id": "SRC-CHUHAI-OFFICIAL", "source_url": "https://www.chuhai.edu.hk/" }
+  ]
+}

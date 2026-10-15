@@ -92,10 +92,16 @@ def _check(payload: dict[str, Any], *, token: str | None = None, path: str = "/a
 
 
 def _profile(**kw: Any) -> dict[str, Any]:
+    """一份"填全"的档案。
+
+    契约 8.1：任一可空项缺失都会进 ``unknowns``（因此 ``eligible`` 为 ``null``）。
+    需要"无命中 → eligible=true"的用例必须给全字段；需要"缺项"的用例再按需覆盖为 ``None``。
+    """
     base: dict[str, Any] = {
         "province": "河南", "exam_type": "普通", "first_subject": "物理",
         "second_subjects": ["化学"], "score": 620, "rank": 12000,
         "color_vision": "正常", "vision_left": 5.0, "vision_right": 5.0,
+        "height": 175, "weight": 65, "hepatitis_b": False,
         "hearing": "正常", "smell": "正常", "stutter": "正常",
         "household_type": "农村", "home_county": "兰考县", "home_county_code": "410225",
         "school_years": 3, "tuition_budget": 15000, "batch_preference": ["本科批"],
@@ -105,33 +111,59 @@ def _profile(**kw: Any) -> dict[str, Any]:
 
 
 # --------------------------------------------------------------------------- #
-# 6.2.6 省份模板
+# 8.3 省份模板
 # --------------------------------------------------------------------------- #
-@case("省份01 河南 2026 本科批 → 48 组 / group / 有调剂")
+@case("省份01 41（河南）2026 本科批 → 48 组 / group / 有调剂，且含契约 8.3 全部字段")
 def _() -> None:
-    body = client.get("/api/provinces/河南/rules?year=2026&batch=本科批").json()
+    body = client.get("/api/provinces/41/rules?year=2026&batch=本科批").json()
     assert body["code"] == 0, body
     data = body["data"]
-    assert data["volunteer_count"] == 48 and data["mode"] == "group" and data["has_adjust"] is True
+    # 契约 8.3：出参含 province_code / batch_code / exam_type / data_status / 嵌套 rule
+    assert data["province_code"] == "41" and data["province"] == "河南"
+    assert data["batch"] == "本科批" and data["batch_code"] == "undergraduate_regular"
+    assert data["exam_type"] == "普通"
+    assert data["data_status"] in {"available", "partial"}, data
+    rule = data["rule"]
+    assert rule["volunteer_count"] == 48 and rule["mode"] == "group" and rule["has_adjust"] is True
+    assert isinstance(data["sources"], list) and data["sources"], "可用规则必须带来源"
+    assert data["missing_rule_sets"] == []
 
 
-@case("省份02 江西 2026 本科批 → 45 组")
+@case("省份02 36（江西）2026 本科批 → 45 组")
 def _() -> None:
-    data = client.get("/api/provinces/江西/rules?year=2026").json()["data"]
-    assert data["volunteer_count"] == 45
+    data = client.get("/api/provinces/36/rules?year=2026&batch=本科批").json()["data"]
+    assert data["rule"]["volunteer_count"] == 45
+
+
+@case("省份02b 省名入参仍然可用（兼容历史调用方）")
+def _() -> None:
+    data = client.get("/api/provinces/河南/rules?year=2026&batch=本科批").json()["data"]
+    assert data["province_code"] == "41" and data["rule"]["volunteer_count"] == 48
 
 
 @case("省份03 河南提前批 → 专业+院校 / 64 / 无调剂 / 有互斥组")
 def _() -> None:
-    data = client.get("/api/provinces/河南/rules?year=2026&batch=提前批").json()["data"]
-    assert data["mode"] == "major_school" and data["volunteer_count"] == 64
-    assert data["has_adjust"] is False and data["mutex_groups"]
+    data = client.get("/api/provinces/41/rules?year=2026&batch=提前批").json()["data"]
+    rule = data["rule"]
+    assert rule["mode"] == "major_school" and rule["volunteer_count"] == 64
+    assert rule["has_adjust"] is False and rule["mutex_groups"]
+    assert data["batch_code"] == "undergraduate_early"
 
 
-@case("省份04 规则缺失省份 → 3001（不静默放行）")
+@case("省份04 无对应版本 → 200 + unavailable + rule:null（不返回虚构模板）")
 def _() -> None:
-    body = client.get("/api/provinces/西藏/rules?year=2026").json()
-    assert body["code"] == 3001, body
+    body = client.get("/api/provinces/54/rules?year=2026&batch=本科批").json()
+    assert body["code"] == 0, body
+    data = body["data"]
+    assert data["data_status"] == "unavailable", data
+    assert data["rule"] is None
+    assert "province_exam_rule" in data["missing_rule_sets"]
+
+
+@case("省份05 缺 year → 1001（契约 8.3：year 必填）")
+def _() -> None:
+    body = client.get("/api/provinces/41/rules?batch=本科批").json()
+    assert body["code"] == 1001, body
 
 
 # --------------------------------------------------------------------------- #
@@ -149,25 +181,44 @@ def _() -> None:
     assert data["summary"]["blocked"] == 1
 
 
-@case("校验02 正常考生报法学 → eligible（无命中）")
+@case("校验02 档案填全的正常考生报法学 → eligible 为 true（无命中）")
 def _() -> None:
     payload = {
         "profile": _profile(),
         "items": [{"unit_id": "u-2", "batch": "本科批", "major_ids": [_major_id("法学")]}],
     }
     item = _check(payload).json()["data"]["items"][0]
+    assert not item["unknowns"], item["unknowns"]
     assert item["eligible"] is True and not item["blockers"] and not item["warnings"]
 
 
-@case("校验03 未填体检 → unknowns 且不判通过（红线）")
+@case("校验03 未填体检 → unknowns 且 eligible 为 null（红线：不得判为合格）")
 def _() -> None:
     payload = {
         "profile": _profile(color_vision=None, vision_left=None, vision_right=None),
         "items": [{"unit_id": "u-3", "batch": "本科批", "major_ids": [_major_id("临床医学")]}],
     }
-    item = _check(payload).json()["data"]["items"][0]
+    result = _check(payload).json()["data"]
+    item = result["items"][0]
     assert item["unknowns"], "未填体检必须进 unknowns"
     assert not item["blockers"]
+    # 契约 8.1：无 blocker 但有 unknown → eligible 必须是 null，绝不能是 True
+    assert item["eligible"] is None, f"缺项不得判为合格，实际 {item['eligible']!r}"
+    assert result["summary"]["unknown"] >= 1
+
+
+@case("校验03b summary 各计数互相独立（单位可同时计入 warned 与 unknown）")
+def _() -> None:
+    payload = {
+        "profile": _profile(color_vision=None, vision_left=None, vision_right=None, tuition_budget=100),
+        "items": [{"unit_id": "u-3b", "batch": "本科批",
+                   "major_ids": [_major_id("计算机科学与技术(中外合作)")]}],
+    }
+    summary = _check(payload).json()["data"]["summary"]
+    assert summary["total"] == 1
+    # 同一单位：超预算进 warned，体检缺项进 unknown → 两个计数都要算它（不是 if/elif 二选一）
+    assert summary["warned"] >= 1, summary
+    assert summary["unknown"] >= 1, summary
 
 
 @case("校验04 超预算 → warnings（保留在结果里）")
@@ -226,20 +277,70 @@ def _() -> None:
 
 
 # --------------------------------------------------------------------------- #
-# 6.2.9 专业要求
+# 8.6 专业要求
 # --------------------------------------------------------------------------- #
-@case("专业01 临床医学要求 → 首选物理 + 再选化学（all）")
+@case("专业01 41（河南）临床医学 → 首选物理 + 再选化学（all）+ 契约 8.6 形状")
 def _() -> None:
     mid = _major_id("临床医学")
-    data = client.get(f"/api/majors/{mid}/requirements?province=河南&year=2026").json()["data"]
+    body = client.get(f"/api/majors/{mid}/requirements?province=41&year=2026").json()
+    assert body["code"] == 0, body
+    data = body["data"]
     assert data["subject_req"]["first"] == "物理"
     assert "化学" in data["subject_req"]["secondary"] and data["subject_req"]["logic"] == "all"
+    assert data["province_code"] == "41" and data["data_status"] in {
+        "available", "partial", "schema_only", "unavailable"
+    }
+    # threshold 必须是对象 {operator, value}，不是自由文本
+    for restriction in data["physical_restrictions"]:
+        assert isinstance(restriction["threshold"], dict), restriction
+        assert "operator" in restriction["threshold"] and "value" in restriction["threshold"]
+    # tuition 结构完整；来源／缺失集如实
+    assert isinstance(data["missing_rule_sets"], list)
+    if data["tuition"] is not None:
+        for field in ("amount", "currency", "period", "ownership", "note"):
+            assert field in data["tuition"], field
+    # enrollment_notes 六项齐全，未知项为 null（不得用空数组冒充"无限制"）
+    for field in (
+        "single_subject_req", "language_req", "gender_req",
+        "interview_required", "political_review_required", "physical_test_required",
+    ):
+        assert field in data["enrollment_notes"], field
 
 
 @case("专业02 专业不存在 → 1001")
 def _() -> None:
-    body = client.get("/api/majors/999999/requirements?province=河南&year=2026").json()
+    body = client.get("/api/majors/999999/requirements?province=41&year=2026").json()
     assert body["code"] == 1001, body
+
+
+@case("专业03 缺 province / year → 1001（契约 8.6：均必填）")
+def _() -> None:
+    mid = _major_id("临床医学")
+    assert client.get(f"/api/majors/{mid}/requirements?year=2026").json()["code"] == 1001
+    assert client.get(f"/api/majors/{mid}/requirements?province=41").json()["code"] == 1001
+
+
+# --------------------------------------------------------------------------- #
+# 8.4 边界：unit_id 重复 / 响应含 data_status
+# --------------------------------------------------------------------------- #
+@case("边界01 unit_id 在请求内重复 → 1001")
+def _() -> None:
+    mid = _major_id("法学")
+    payload = {
+        "profile": _profile(),
+        "items": [
+            {"unit_id": "dup", "batch": "本科批", "major_ids": [mid]},
+            {"unit_id": "dup", "batch": "本科批", "major_ids": [mid]},
+        ],
+    }
+    assert _check(payload).json()["code"] == 1001
+
+
+@case("边界02 校验响应首字段为 data_status（契约 8.4）")
+def _() -> None:
+    data = _check({"profile": _profile(), "items": []}).json()["data"]
+    assert data["data_status"] in {"available", "partial", "schema_only", "unavailable"}, data
+    assert "items" in data and "summary" in data
 
 
 # --------------------------------------------------------------------------- #
@@ -361,8 +462,140 @@ def _() -> None:
                    "source_url": "http://www.moe.gov.cn/", "year": 2026},
     }
     assert client.post("/api/admin/physical-restrictions", json=payload, headers=headers).json()["code"] == 0
-    items = client.get("/api/admin/physical-restrictions?province=河南&year=2026", headers=headers).json()["data"]["items"]
-    assert any(item["condition"] == "嗅觉" for item in items)
+    listing = client.get("/api/admin/physical-restrictions?province=河南&year=2026", headers=headers).json()["data"]
+    assert any(item["condition"] == "嗅觉" for item in listing["items"])
+    # 契约 8.8：GET 统一返回分页包
+    assert {"items", "total", "page", "page_size"} <= set(listing)
+
+
+def _admin_headers() -> dict[str, str]:
+    return {"Authorization": f"Bearer {_admin_token()}"}
+
+
+# --------------------------------------------------------------------------- #
+# 契约 8.8 四组新增管理端接口
+# --------------------------------------------------------------------------- #
+@case("管理07 章程要求：新建 → 出现在 8.6 的 enrollment_notes")
+def _() -> None:
+    mid = _major_id("临床医学")
+    payload = {
+        "province_code": "41", "year": 2026, "major_id": mid,
+        "requirement_type": "language", "requirement_value": {"allowed_languages": ["英语"]},
+        "level": "reject", "detail": "仅限英语考生",
+        "source": {"source_name": "河南省教育考试院", "source_url": "https://www.haeea.cn/", "year": 2026},
+    }
+    body = client.post("/api/admin/admission-requirements", json=payload, headers=_admin_headers()).json()
+    assert body["code"] == 0, body
+    data = client.get(f"/api/majors/{mid}/requirements?province=41&year=2026").json()["data"]
+    assert data["enrollment_notes"]["language_req"] == {"allowed_languages": ["英语"]}, data["enrollment_notes"]
+
+
+@case("管理08 章程要求：requirement_type 非法 → 1001")
+def _() -> None:
+    payload = {
+        "province_code": "41", "year": 2026, "major_id": 1,
+        "requirement_type": "身高", "detail": "x",
+        "source": {"source_name": "河南省教育考试院", "source_url": "https://www.haeea.cn/", "year": 2026},
+    }
+    assert client.post(
+        "/api/admin/admission-requirements", json=payload, headers=_admin_headers()
+    ).json()["code"] == 1001
+
+
+@case("管理09 专业学费：新建 → 8.6 的 tuition 取库值并带 currency/period")
+def _() -> None:
+    mid = _major_id("法学")
+    payload = {
+        "province_code": "41", "year": 2026, "major_id": mid,
+        "amount": 5200, "currency": "CNY", "period": "year", "ownership": "公办",
+        "note": "按官方收费标准",
+        "source": {"source_name": "河南省教育考试院", "source_url": "https://www.haeea.cn/", "year": 2026},
+    }
+    assert client.post("/api/admin/major-tuition", json=payload, headers=_admin_headers()).json()["code"] == 0
+    data = client.get(f"/api/majors/{mid}/requirements?province=41&year=2026").json()["data"]
+    assert data["tuition"]["amount"] == 5200 and data["tuition"]["currency"] == "CNY"
+    assert data["tuition"]["period"] == "year" and data["tuition"]["ownership"] == "公办"
+
+
+@case("管理10 规则集状态：手工置 available 被拒 → 1001（契约 8.8）")
+def _() -> None:
+    payload = {
+        "province_code": "41", "year": 2026, "batch_code": "undergraduate_regular",
+        "exam_type": "普通", "dataset": "major_tuition", "status": "available",
+        "note": "试图手工放行",
+    }
+    body = client.put("/api/admin/rule-dataset-status", json=payload, headers=_admin_headers()).json()
+    assert body["code"] == 1001, body
+
+
+@case("管理11 规则集状态：schema_only 可写，且 GET 可查")
+def _() -> None:
+    payload = {
+        "province_code": "41", "year": 2026, "batch_code": "undergraduate_regular",
+        "exam_type": "普通", "dataset": "admission_requirement", "status": "schema_only",
+        "note": "结构已就绪，待 ③ 号导入",
+    }
+    assert client.put(
+        "/api/admin/rule-dataset-status", json=payload, headers=_admin_headers()
+    ).json()["code"] == 0
+    listing = client.get(
+        "/api/admin/rule-dataset-status?province_code=41&year=2026", headers=_admin_headers()
+    ).json()["data"]
+    assert any(item["dataset"] == "admission_requirement" for item in listing["items"])
+
+
+@case("管理12 批量导入：dataset 非法 → 1001")
+def _() -> None:
+    payload = {"dataset": "unknown_set", "province_code": "41", "year": 2026, "items": [{"x": 1}]}
+    assert client.post(
+        "/api/admin/rule-datasets/import", json=payload, headers=_admin_headers()
+    ).json()["code"] == 1001
+
+
+@case("管理13 批量导入：缺来源 → 4001 且整批不落库")
+def _() -> None:
+    payload = {
+        "dataset": "major_tuition", "province_code": "41", "year": 2026,
+        "items": [{"major_id": 1, "amount": 5000, "source_name": "", "source_url": ""}],
+    }
+    body = client.post(
+        "/api/admin/rule-datasets/import", json=payload, headers=_admin_headers()
+    ).json()
+    assert body["code"] == 4001, body
+
+
+@case("管理14 批量导入：演示来源 example.invalid 被拒")
+def _() -> None:
+    payload = {
+        "dataset": "major_tuition", "province_code": "41", "year": 2026,
+        "items": [{"major_id": 1, "amount": 5000,
+                   "source_name": "演示", "source_url": "https://example.invalid/x", "year": 2026}],
+    }
+    body = client.post(
+        "/api/admin/rule-datasets/import", json=payload, headers=_admin_headers()
+    ).json()
+    assert body["code"] == 1001, body
+
+
+@case("管理15 批量导入：整批成功 → dataset/created/updated/rejected/errors 齐全")
+def _() -> None:
+    mid = _major_id("汉语言文学")
+    payload = {
+        "dataset": "major_tuition", "province_code": "41", "year": 2026, "batch_code": "undergraduate_regular",
+        "exam_type": "普通",
+        "items": [{
+            "major_id": mid, "amount": 5000, "currency": "CNY", "period": "year",
+            "ownership": "公办", "note": "按官方收费标准",
+            "source_name": "河南省教育考试院", "source_url": "https://www.haeea.cn/", "year": 2026,
+        }],
+    }
+    body = client.post(
+        "/api/admin/rule-datasets/import", json=payload, headers=_admin_headers()
+    ).json()
+    assert body["code"] == 0, body
+    for field in ("dataset", "created", "updated", "rejected", "errors"):
+        assert field in body["data"], field
+    assert body["data"]["created"] == 1 and body["data"]["rejected"] == 0
 
 
 def main() -> int:

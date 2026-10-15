@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "title": "考试类型（exam_type）归一映射",
+    "purpose": "把数据源的 `category_group` 列按契约 8.7 归一到 `exam_type`，使河南「普通类」与江西「历史、物理科目组」在唯一键层面不被当成两种考试类型",
+    "owner": "徐（③ 数据工程）",
+    "generated_at": "2026-10-13",
+    "issue": "新发现（契约 8.7 要求「必须改名」，但未给出取值归一规则）",
+    "contract_refs": [
+      "docs/api-contract.md 8.7：「数据源列名 category_group 对应契约字段 exam_type，导入时必须改名」",
+      "docs/api-contract.md 8.3：示例 exam_type = \"普通\"",
+      "backend/app/models/profile.py：exam_type 注释「普通 / 艺术 / 体育」，default=\"普通\""
+    ],
+    "coverage": {
+      "raw_values_in_data": 3,
+      "normalized_values": [
+        "普通"
+      ],
+      "needs_ruling": [
+        "艺术类 / 体育类"
+      ]
+    }
+  },
+  "map": {
+    "历史、物理科目组": "普通",
+    "普通类": "普通",
+    "艺术类 / 体育类": null
+  },
+  "source_field": "category_group",
+  "target_field": "exam_type",
+  "rows": [
+    {
+      "raw_exam_type": "历史、物理科目组",
+      "normalized": "普通",
+      "confidence": "medium",
+      "occurrences": 2,
+      "evidence_files": [
+        "data/dictionaries/province-exam-rule.json"
+      ],
+      "note": "江西普通类按首选科目划分为历史/物理科目组，其考试类型仍为**普通**；与河南「普通类」同义，需 ② 确认「科目组」信息是否另有承载字段（若并入 exam_type 会与契约枚举冲突）"
+    },
+    {
+      "raw_exam_type": "普通类",
+      "normalized": "普通",
+      "confidence": "high",
+      "occurrences": 4,
+      "evidence_files": [
+        "data/dictionaries/province-exam-rule.json"
+      ],
+      "note": "河南省教育考试院官方叫法；与契约 8.3 示例 `exam_type=\"普通\"` 一致"
+    },
+    {
+      "raw_exam_type": "艺术类 / 体育类",
+      "normalized": null,
+      "confidence": "review",
+      "occurrences": 1,
+      "evidence_files": [
+        "data/dictionaries/province-exam-rule.json"
+      ],
+      "note": "★ 该规则同时覆盖艺术与体育两类考生，而契约/模型枚举为**三值**（普通 / 艺术 / 体育），无「艺术体育」合并值。建议 ② 把该规则**拆为两条**（exam_type=艺术 / 体育），或由队长放宽枚举。**不擅自归并**，列入待裁项。"
+    }
+  ]
+}

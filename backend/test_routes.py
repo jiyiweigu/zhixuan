@@ -8,8 +8,8 @@
 说明：FastAPI 0.143 起 app.routes 不再拍平被 include 的子路由，
 因此这里改用 app.openapi()，与框架版本无关，并顺带验证 OpenAPI 可用（tasks.md 1.5）。
 
-注意：下面带 NEW 标记的接口为新增，契约 docs/api-contract.md 尚未收录，
-已在 PR 描述中提请队长补入。契约合并后请删除标记与本节说明。
+契约 v1.2 起，本文件列出的全部接口均已在 docs/api-contract.md 中登记
+（新增接口见 6.1 节），原先的 "NEW / 待补入契约" 标记已按约定删除。
 """
 
 from __future__ import annotations
@@ -25,11 +25,24 @@ EXPECTED = {
     ("/api/pathways", "get"),
     ("/api/pathways/eligibility-check", "post"),
     ("/api/qa", "get"),
+    # NEW：6.1 结构化问答（留痕 + 会话历史）
+    ("/api/qa/ask", "post"),
+    ("/api/qa/history", "get"),
     ("/api/plans", "post"),
+    # NEW：6.1 推荐与方案风险体检
+    ("/api/recommend", "post"),
+    ("/api/plan/risk-check", "post"),
     ("/api/schools", "get"),
-    # NEW：新增接口，待补入契约（途径详情 4.1、区域判定 4.3）
+    # NEW：6.1 一分一段（分数 ↔ 位次）
+    ("/api/scores/segment", "get"),
+    # NEW：6.1 收藏
+    ("/api/user/favorites", "get"),
+    ("/api/user/favorites", "post"),
+    ("/api/user/favorites", "delete"),
+    # NEW：新增接口（途径详情 3.、区域判定 3.、途径区域名单 6.1）
     ("/api/pathways/region-check", "get"),
     ("/api/pathways/{pathway_id}", "get"),
+    ("/api/pathways/{pathway_id}/regions", "get"),
     # NEW：新增接口，待补入契约（认证 3.1/3.3）
     ("/api/auth/logout", "post"),
     ("/api/auth/me", "get"),
@@ -86,6 +99,16 @@ EXPECTED = {
     ("/api/admin/physical-restrictions", "get"),
     ("/api/admin/physical-restrictions", "post"),
     ("/api/admin/physical-restrictions/{rule_id}", "put"),
+    # NEW：契约 8.8 四组管理端规则维护（v1.2 补齐）
+    ("/api/admin/admission-requirements", "get"),
+    ("/api/admin/admission-requirements", "post"),
+    ("/api/admin/admission-requirements/{rule_id}", "put"),
+    ("/api/admin/major-tuition", "get"),
+    ("/api/admin/major-tuition", "post"),
+    ("/api/admin/major-tuition/{rule_id}", "put"),
+    ("/api/admin/rule-dataset-status", "get"),
+    ("/api/admin/rule-dataset-status", "put"),
+    ("/api/admin/rule-datasets/import", "post"),
 }
 
 

@@ -27,7 +27,7 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "pending"
+      "data_status": "schema_only"
     },
     {
       "id": 718,
@@ -47,7 +47,7 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "pending"
+      "data_status": "schema_only"
     },
     {
       "id": 51,
@@ -67,7 +67,7 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "pending"
+      "data_status": "schema_only"
     },
     {
       "id": 55,
@@ -87,7 +87,7 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "pending"
+      "data_status": "schema_only"
     },
     {
       "id": 59,
@@ -107,7 +107,7 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "pending"
+      "data_status": "schema_only"
     },
     {
       "id": 101,
@@ -127,7 +127,7 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "pending"
+      "data_status": "schema_only"
     },
     {
       "id": 77,
@@ -147,7 +147,7 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "pending"
+      "data_status": "schema_only"
     },
     {
       "id": 71,
@@ -167,7 +167,7 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "pending"
+      "data_status": "schema_only"
     },
     {
       "id": 82,
@@ -187,7 +187,7 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "pending"
+      "data_status": "schema_only"
     },
     {
       "id": 1,
@@ -207,7 +207,7 @@
       "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
       "source_url": "https://zsjh.haedu.cn/qwerasd/school",
       "year": 2026,
-      "data_status": "pending"
+      "data_status": "schema_only"
     }
   ]
 }

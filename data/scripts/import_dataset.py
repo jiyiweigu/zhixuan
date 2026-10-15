@@ -18,7 +18,7 @@
   - subject_req 走 parse_subject_req.parse()，解析失败一律进 missing_rule_sets，**绝不猜测**
   - 2023 河南 school-admission（25 行、校名与代号全空）判为不可用，用 quality_flags 标注
   - 所有输出记录带 source_name / source_url / year（三要素），否则不入 staged
-  - 数据状态用团队枚举 `pending`（未核实），**不标 verified**（核实通过后才升）
+  - 数据状态用契约枚举 `schema_only`（渠道数据未核实；部分字段可用用 `partial`），**不标 `available`**（核实通过后才升）
 
 用法：
   python data/scripts/import_dataset.py --scan            # 盘点 raw 目录
@@ -192,7 +192,7 @@ def import_one(path: Path, province: str, year: int, table: str) -> tuple[list[d
         "subject_req_missing": 0,
         "subject_req_ok": 0,
         "subject_req_unparsed": 0,
-        "data_status": "pending",
+        "data_status": "schema_only",
     }
     out: list[dict] = []
 
@@ -217,7 +217,7 @@ def import_one(path: Path, province: str, year: int, table: str) -> tuple[list[d
 
         # 口径标记（红线：必须标）
         rec["exam_system"] = es
-        rec["data_status"] = "pending"   # 团队枚举：已采集未核实；核实通过后才升 verified
+        rec["data_status"] = "schema_only"   # 契约枚举：结构就绪、渠道数据未核实；核实通过后才升 available
         rec["source_id"] = upstream
         rec["source_name"] = f"{province}省教育考试院（上游）/ Gaokao-Compass-11M（渠道）"
         rec["source_url"] = ""               # 待核实后填具体官方 URL，不编造
@@ -248,7 +248,8 @@ def import_one(path: Path, province: str, year: int, table: str) -> tuple[list[d
     stats["rows_out"] = len(out)
 
     # ── 脏数据/缺失判定（红线：宁可标不可用，不可猜）────────────────
-    # 状态统一用团队枚举 pending；"为何不可用"用 quality_flags 表达，不另造枚举值。
+    # 状态统一用契约枚举 schema_only / partial / unavailable；
+    # "为何不可用"用 quality_flags 表达，不另造枚举值。
     # 1) 校名为空比例过高 → 视有无院校代号决定可修复性（仅对含校名的表）
     if "school_name" in fm.values():
         empty_name = sum(1 for r in out if not r.get("school_name"))
@@ -256,13 +257,13 @@ def import_one(path: Path, province: str, year: int, table: str) -> tuple[list[d
             code_ok = sum(1 for r in out if r.get("school_national_code"))
             if code_ok / len(out) > 0.5:
                 # 有院校代号 → 可通过代号反查补名（派生字段）
-                stats["data_status"] = "pending"
+                stats["data_status"] = "partial"
                 stats["quality_flags"] = ["school_name_empty_but_code_present"]
                 stats["note"] = (f"{empty_name}/{len(out)} 条 school_name 为空，"
                                  f"但 university_code 完整 → 属可修复（用院校代号反查补名）；"
                                  f"补出的校名为派生字段，须在导入时标注来源。")
             else:
-                stats["data_status"] = "pending"
+                stats["data_status"] = "unavailable"
                 stats["quality_flags"] = ["school_name_and_code_empty", "unusable"]
                 stats["note"] = (f"{empty_name}/{len(out)} 条 school_name 为空，"
                                  f"且院校代号亦缺失 → 无法关联 school 表，判为不可用。")
@@ -271,14 +272,14 @@ def import_one(path: Path, province: str, year: int, table: str) -> tuple[list[d
     if table in ("school-admission",):
         rank_ok = sum(1 for r in out if r.get("min_rank") is not None)
         if len(out) < 100 and rank_ok == 0:
-            stats["data_status"] = "pending"
+            stats["data_status"] = "unavailable"
             stats.setdefault("quality_flags", []).extend(["too_few_rows_and_no_rank", "unusable"])
             stats["note"] = (f"仅 {len(out)} 行且无任何 min_rank；"
                              f"对比其他年份 1000+ 行，判为整表缺失，不补全、不插值")
 
     # 3) 河南 2023 投档表特别标注
     if table == "school-admission" and province == "河南" and year == 2023:
-        stats["data_status"] = "pending"
+        stats["data_status"] = "unavailable"
         stats.setdefault("quality_flags", []).extend(
             ["henan_2023_school_admission_broken", "unusable"])
         stats["note"] = ("2023 河南院校投档表仅 25 行、校名全空、admit_count 全 0，"
@@ -350,7 +351,7 @@ def main() -> int:
             "generated_at": "2026-10-12",
             "owner": "徐（③ 数据工程）",
             "dataset": DATASET_SOURCE,
-            "note": "staged 中间层。所有记录 data_status 用团队枚举 pending/schema_only，未核实前不得标 verified。",
+            "note": "staged 中间层。所有记录 data_status 用契约枚举（schema_only / partial / unavailable），未核实前不得标 available。",
         },
         "summary": {
             "files": len(all_stats),

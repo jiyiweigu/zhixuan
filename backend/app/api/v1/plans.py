@@ -40,4 +40,4 @@ def create_plan(
         profile_service.saved_preferences(saved),
         profile_service.PREFERENCE_FIELDS,
     )
-    return ok(plans_service.build_plan(PlanRequest(**merged)))
+    return ok(plans_service.build_plan(PlanRequest(**merged), db=db))

@@ -17,10 +17,26 @@ from pydantic import BaseModel, Field, field_validator
 
 from app.models.constants import MAX_COMPARE_SCHOOLS
 
-# 户籍类型：'未知' 表示用户未填写，判定结果将落为"待核验"而非确定结论
+# 户籍类型：契约 §8.1「可空档案项统一用 null 表示未提供」。
+# 这里保留 "未知" 作为历史入参兼容值，但经 `_blank_to_none` 统一收敛为 None，
+# 判定结果因此落为"待核验"而非"不符合"。
 HouseholdType = Literal["农村", "城镇", "未知"]
 Strategy = Literal["冲", "稳", "保"]
 Priority = Literal["院校优先", "专业优先", "城市优先"]
+
+# 历史哨兵值：数据库列历史上用这些字符串承载「未填」语义（见 app/models/profile.py）。
+# 契约 §8.1 规定 API 层一律用 null，故在 schema 边界统一收敛。
+BLANK_SENTINELS = ("", "未填", "未知")
+UNFILLED_DEFAULT = "未填"
+
+
+def _blank_to_none(value: Any) -> Any:
+    """把空串与历史哨兵（未填 / 未知）统一收敛为 None（契约 §8.1）。"""
+    if value is None:
+        return None
+    if isinstance(value, str) and value.strip() in BLANK_SENTINELS:
+        return None
+    return value
 
 # 已保存方案的倾向值：生成接口的三种倾向，外加 balanced（第 7 章 user_plan.strategy 的历史口径）
 SavedStrategy = Literal["冲", "稳", "保", "balanced"]
@@ -62,7 +78,7 @@ class ProfileRequest(BaseModel):
     rank: int | None = Field(default=None, ge=1, description="省内位次")
 
     # ---- 户籍与学籍 ----
-    household_type: HouseholdType = "未知"
+    household_type: HouseholdType | None = Field(default=None, description="农村 / 城镇；null = 未填")
     home_county: str = Field(default="", max_length=50, description="户籍所在县 / 区名")
     home_county_code: str = Field(default="", max_length=16, description="行政区划代码，优先于县名")
     school_years: int = Field(default=0, ge=0, le=30, description="本地学籍年限")
@@ -83,9 +99,9 @@ class ProfileRequest(BaseModel):
     height: int | None = Field(default=None, ge=0, le=300, description="身高 cm")
     weight: int | None = Field(default=None, ge=0, le=500, description="体重 kg")
     hepatitis_b: bool | None = Field(default=None, description="乙肝表面抗原携带")
-    hearing: str = Field(default="未填", max_length=8, description="正常 / 异常 / 未填")
-    smell: str = Field(default="未填", max_length=8)
-    stutter: str = Field(default="未填", max_length=8)
+    hearing: str | None = Field(default=None, max_length=8, description="正常 / 异常；null = 未填")
+    smell: str | None = Field(default=None, max_length=8, description="正常 / 异常；null = 未填")
+    stutter: str | None = Field(default=None, max_length=8, description="正常 / 异常；null = 未填")
 
     # ---- 志愿倾向（v1.1 新增）----
     batch_preference: list[str] = Field(default_factory=list, description="意向批次")
@@ -96,6 +112,112 @@ class ProfileRequest(BaseModel):
         default_factory=list, description="考生自行标记的专项资格，取值为途径 id"
     )
     preferences: Preferences = Field(default_factory=Preferences)
+
+    @field_validator("household_type", "hearing", "smell", "stutter")
+    @classmethod
+    def _normalize_blank(cls, value: Any) -> Any:
+        """空串与历史哨兵（未填 / 未知）统一收敛为 None（契约 §8.1）。"""
+        return _blank_to_none(value)
+
+
+class QaAskRequest(BaseModel):
+    """可溯源问答请求（契约 §4 POST /api/qa/ask）。"""
+
+    question: str = Field(min_length=1, max_length=500, description="用户问题")
+    session_id: str | None = Field(default=None, max_length=64, description="多轮会话标识")
+    province: str | None = Field(default=None, max_length=20, description="限定省份，缺省不限定")
+    pathway_id: str | None = Field(
+        default=None, max_length=64, description="限定升学途径 id（字符串 slug，见契约 §3）"
+    )
+
+
+class FavoriteWrite(BaseModel):
+    """收藏创建请求（契约 §6.1 /api/user/favorites）。"""
+
+    target_type: Literal["school", "major"] = Field(description="收藏对象类型")
+    target_id: str = Field(min_length=1, max_length=64, description="被收藏对象 ID")
+
+
+class RiskCheckRequest(BaseModel):
+    """志愿方案风险体检请求（契约 §6.1 POST /api/plan/risk-check）。
+
+    与 ``POST /api/plans`` 的区别：本接口**不重新生成**方案，只对调用方给出的
+    志愿条目做体检，因此必须显式提供 ``items``。
+    """
+
+    profile: ProfileRequest
+    items: list[dict[str, Any]] = Field(
+        default_factory=list, max_length=MAX_PLAN_ITEMS, description="待体检的志愿条目"
+    )
+
+
+# 前端页面的历史写法把 strategy 用作「排序倾向」（见 frontend/src/api/index.ts），
+# 服务端把这三个取值识别为 priority 的别名，避免同一语义出现两套字段。
+PRIORITY_ALIASES = {"school": "院校优先", "major": "专业优先", "city": "城市优先"}
+
+
+class RecommendRequest(BaseModel):
+    """冲稳保推荐请求（契约 §6.1 ``POST /api/recommend``，Auth: no）。
+
+    两种等价写法可混用，显式提供的值优先：
+
+    - 嵌套：``{"profile": {...}, "strategy": "冲"}`` —— 与 ``POST /api/plans`` 同形；
+    - 扁平：``{"province": "河南", "score": 620, "subject_type": "物理类", "strategy": "稳"}``。
+
+    ``strategy`` 若取 ``school`` / ``major`` / ``city``，按排序倾向解释（见
+    ``PRIORITY_ALIASES``），此时档位回退为「稳」；显式提供 ``priority`` 时以之为准。
+    """
+
+    profile: ProfileRequest | None = Field(default=None, description="嵌套写法；与扁平字段二选一")
+    province: str | None = Field(default=None, max_length=20)
+    score: int | None = Field(default=None, ge=0, le=750)
+    subject_type: str | None = Field(default=None, max_length=20)
+    rank: int | None = Field(default=None, ge=1)
+    first_subject: str | None = Field(default=None, max_length=16)
+    second_subjects: list[str] | None = None
+    strategy: str = Field(default="稳", description="冲 / 稳 / 保，或 school / major / city")
+    priority: str | None = Field(default=None, description="院校优先 / 专业优先 / 城市优先")
+    preferred_majors: list[str] = Field(default_factory=list)
+    preferred_provinces: list[str] = Field(default_factory=list)
+    limit: int = Field(default=9, ge=1, le=96)
+    major_adjust: bool = True
+    batch_line: int | None = None
+
+    def resolve_strategy(self) -> tuple[str, str]:
+        """返回 ``(strategy, priority)``，把 school/major/city 别名收敛为 priority。"""
+        raw = str(self.strategy or "").strip()
+        alias = PRIORITY_ALIASES.get(raw)
+        if alias is not None:
+            return "稳", str(self.priority or alias)
+        strategy = raw if raw in ("冲", "稳", "保") else "稳"
+        return strategy, str(self.priority or "院校优先")
+
+    def to_plan_request(self) -> "PlanRequest":
+        """收敛为方案生成请求，供 ``plans_service.build_plan`` 复用。"""
+        if self.profile is not None:
+            profile = self.profile.model_dump()
+        else:
+            profile = ProfileRequest().model_dump()
+        flat = self.model_dump(
+            exclude_unset=True,
+            exclude={"profile", "strategy", "priority", "preferred_majors",
+                     "preferred_provinces", "limit", "major_adjust", "batch_line"},
+        )
+        for key, value in flat.items():
+            if value is not None:
+                profile[key] = value
+
+        strategy, priority = self.resolve_strategy()
+        return PlanRequest(
+            profile=ProfileRequest(**profile),
+            strategy=strategy,
+            priority=priority,
+            preferred_majors=list(self.preferred_majors),
+            preferred_provinces=list(self.preferred_provinces),
+            limit=self.limit,
+            major_adjust=self.major_adjust,
+            batch_line=self.batch_line,
+        )
 
 
 class EligibilityRequest(ProfileRequest):

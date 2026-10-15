@@ -127,7 +127,7 @@ _EMPTY_PROFILE: dict[str, Any] = {
     "subject_type": "物理类",
     "score": 0,
     "rank": None,
-    "household_type": "未知",
+    "household_type": None,
     "home_county": "",
     "home_county_code": "",
     "school_years": 0,
@@ -144,13 +144,42 @@ _EMPTY_PROFILE: dict[str, Any] = {
     "height": None,
     "weight": None,
     "hepatitis_b": None,
-    "hearing": PHYSICAL_STATE_UNFILLED,
-    "smell": PHYSICAL_STATE_UNFILLED,
-    "stutter": PHYSICAL_STATE_UNFILLED,
+    "hearing": None,
+    "smell": None,
+    "stutter": None,
     "batch_preference": [],
     "accept_adjustment": None,
     "special_marks": [],
 }
+
+# 契约 §8.1「可空档案项统一用 null 表示未提供」。
+# 数据库列历史上以哨兵字符串承载同一语义（列非空，改动需迁移），
+# 因此在服务层做一次收敛，保证 API 边界只有 null：
+#   read  —— 哨兵 → None
+#   write —— None  → 哨兵
+# 判定引擎（app/engine/constraints.py）对 None / "" / "未填" 一视同仁，
+# 收敛不改变任何"未填不默认放行"的语义。
+_SENTINEL_STRINGS: tuple[str, ...] = ("", PHYSICAL_STATE_UNFILLED, "未知")
+_DB_SENTINEL: dict[str, str] = {
+    "household_type": "未知",
+    "hearing": PHYSICAL_STATE_UNFILLED,
+    "smell": PHYSICAL_STATE_UNFILLED,
+    "stutter": PHYSICAL_STATE_UNFILLED,
+}
+
+
+def _to_api(field: str, value: Any) -> Any:
+    """读：DB 哨兵 → None。"""
+    if field in _DB_SENTINEL and isinstance(value, str) and value.strip() in _SENTINEL_STRINGS:
+        return None
+    return value
+
+
+def _to_db(field: str, value: Any) -> Any:
+    """写：None → DB 哨兵（对应列非空）。"""
+    if field in _DB_SENTINEL and value is None:
+        return _DB_SENTINEL[field]
+    return value
 
 
 def _iso(value: Any) -> str | None:
@@ -191,7 +220,9 @@ def profile_dict(profile: Profile | None) -> dict[str, Any]:
         data["has_college_special"] = False
         return data
 
-    data: dict[str, Any] = {field: getattr(profile, field, None) for field in PROFILE_FIELDS}
+    data: dict[str, Any] = {
+        field: _to_api(field, getattr(profile, field, None)) for field in PROFILE_FIELDS
+    }
     for mark in ("has_national_special", "has_local_special", "has_college_special"):
         data[mark] = bool(getattr(profile, mark, False))
     data["special_marks"] = list(profile.special_marks or [])
@@ -263,7 +294,7 @@ def save(db: Session, user_id: str, payload: BaseModel) -> dict[str, Any]:
 
     for field in PROFILE_FIELDS:
         if field in provided:
-            setattr(profile, field, provided[field])
+            setattr(profile, field, _to_db(field, provided[field]))
 
     if "special_marks" in provided:
         profile.special_marks = validate_marks(provided["special_marks"])

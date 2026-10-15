@@ -78,14 +78,26 @@ def _hit(
     level: str,
     detail: str,
     *,
+    major_ids: Iterable[Any] | None = None,
     major_names: Iterable[str] | None = None,
+    fields: Iterable[str] | None = None,
     citation: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """构造一条约束命中记录（6.2.7 的三档条目形状）。"""
+    """构造一条约束命中记录（契约 8.4 / 产品书 6.2.7 的三档条目形状）。
+
+    ``major_ids`` / ``major_names`` 可选，用于指出受影响专业；
+    ``fields`` 用于 ``unknown`` 指明还缺哪些档案项（契约 8.4 示例）。
+    """
     hit: dict[str, Any] = {"type": type_, "level": level, "detail": detail}
+    ids = [mid for mid in (major_ids or []) if mid is not None]
+    if ids:
+        hit["major_ids"] = ids
     names = [str(name) for name in (major_names or []) if str(name).strip()]
     if names:
         hit["major_names"] = names
+    missing_fields = [str(field) for field in (fields or []) if str(field).strip()]
+    if missing_fields:
+        hit["fields"] = missing_fields
     if citation:
         hit["citation"] = {
             "source_name": str(citation.get("source_name") or ""),
@@ -136,8 +148,15 @@ def subject_match(profile: Any, requirement: Mapping[str, Any] | None) -> dict[s
     req_secondary = [str(x).strip() for x in (requirement.get("secondary_subjects") or []) if str(x).strip()]
     logic = str(requirement.get("logic") or "all").strip().lower()
     citation = requirement.get("citation")
-    major_names = requirement.get("major_names")
     label = _major_label(requirement)
+
+    def _subject_hit(level: str, detail: str, *, with_citation: bool = False) -> dict[str, Any]:
+        return _hit(
+            CONSTRAINT_TYPE_SUBJECT, level, detail,
+            major_ids=requirement.get("major_ids"),
+            major_names=requirement.get("major_names"),
+            citation=citation if with_citation else None,
+        )
 
     has_first_rule = req_first not in (SUBJECT_ANY, SUBJECT_UNLIMITED)
     has_secondary_rule = bool(req_secondary)
@@ -150,15 +169,13 @@ def subject_match(profile: Any, requirement: Mapping[str, Any] | None) -> dict[s
 
     # 首选科目缺失 → 待核验（不得默认放行）
     if has_first_rule and _unfilled(cand_first):
-        return _hit(
-            CONSTRAINT_TYPE_SUBJECT, LEVEL_UNKNOWN,
-            f"未填写首选科目，无法校验{label}的选科要求", major_names=major_names,
+        return _subject_hit(
+            LEVEL_UNKNOWN, f"未填写首选科目，无法校验{label}的选科要求"
         )
     # 需要再选校验但再选科目缺失 → 待核验
     if has_secondary_rule and not cand_secondary:
-        return _hit(
-            CONSTRAINT_TYPE_SUBJECT, LEVEL_UNKNOWN,
-            f"未填写再选科目，无法校验{label}的选科要求", major_names=major_names,
+        return _subject_hit(
+            LEVEL_UNKNOWN, f"未填写再选科目，无法校验{label}的选科要求"
         )
 
     # 艺术 / 体育类考生报普通类 → 软提示（8.5 选科用例）
@@ -168,10 +185,10 @@ def subject_match(profile: Any, requirement: Mapping[str, Any] | None) -> dict[s
         notes.append(f"{exam_type}类考生按普通类选科校验，请核对当年报考政策")
 
     if has_first_rule and cand_first != req_first:
-        return _hit(
-            CONSTRAINT_TYPE_SUBJECT, LEVEL_REJECT,
+        return _subject_hit(
+            LEVEL_REJECT,
             f"首选科目为「{cand_first}」，{label}要求首选「{req_first}」，不可报",
-            major_names=major_names, citation=citation,
+            with_citation=True,
         )
 
     if has_secondary_rule:
@@ -184,18 +201,15 @@ def subject_match(profile: Any, requirement: Mapping[str, Any] | None) -> dict[s
             ok = not missing
             need = "、".join(req_secondary) + " 全部必选"
         if not ok:
-            return _hit(
-                CONSTRAINT_TYPE_SUBJECT, LEVEL_REJECT,
+            return _subject_hit(
+                LEVEL_REJECT,
                 f"再选科目需 {need}；你当前选科为 {'、'.join(cand_secondary) or '未填写'}，"
                 f"缺少 {'、'.join(missing)}，不可报",
-                major_names=major_names, citation=citation,
+                with_citation=True,
             )
 
     if notes:
-        return _hit(
-            CONSTRAINT_TYPE_SUBJECT, LEVEL_NOT_SUITABLE, "；".join(notes),
-            major_names=major_names, citation=citation,
-        )
+        return _subject_hit(LEVEL_NOT_SUITABLE, "；".join(notes), with_citation=True)
     return None
 
 
@@ -311,13 +325,29 @@ def _parse_number(text: str) -> float | None:
         return None
 
 
+_CONDITION_FIELDS: dict[str, tuple[str, ...]] = {
+    COND_COLOR_NO_DISTINCT: ("color_vision",),
+    COND_COLOR_WEAK: ("color_vision",),
+    COND_COLOR_BLIND: ("color_vision",),
+    COND_COLOR_VISION: ("color_vision",),
+    COND_VISION: ("vision_left", "vision_right"),
+    COND_HEPATITIS: ("hepatitis_b",),
+    COND_HEIGHT: ("height",),
+    COND_WEIGHT: ("weight",),
+    COND_HEARING: ("hearing",),
+    COND_SMELL: ("smell",),
+    COND_STUTTER: ("stutter",),
+}
+
+
 def physical_check(
     profile: Any, restrictions: Sequence[Mapping[str, Any]] | None
 ) -> list[dict[str, Any]]:
     """校验一批身体条件限制，返回命中记录列表。
 
     ``reject`` → ``blockers`` 档；``not_suitable`` → ``warnings`` 档；
-    档案缺项 → ``unknown`` 档。**level 值非法 → 报错不吞**（8.5 边界用例）。
+    档案缺项 → ``unknown`` 档（契约 8.4：``unknowns[].fields`` 指明缺哪些档案项）。
+    **level 值非法 → 报错不吞**（8.5 边界用例）。
     """
     hits: list[dict[str, Any]] = []
     for restriction in restrictions or []:
@@ -331,11 +361,18 @@ def physical_check(
 
         detail = str(restriction.get("detail") or "").strip()
         category = str(restriction.get("major_category") or restriction.get("major_name") or "").strip()
+        common = {
+            "major_ids": restriction.get("major_ids"),
+            "major_names": restriction.get("major_names"),
+        }
         if outcome == "unknown":
+            key = _infer_condition_key(restriction)
             hits.append(
                 _hit(
                     CONSTRAINT_TYPE_PHYSICAL, LEVEL_UNKNOWN,
                     detail or f"未填写体检结论，无法校验{category}的身体条件要求",
+                    fields=_CONDITION_FIELDS.get(key),
+                    **common,
                 )
             )
             continue
@@ -346,6 +383,7 @@ def physical_check(
                     CONSTRAINT_TYPE_PHYSICAL, LEVEL_REJECT,
                     detail or f"身体条件不符合{category}的录取要求（不予录取）",
                     citation=restriction.get("citation"),
+                    **common,
                 )
             )
         else:  # not_suitable
@@ -354,6 +392,7 @@ def physical_check(
                     CONSTRAINT_TYPE_PHYSICAL, LEVEL_NOT_SUITABLE,
                     detail or f"身体条件不宜就读{category}（不影响报考，建议谨慎）",
                     citation=restriction.get("citation"),
+                    **common,
                 )
             )
     return hits
@@ -363,25 +402,42 @@ def physical_check(
 # 闸门 4｜学费预算（产品书 8.5；M2-9）
 # --------------------------------------------------------------------------- #
 def fee_check(profile: Any, tuition: Mapping[str, Any] | None) -> dict[str, Any] | None:
-    """学费超出预算 → ``warnings``（软提示，不得隐藏）；预算未填 → ``unknowns``。"""
+    """学费超出预算 → ``warnings``（软提示，不得隐藏）；学费或预算未知 → ``unknowns``。
+
+    **不得静默放行**（契约 8.1）：缺少学费数据或学费数额未知时，同样返回 ``unknown``，
+    而不是 ``None``——``None`` 表示"该闸门确认无问题"，与"无法判断"是两回事。
+    """
     if not tuition:
-        return None
+        return _hit(
+            CONSTRAINT_TYPE_FEE, LEVEL_UNKNOWN,
+            "该志愿单位缺少学费数据，无法校验是否在预算内",
+            fields=["tuition"],
+        )
     amount = tuition.get("amount")
     budget = _profile_get(profile, "tuition_budget")
 
     if amount is None:
-        return None
+        return _hit(
+            CONSTRAINT_TYPE_FEE, LEVEL_UNKNOWN,
+            "该志愿单位学费数额未知，无法校验是否在预算内",
+            fields=["tuition"],
+        )
     if budget is None:
         return _hit(
             CONSTRAINT_TYPE_FEE, LEVEL_UNKNOWN,
             f"未填写年学费预算，无法校验学费 {amount} 元/年是否在预算内",
+            fields=["tuition_budget"],
         )
 
     try:
         amount_value = float(amount)
         budget_value = float(budget)
     except (TypeError, ValueError):
-        return None
+        return _hit(
+            CONSTRAINT_TYPE_FEE, LEVEL_UNKNOWN,
+            "学费或预算数值无法解析，无法完成校验",
+            fields=["tuition"],
+        )
 
     if amount_value <= budget_value:
         return None
@@ -440,6 +496,24 @@ def province_rule_check(
 # --------------------------------------------------------------------------- #
 # 汇总：一个志愿单位过四道闸门
 # --------------------------------------------------------------------------- #
+def _eligible_of(
+    blockers: Sequence[Mapping[str, Any]], unknowns: Sequence[Mapping[str, Any]]
+) -> bool | None:
+    """契约 8.1 的三态 ``eligible``。
+
+    - ``False``：至少一个 ``blocker``（硬性不符合，优先于 unknown）；
+    - ``None`` ：无 blocker 但存在 ``unknown``（资料/规则不足以判断，**不得判为合格**）；
+    - ``True`` ：无 blocker 且无 unknown。
+
+    ``warnings`` 不改变 ``eligible``（可报但有风险，不等于不能报）。
+    """
+    if blockers:
+        return False
+    if unknowns:
+        return None
+    return True
+
+
 def check_units(
     profile: Any,
     items: Sequence[Mapping[str, Any]],
@@ -493,12 +567,15 @@ def check_units(
         if fee_hit is not None:
             (unknowns if fee_hit["level"] == LEVEL_UNKNOWN else warnings).append(fee_hit)
 
-        eligible = not blockers
+        eligible = _eligible_of(blockers, unknowns)
+
+        # summary 的四个计数互相独立：单位可同时计入 warned 与 unknown（契约 8.4）。
+        # 早期实现用 if/elif 链，有 blocker 的单位不再计入 warned/unknown，属系统性少计。
         if blockers:
             blocked += 1
-        elif warnings:
+        if warnings:
             warned += 1
-        elif unknowns:
+        if unknowns:
             unknown += 1
 
         citations = _collect_citations(blockers, warnings)

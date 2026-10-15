@@ -1,8 +1,8 @@
-"""升学途径目录、路径资格自检与专项实施区域判定接口。
+"""升学途径目录、路径资格自检、专项实施区域判定与途径区域名单接口。
 
-契约：docs/api-contract.md 第 3 节。
-本文件中的 /region-check 与 /{pathway_id} 为新增接口，
-已在 PR 描述中提请队长补入契约（契约变更流程见 api-contract.md 末节）。
+契约：docs/api-contract.md 第 3 节（``/pathways``、``/pathways/{id}``、
+``/pathways/region-check``、``/pathways/eligibility-check``）与
+6.1 节（``/pathways/{id}/regions``）。
 """
 
 from __future__ import annotations
@@ -61,6 +61,20 @@ def eligibility_check(
     saved = profile_service.get_saved(db, user.id)
     merged = profile_service.merge_saved(payload, saved, profile_service.ELIGIBILITY_FIELDS)
     return ok(eligibility_service.evaluate(EligibilityRequest(**merged)))
+
+
+@router.get("/{pathway_id}/regions", summary="途径实施区域名单")
+def pathway_regions(
+    pathway_id: str,
+    province: str = Query(default="", description="按省份过滤，缺省返回全部试点省份"),
+) -> dict[str, Any]:
+    """契约 6.1：Auth no；仅专项计划类途径有实施区域名单，其余返回 ``unavailable``。
+
+    名单未核验时如实返回 ``data_status: schema_only``，不输出可报考结论。
+    """
+    if pathways_service.get_pathway(pathway_id) is None:
+        raise BizError(f"途径不存在：{pathway_id}")
+    return ok(pathways_service.regions_of(pathway_id, province))
 
 
 @router.get("/{pathway_id}", summary="升学途径详情")
