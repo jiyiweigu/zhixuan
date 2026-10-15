@@ -75,6 +75,14 @@ class Settings:
     login_max_failures: int = _int_env("ZHIXUAN_LOGIN_MAX_FAILURES", 5)
     login_lock_seconds: int = _int_env("ZHIXUAN_LOGIN_LOCK_SECONDS", 300)
 
+    # —— Embedding（T2 AI 基建）——
+    embedding_backend: str = os.getenv("ZHIXUAN_EMBEDDING_BACKEND", "fake").strip() or "fake"
+    embedding_model: str = os.getenv("ZHIXUAN_EMBEDDING_MODEL", "BAAI/bge-small-zh-v1.5").strip()
+    embedding_dim: int = _int_env("ZHIXUAN_EMBEDDING_DIM", 512)
+    embedding_api_base: str = os.getenv("ZHIXUAN_EMBEDDING_API_BASE", "").strip()
+    embedding_api_key: str = os.getenv("ZHIXUAN_EMBEDDING_API_KEY", "")
+    embedding_batch_size: int = _int_env("ZHIXUAN_EMBEDDING_BATCH_SIZE", 32)
+
     # —— 管理端（tasks.md 8.1）——
     # 首个管理员的引导值，仅在手工执行 `python -m app.services.admin_seed` 时使用；
     # 口令为空则脚本拒绝创建（避免落一个空口令的管理员）。登录后可正常使用。

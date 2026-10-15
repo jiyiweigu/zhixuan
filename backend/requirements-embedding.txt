@@ -1,0 +1,4 @@
+# Optional AI embedding dependencies. Install this file only when enabling BGE or PostgreSQL.
+sentence-transformers==3.3.1
+pgvector==0.3.6
+psycopg[binary]==3.2.3

@@ -39,6 +39,9 @@ from app.models.source import Source  # noqa: E402
 from app.services import admin_auth  # noqa: E402
 from app.services import indexing as indexing_service  # noqa: E402
 
+# These legacy cases specifically verify the explicit no-embedder partial path.
+indexing_service.register_embedder(None)
+
 ADMIN_USERNAME = "root_admin"
 ADMIN_PASSWORD = "admin-pass-123"
 USER_PASSWORD = "user-pass-123"
@@ -300,6 +303,34 @@ def _() -> None:
         vector = chunk_embedding(chunk_id)
         assert vector is not None, chunk_id
         assert abs(vector[0] - 0.6) < 1e-9 and abs(vector[1] - 0.8) < 1e-9, vector
+
+
+@case("09b 批量 embedder 单条失败被隔离，其余切片继续完成")
+def _() -> None:
+    doc_id, chunk_ids = make_doc(3)
+
+    class PartiallyFailingEmbedder:
+        dim = 2
+        def embed(self, texts: list[str]) -> list[list[float]]:
+            if len(texts) > 1:
+                return [[1.0, 0.0]]  # 故意返回错误数量，触发逐条定位
+            if "切片正文 1：" in texts[0]:
+                raise ValueError("fixture embedding failure")
+            return [[3.0, 4.0]]
+
+    indexing_service.register_embedder(PartiallyFailingEmbedder())
+    try:
+        task_id = rebuild(scope="doc_ids", doc_ids=[doc_id], incremental=True)["task_id"]
+        state = wait_status(task_id, ("done", "partial", "failed"))
+    finally:
+        indexing_service.register_embedder(None)
+
+    assert state["status"] == "partial", state
+    assert state["progress"]["embedded"] == 2, state
+    assert state["progress"]["failed"] == 1, state
+    assert "fixture embedding failure" in state["message"], state
+    assert chunk_embedding(chunk_ids[0]) == [0.6, 0.8]
+    assert chunk_embedding(chunk_ids[2]) == [0.6, 0.8]
 
 
 @case("10 incremental=False 全量重算：已向量化切片也在范围内")

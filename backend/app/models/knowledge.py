@@ -3,10 +3,8 @@
 知识文档、知识切片、问答日志、审核任务与管理端账号五张表，
 支撑第 5 组 RAG 链路（④）与第 8 组管理端人工审核闭环（②⑤）。
 
-关于向量列：第 7 章要求 ``knowledge_chunk.embedding`` 为 512 维向量（pgvector + HNSW）。
-本机与开发环境默认走 SQLite（无 pgvector），故此处以 JSON 存储 512 维浮点数组：
-写入前须由应用层做 L2 归一化。接入 PostgreSQL + pgvector 后，
-用一条后续迁移把该列改为原生 ``vector(512)`` 并建 HNSW 索引即可，业务代码无需改动。
+关于向量列：SQLite 以 JSON 存储 512 维浮点数组，写入前须由应用层做 L2 归一化；
+PostgreSQL 通过 ``EmbeddingVector`` 映射到原生 ``vector(512)``，并由迁移创建 HNSW 索引。
 """
 
 from __future__ import annotations
@@ -25,6 +23,7 @@ from sqlalchemy import (
     Text,
 )
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.types import TypeDecorator
 
 from app.db.base import Base, utcnow
 from app.models.constants import (
@@ -40,6 +39,26 @@ SOURCE_URL_MAX_LENGTH = 500
 PASSWORD_HASH_MAX_LENGTH = 255
 
 EMBEDDING_DIM = 512
+
+
+class EmbeddingVector(TypeDecorator):
+    """JSON on SQLite and native pgvector on PostgreSQL, imported lazily."""
+
+    impl = JSON
+    cache_ok = True
+
+    def __init__(self, dim: int = EMBEDDING_DIM, **kwargs: Any) -> None:
+        self.dim = dim
+        super().__init__(**kwargs)
+
+    def load_dialect_impl(self, dialect):
+        if dialect.name == "postgresql":
+            try:
+                from pgvector.sqlalchemy import Vector
+            except ImportError as exc:
+                raise RuntimeError("PostgreSQL embedding storage requires optional pgvector dependency") from exc
+            return dialect.type_descriptor(Vector(self.dim))
+        return dialect.type_descriptor(JSON())
 
 QA_STATUS_PENDING_REVIEW = "pending_review"
 QA_STATUS_APPROVED = "approved"
@@ -94,7 +113,8 @@ class KnowledgeChunk(Base):
     content: Mapped[str] = mapped_column(Text, comment="切片正文")
     chunk_index: Mapped[int] = mapped_column(Integer, default=0, comment="文档内序号")
     embedding: Mapped[list[float] | None] = mapped_column(
-        JSON, default=None, comment=f"向量占位（{EMBEDDING_DIM} 维，写入前 L2 归一化）"
+        EmbeddingVector(EMBEDDING_DIM), default=None,
+        comment=f"向量（SQLite JSON / PostgreSQL pgvector，{EMBEDDING_DIM} 维，写入前 L2 归一化）"
     )
     meta: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict, comment="切片附加元数据")
     province: Mapped[str] = mapped_column(String(PROVINCE_MAX_LENGTH), index=True, default="")
