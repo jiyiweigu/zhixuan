@@ -30,8 +30,8 @@
 
 ## 5. API、Mock 与质量
 
-- [x] 5.1 API 层路径已按 API Contract v1.2 对齐（附录 A），并由 `backend/test_alignment.py` 自动断言
-- [ ] 5.2 页面的 payload / 响应形状仍按旧 Mock 书写，需按契约 v1.2 改写（如 `recommend` 的 `tiers` 已改为各档数量、`schools` 已改为分页包）
+- [ ] 5.1 按 API Contract v1.1 对齐路径、DTO、响应形状和 Mock
+- [ ] 5.2 接入 success/loading/empty/error 及 schema-only 状态
 - [x] 5.3 初步通过 typecheck/build；待业务改造后重新回归
-- [ ] 5.4 完成核心链路端到端验收（关掉 Mock 跑通：登录→档案→资格→问答→方案→院校）
+- [ ] 5.4 完成核心链路端到端验收
 - [ ] 5.5 完成移动端、免责声明、引用覆盖和演示数据标记复核
