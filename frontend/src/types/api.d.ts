@@ -25,4 +25,34 @@ declare namespace Zhixuan {
  interface School{school_id:number|string;name:string;code:string;province:string;city:string;level:string;type:string;ownership:string;website?:string;intro?:string;sources?:Citation[];citations?:Citation[]}
  interface Major{major_id:number|string;name:string;code:string;category:string;degree:string;intro?:string;first_class_schools?:string[]}
  interface ConfidenceBadgeProps {level:'high'|'medium'|'low'}
+ // ===================== 管理端（契约 v1.4：附录 A + §8.8）=====================
+ // data_status 唯一词表（契约「跨层词表」）：available | partial | schema_only | unavailable
+ type DataStatus='available'|'partial'|'schema_only'|'unavailable'
+ // 语料列表项（后端 corpus.doc_item；source_url/chunk_count 为实现追加字段）
+ interface AdminDoc{doc_id:number;title:string;source_name:string;source_url?:string;year:number;doc_type:string;province:string;pathway_id:string|null;chunk_count:number;created_at:string|null}
+ // 语料导入入参（后端 DocCreateRequest：来源三要素平铺在顶层，缺一 → 4001）
+ interface DocCreateInput{title:string;source_name:string;source_url:string;year:number;doc_type?:string;province?:string;pathway_id?:string|null;content?:string;chunks?:string[]}
+ // 索引任务状态（后端 indexing.task_state：progress 为对象，非数字）
+ interface IndexProgress{total:number;processed:number;embedded:number;pending_embedding:number;failed:number;percent:number}
+ interface IndexTaskState{task_id:number;status:string;progress:IndexProgress;scope:string;doc_ids:number[];incremental:boolean;message:string|null;embedder_ready:boolean;operator:string|null;created_at:string|null;started_at:string|null;finished_at:string|null}
+ interface IndexRebuildInput{scope:'all'|'doc_ids';doc_ids?:number[];incremental?:boolean}
+ // 途径字典项（后端 pathway_admin.pathway_item；source 为来源三要素对象）
+ interface AdminPathway{pathway_id:string;name:string;category:string;batch:string;target_group:string;apply_time:string;description:string;priority:'P0'|'P1'|'P2';data_status:DataStatus;year:number;source:Citation}
+ // 资格规则项（后端 pathway_admin.rule_item）
+ interface AdminPathwayRule{rule_id:number;pathway_id:string;province:string;rule_type:'户籍'|'学籍'|'区域'|'成绩';rule_desc:string;params:Record<string,unknown>;year:number;source:Citation}
+ // 专项实施区域项（后端 pathway_admin.region_item）
+ interface AdminRegion{region_id:number;pathway_id:string;province:string;county_name:string;county_code:string;year:number;source_name:string;source_url:string}
+ // 审核任务（列表项 = 后端 review.task_item；详情追加 citations/original_answer 等字段）
+ interface ReviewTaskItem{task_id:number;qa_log_id:number;question:string;answer:string;confidence:'high'|'medium'|'low';trigger_reason:string;status:'pending'|'approved'|'corrected'|'rejected';reviewer:string|null;created_at:string|null;citations?:Citation[];degraded?:boolean;session_id?:string|null;user_id?:number|null;original_answer?:string;corrected_answer?:string|null;comment?:string|null;reviewed_at?:string|null;qa_created_at?:string|null}
+ // 审核决策入参（后端 ReviewDecisionRequest：action=correct 必须带 corrected_answer）
+ interface ReviewDecision{action:'approve'|'correct'|'reject';corrected_answer?:string;comment?:string}
+ // 逐途径语料覆盖度（后端 stats.coverage_by_pathway）
+ interface PathwayCoverage{pathway_id:string;pathway_name:string;priority:string;doc_count:number;chunk_count:number;covered:boolean}
+ interface AdminStats{doc_count:number;chunk_count:number;qa_count:number;low_confidence_count:number;review_pending_count:number;coverage_by_pathway:PathwayCoverage[]}
+ // 契约 8.7/8.8：规则数据集与批量导入
+ type RuleDataset='province_exam_rule'|'subject_requirement'|'physical_restriction'|'admission_requirement'|'major_tuition'
+ interface RuleDatasetStatusItem{rule_id:number;province_code:string;year:number;batch_code:string;exam_type:string;dataset:RuleDataset;status:DataStatus;note:string;updated_at:string|null}
+ interface RuleImportPayload{dataset:RuleDataset;province_code:string;year:number;batch_code?:string;exam_type?:'普通'|'艺术'|'体育';items:Record<string,unknown>[]}
+ // 导入响应（契约 8.8：{dataset,created,updated,rejected,errors[]}；校验失败整批回滚 → 错误包）
+ interface RuleImportResult{dataset:RuleDataset;created:number;updated:number;rejected:number;errors:unknown[]}
 }
