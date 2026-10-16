@@ -2,3 +2,4 @@
 sentence-transformers==3.3.1
 pgvector==0.3.6
 psycopg[binary]==3.2.3
+# The RAG generation adapter uses Python's standard urllib; no SDK is required.
