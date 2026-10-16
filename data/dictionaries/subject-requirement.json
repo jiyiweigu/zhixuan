@@ -2,7 +2,7 @@
  "meta": {
   "title": "选科要求数据集（subject_requirement，闸门②弹药）",
   "contract_ref": "docs/api-contract.md §8.7 subject_requirement；解析器 data/scripts/parse_subject_req.py",
-  "generated_at": "2026-10-15",
+  "generated_at": "2026-10-16",
   "source": {
    "id": "SRC-GAOKAO-COMPASS",
    "name": "Gaokao-Compass-11M 高考数据集（MIT，DOI 10.57967/hf/9882）",
@@ -11,7 +11,8 @@
    "note": "渠道来源非官方；作品内事实结论的 source_url 须指向省考试院/阳光高考。"
   },
   "口径说明": {
-   "行粒度": "组级（组内取值全一致，无损聚合）或专业级（组内不一致）",
+   "行粒度": "组级（组内取值全一致，无损聚合）或专业级（组内不一致）；聚合键含科类（batch, category, school, group）—— 同一院校同组号在不同科类/批次下是不同专业组，不得跨科类合并",
+   "首选科目": "subject_req 含首选时以解析为准；不含时由招生计划 category 列（历史类→历史 / 物理类→物理）补出；两者冲突不猜，标 unparsed",
    "target_id": "{school_key}#{batch}#{group_code}[#{major_code}]；school_key=school_id 或 name:{校名}",
    "school_id": "沿用 import_major_score.py 匹配链：河南代号→校名→别名；挂不上留 null，绝不猜（红线：宁可缺、不可猜）",
    "missing": "subject_req 为空 → 制度性/上游缺失，不产生规则行，仅在 per_file 计数",
@@ -45,6 +46,7 @@
     "ok": 0,
     "missing": 51694,
     "unparsed": 0,
+    "first_from_category": 0,
     "group_rows": 0,
     "major_rows": 0
    },
@@ -57,6 +59,7 @@
     "ok": 0,
     "missing": 52565,
     "unparsed": 0,
+    "first_from_category": 0,
     "group_rows": 0,
     "major_rows": 0
    },
@@ -69,6 +72,7 @@
     "ok": 0,
     "missing": 54738,
     "unparsed": 0,
+    "first_from_category": 0,
     "group_rows": 0,
     "major_rows": 0
    },
@@ -81,6 +85,7 @@
     "ok": 58275,
     "missing": 0,
     "unparsed": 0,
+    "first_from_category": 58275,
     "group_rows": 9746,
     "major_rows": 63
    },
@@ -93,6 +98,7 @@
     "ok": 0,
     "missing": 31974,
     "unparsed": 0,
+    "first_from_category": 0,
     "group_rows": 0,
     "major_rows": 0
    },
@@ -105,6 +111,7 @@
     "ok": 0,
     "missing": 32850,
     "unparsed": 0,
+    "first_from_category": 0,
     "group_rows": 0,
     "major_rows": 0
    },
@@ -117,6 +124,7 @@
     "ok": 37007,
     "missing": 0,
     "unparsed": 0,
+    "first_from_category": 0,
     "group_rows": 7644,
     "major_rows": 39
    },
@@ -129,6 +137,7 @@
     "ok": 0,
     "missing": 38362,
     "unparsed": 0,
+    "first_from_category": 0,
     "group_rows": 0,
     "major_rows": 0
    }
@@ -161,7 +170,7 @@
    "target_id": "1155#本科批#101",
    "major_code": null,
    "major_name": null,
-   "first_subject": null,
+   "first_subject": "历史",
    "secondary_subjects": [],
    "logic": "all",
    "status": "ok",
@@ -183,7 +192,7 @@
    "target_id": "1155#本科批#102",
    "major_code": null,
    "major_name": null,
-   "first_subject": null,
+   "first_subject": "历史",
    "secondary_subjects": [
     "思想政治"
    ],
@@ -207,7 +216,7 @@
    "target_id": "1155#本科批#103",
    "major_code": null,
    "major_name": null,
-   "first_subject": null,
+   "first_subject": "历史",
    "secondary_subjects": [],
    "logic": "all",
    "status": "ok",
@@ -229,7 +238,7 @@
    "target_id": "1155#本科批#106",
    "major_code": null,
    "major_name": null,
-   "first_subject": null,
+   "first_subject": "历史",
    "secondary_subjects": [
     "地理"
    ],
@@ -253,7 +262,7 @@
    "target_id": "1155#本科批#105",
    "major_code": null,
    "major_name": null,
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [
     "化学"
    ],
@@ -277,7 +286,7 @@
    "target_id": "1155#本科批#104",
    "major_code": null,
    "major_name": null,
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [],
    "logic": "all",
    "status": "ok",
@@ -299,7 +308,7 @@
    "target_id": "name:阿克苏工业职业技术学院#专科批#101",
    "major_code": null,
    "major_name": null,
-   "first_subject": null,
+   "first_subject": "历史",
    "secondary_subjects": [],
    "logic": "all",
    "status": "ok",
@@ -321,7 +330,7 @@
    "target_id": "name:阿克苏工业职业技术学院#专科批#102",
    "major_code": null,
    "major_name": null,
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [],
    "logic": "all",
    "status": "ok",
@@ -343,7 +352,7 @@
    "target_id": "name:阿克苏职业技术学院#专科批#101",
    "major_code": null,
    "major_name": null,
-   "first_subject": null,
+   "first_subject": "历史",
    "secondary_subjects": [],
    "logic": "all",
    "status": "ok",
@@ -365,7 +374,7 @@
    "target_id": "name:阿克苏职业技术学院#专科批#101",
    "major_code": null,
    "major_name": null,
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [],
    "logic": "all",
    "status": "ok",
@@ -387,7 +396,7 @@
    "target_id": "514#本科批#102#7",
    "major_code": "7",
    "major_name": "生物技术",
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [
     "化学"
    ],
@@ -411,7 +420,7 @@
    "target_id": "514#本科批#102#8",
    "major_code": "8",
    "major_name": "生物制药",
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [
     "化学"
    ],
@@ -435,7 +444,7 @@
    "target_id": "514#本科批#102#9",
    "major_code": "9",
    "major_name": "药学",
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [
     "化学"
    ],
@@ -459,7 +468,7 @@
    "target_id": "514#本科批#102#16",
    "major_code": "16",
    "major_name": "大数据管理与应用",
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [],
    "logic": "all",
    "status": "ok",
@@ -481,7 +490,7 @@
    "target_id": "322#本科批#107#24",
    "major_code": "24",
    "major_name": "地理科学",
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [
     "地理"
    ],
@@ -505,7 +514,7 @@
    "target_id": "322#本科批#107#21",
    "major_code": "21",
    "major_name": "城市管理",
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [],
    "logic": "all",
    "status": "ok",
@@ -527,7 +536,7 @@
    "target_id": "322#本科批#107#22",
    "major_code": "22",
    "major_name": "供应链管理",
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [],
    "logic": "all",
    "status": "ok",
@@ -549,7 +558,7 @@
    "target_id": "322#本科批#107#23",
    "major_code": "23",
    "major_name": "电子商务",
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [],
    "logic": "all",
    "status": "ok",
@@ -571,7 +580,7 @@
    "target_id": "322#本科批#102#1",
    "major_code": "1",
    "major_name": "金融学",
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [],
    "logic": "all",
    "status": "ok",
@@ -593,7 +602,7 @@
    "target_id": "322#本科批#102#2",
    "major_code": "2",
    "major_name": "投资学",
-   "first_subject": null,
+   "first_subject": "物理",
    "secondary_subjects": [],
    "logic": "all",
    "status": "ok",

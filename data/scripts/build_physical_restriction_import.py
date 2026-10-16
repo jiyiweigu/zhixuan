@@ -27,6 +27,10 @@
   8. 普适判档开关：engine_ready=false 的条目**照常导入**（数据是真实标准，
      管理端应可见可维护）；是否参与引擎判档由 T6 依据 dict 的 engine_ready
      与 meta.engine_integration 决定。manifest 中单列『待引擎扩展』清单。
+  9. 去重：同一 (year, condition, threshold, major_category, major_code) 逻辑键
+     仅保留 1 行 —— 门类展开面与类级清单可能双计同一专业类（如医学门类展开
+     已含「药学类」，规则又显式点名）。完全一致条目折叠；若出现内容差异则
+     保留首条并在 manifest 登记（宁缺不猜，人工复核）。
 
 产出：data/staged/physical-restriction-import/（中间层，不入库）
   part-001.json / part-002.json …        → 导入请求体
@@ -194,6 +198,30 @@ def build_items(doc: dict, menlei_map: dict[str, list[str]]):
     return items, skipped, need_engine, counter
 
 
+def dedup_items(items: list[dict]) -> tuple[list[dict], int, list[dict]]:
+    """同一逻辑键只保留 1 行（与 rule_admin._import_identity 体检分支一致）。
+
+    重复来源：门类展开面与类级清单可能对同一专业类双计（如医学门类展开
+    已含「药学类」，规则又显式点名）→ 产出完全相同的两行。
+    口径：完全一致 → 折叠；内容差异 → 保留首条并登记冲突（宁缺不猜）。
+    """
+    seen: dict[tuple, dict] = {}
+    out: list[dict] = []
+    identical_removed = 0
+    conflicts: list[dict] = []
+    for it in items:
+        key = (it["year"], it["condition"], it["threshold"], it["major_category"], it["major_code"])
+        prev = seen.get(key)
+        if prev is None:
+            seen[key] = it
+            out.append(it)
+        elif prev == it:
+            identical_removed += 1
+        else:
+            conflicts.append({"key": list(key), "note": "内容差异，保留首条待人工复核"})
+    return out, identical_removed, conflicts
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
@@ -202,11 +230,14 @@ def main() -> int:
     doc = json.loads(DICT_PATH.read_text(encoding="utf-8"))
     menlei_map = load_menlei_map()
     items, skipped, need_engine, counter = build_items(doc, menlei_map)
+    items, dup_removed, dup_conflicts = dedup_items(items)
 
     print(f"[in ] {DICT_PATH}（规则 {len(doc['rules'])} 条 + superseded {len(doc['superseded'])} 条）")
     print(f"[cut] 跳过（不导入）：{len(skipped)} 条 {[s['rule_id'] for s in skipped]}")
     print(f"[cut] 展开条目：类级 {counter['class']} + 门类展开 {counter['menlei_expanded']}"
-          f" + 专业级 {counter['major']} + 机构级 {counter['institution']} = 共 {len(items)} 条")
+          f" + 专业级 {counter['major']} + 机构级 {counter['institution']} = 共 {len(items) + dup_removed} 条")
+    print(f"[cut] 去重：折叠完全一致 {dup_removed} 条；内容冲突 {len(dup_conflicts)} 条"
+          f"（最终 {len(items)} 条）")
     print(f"[cut] 待引擎扩展清单 {len(need_engine)} 条（照常导入，判档由 T6 过滤）：")
     for x in need_engine:
         print(f"       {x['rule_id']}  {x['reason'][:60]}")
@@ -215,6 +246,12 @@ def main() -> int:
         return 0
 
     STAGED_DIR.mkdir(parents=True, exist_ok=True)
+    # 清理上一次生成的包，避免编号残留
+    stale = sorted(STAGED_DIR.glob("part-*.json"))
+    for p in stale:
+        p.unlink()
+    if stale:
+        print(f"[cln] 清理旧包 {len(stale)} 个")
     # ⚠️ 接口硬约束：RuleDatasetImportRequest.province_code 必填（min_length=1），
     #    不允许空串 → 全国性规则按省逐份导出（沿用 constraint_seed 的逐省落行先例：
     #    河南 41 / 江西 36 各一份；引擎按省取数不受影响，管理端各自维护）。
@@ -240,6 +277,7 @@ def main() -> int:
         "rule_count": len(doc["rules"]),
         "item_count": len(items),
         "by_kind": dict(counter),
+        "dedup": {"identical_removed": dup_removed, "conflicts": dup_conflicts},
         "skipped": skipped,
         "need_engine_extension": need_engine,
         "conventions": {

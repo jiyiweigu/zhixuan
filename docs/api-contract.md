@@ -1,4 +1,4 @@
-# 智选志愿 API Contract v1.5
+# 智选志愿 API Contract v1.6
 
 > **本文件是前后端与数据库的唯一 DTO 基线。** 契约、产品书、Mock 三者冲突时以本文件为准，
 > 并回头修正产品书与 Mock。字段名一律 `snake_case`。
@@ -26,6 +26,19 @@
 > ③ 分页包统一约定新增**例外**：管理端途径字典三接口
 > （`/admin/pathways`、`/admin/pathway-rules`、`/admin/pathway-regions`）返回**裸数组**
 > （字典类小表全量返回 + query 过滤，不分页，与用户端 6.2.1 形状一致）。
+>
+> **v1.6 变更要点（相对 v1.5）**：跨数据集年度对齐与组规则身份（**追加字段，不改既有形状**）：
+> ① 8.4 / 8.5 / 8.6 响应新增 `data_years`（各规则集本次取数的**实际年度**），`3001` 的
+> `data` 亦携带；各规则集按「不晚于报考年份的最近可得年度」取数（数据发布节奏不同、
+> 选科要求常滞后一年），**绝不借用目标年份之后的数据**；用到滞后年度时 `data_status`
+> 不得为 `available`（降为 `partial`）。
+> ② 8.7 `subject_requirement` 逻辑键补充**批次 + 首选科目**两维：同校同组号在不同
+> 批次 / 科类（河南按历史类、物理类独立编组号）下是**不同专业组**，是独立规则行，
+> 不得判为重复；专业级行身份为 `(province_code, year, school_id, major_id, batch_code)`。
+> ③ 8.1 补充：引擎判定「志愿单位批次 vs 省份模板批次」必须先经 `batch_code` 归一
+> （江西「本科」= 河南「本科批」），不得按展示名字面比较而误拦。
+> ④ 引擎体检规则的专业匹配链路明确为「专业代码前 4 位 → 专业类名」（`major.category`
+> 是学科门类，**不是**专业类；不得拿门类去匹配专业类规则）。
 
 ## 统一约定
 
@@ -367,6 +380,8 @@ Auth: no；`data` 为 `{"status":"ok"}`。
 
 - 数据状态 `data_status ∈ available | partial | schema_only | unavailable`：`available` 表示当前接口所需规则齐全且有正式来源；`partial` 表示只有部分规则可用；`schema_only` 表示结构已就绪但规则尚未导入；`unavailable` 表示没有匹配的数据版本。
 - 只有 `available` 规则可产生肯定性资格结论。规则缺失或不完整时，校验接口返回错误 `3001`，`data` 说明缺失数据集；禁止回退为“通过”。纯 Mock 仅供界面演示，必须以 `data_status: "schema_only"` 和演示来源标注，不得冒充真实规则。
+- **跨数据集年度对齐（v1.6）**：各规则集按「**不晚于报考年份的最近可得年度**」分别取数（省份模板按年发布，选科要求常滞后一年），实际取数年度在响应 `data_years` 中逐规则集如实回传；**绝不借用目标年份之后的数据**；用到滞后年度或任一可选规则集缺数据时，`data_status` 不得为 `available`（降为 `partial`）。`3001` 的 `data` 同样携带 `data_years`，便于定位"缺的是哪一年的数据"。
+- **批次比较必须先归一（v1.6）**：判定「志愿单位批次 vs 省份模板批次」时按 `batch_code` 归一后比较（江西「本科」/「提前本科」与河南「本科批」/「提前批」是同一批次的不同叫法），不得按展示名字面比较；归一后仍不同才是真不匹配。
 - `blockers` 是硬性不符合；`warnings` 是可报但有风险/不宜/超预算；`unknowns` 是资料或规则不足以判断。`eligible` 为 `true`（无 blocker 且无 unknown）、`false`（至少一个 blocker）、`null`（无 blocker 但存在 unknown）。警告不改变 `eligible`。
 - 每条 blocker / warning 必须带 `citation`，字段为 `source_name`、`source_url`、`year`。unknown 可以带关联来源；若未知来自缺失数据，使用 `data_status` / `missing_rule_sets` 表达，不伪造引用。
 - 字段名以本 API 契约为准。档案预算字段沿用已有 `tuition_budget`（元/年）；引擎内部可映射为 `fee_ceiling`，API 与数据库不得同时存两份同义值。
@@ -477,6 +492,10 @@ Profile 中 `province`、`exam_type`、`year` 及每个 item 的 `batch` 必须�
 ```json
 {
   "data_status": "available",
+  "data_years": {
+    "province_exam_rule": 2026, "subject_requirement": 2025,
+    "physical_restriction": 2026, "major_tuition": null, "admission_requirement": null
+  },
   "items": [{
     "unit_id": "henan-ug-001",
     "eligible": null,
@@ -493,12 +512,12 @@ Profile 中 `province`、`exam_type`、`year` 及每个 item 的 `batch` 必须�
 }
 ```
 
-命中项 `type ∈ province_rule | subject | physical | fee | score | language | gender | batch | pathway`；`level ∈ reject | not_suitable | unknown`。`blockers` 只能包含 `reject`，`warnings` 可包含 `not_suitable` 或 `soft`（如超预算），`unknowns` 使用 `unknown`。`summary` 统计“至少含该类命中”的志愿单位数，单位可同时计入 warned 和 unknown；`eligible` 按 8.1 规则计算。每条 hit 的 `major_ids` / `major_names` 可选，用于指出受影响专业。
+`data_years` 为 v1.6 新增：五个规则集各自**本次实际取数的年度**（`null` 表示该规则集无任何可得数据）；取到滞后年度时 `data_status` 不得为 `available`。其余说明：命中项 `type ∈ province_rule | subject | physical | fee | score | language | gender | batch | pathway`；`level ∈ reject | not_suitable | unknown`。`blockers` 只能包含 `reject`，`warnings` 可包含 `not_suitable` 或 `soft`（如超预算），`unknowns` 使用 `unknown`。`summary` 统计“至少含该类命中”的志愿单位数，单位可同时计入 warned 和 unknown；`eligible` 按 8.1 规则计算。每条 hit 的 `major_ids` / `major_names` 可选，用于指出受影响专业。
 
 若定位到的规则集是 `schema_only`、`unavailable` 或缺少执行该批校验所必需的规则，返回错误 `3001`：
 
 ```json
-{"code":3001,"message":"报考规则数据尚未就绪，无法完成校验","data":{"data_status":"schema_only","missing_rule_sets":["province_exam_rule","subject_requirement"]},"trace_id":"trace"}
+{"code":3001,"message":"报考规则数据尚未就绪，无法完成校验","data":{"data_status":"schema_only","missing_rule_sets":["province_exam_rule","subject_requirement"],"data_years":{"province_exam_rule":null,"subject_requirement":null,"physical_restriction":2026,"major_tuition":null,"admission_requirement":null}},"trace_id":"trace"}
 ```
 
 错误 `1001`：字段非法、重复 unit_id、超过 100 项、年份/批次缺失或结构不合法。不得将 `3001` 转换为成功响应或清空规则后继续判为 eligible。
@@ -515,6 +534,7 @@ Auth: no。`province` 使用省级行政区划代码，`year` 必填。返回该
 {
   "major_id":"major-1", "province_code":"41", "year":2026,
   "data_status":"available",
+  "data_years":{"province_exam_rule":2026,"subject_requirement":2025,"physical_restriction":2026,"major_tuition":null,"admission_requirement":null},
   "subject_req":{"first":"物理","secondary":["化学"],"logic":"all"},
   "physical_restrictions":[{
     "condition":"color_vision", "threshold":{"operator":"in","value":["色弱","色盲"]},
@@ -528,7 +548,7 @@ Auth: no。`province` 使用省级行政区划代码，`year` 必填。返回该
 }
 ```
 
-`subject_req.first ∈ 物理 | 历史 | null`，`secondary` 为科目字典值数组，`logic ∈ all | any`；`all` 表示必须满足数组中所有再选科目，`any` 表示满足其中至少一项。未知要求用 `null`，不得以空数组冒充“无限制”；明确不限时 `subject_req` 返回 `{ "first": null, "secondary": [], "logic": "all" }` 且来源必须覆盖该判断。`physical_restrictions[].level ∈ reject | not_suitable`，阈值操作符 `threshold.operator ∈ in | eq | lt | lte | gt | gte | between`，`threshold.value` 为对应标量、数组或区间端点。`tuition.amount` 为元/年；收费未知时 `tuition: null` 并将规则集列入 `missing_rule_sets`。`enrollment_notes.single_subject_req` 为 `{ subject, minimum_score } | null`，`language_req` 为 `{ allowed_languages: string[] } | null`，`gender_req ∈ male | female | any | null`，后三个 boolean 字段 `interview_required`、`political_review_required`、`physical_test_required` 取 `boolean | null`（null 表示未知）。专业不存在返回 `1001`（资源不存在沿用现有错误处理约定，由后端统一映射）。
+`subject_req.first ∈ 物理 | 历史 | null`，`secondary` 为科目字典值数组，`logic ∈ all | any`；`all` 表示必须满足数组中所有再选科目，`any` 表示满足其中至少一项。未知要求用 `null`，不得以空数组冒充“无限制”；明确不限时 `subject_req` 返回 `{ "first": null, "secondary": [], "logic": "all" }` 且来源必须覆盖该判断。`physical_restrictions[].level ∈ reject | not_suitable`，阈值操作符 `threshold.operator ∈ in | eq | lt | lte | gt | gte | between`，`threshold.value` 为对应标量、数组或区间端点。`tuition.amount` 为元/年；收费未知时 `tuition: null` 并将规则集列入 `missing_rule_sets`。`enrollment_notes.single_subject_req` 为 `{ subject, minimum_score } | null`，`language_req` 为 `{ allowed_languages: string[] } | null`，`gender_req ∈ male | female | any | null`，后三个 boolean 字段 `interview_required`、`political_review_required`、`physical_test_required` 取 `boolean | null`（null 表示未知）。专业不存在返回 `1001`（资源不存在沿用现有错误处理约定，由后端统一映射）。`data_years` 语义与 8.4 相同；体检规则的**类级匹配链路**为「专业代码前 4 位 → `major` 表中 `is_category=1` 行（专业类名）」——`major.category` 存的是**学科门类**（如「医学」），不得拿门类去匹配专业类规则。
 
 ### 8.7 规则数据表与导入约定
 
@@ -537,7 +557,7 @@ Auth: no。`province` 使用省级行政区划代码，`year` 必填。返回该
 | 逻辑表 | 唯一键/必备字段 | 约束 |
 |---|---|---|
 | `province_exam_rule` | `(province_code, year, batch_code, exam_type)`；`mode`、`volunteer_count`、`majors_per_group`、`has_adjust`、`admit_method`、`ratio`、`tie_rule`、`mutex_groups`、`collect_count`、来源三要素 | `mode`、`admit_method` 限定为接口枚举；历史年份并存，不覆盖旧版本 |
-| `subject_requirement` | `(province_code, year, school_id, target_type, target_id)`；`first`、`secondary[]`、`logic`、来源三要素 | `target_type ∈ group/major`，`target_id` 必填；每条明确适用到专业或专业组；`logic ∈ all/any`；明确不限与数据缺失必须可区分 |
+| `subject_requirement` | 组级 `(province_code, year, school_id, group_code, batch_code, first_subject)`；专业级 `(province_code, year, school_id, major_id, batch_code)`；`first`、`secondary[]`、`logic`、来源三要素 | `logic ∈ all/any`；**同校同组号在不同批次 / 首选科目（科类）下是不同专业组，各自是独立规则行，不得判为重复**（河南按历史类/物理类独立编组号）；`first_subject` 空或 `不限` 在逻辑键中归一为通配；明确不限与数据缺失必须可区分 |
 | `physical_restriction` | `(province_code, year, condition, threshold_operator, threshold_value, target_type, target_id)`；`level`、`detail`、来源三要素 | `level ∈ reject/not_suitable`；`target_type ∈ major/major_category`，`target_id` 为稳定代码，避免只靠展示名匹配 |
 | `admission_requirement` | `(province_code, year, school_id, major_id, requirement_type)`；`requirement_value`、`level`、`detail`、来源三要素 | 承载单科、语种、性别、面试/政审/体测等章程要求；用于支撑接口 `enrollment_notes`，避免将其误塞入身体限制表 |
 | `major_tuition` | `(province_code, year, school_id, major_id)`；`amount`、`currency`、`period`、`ownership`、`note`、来源三要素 | 学费按具体学校/专业/年份存储；不得仅以办学性质估算值冒充正式数据 |
@@ -547,6 +567,10 @@ Auth: no。`province` 使用省级行政区划代码，`year` 必填。返回该
 
 - 规则表的唯一键使用 `batch_code`，`batch` 仅作展示。当前各省叫法差异
   （河南 `普通本科批`、江西 `本科批次`）经 `batch_code` 归一后不得再区分。
+- **归一实现口径（v1.6）**：展示名 → `batch_code` 的别名收敛表在后端
+  `app/models/constants.py::BATCH_ALIAS_TO_CODE` 单一维护（河南「本科批/专科批」、
+  江西「本科/提前本科/高职(专科)」等均已登记）；引擎、导入通道、数据脚本一律
+  调用 `batch_code_of()`，**不得在任一层自行写死批次字符串比较**。
 - 数据源列名 `category_group` 对应契约字段 `exam_type`，导入时**必须改名**。
 - 数据工程内部的 `data_status` 中间状态（`verified` / `pending` 等）**不得直接出接口**，
   须按上表映射为契约的四个取值；数据文件自身的 README/校验脚本口径也应同步，
@@ -578,6 +602,7 @@ Auth: no。`province` 使用省级行政区划代码，`year` 必填。返回该
 - 数据库：实现规则逻辑表及迁移、唯一约束/索引、来源校验和按省份/年份/批次查询；为未来提前批保留模型能力，但本轮无需编造或导入提前批规则。
 - 未有真实数据时，规则查询明确返回 `schema_only` / `unavailable`；校验请求返回 `3001` 并列出缺失表/规则集。演示 Mock 与数据库真实数据必须通过同一 DTO 验证。
 - 接口验收至少覆盖：河南/江西本科批版本读取、数据未导入返回 `3001`、每种档案缺项进入 unknown、选科不符 blocker、身体 reject blocker、not_suitable warning、超预算 warning、同一单位可返回多条命中、100/101 项边界、重复请求幂等、每个硬/软命中均含来源。
+- 跨数据集年度对齐（v1.6）：校验与专业要求接口按「不晚于请求年份的最近可得年度」取数并回传 `data_years`；用到滞后年度或可选规则集缺数据时 `data_status` 降为 `partial`；**绝不使用请求年份之后的数据**（该情形按 `3001` 处理）。
 
 ### 8.10 基础事实表的补充列（0008 / 0009）
 

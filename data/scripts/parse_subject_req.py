@@ -7,6 +7,8 @@
     {"first": None|"物理"|"历史", "secondary": ["化学", ...], "logic": "all"|"any"}
 
 输入：GaokaoCompass 数据集的 `subject_req` 自由文本字段（实测 4 大格式家族）
+      + 招生计划 `category` 列（历史类/物理类）—— 河南的 subject_req 仅含再选要求，
+      首选科目由科类列承载（2026-10 修复：此前漏读科类列，导致河南首选闸门失效）。
 输出：契约结构 + 解析状态（ok / missing / unparsed）
 
 ★ 铁律（项目红线）
@@ -82,6 +84,12 @@ SUBJECT_ALIAS = {
 FIRST_SUBJECTS = {"物理", "历史"}
 # 再选科目集合
 SECONDARY_SUBJECTS = {"化学", "生物", "思想政治", "地理"}
+
+# 招生计划「科类」列 → 首选科目（河南/江西 2025/2024 计划表口径）：
+# 河南计划表的 subject_req 列只承载"再选"要求（不限/化/政/化且生…），首选科目
+# 由 category 列（历史类/物理类）承载；江西两列兼有且口径一致（已全量核验，
+# 0 条冲突）。两者冲突时不猜，标 unparsed。
+CATEGORY_FIRST = {"历史类": "历史", "物理类": "物理"}
 
 
 class ParseResult:
@@ -428,6 +436,21 @@ def scan(write: bool = True) -> int:
                 total += 1
                 raw_req = row.get("subject_req")
                 r = parse(raw_req)
+                batch = _clean(row.get("batch"))
+                category = _clean(row.get("category"))
+                # 科类列（历史类/物理类）即首选科目要求：与 subject_req 解析结果合并。
+                # subject_req 已含首选且与科类一致 → 原样；缺失 → 由科类补出（不猜，
+                # 科类本身是招生计划的明确字段）；不一致 → 标 unparsed 留人工复核。
+                if r.status == "ok":
+                    derived = CATEGORY_FIRST.get(category)
+                    if derived:
+                        if not r.first:
+                            r.first = derived
+                            c["first_from_category"] += 1
+                            stat["first_from_category"] += 1
+                        elif r.first != derived:
+                            r.status = "unparsed"
+                            r.reason = f"首选科目与科类列不一致（解析={r.first}，科类={category}）"
                 c[r.status] += 1
                 stat[r.status] += 1
                 if r.status == "unparsed":
@@ -436,8 +459,6 @@ def scan(write: bool = True) -> int:
                 if r.status == "missing":
                     continue  # missing 不是规则，只计数
 
-                batch = _clean(row.get("batch"))
-                category = _clean(row.get("category"))
                 ucode, uname = _clean(row.get("university_code")), _clean(row.get("university_name"))
                 sid, sname, via = resolve_school(ucode, uname)
                 if sid is not None:
@@ -503,6 +524,7 @@ def scan(write: bool = True) -> int:
             "file": name, "province": province, "province_code": province_code,
             "year": year, "rows": tot, "ok": c.get("ok", 0),
             "missing": c.get("missing", 0), "unparsed": c.get("unparsed", 0),
+            "first_from_category": c.get("first_from_category", 0),
             "group_rows": gcount,
             "major_rows": sum(
                 1 for rr in rule_rows
@@ -533,7 +555,11 @@ def scan(write: bool = True) -> int:
                 "note": "渠道来源非官方；作品内事实结论的 source_url 须指向省考试院/阳光高考。",
             },
             "口径说明": {
-                "行粒度": "组级（组内取值全一致，无损聚合）或专业级（组内不一致）",
+                "行粒度": "组级（组内取值全一致，无损聚合）或专业级（组内不一致）；"
+                          "聚合键含科类（batch, category, school, group）—— 同一院校"
+                          "同组号在不同科类/批次下是不同专业组，不得跨科类合并",
+                "首选科目": "subject_req 含首选时以解析为准；不含时由招生计划 category 列"
+                            "（历史类→历史 / 物理类→物理）补出；两者冲突不猜，标 unparsed",
                 "target_id": "{school_key}#{batch}#{group_code}[#{major_code}]；"
                              "school_key=school_id 或 name:{校名}",
                 "school_id": "沿用 import_major_score.py 匹配链：河南代号→校名→别名；"
@@ -592,9 +618,10 @@ def scan(write: bool = True) -> int:
     print("=" * 76)
     for name, (tot, c) in by_file.items():
         okn = c.get("ok", 0); msn = c.get("missing", 0); unn = c.get("unparsed", 0)
+        fd = c.get("first_from_category", 0)
         valid = okn + unn
         rate = f"{okn/valid*100:.1f}%" if valid else "—"
-        print(f"  {name:<36} 总{tot:>7}  ok{okn:>7}  missing{msn:>7}  unparsed{unn:>4}  解析率{rate}")
+        print(f"  {name:<36} 总{tot:>7}  ok{okn:>7}  missing{msn:>7}  unparsed{unn:>4}  解析率{rate}  科类补首选{fd}")
     print("-" * 76)
     print(f"合计：ok={stat['ok']}  missing={stat['missing']}  unparsed={stat['unparsed']}")
     valid = stat['ok'] + stat['unparsed']

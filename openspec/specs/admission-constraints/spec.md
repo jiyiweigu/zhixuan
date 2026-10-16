@@ -1,7 +1,7 @@
 # admission-constraints Specification
 
 ## Purpose
-TBD - created by archiving change add-admission-constraints. Update Purpose after archive.
+定义「智选志愿」报考约束能力的规范基线：约束档案（选科/体检/预算）的分步维护、按地域与年度查询版本化规则、确定性四闸门纯函数引擎（省份模板 → 选科 → 体检 → 学费）、批量志愿单位校验的三档结果与 `3001` 缺失保护、结果的可解释与非静默展示，以及规则数据的管理端维护/导入与质量门槛。跨数据集年度对齐、组规则逻辑身份与批次归一的口径见本规格最后一节 Requirement。字段形状以 `docs/api-contract.md` 第 8 章为唯一 DTO 基线。
 ## Requirements
 ### Requirement: 分步维护约束档案
 
@@ -122,6 +122,30 @@ TBD - created by archiving change add-admission-constraints. Update Purpose afte
 #### Scenario: 未核实规则不能标记可用
 - **WHEN** 规则覆盖不完整或来源验证未通过
 - **THEN** 系统 SHALL 保持 `partial`、`schema_only` 或 `unavailable` 状态，并拒绝将其标成 `available`
+
+### Requirement: 跨数据集年度对齐与组规则身份
+
+系统 SHALL 为每个规则集按其「不晚于报考年份的最近可得年度」取数，并 SHALL 在响应中通过 `data_years` 逐规则集回传实际取数年度；SHALL NOT 使用请求年份之后的数据。任一必需规则集取到滞后年度数据时，响应 `data_status` SHALL NOT 为 `available`（降为 `partial`）。组级选科规则的逻辑身份 SHALL 包含批次与首选科目两维，使同一院校同组号在不同批次或科类（河南按历史类/物理类独立编组号）下作为不同专业组独立存在。批次比较 SHALL 先经 `batch_code` 归一，SHALL NOT 按展示名字面比较（如江西「本科」与河南「本科批」同为 `undergraduate_regular`）。体检类级规则的匹配 SHALL 走「专业代码前 4 位 → 专业类名」链路（`major.category` 为学科门类，不得用于匹配专业类规则）。
+
+#### Scenario: 选科规则滞后一年
+- **WHEN** 考生以 2026 年报考，选科规则仅到 2025 年而其余规则集为 2026 年
+- **THEN** 服务 SHALL 使用 2025 年选科规则执行校验，在 `data_years.subject_requirement` 回传 2025，并将 `data_status` 标为 `partial`
+
+#### Scenario: 仅有目标年份之后的数据
+- **WHEN** 请求年份的规则集在库中只有更晚年度（未来年份）的数据
+- **THEN** 服务 SHALL 返回 `3001` 且 `data_years` 对应项为 `null`，不得向未来借数据
+
+#### Scenario: 同组多口径并存
+- **WHEN** 同一院校同组号在历史类与物理类下各有独立规则行（或跨本科批/专科批）
+- **THEN** 导入 SHALL 视为不重复并各自落库；校验 SHALL 按考生首选科目选取适用变体，首选未填 SHALL 保留全部变体并进入待核验
+
+#### Scenario: 批次展示名归一
+- **WHEN** 志愿单位批次展示名与省份模板的批次展示名不同但属同一批次
+- **THEN** 校验 SHALL NOT 产生批次不匹配 blocker；归一后仍不同批次时 SHALL 如实拦截
+
+#### Scenario: 类级体检规则命中专业
+- **WHEN** 专业代码前 4 位可映射到专业类名，且存在该专业类的体检规则
+- **THEN** 校验 SHALL 命中该规则并回传命中专业与来源；不属于该类（如另一 4 位前缀）的专业 SHALL NOT 被误伤
 
 ### Requirement: 管理员权限与操作留痕
 

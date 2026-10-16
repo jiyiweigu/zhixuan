@@ -336,6 +336,27 @@ def _() -> None:
     assert len(hits) == 1 and hits[0]["level"] == eng.LEVEL_REJECT
 
 
+@case("省份02b 同一批次不同展示名（本科 / 本科批 / 提前本科=提前批）→ 不误拦")
+def _() -> None:
+    # 江西计划口径「本科」与模板「本科批」是同一批次（batch_code 归一后同键）
+    assert eng.province_rule_check(
+        _profile(), {"batch": "本科批", "mutex_groups": [], "citation": CITE}, {"batch": "本科"}
+    ) == []
+    # 江西「提前本科」与河南模板「提前批」同为 undergraduate_early
+    assert eng.province_rule_check(
+        _profile(), {"batch": "提前批", "mutex_groups": [], "citation": CITE}, {"batch": "提前本科"}
+    ) == []
+    # 专科批展示名差异同理（「专科批」/「高职（专科）批」）
+    assert eng.province_rule_check(
+        _profile(), {"batch": "高职（专科）批", "mutex_groups": [], "citation": CITE}, {"batch": "专科批"}
+    ) == []
+    # 归一后仍是不同批次 → 如实拦截
+    hits = eng.province_rule_check(
+        _profile(), {"batch": "本科批", "mutex_groups": [], "citation": CITE}, {"batch": "专科批"}
+    )
+    assert len(hits) == 1 and hits[0]["level"] == eng.LEVEL_REJECT
+
+
 @case("省份03 提前批互斥组 + 勾选多批次 → not_suitable")
 def _() -> None:
     rule = {"batch": "提前批", "mutex_groups": ["提前批各类之间互不兼报"], "citation": CITE}

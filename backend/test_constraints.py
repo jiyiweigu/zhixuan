@@ -9,6 +9,9 @@
 - **红线**：规则数据缺失 → 3001，绝不静默放行
 - 6.1.5 档案增量保存与 completeness
 - 管理端 province-rules / subject-requirements / physical-restrictions：缺 year 或来源 → 4001
+- **v1.6 修复**：组级多口径（跨科类/跨批次）导入共存并按考生首选选择；
+  体检类级匹配走「专业代码前 4 位 → 专业类名」（门类 ≠ 专业类）；
+  跨数据集年份对齐（data_years / partial / 绝不借用目标年份之后的数据）
 
 运行：``cd backend && .venv/Scripts/python.exe test_constraints.py``
 """
@@ -34,6 +37,7 @@ from sqlalchemy import func, select  # noqa: E402
 from app.db.session import SessionLocal, create_all  # noqa: E402
 from app.main import app  # noqa: E402
 from app.models.base_data import Major, School  # noqa: E402
+from app.models.constants import DATASET_SUBJECT_REQUIREMENT  # noqa: E402
 from app.models.constraints import ProvinceExamRule, SubjectRequirement  # noqa: E402
 from app.services import admin_auth  # noqa: E402
 from app.services.constraint_seed import seed_demo  # noqa: E402
@@ -469,7 +473,7 @@ def _() -> None:
     assert "unit_id=missing" in body["message"] and "major_id=999999" in body["message"], body
 
 
-@case("闸门② 目标年份规则不跨年回退")
+@case("闸门② 目标年份 2025 无任何可得规则 → 3001（不借用 2026 数据）")
 def _() -> None:
     body = _check({
         "profile": _profile(year=2025),
@@ -477,6 +481,8 @@ def _() -> None:
     }).json()
     assert body["code"] == 3001, body
     assert "2025" in body["message"], body
+    # 各规则集在 2025 及以前均无数据 → data_years 全为 null（绝不把 2026 数据标成 2025）
+    assert set(body["data"]["data_years"].values()) == {None}, body["data"]["data_years"]
 
 
 @case("闸门② 河南专业规则不能跨省回退给江西")
@@ -768,6 +774,250 @@ def _() -> None:
             SubjectRequirement.group_code.like("T6-ROLLBACK%"),
         )) or 0
     assert after == before, (before, after)
+
+
+# --------------------------------------------------------------------------- #
+# v1.6 修复：组级多口径（跨科类 / 跨批次）—— 真实招生计划表口径
+# 河南按科类（历史类/物理类）独立编组号：同一「校+组号」在不同科类/批次下
+# 是不同专业组，各自是独立规则行，导入不得误判为重复。
+# --------------------------------------------------------------------------- #
+def _school_id() -> int:
+    with SessionLocal() as db:
+        school = db.scalar(select(School).limit(1))
+        assert school is not None, "演示院校缺失"
+        return school.id
+
+
+@case("闸门② 同组多科类变体：导入共存 + 按考生首选选择（河南口径）")
+def _() -> None:
+    school_id = _school_id()
+    base = {
+        "province_code": "41", "province": "河南", "year": 2026, "batch": "本科批",
+        "school_id": school_id, "group_code": "T6-VARIANT",
+        "source_name": "河南省教育考试院", "source_url": "https://www.haeea.cn/", "year": 2026,
+    }
+    payload = {
+        "dataset": "subject_requirement", "province_code": "41", "year": 2026,
+        "batch_code": "undergraduate_regular", "exam_type": "普通",
+        "items": [
+            {**base, "first_subject": "历史", "secondary_subjects": ["思想政治"], "logic": "all"},
+            {**base, "first_subject": "物理", "secondary_subjects": ["化学"], "logic": "all"},
+        ],
+    }
+    imported = client.post("/api/admin/rule-datasets/import", json=payload, headers=_admin_headers()).json()
+    assert imported["code"] == 0 and imported["data"]["created"] == 2, imported
+    duplicate = client.post("/api/admin/rule-datasets/import", json=payload, headers=_admin_headers()).json()
+    assert duplicate["code"] == 1001 and "逻辑键已存在" in duplicate["message"], duplicate
+
+    unit = {"unit_id": "variant-unit", "batch": "本科批", "school_id": school_id, "group_code": "T6-VARIANT"}
+
+    # 物理考生 → 只取「物理」变体（再选化学必选 → 缺化学被拦）；不得被「历史」变体的首选要求误拦
+    phys = _check({"profile": _profile(second_subjects=["思想政治"]), "items": [unit]}).json()
+    assert phys["code"] == 0, phys
+    phys_blockers = phys["data"]["items"][0]["blockers"]
+    assert any("化学" in hit["detail"] for hit in phys_blockers), phys_blockers
+    assert not any("首选科目" in hit["detail"] for hit in phys_blockers), phys_blockers
+
+    # 历史考生 → 只取「历史」变体（再选政治已满足 → 选科零命中）
+    hist = _check({"profile": _profile(first_subject="历史", second_subjects=["思想政治"]), "items": [unit]}).json()
+    assert hist["code"] == 0, hist
+    hist_item = hist["data"]["items"][0]
+    assert not any(
+        hit["type"] == "subject" for hit in hist_item["blockers"] + hist_item["warnings"] + hist_item["unknowns"]
+    ), hist_item
+
+
+@case("闸门② 同组跨批次独立规则（导入身份含批次 → 共存且防重）")
+def _() -> None:
+    school_id = _school_id()
+    base = {
+        "province_code": "41", "province": "河南", "year": 2026,
+        "school_id": school_id, "group_code": "T6-BATCH",
+        "first_subject": "物理", "secondary_subjects": [], "logic": "all",
+        "source_name": "河南省教育考试院", "source_url": "https://www.haeea.cn/", "year": 2026,
+    }
+    payload = {
+        "dataset": "subject_requirement", "province_code": "41", "year": 2026,
+        "batch_code": "undergraduate_regular", "exam_type": "普通",
+        "items": [
+            {**base, "batch": "本科批"},
+            {**base, "batch": "专科批"},
+        ],
+    }
+    imported = client.post("/api/admin/rule-datasets/import", json=payload, headers=_admin_headers()).json()
+    assert imported["code"] == 0 and imported["data"]["created"] == 2, imported
+    duplicate = client.post("/api/admin/rule-datasets/import", json=payload, headers=_admin_headers()).json()
+    assert duplicate["code"] == 1001, duplicate
+
+
+@case("闸门③ 类级体检规则按「专业代码前 4 位 → 专业类名」匹配（真实库口径）")
+def _() -> None:
+    with SessionLocal() as db:
+        db.add(Major(name="药学类", code="1007", category="医学", is_category=True))
+        target = Major(name="T6 药学测试专业", code="100701", category="医学")
+        sibling = Major(name="T6 中药学测试专业", code="100801", category="医学")
+        db.add(target)
+        db.add(sibling)
+        db.flush()
+        target_id, sibling_id = target.id, sibling.id
+        db.commit()
+
+    # 先给两个合成专业补选科规则（闸门②放行后才能观察到闸门③），
+    # 顺便用「只有体检规则、没有选科规则」的目标验证 3001 也带 data_years。
+    missing_rule = _check({
+        "profile": _profile(color_vision="色弱"),
+        "items": [{"unit_id": "no-subject-rule", "batch": "本科批", "major_ids": [target_id]}],
+    }).json()
+    assert missing_rule["code"] == 3001, missing_rule
+    assert set(missing_rule["data"]) == {"data_status", "missing_rule_sets", "data_years"}, missing_rule["data"]
+    assert set(missing_rule["data"]["data_years"]) == {
+        "province_exam_rule", "subject_requirement", "physical_restriction",
+        "major_tuition", "admission_requirement",
+    }, missing_rule["data"]["data_years"]
+
+    subject_payload = {
+        "dataset": "subject_requirement", "province_code": "41", "year": 2026,
+        "batch_code": "undergraduate_regular", "exam_type": "普通",
+        "items": [
+            {"province": "河南", "batch": "本科批", "major_id": mid,
+             "first_subject": "物理", "secondary_subjects": [], "logic": "all",
+             "source_name": "河南省教育考试院", "source_url": "https://www.haeea.cn/", "year": 2026}
+            for mid in (target_id, sibling_id)
+        ],
+    }
+    imported_s = client.post(
+        "/api/admin/rule-datasets/import", json=subject_payload, headers=_admin_headers()
+    ).json()
+    assert imported_s["code"] == 0 and imported_s["data"]["created"] == 2, imported_s
+
+    payload = {
+        "dataset": "physical_restriction", "province_code": "41", "year": 2026,
+        "batch_code": "undergraduate_regular", "exam_type": "普通",
+        "items": [{
+            "condition": "色弱", "threshold": "", "major_category": "药学类", "major_code": "",
+            "level": "reject", "detail": "色弱不能录取药学类专业（测试）", "province": "河南", "year": 2026,
+            "source_name": "《普通高等学校招生体检工作指导意见》", "source_url": "http://www.moe.gov.cn/",
+        }],
+    }
+    imported = client.post("/api/admin/rule-datasets/import", json=payload, headers=_admin_headers()).json()
+    assert imported["code"] == 0 and imported["data"]["created"] == 1, imported
+
+    # 100701（药学）→ 1007 药学类：命中，且回传来源
+    hit = _check({
+        "profile": _profile(color_vision="色弱"),
+        "items": [{"unit_id": "class-hit", "batch": "本科批", "major_ids": [target_id]}],
+    }).json()
+    blockers = [h for h in hit["data"]["items"][0]["blockers"] if h["type"] == "physical"]
+    assert blockers and any("药学" in h["detail"] for h in blockers), blockers
+    assert blockers[0]["citation"]["source_name"], blockers
+
+    # 100801（中药学）→ 1008 中药学类：不得被「药学类」规则误伤（不做任何扩展匹配）
+    other = _check({
+        "profile": _profile(color_vision="色弱"),
+        "items": [{"unit_id": "class-other", "batch": "本科批", "major_ids": [sibling_id]}],
+    }).json()
+    other_item = other["data"]["items"][0]
+    assert not any(
+        h["type"] == "physical" for h in other_item["blockers"] + other_item["warnings"]
+    ), other_item
+
+
+@case("边界03 校验响应含 data_years（各规则集实际数据年度）")
+def _() -> None:
+    data = _check({"profile": _profile(), "items": []}).json()["data"]
+    years = data.get("data_years")
+    assert isinstance(years, dict), data
+    for dataset in (
+        "province_exam_rule", "subject_requirement", "physical_restriction",
+        "major_tuition", "admission_requirement",
+    ):
+        assert dataset in years, dataset
+    assert years["province_exam_rule"] == 2026 and years["subject_requirement"] == 2026
+
+
+# --------------------------------------------------------------------------- #
+# v1.6 修复：跨数据集年份对齐（选科滞后一年可用并如实标注；绝不借用未来数据）
+# --------------------------------------------------------------------------- #
+def _snapshot_subject_2026() -> tuple[list[dict[str, Any]], int | None]:
+    """移走 2026 全部选科行（返回快照与任一来源 id），供年份对齐用例使用。"""
+    with SessionLocal() as db:
+        stale = db.scalars(select(SubjectRequirement).where(SubjectRequirement.year == 2026)).all()
+        snapshot = [
+            {
+                "province_code": row.province_code, "province": row.province, "batch": row.batch,
+                "school_id": row.school_id, "group_code": row.group_code, "major_id": row.major_id,
+                "first_subject": row.first_subject, "secondary_subjects": list(row.secondary_subjects or []),
+                "logic": row.logic, "year": row.year, "source_id": row.source_id,
+            }
+            for row in stale
+        ]
+        source_id = snapshot[0]["source_id"] if snapshot else None
+        for row in stale:
+            db.delete(row)
+        db.commit()
+    return snapshot, source_id
+
+
+def _restore_subject(snapshot: list[dict[str, Any]], extra_years: tuple[int, ...] = ()) -> None:
+    with SessionLocal() as db:
+        for year in extra_years:
+            for row in db.scalars(select(SubjectRequirement).where(SubjectRequirement.year == year)).all():
+                db.delete(row)
+        for row in snapshot:
+            db.add(SubjectRequirement(**row))
+        db.commit()
+
+
+@case("跨数据集年份对齐：选科滞后一年按最近可得年度取数并标注（partial）")
+def _() -> None:
+    mid = _major_id("法学")
+    snapshot, source_id = _snapshot_subject_2026()
+    with SessionLocal() as db:
+        db.add(SubjectRequirement(
+            province_code="41", province="河南", year=2025, batch="本科批",
+            major_id=mid, first_subject="物理", secondary_subjects=["化学"],
+            logic="all", source_id=source_id,
+        ))
+        db.commit()
+    try:
+        body = _check({
+            "profile": _profile(),
+            "items": [{"unit_id": "y2026", "batch": "本科批", "major_ids": [mid]}],
+        }).json()
+        assert body["code"] == 0, body
+        data = body["data"]
+        assert data["data_years"]["subject_requirement"] == 2025, data["data_years"]
+        assert data["data_years"]["province_exam_rule"] == 2026, data["data_years"]
+        assert data["data_status"] == "partial", data["data_status"]
+        item = data["items"][0]
+        assert not any(hit["type"] == "subject" for hit in item["blockers"]), item
+        # 选科（2025 年度）、体检、学费、省份规则四闸门全过 → eligible=True
+        assert item["eligible"] is True, item
+    finally:
+        _restore_subject(snapshot, extra_years=(2025,))
+
+
+@case("跨数据集年份对齐：目标年份之后的数据不借用（3001）")
+def _() -> None:
+    mid = _major_id("法学")
+    snapshot, source_id = _snapshot_subject_2026()
+    with SessionLocal() as db:
+        db.add(SubjectRequirement(
+            province_code="41", province="河南", year=2027, batch="本科批",
+            major_id=mid, first_subject="物理", secondary_subjects=["化学"],
+            logic="all", source_id=source_id,
+        ))
+        db.commit()
+    try:
+        body = _check({
+            "profile": _profile(),
+            "items": [{"unit_id": "y-future", "batch": "本科批", "major_ids": [mid]}],
+        }).json()
+        assert body["code"] == 3001, body
+        assert DATASET_SUBJECT_REQUIREMENT in body["data"]["missing_rule_sets"], body
+        assert body["data"]["data_years"][DATASET_SUBJECT_REQUIREMENT] is None, body
+    finally:
+        _restore_subject(snapshot, extra_years=(2027,))
 
 
 def main() -> int:
