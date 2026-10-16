@@ -48,9 +48,8 @@
    "门类级": "原文『工学/农学/医学/法学各专业』→ major_menlei（导入时按专业库展开到类）"
   },
   "engine_integration": {
-   "当前可求值（engine_ready=true）": "色系（色弱/色盲/不能识别）三类、裸眼视力 5.0/4.8 两线、听力/嗅觉/口吃（二值粗判）、公安 4.8 线",
+   "当前可求值（engine_ready=true）": "色系（色弱/色盲/不能识别）三类、裸眼视力 5.0/4.8/4.5 三线、听力/嗅觉/口吃（二值粗判）、公安 4.8 线",
    "需 T6 引擎扩展后才可求值": [
-    "PR-ARMY-03（4.5 视力线：_VISION_THRESHOLDS 需加 '<4.5'，否则默认 5.0 会误拦）",
     "PR-ARMY-02 / PR-POLICE-02（BMI 区间：现有 weight 判定为单边 min 比较）",
     "PR-ARMY-01 / PR-POLICE-01（身高含性别维度：需档案补 gender 并按性别过滤规则）",
     "PR-2003-3-04/05/06（矫正度数：档案无『矫正度数』字段）"
@@ -2789,8 +2788,8 @@
    "basis": "《军队选拔军官和文职人员体检标准》（军队院校招生执行） 第二章第三节 眼科项目",
    "source_id": "SRC-ARMY-MEDICAL-STD",
    "remark": "双眼中任何一眼裸眼视力小于 4.5，不合格。",
-   "engine_ready": false,
-   "engine_note": "引擎视力判定线仅支持 5.0/4.8，**4.5 线需 T6 在 _VISION_THRESHOLDS 增加**，否则会按默认 5.0 误拦（过度拦截）。",
+   "engine_ready": true,
+   "engine_note": "T6 已支持 <4.5 阈值；该专项规则仍只在 military pathway 下判定。",
    "extends": null,
    "major_trace": [],
    "major_classes_expanded": []

@@ -64,10 +64,24 @@ class ConstraintProfile(BaseModel):
     batch_preference: list[str] = Field(default_factory=list, description="意向批次")
     accept_adjustment: bool | None = None
 
-    @field_validator("hearing", "smell", "stutter", "household_type", mode="before")
+    @field_validator("color_vision", "hearing", "smell", "stutter", "household_type", mode="before")
     @classmethod
     def _blank_sentinel_to_none(cls, value: object) -> object:
         """``""`` / ``"未填"`` / ``"未知"`` 一律收敛为 ``null``（契约 8.1）。"""
+        if isinstance(value, str) and value.strip() in ("", PHYSICAL_STATE_UNFILLED, "未知"):
+            return None
+        return value
+
+    @field_validator("vision_left", "vision_right", "height", "weight", mode="before")
+    @classmethod
+    def _unfilled_number_to_none(cls, value: object) -> object:
+        if isinstance(value, str) and value.strip() in ("", PHYSICAL_STATE_UNFILLED, "未知"):
+            return None
+        return value
+
+    @field_validator("hepatitis_b", mode="before")
+    @classmethod
+    def _unfilled_bool_to_none(cls, value: object) -> object:
         if isinstance(value, str) and value.strip() in ("", PHYSICAL_STATE_UNFILLED, "未知"):
             return None
         return value

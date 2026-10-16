@@ -29,11 +29,11 @@ os.environ["ZHIXUAN_ENV"] = "test"
 os.environ["ZHIXUAN_LOGIN_MAX_FAILURES"] = "100"
 
 from fastapi.testclient import TestClient  # noqa: E402
-from sqlalchemy import select  # noqa: E402
+from sqlalchemy import func, select  # noqa: E402
 
 from app.db.session import SessionLocal, create_all  # noqa: E402
 from app.main import app  # noqa: E402
-from app.models.base_data import Major  # noqa: E402
+from app.models.base_data import Major, School  # noqa: E402
 from app.models.constraints import ProvinceExamRule, SubjectRequirement  # noqa: E402
 from app.services import admin_auth  # noqa: E402
 from app.services.constraint_seed import seed_demo  # noqa: E402
@@ -192,6 +192,53 @@ def _() -> None:
     assert item["eligible"] is True and not item["blockers"] and not item["warnings"]
 
 
+@case("闸门③ 色弱规则仅应用于命中的专业类")
+def _() -> None:
+    data = _check({
+        "profile": _profile(color_vision="色弱"),
+        "items": [{"unit_id": "unrelated", "batch": "本科批", "major_ids": [_major_id("法学")]}],
+    }).json()["data"]
+    hits = [hit for hit in data["items"][0]["blockers"] + data["items"][0]["warnings"] if hit["type"] == "physical"]
+    assert hits == [], hits
+
+
+@case("闸门③ 体检规则经管理端导入后按专业类判定并回传来源")
+def _() -> None:
+    import importlib.util
+    import json
+
+    builder_path = Path(__file__).resolve().parents[1] / "data/scripts/build_physical_restriction_import.py"
+    spec = importlib.util.spec_from_file_location("t6_physical_builder", builder_path)
+    assert spec and spec.loader
+    builder = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(builder)
+    dictionary = json.loads(builder.DICT_PATH.read_text(encoding="utf-8"))
+    generated, _skipped, _need_engine, _counts = builder.build_items(dictionary, builder.load_menlei_map())
+    with SessionLocal() as db:
+        categories = set(db.scalars(select(Major.category).where(Major.category != "")).all())
+    rule = next(item for item in generated
+                if item["condition"] == "色弱" and item["major_category"] in categories
+                and item["level"] == "reject")
+    with SessionLocal() as db:
+        target_major_id = db.scalar(select(Major.id).where(Major.category == rule["major_category"]).limit(1))
+    assert target_major_id is not None, rule
+    payload = {
+        "dataset": "physical_restriction", "province_code": "41", "year": 2026,
+        "batch_code": "undergraduate_regular", "exam_type": "普通",
+        "items": [rule],
+    }
+    imported = client.post("/api/admin/rule-datasets/import", json=payload, headers=_admin_headers()).json()
+    assert imported["code"] == 0 and imported["data"]["created"] == 1, imported
+    checked = _check({
+        "profile": _profile(color_vision="色弱"),
+        "items": [{"unit_id": "physical-import", "batch": "本科批", "major_ids": [target_major_id]}],
+    }).json()
+    assert checked["code"] == 0, checked
+    hits = [hit for hit in checked["data"]["items"][0]["blockers"] if hit["type"] == "physical"]
+    assert len(hits) == 1 and hits[0]["citation"]["source_name"] == rule["source_name"], hits
+    assert hits[0]["citation"]["year"] == 2026, hits
+
+
 @case("校验03 未填体检 → unknowns 且 eligible 为 null（红线：不得判为合格）")
 def _() -> None:
     payload = {
@@ -207,12 +254,24 @@ def _() -> None:
     assert result["summary"]["unknown"] >= 1
 
 
+@case("校验03a 空串/未填/未知数值哨兵归一为未填并进入 unknown")
+def _() -> None:
+    response = _check({
+        "profile": _profile(color_vision="未知", vision_left="未填", vision_right="", height="未知"),
+        "items": [{"unit_id": "sentinels", "batch": "本科批", "major_ids": [_major_id("临床医学")]}],
+    }).json()
+    assert response["code"] == 0, response
+    item = response["data"]["items"][0]
+    assert item["eligible"] is None and item["unknowns"], item
+
+
 @case("校验03b summary 各计数互相独立（单位可同时计入 warned 与 unknown）")
 def _() -> None:
+    # 临床医学同时覆盖可用体检规则，验证目标级分类过滤后仍可与学费 warning 并存。
     payload = {
         "profile": _profile(color_vision=None, vision_left=None, vision_right=None, tuition_budget=100),
         "items": [{"unit_id": "u-3b", "batch": "本科批",
-                   "major_ids": [_major_id("计算机科学与技术(中外合作)")]}],
+                   "major_ids": [_major_id("临床医学")]}],
     }
     summary = _check(payload).json()["data"]["summary"]
     assert summary["total"] == 1
@@ -358,6 +417,91 @@ def _() -> None:
         seed_demo(db)
 
 
+@case("闸门② 专业组代码精确命中组级选科规则")
+def _() -> None:
+    with SessionLocal() as db:
+        school = db.scalar(select(School).limit(1))
+        if school is None:
+            school = School(name="T6 组级测试院校", province="河南")
+            db.add(school)
+            db.flush()
+        school_id = school.id
+        major = Major(name="T6 组级测试专业", code="T6-GROUP-MAJOR", category="医学类")
+        db.add(major)
+        db.flush()
+        db.commit()
+        major_id = major.id
+    import_payload = {
+        "dataset": "subject_requirement", "province_code": "41", "year": 2026,
+        "batch_code": "undergraduate_regular", "exam_type": "普通",
+        "items": [{
+            "province_code": "41", "province": "河南", "year": 2026, "batch": "本科批",
+            "school_id": school_id, "group_code": "T6-GROUP-01", "major_id": None,
+            "first_subject": "历史", "secondary_subjects": [], "logic": "all",
+            "source_name": "河南省教育考试院", "source_url": "https://www.haeea.cn/",
+        }],
+    }
+    imported = client.post("/api/admin/rule-datasets/import", json=import_payload, headers=_admin_headers()).json()
+    assert imported["code"] == 0 and imported["data"]["created"] == 1, imported
+    duplicate = client.post("/api/admin/rule-datasets/import", json=import_payload, headers=_admin_headers()).json()
+    assert duplicate["code"] == 1001 and "逻辑键已存在" in duplicate["message"], duplicate
+    body = _check({
+        "profile": _profile(),
+        "items": [{"unit_id": "group-hit", "batch": "本科批", "school_id": school_id,
+                   "group_code": "T6-GROUP-01", "major_ids": [major_id]}],
+    }).json()
+    assert body["code"] == 0, body
+    item = body["data"]["items"][0]
+    assert item["eligible"] is False and any("首选科目" in hit["detail"] for hit in item["blockers"]), item
+
+
+@case("闸门② 混合批次任一专业规则缺失则整批 3001 且定位目标")
+def _() -> None:
+    body = _check({
+        "profile": _profile(),
+        "items": [
+            {"unit_id": "known", "batch": "本科批", "major_ids": [_major_id("临床医学")]},
+            {"unit_id": "missing", "batch": "本科批", "major_ids": [999999]},
+        ],
+    }).json()
+    assert body["code"] == 3001, body
+    assert "data" in body and "items" not in (body.get("data") or {}), body
+    assert "unit_id=missing" in body["message"] and "major_id=999999" in body["message"], body
+
+
+@case("闸门② 目标年份规则不跨年回退")
+def _() -> None:
+    body = _check({
+        "profile": _profile(year=2025),
+        "items": [{"unit_id": "old-year", "batch": "本科批", "major_ids": [_major_id("临床医学")]}],
+    }).json()
+    assert body["code"] == 3001, body
+    assert "2025" in body["message"], body
+
+
+@case("闸门② 河南专业规则不能跨省回退给江西")
+def _() -> None:
+    with SessionLocal() as db:
+        source_id = db.scalar(select(SubjectRequirement.source_id).limit(1))
+        assert source_id
+        major = Major(name="T6 跨省隔离测试专业", code="T6-PROVINCE-ISOLATION", category="医学类")
+        db.add(major)
+        db.flush()
+        db.add(SubjectRequirement(
+            province_code="41", province="河南", year=2026, batch="本科批",
+            major_id=major.id, first_subject="物理", secondary_subjects=["化学"],
+            logic="all", source_id=source_id,
+        ))
+        db.commit()
+        major_id = major.id
+    body = _check({
+        "profile": _profile(province="江西"),
+        "items": [{"unit_id": "province-isolation", "batch": "本科批", "major_ids": [major_id]}],
+    }).json()
+    assert body["code"] == 3001, body
+    assert "unit_id=province-isolation" in body["message"], body
+
+
 @case("红线02 删除选科要求后请求 → 3001")
 def _() -> None:
     mid = _major_id("临床医学")
@@ -368,6 +512,7 @@ def _() -> None:
     payload = {"profile": _profile(), "items": [{"unit_id": "u-x", "batch": "本科批", "major_ids": [mid]}]}
     body = _check(payload).json()
     assert body["code"] == 3001, body
+    assert "unit_id=u-x" in body["message"] and "major_id=" in body["message"], body
     with SessionLocal() as db:
         seed_demo(db)
 
@@ -596,6 +741,33 @@ def _() -> None:
     for field in ("dataset", "created", "updated", "rejected", "errors"):
         assert field in body["data"], field
     assert body["data"]["created"] == 1 and body["data"]["rejected"] == 0
+
+
+@case("管理16 规则批量导入来源不完整时整批回滚")
+def _() -> None:
+    with SessionLocal() as db:
+        before = db.scalar(select(func.count()).select_from(SubjectRequirement).where(
+            SubjectRequirement.province_code == "41", SubjectRequirement.year == 2026,
+            SubjectRequirement.group_code == "T6-ROLLBACK",
+        )) or 0
+    payload = {
+        "dataset": "subject_requirement", "province_code": "41", "year": 2026,
+        "batch_code": "undergraduate_regular", "exam_type": "普通",
+        "items": [
+            {"group_code": "T6-ROLLBACK", "first_subject": "物理", "logic": "all",
+             "source_name": "河南省教育考试院", "source_url": "https://www.haeea.cn/", "year": 2026},
+            {"group_code": "T6-ROLLBACK-INVALID", "first_subject": "历史", "logic": "all",
+             "source_name": "", "source_url": "", "year": 2026},
+        ],
+    }
+    body = client.post("/api/admin/rule-datasets/import", json=payload, headers=_admin_headers()).json()
+    assert body["code"] == 4001, body
+    with SessionLocal() as db:
+        after = db.scalar(select(func.count()).select_from(SubjectRequirement).where(
+            SubjectRequirement.province_code == "41", SubjectRequirement.year == 2026,
+            SubjectRequirement.group_code.like("T6-ROLLBACK%"),
+        )) or 0
+    assert after == before, (before, after)
 
 
 def main() -> int:

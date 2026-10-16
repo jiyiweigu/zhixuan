@@ -25,7 +25,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Mapping, Sequence
 
-from sqlalchemy import func, select
+from sqlalchemy import false, func, or_, select
 from sqlalchemy.orm import Session
 
 from app.core.response import BizCode, BizError
@@ -473,6 +473,11 @@ def major_requirements(
             "logic": req_row.logic,
         }
 
+    target_match = []
+    if str(major.category or "").strip():
+        target_match.append(PhysicalRestriction.major_category == major.category)
+    if str(major.code or "").strip():
+        target_match.append(PhysicalRestriction.major_code == major.code)
     restrictions = list(
         db.scalars(
             select(PhysicalRestriction).where(
@@ -481,9 +486,7 @@ def major_requirements(
                 | (PhysicalRestriction.province == province_name)
                 | (PhysicalRestriction.province == "")
                 | (PhysicalRestriction.province_code == ""),
-                (PhysicalRestriction.major_category == (major.category or ""))
-                | (PhysicalRestriction.major_code == (major.code or ""))
-                | (PhysicalRestriction.major_category == ""),
+                or_(*target_match) if target_match else false(),
             )
         ).all()
     )
@@ -570,6 +573,8 @@ def _restrictions_for(db: Session, province_code: str, year: int) -> list[dict[s
             "detail": row.detail,
             "major_category": row.major_category,
             "major_code": row.major_code,
+            "major_ids": [],
+            "major_names": [],
             "citation": _citation_of(sources.get(row.source_id)),
         }
         for row in rows
@@ -580,8 +585,9 @@ def _subject_requirements_by_unit(
     db: Session, items: Sequence[Mapping[str, Any]], province_code: str, year: int
 ) -> dict[str, list[dict[str, Any]]]:
     """按志愿单位组装选科要求；任一专业缺规则 → 3001（契约 8.4）。"""
-    major_ids = sorted({mid for item in items for mid in (item.get("major_ids") or [])})
-    if not major_ids:
+    targets = [(item, item.get("major_ids") or []) for item in items]
+    major_ids = sorted({mid for _, mids in targets for mid in mids})
+    if not major_ids and not any(item.get("school_id") and item.get("group_code") for item, _ in targets):
         return {}
 
     province_name = province_name_of(province_code)
@@ -591,47 +597,169 @@ def _subject_requirements_by_unit(
                 (SubjectRequirement.province_code == province_code)
                 | (SubjectRequirement.province == province_name),
                 SubjectRequirement.year == year,
-                SubjectRequirement.major_id.in_(major_ids),
+                (SubjectRequirement.major_id.in_(major_ids) if major_ids else SubjectRequirement.id < 0),
             )
         ).all()
     )
-    have = {row.major_id for row in rows if row.major_id is not None}
-    missing = [mid for mid in major_ids if mid not in have]
-    if missing:
-        names = list(db.scalars(select(Major.name).where(Major.id.in_(missing))).all())
-        label = "、".join(names) if names else "、".join(str(x) for x in missing)
-        raise _rule_missing(
-            f"以下专业在 {province_name}{year} 年的选科要求数据缺失（维护中）：{label}",
-            data_status=DATA_STATUS_SCHEMA_ONLY,
-            missing=[DATASET_SUBJECT_REQUIREMENT],
-        )
-
-    majors = {m.id: m for m in db.scalars(select(Major).where(Major.id.in_(major_ids))).all()}
+    group_rows: list[SubjectRequirement] = []
+    for item, _ in targets:
+        school_id, group_code = item.get("school_id"), str(item.get("group_code") or "").strip()
+        if school_id and group_code:
+            group_rows.extend(
+                db.scalars(
+                    select(SubjectRequirement).where(
+                        SubjectRequirement.province_code == province_code,
+                        SubjectRequirement.year == year,
+                        SubjectRequirement.school_id == school_id,
+                        SubjectRequirement.group_code == group_code,
+                        SubjectRequirement.major_id.is_(None),
+                    )
+                ).all()
+            )
+    rows.extend(group_rows)
+    # Remove duplicate DB rows while preserving deterministic ordering.
+    rows = list({row.id: row for row in sorted(rows, key=lambda row: row.id)}.values())
+    majors = {m.id: m for m in db.scalars(select(Major).where(Major.id.in_(major_ids))).all()} if major_ids else {}
     sources = _sources_of(db, [row.source_id for row in rows])
 
     by_major: dict[int, list[dict[str, Any]]] = {}
+    by_group: dict[tuple[int, str], list[dict[str, Any]]] = {}
     for row in rows:
-        if row.major_id is None:
-            continue
-        by_major.setdefault(row.major_id, []).append(
-            {
+        entry = {
                 "first_subject": row.first_subject,
                 "secondary_subjects": list(row.secondary_subjects or []),
                 "logic": row.logic,
-                "major_ids": [row.major_id],
+                "batch_code": batch_code_of(row.batch) if str(row.batch or "").strip() else "",
+                "major_ids": [row.major_id] if row.major_id is not None else [],
                 "major_names": [majors[row.major_id].name] if row.major_id in majors else [],
                 "citation": _citation_of(sources.get(row.source_id)),
             }
-        )
+        if row.major_id is not None:
+            by_major.setdefault(row.major_id, []).append(entry)
+        elif row.school_id and row.group_code:
+            by_group.setdefault((row.school_id, row.group_code), []).append(entry)
 
     result: dict[str, list[dict[str, Any]]] = {}
+    missing_targets: list[str] = []
     for item in items:
-        unit_id = item.get("unit_id")
+        unit_id = str(item.get("unit_id") or "")
+        mids = item.get("major_ids") or []
+        target_batch = batch_code_of(str(item.get("batch") or DEFAULT_BATCH))
+        group_key = (item.get("school_id"), str(item.get("group_code") or "").strip())
+        group_reqs = [
+            req for req in by_group.get(group_key, [])
+            if not req["batch_code"] or req["batch_code"] == target_batch
+        ] if all(group_key) else []
         reqs: list[dict[str, Any]] = []
-        for mid in item.get("major_ids") or []:
-            reqs.extend(by_major.get(mid, []))
-        result[unit_id] = reqs
+        group_fallback_ids: list[int] = []
+        for mid in mids:
+            major_reqs = [
+                req for req in by_major.get(mid, [])
+                if not req["batch_code"] or req["batch_code"] == target_batch
+            ]
+            if major_reqs:
+                reqs.extend(major_reqs)
+            elif group_reqs:
+                group_fallback_ids.append(mid)
+            else:
+                major = majors.get(mid)
+                missing_targets.append(f"unit_id={unit_id}, major_id={mid}（{major.name if major else '专业未知'}）")
+        if group_fallback_ids:
+            for group_req in group_reqs:
+                copy = dict(group_req)
+                copy["major_ids"] = list(group_fallback_ids)
+                copy["major_names"] = [majors[mid].name for mid in group_fallback_ids if mid in majors]
+                reqs.append(copy)
+        if not mids and group_reqs:
+            reqs.extend(group_reqs)
+        elif not mids and item.get("group_code"):
+            missing_targets.append(f"unit_id={unit_id}, school_id={item.get('school_id')}, group_code={item.get('group_code')}")
+        # Group requirements describe the whole target group, so attach the requested majors for traceability.
+        normalized = []
+        for req in reqs:
+            copy = dict(req)
+            normalized.append(copy)
+        result[unit_id] = normalized
+    if missing_targets:
+        summary = "; ".join(missing_targets[:20])
+        if len(missing_targets) > 20:
+            summary += f"；另有 {len(missing_targets) - 20} 个目标"
+        raise _rule_missing(
+            f"以下目标在 {province_name}{year} 年缺少明确选科规则：{summary}",
+            data_status=DATA_STATUS_SCHEMA_ONLY,
+            missing=[DATASET_SUBJECT_REQUIREMENT],
+        )
     return result
+
+
+def _targeted_restrictions(
+    db: Session,
+    restrictions: Sequence[Mapping[str, Any]],
+    items: Sequence[Mapping[str, Any]],
+) -> list[dict[str, Any]]:
+    """Attach stable target identities to physical rules; unknown category stays explicit."""
+    major_ids = sorted({mid for item in items for mid in (item.get("major_ids") or [])})
+    majors = {
+        major.id: major
+        for major in db.scalars(select(Major).where(Major.id.in_(major_ids))).all()
+    } if major_ids else {}
+    output: list[dict[str, Any]] = []
+    for raw in restrictions:
+        rule = dict(raw)
+        category = str(rule.get("major_category") or "").strip()
+        code = str(rule.get("major_code") or "").strip()
+        if not category and not code:
+            condition_text = str(rule.get("condition") or "")
+            if majors and ("军队院校" in condition_text or "公安院校" in condition_text):
+                rule["major_ids"] = list(majors)
+                rule["major_names"] = [major.name for major in majors.values()]
+                output.append(rule)
+                continue
+            if majors:
+                output.append({
+                    "condition": "专业适用范围未知",
+                    "threshold": "",
+                    "level": "reject",
+                    "detail": "体检规则未关联专业代码或专业类，无法确认是否适用于目标专业",
+                    "major_ids": list(majors),
+                    "major_names": [major.name for major in majors.values()],
+                    "citation": rule.get("citation") or {"source_name": "", "source_url": "", "year": 0},
+                })
+            continue
+        matched = [
+            major for major in majors.values()
+            if (code and str(major.code or "").strip() == code)
+            or (category and str(major.category or "").strip() == category)
+        ]
+        if not matched:
+            continue
+        rule["major_ids"] = [major.id for major in matched]
+        rule["major_names"] = [major.name for major in matched]
+        output.append(rule)
+    for mid, major in majors.items():
+        if not str(major.category or "").strip() and not str(major.code or "").strip():
+            output.append({
+                "condition": "专业适用范围未知",
+                "threshold": "",
+                "level": "reject",
+                "detail": "目标专业缺少专业代码和专业类映射，无法确认体检规则适用范围",
+                "major_ids": [mid],
+                "major_names": [major.name],
+                "citation": {"source_name": "", "source_url": "", "year": 0},
+            })
+    for item in items:
+        if not item.get("major_ids"):
+            output.append({
+                "condition": "专业适用范围未知",
+                "threshold": "",
+                "level": "reject",
+                "detail": "志愿单位未提供专业目标，无法确认适用的体检限制",
+                "major_ids": [],
+                "major_names": [],
+                "scope_unit_ids": [str(item.get("unit_id") or "")],
+                "citation": {"source_name": "", "source_url": "", "year": 0},
+            })
+    return output
 
 
 def _tuition_by_unit(
@@ -726,6 +854,14 @@ def check_eligibility(
             missing=missing_required or [DATASET_PROVINCE_EXAM_RULE],
         )
 
+    if missing_required:
+        labels = ", ".join(missing_required)
+        raise _rule_missing(
+            f"{province_name_of(province_code)}{year} 年以下必需规则集尚未达到可用状态：{labels}",
+            data_status=_overall_status([states[ds] for ds in REQUIRED_DATASETS]),
+            missing=missing_required,
+        )
+
     source = _sources_of(db, [rule_row.source_id]).get(rule_row.source_id)
     province_rule = {
         "batch": rule_row.batch,
@@ -736,8 +872,11 @@ def check_eligibility(
     rules = {
         "province_rule": province_rule,
         "subject_requirements": _subject_requirements_by_unit(db, items, province_code, year),
-        "physical_restrictions": _restrictions_for(db, province_code, year),
+        "physical_restrictions": _targeted_restrictions(
+            db, _restrictions_for(db, province_code, year), items
+        ),
         "tuition": _tuition_by_unit(db, items, province_code, year),
+        "pathway_id": getattr(payload, "pathway_id", None),
     }
 
     result = engine.check_units(profile, items, rules)
