@@ -10,11 +10,15 @@ declare namespace Zhixuan {
  // 契约 8.1：data_status 取值 available | partial | schema_only | unavailable
  interface Pathway{pathway_id:number|string;name:string;category:string;batch:string;target_group:string;apply_time:string;priority:'P0'|'P1'|'P2';status?:string;data_status:'available'|'partial'|'schema_only'|'unavailable';source_name?:string;source_url?:string;year?:number;sources?:Citation[];description?:string;conditions?:Array<{text:string;source_name:string;source_url:string}>;timeline?:Array<{node:string;date_desc:string}>}
  interface ConstraintHit{type:string;level:'reject'|'not_suitable'|'soft'|'unknown';detail:string;major_ids?:Array<number|string>;major_names?:string[];fields?:string[];citation?:Citation}
- interface EligibilityResult{pathway_id?:number|string;pathway_name?:string;unit_id?:string;eligible:boolean|null;reason?:string;rules?:Array<{rule_type:string;rule_desc:string;source_name:string;source_url:string;year?:number}>;risk_note?:string|null;blockers?:ConstraintHit[];warnings?:ConstraintHit[];unknowns?:ConstraintHit[];citations?:Citation[]}
+ interface EligibilityResult{pathway_id?:number|string;pathway_name?:string;unit_id?:string;school_name?:string;group_code?:string|null;eligible:boolean|null;reason?:string;rules?:Array<{rule_type:string;rule_desc:string;source_name:string;source_url:string;year?:number}>;risk_note?:string|null;blockers?:ConstraintHit[];warnings?:ConstraintHit[];unknowns?:ConstraintHit[];citations?:Citation[]}
  interface Eligibility{results:EligibilityResult[];updated_profile?:Profile;citations?:Citation[]}
  interface EligibilityCheckResp{data_status:'available'|'partial'|'schema_only'|'unavailable';items:EligibilityResult[];summary:{total:number;blocked:number;warned:number;unknown:number};missing_rule_sets?:string[]}
  // 契约 4：confidence 为 0~1 数值；confidence_level 为同一判定的三档结果，供徽标直接使用
  interface QaResult{qa_log_id:number|string;session_id:string|null;question?:string;answer:string;citations:Citation[];confidence:number;confidence_level:'high'|'medium'|'low';needs_review:boolean;degraded:boolean;elapsed_ms:number;created_at?:string|null}
+ // 契约 4：GET /api/qa/history 的 items[]。注意史册条目的 confidence 是**三档字符串**（非 0~1 数值），以接口为准。
+ interface QaHistoryItem{qa_log_id:number|string;session_id:string|null;question:string;answer:string;confidence:string;confidence_level?:string;citations:Citation[];needs_review:boolean;degraded:boolean;created_at:string|null}
+ // 契约 8.4/8.5：校验请求的志愿单位（院校专业组）。
+ interface EligibilityUnit{unit_id:string;batch?:string;school_id?:number|string|null;group_code?:string|null;major_ids?:Array<number|string>;school_name?:string}
  interface PlanItem{tier:'冲'|'稳'|'保';order:number;school_id:number|string;school_name:string;group_code:string|null;major_ids:number[];major_names:string[];min_score_ref:number|null;min_rank_ref:number|null;ref_year:number|null;gap_rank:number|null;source_note:string;source_name?:string;source_url?:string;year?:number}
  // 契约 5/6.1：tiers 为各档实际数量（志愿条目本身在 items 中，按 item.tier 分组）
  interface Recommendation{strategy:string;priority?:string;tiers:Record<string,number>;quota?:Record<string,number>;items?:PlanItem[];risk_notes?:string[];citations?:Citation[];data_status?:string;disclaimer?:string;summary?:string;generated_at?:string}
@@ -24,7 +28,7 @@ declare namespace Zhixuan {
  interface ScoreSegment{province:string;year:number;subject_type:string;data_status:'available'|'partial'|'schema_only'|'unavailable';score:number|null;cumulative_rank:number|null;same_score_count:number|null;citations:Citation[];missing_rule_sets?:string[]}
  interface School{school_id:number|string;name:string;code:string;province:string;city:string;level:string;type:string;ownership:string;website?:string;intro?:string;sources?:Citation[];citations?:Citation[]}
  interface Major{major_id:number|string;name:string;code:string;category:string;degree:string;intro?:string;first_class_schools?:string[]}
- interface ConfidenceBadgeProps {level:'high'|'medium'|'low'}
+ interface ConfidenceBadgeProps {level:'high'|'medium'|'low';score?:number}
  // ===================== 管理端（契约 v1.4：附录 A + §8.8）=====================
  // data_status 唯一词表（契约「跨层词表」）：available | partial | schema_only | unavailable
  type DataStatus='available'|'partial'|'schema_only'|'unavailable'
