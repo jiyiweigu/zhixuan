@@ -12,7 +12,10 @@ declare namespace Zhixuan {
  interface ConstraintHit{type:string;level:'reject'|'not_suitable'|'soft'|'unknown';detail:string;major_ids?:Array<number|string>;major_names?:string[];fields?:string[];citation?:Citation}
  interface EligibilityResult{pathway_id?:number|string;pathway_name?:string;unit_id?:string;school_name?:string;group_code?:string|null;eligible:boolean|null;reason?:string;rules?:Array<{rule_type:string;rule_desc:string;source_name:string;source_url:string;year?:number}>;risk_note?:string|null;blockers?:ConstraintHit[];warnings?:ConstraintHit[];unknowns?:ConstraintHit[];citations?:Citation[]}
  interface Eligibility{results:EligibilityResult[];updated_profile?:Profile;citations?:Citation[]}
- interface EligibilityCheckResp{data_status:'available'|'partial'|'schema_only'|'unavailable';items:EligibilityResult[];summary:{total:number;blocked:number;warned:number;unknown:number};missing_rule_sets?:string[]}
+ // 契约 8.4/8.5/8.6（v1.6）：各规则集本次取数的实际年度；null 表示该规则集无任何可得数据。
+ // 取数口径 = 「不晚于报考年份的最近可得年度」，用到滞后年度时 data_status 不得为 available。
+ interface DataYears{province_exam_rule:number|null;subject_requirement:number|null;physical_restriction:number|null;major_tuition:number|null;admission_requirement:number|null}
+ interface EligibilityCheckResp{data_status:'available'|'partial'|'schema_only'|'unavailable';data_years?:DataYears;items:EligibilityResult[];summary:{total:number;blocked:number;warned:number;unknown:number};missing_rule_sets?:string[]}
  // 契约 4：confidence 为 0~1 数值；confidence_level 为同一判定的三档结果，供徽标直接使用
  interface QaResult{qa_log_id:number|string;session_id:string|null;question?:string;answer:string;citations:Citation[];confidence:number;confidence_level:'high'|'medium'|'low';needs_review:boolean;degraded:boolean;elapsed_ms:number;created_at?:string|null}
  // 契约 4：GET /api/qa/history 的 items[]。注意史册条目的 confidence 是**三档字符串**（非 0~1 数值），以接口为准。

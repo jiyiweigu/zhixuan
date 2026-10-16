@@ -132,9 +132,23 @@ const errorData = ref<any>(null)
 
 const datasetLabel: Record<string, string> = {
   province_exam_rule: '省份志愿模式', subject_requirement: '选科要求',
-  physical_restriction: '体检限制', major_tuition: '专业学费', pathway_eligibility: '途径资格',
+  physical_restriction: '体检限制', major_tuition: '专业学费',
+  admission_requirement: '招生章程要求', pathway_eligibility: '途径资格',
 }
 const datasetNames = (keys?: string[]) => (keys || []).map((k) => datasetLabel[k] || k)
+
+// 契约 v1.6：data_years = 各规则集本次实际取数年度（按「不晚于报考年份的最近可得年度」，
+// 绝不借用未来数据）；用到滞后年度时 data_status 会降为 partial，此处如实展示，不隐藏。
+const YEAR_KEYS = ['province_exam_rule', 'subject_requirement', 'physical_restriction', 'major_tuition', 'admission_requirement'] as const
+function formatYears(years?: Record<string, number | null> | null) {
+  if (!years) return ''
+  return YEAR_KEYS
+    .filter((k) => years[k] != null)
+    .map((k) => `${datasetLabel[k] || k} ${years[k]}`)
+    .join(' · ')
+}
+const yearNotes = computed(() => formatYears((result.value as any)?.data_years))
+const errorYearNotes = computed(() => formatYears((errorData.value as any)?.data_years))
 
 async function run() {
   notice.value = ''; errorCode.value = null; errorText.value = ''; errorData.value = null
@@ -277,6 +291,7 @@ function scrollToProfile() {
       <b>报考规则数据尚未就绪，无法完成校验</b>
       <p>{{ errorText }}</p>
       <p v-if="errorData?.missing_rule_sets?.length" class="muted">缺失规则集：{{ datasetNames(errorData.missing_rule_sets).join('、') }}</p>
+      <p v-if="errorYearNotes" class="muted">各规则集实际数据年度：{{ errorYearNotes }}</p>
       <p class="muted">当前数据覆盖：河南、江西 · 普通本科批。规则补齐后本页会自动可用。</p>
     </div>
     <p v-else-if="errorText" class="state-box">{{ errorText }}</p>
@@ -292,6 +307,10 @@ function scrollToProfile() {
         <p class="muted">
           共 {{ result.summary.total }} 个目标 · 不符合 {{ result.summary.blocked }} · 有风险 {{ result.summary.warned }} · 待核验 {{ result.summary.unknown }}
           <template v-if="result.missing_rule_sets?.length"> · 尚未就绪的规则集：{{ datasetNames(result.missing_rule_sets).join('、') }}</template>
+        </p>
+        <p v-if="yearNotes" class="muted">
+          规则数据年度：{{ yearNotes }}
+          <template v-if="result.data_status === 'partial'">（含滞后年度数据，已按「部分可用」标注；未覆盖部分不作结论）</template>
         </p>
       </section>
       <EligibilityList :items="result.items" :data-status="result.data_status" @go-profile="scrollToProfile" />

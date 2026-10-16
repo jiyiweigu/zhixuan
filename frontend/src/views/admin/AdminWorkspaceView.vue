@@ -1,5 +1,5 @@
 <script setup lang="ts">
-// T7 管理端对齐契约 v1.4：五个 section 的取数一律走契约接口
+// T7 管理端对齐契约 v1.6：五个 section 的取数一律走契约接口
 // （附录 A + §8.8），形状以后端真实 DTO 为准；VITE_USE_MOCK=true 时用同形状 Mock 离线开发。
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import * as echarts from 'echarts/core'
@@ -329,7 +329,7 @@ onBeforeUnmount(() => { stopPoll(); chart?.dispose(); chart = null })
   <section class="content-page admin-page">
     <div class="eyebrow">ADMIN / {{ (section || '').toUpperCase() }}</div>
     <h1>{{ title }}</h1>
-    <p class="lede">管理端操作全部保留来源与留痕。默认走契约 v1.4 真实接口（VITE_USE_MOCK=true 时为同形状离线演示数据）。</p>
+    <p class="lede">管理端操作全部保留来源与留痕。默认走契约 v1.6 真实接口（VITE_USE_MOCK=true 时为同形状离线演示数据）。</p>
 
     <!-- 语料管理 -->
     <template v-if="section === 'docs'">

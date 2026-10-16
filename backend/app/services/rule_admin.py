@@ -1013,6 +1013,16 @@ def _build_import_row(
     raise BizError(f"参数错误：不支持的 dataset：{dataset}")
 
 
+def _subject_first_key(value: Any) -> str:
+    """选科要求首选科目归一：空 / ``不限`` → ``''``（无首选约束），其余原样。
+
+    与选科导入包生成器 ``data/scripts/build_subject_requirement_import.py``
+    的 ``_first_key`` 保持一致（用于逻辑键双方同口径）。
+    """
+    text = str(value or "").strip()
+    return "" if text in ("", "不限") else text
+
+
 def _import_identity(dataset: str, row: Any) -> tuple[Any, ...]:
     """Return the logical target key used to reject duplicate imports before writes."""
     if dataset == DATASET_PROVINCE_EXAM_RULE:
@@ -1020,7 +1030,15 @@ def _import_identity(dataset: str, row: Any) -> tuple[Any, ...]:
     if dataset == DATASET_SUBJECT_REQUIREMENT:
         if row.major_id is None and (row.school_id is None or not str(row.group_code or "").strip()):
             raise BizError("参数错误：选科要求必须绑定专业组（school_id + group_code）或 major_id")
-        target = ("group", row.school_id, row.group_code) if row.major_id is None else ("major", row.school_id, row.major_id)
+        # 组级身份含「批次 + 首选科目」：同一院校同组号在不同批次/科类下是不同
+        # 专业组（河南计划表按科类独立编组号），各自是独立规则行；不加这两维
+        # 会把合法多口径行误判为重复。
+        batch_key = batch_code_of(str(row.batch or ""))
+        if row.major_id is None:
+            target = ("group", row.school_id, row.group_code, batch_key,
+                      _subject_first_key(row.first_subject))
+        else:
+            target = ("major", row.school_id, row.major_id, batch_key)
         return (row.province_code, row.year, *target)
     if dataset == DATASET_PHYSICAL_RESTRICTION:
         return (row.province_code, row.year, row.condition, row.threshold, row.major_category, row.major_code)

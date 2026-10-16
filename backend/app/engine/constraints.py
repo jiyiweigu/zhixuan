@@ -44,6 +44,7 @@ from app.models.constants import (
     SUBJECT_LOGIC_ANY,
     VISION_LINE_48,
     VISION_LINE_50,
+    batch_code_of,
 )
 
 BLOCKERS = "blockers"
@@ -498,9 +499,12 @@ def province_rule_check(
     unit = unit or {}
     unit_batch = str(unit.get("batch") or "").strip()
 
-    # 批次开放：unit 自带的 batch 必须与模板批次一致（提前批与本科批结构不同）
+    # 批次开放：unit 自带的 batch 必须与模板批次属于**同一批次**（提前批与本科批
+    # 结构不同，不可混用）。比较走 ``batch_code_of`` 归一：各省/各数据源的批次
+    # 展示名不同（河南「本科批」、江西「本科」、江西「提前本科」= 河南「提前批」），
+    # 归一后同键即为同批次，不得按展示名字面误拦；归一后仍不同才是真不匹配。
     rule_batch = str(rule.get("batch") or "").strip()
-    if unit_batch and rule_batch and unit_batch != rule_batch:
+    if unit_batch and rule_batch and batch_code_of(unit_batch) != batch_code_of(rule_batch):
         hits.append(
             _hit(
                 CONSTRAINT_TYPE_BATCH, LEVEL_REJECT,

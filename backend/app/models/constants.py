@@ -203,10 +203,14 @@ BATCH_ALIAS_TO_CODE: dict[str, str] = {
     "本科批": BATCH_CODE_UG,
     "普通本科批": BATCH_CODE_UG,
     "本科批次": BATCH_CODE_UG,
+    "本科": BATCH_CODE_UG,                      # 江西招生计划口径（2024 选科数据实测）
     "提前批": BATCH_CODE_EARLY,
     "普通本科提前批": BATCH_CODE_EARLY,
+    "提前本科": BATCH_CODE_EARLY,                # 江西招生计划口径
     "高职（专科）批": BATCH_CODE_VOCATIONAL,
     "高职（专科）批次": BATCH_CODE_VOCATIONAL,
+    "高职(专科)": BATCH_CODE_VOCATIONAL,         # 江西招生计划口径（半角括号）
+    "专科批": BATCH_CODE_VOCATIONAL,             # 河南招生计划口径
     "艺术类/体育类本科批次": BATCH_CODE_ART_SPORT,
 }
 

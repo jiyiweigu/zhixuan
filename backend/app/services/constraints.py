@@ -3,14 +3,17 @@
 本层只做两件事：**从规则表读数据**（IO）+ **调用纯函数引擎**（app/engine/constraints.py）。
 判定逻辑一律在引擎里，服务层不做二次改判，避免"双份真相"（8.5 风险清单）。
 
-契约对齐（docs/api-contract.md v1.4）：
+契约对齐（docs/api-contract.md v1.6）：
 
 - 8.3 ``GET /api/provinces/{code}/rules``：入参是**两位省代码**（河南 ``41`` / 江西 ``36``），
   出参含 ``province_code`` / ``batch_code`` / ``exam_type`` / ``data_status`` / 嵌套 ``rule`` /
   ``sources`` / ``missing_rule_sets``；**无对应版本仍返回 200 + ``unavailable``**，不返回虚构模板；
+- 8.4 / 8.5 ``POST /api/eligibility/check``：出参首字段为 ``data_status``，并含 ``data_years``
+  （各规则集实际数据年度；按"不晚于报考年份的最近可得年度"取数，用到滞后年度时
+  结果标 ``partial``，同一 ``school_id + group_code`` 的多科类变体按考生首选科目选择）；
 - 8.6 ``GET /api/majors/{id}/requirements``：``threshold`` 为对象、``tuition`` 完整、
   缺失规则集列入 ``missing_rule_sets``、未知要求用 ``null`` 而不是空数组冒充"无限制"；
-- 8.4 ``POST /api/eligibility/check``：出参首字段为 ``data_status``。
+  体检类级匹配走「专业代码前 4 位 → 专业类名」（``_rule_targets_major``）。
 
 规则数据缺失 → **校验接口**返回 ``3001``，绝不静默放行（8.5 实现纪律第 3 条、7.6 约束第 5 条）：
 
@@ -25,7 +28,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Mapping, Sequence
 
-from sqlalchemy import false, func, or_, select
+from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session
 
 from app.core.response import BizCode, BizError
@@ -101,13 +104,83 @@ def _sources_of(db: Session, source_ids: Sequence[int | None]) -> dict[int, Sour
     return {row.id: row for row in rows}
 
 
-def _rule_missing(message: str, *, data_status: str, missing: Sequence[str]) -> BizError:
-    """构造 3001：``data`` 说明缺失数据集（契约 8.4 错误示例）。"""
-    return BizError(
-        message,
-        BizCode.RULE_MISSING,
-        data={"data_status": data_status, "missing_rule_sets": sorted(set(missing))},
-    )
+def _rule_missing(
+    message: str,
+    *,
+    data_status: str,
+    missing: Sequence[str],
+    years: Mapping[str, int | None] | None = None,
+) -> BizError:
+    """构造 3001：``data`` 说明缺失数据集（契约 8.4 错误示例）。
+
+    ``years`` 提供时附带各规则集的实际数据年度（按数据集最近可得年度取数，
+    见 ``_resolve_rule_years``），便于定位"缺的是哪一年的数据"。
+    """
+    data: dict[str, Any] = {
+        "data_status": data_status,
+        "missing_rule_sets": sorted(set(missing)),
+    }
+    if years:
+        data["data_years"] = {ds: years.get(ds) for ds in DATASET_VALUES}
+    return BizError(message, BizCode.RULE_MISSING, data=data)
+
+
+def _code_base(code: Any) -> str:
+    """专业代码归一：去首尾空白、转大写，并去掉末位 K/T 标记（国控/特设标记不参与匹配）。"""
+    return str(code or "").strip().upper().rstrip("KT")
+
+
+def _class_name_by_major(db: Session, majors: Sequence[Major]) -> dict[int, str]:
+    """专业 id → 专业类名（用专业代码前 4 位查 major 表 ``is_category=1`` 行）。
+
+    major 表的既定设计（见 ``app/services/importers/majors.py``）：
+    - ``major.category`` 存**学科门类**（如「医学」），不是专业类；
+    - 93 个专业类以 ``is_category=1`` 行承载（如 code=1007 → 「药学类」），
+      专业 → 专业类的从属关系由 **code 前 4 位**表达（100701 → 1007）。
+
+    体检规则的 ``major_category`` 是专业类名，因此类级匹配必须走这条派生链，
+    不能直接拿 ``major.category``（门类）去比。
+    """
+    prefixes = {_code_base(major.code)[:4] for major in majors if len(_code_base(major.code)) >= 4}
+    if not prefixes:
+        return {}
+    rows = db.scalars(
+        select(Major).where(Major.is_category.is_(True), Major.code.in_(sorted(prefixes)))
+    ).all()
+    name_by_prefix = {str(row.code or "").strip(): row.name for row in rows}
+    result: dict[int, str] = {}
+    for major in majors:
+        prefix = _code_base(major.code)[:4]
+        if prefix and prefix in name_by_prefix:
+            result[major.id] = name_by_prefix[prefix]
+    return result
+
+
+def _rule_targets_major(
+    rule_code: Any, rule_category: Any, major: Major, class_name: str | None
+) -> bool:
+    """体检规则是否命中某专业（单一真源，8.6 与 8.4 共用）。
+
+    口径（与体检规则生成器 ``build_physical_restriction_import.py`` 对齐）：
+
+    - 专业级条目（``major_code`` 非空）：代码归一后精确相等（K/T 后缀不影响）；
+    - 类级条目（``major_category`` 非空）：与「专业代码前 4 位对应的专业类名」
+      精确相等（如 100701 → 1007 → 药学类）。同时保留与 ``major.category``
+      的精确相等，兼容把专业类名写进 category 列的历史种子数据
+      （``constraint_seed``，测试环境用）。
+    - **点名专业不上卷到类、类级条目也不下卷到专业**——不做任何扩展匹配。
+
+    无 code 也无 category 的条目由调用方按"适用范围未知"单独处理，不走本函数。
+    """
+    code = _code_base(rule_code)
+    if code:
+        return code == _code_base(getattr(major, "code", ""))
+    category = str(rule_category or "").strip()
+    if not category:
+        return False
+    if class_name and category == class_name:
+        return True
+    return category == str(getattr(major, "category", "") or "").strip()
 
 
 def _as_str_list(raw: Any) -> list[str]:
@@ -227,21 +300,100 @@ def dataset_presence(
     return False
 
 
-def _dataset_states(
-    db: Session, province_code: str, year: int, batch_code: str, exam_type: str = EXAM_TYPE_NORMAL
+def _latest_year_with_presence(
+    db: Session, dataset: str, province_code: str, target_year: int, batch_code: str
+) -> int | None:
+    """该数据集「不晚于目标年份」的最近可得年份；无 → ``None``。
+
+    **绝不向未来借数据**：目标年份之后才有的规则一律不用（考 2026 不能拿
+    2027 的规则判）。口径与 ``dataset_presence`` 保持同一套条件。
+    """
+    province_name = province_name_of(province_code)
+    province_match = lambda column: (column == province_code) | (column == "")  # noqa: E731
+    if dataset == DATASET_PROVINCE_EXAM_RULE:
+        return db.scalar(
+            select(func.max(ProvinceExamRule.year)).where(
+                ProvinceExamRule.province_code == province_code,
+                ProvinceExamRule.batch_code == batch_code,
+                ProvinceExamRule.year <= target_year,
+            )
+        )
+    if dataset == DATASET_SUBJECT_REQUIREMENT:
+        return db.scalar(
+            select(func.max(SubjectRequirement.year)).where(
+                province_match(SubjectRequirement.province_code)
+                | (SubjectRequirement.province == province_name),
+                SubjectRequirement.year <= target_year,
+            )
+        )
+    if dataset == DATASET_PHYSICAL_RESTRICTION:
+        return db.scalar(
+            select(func.max(PhysicalRestriction.year)).where(
+                province_match(PhysicalRestriction.province_code)
+                | (PhysicalRestriction.province == province_name),
+                PhysicalRestriction.year <= target_year,
+            )
+        )
+    if dataset == DATASET_MAJOR_TUITION:
+        return db.scalar(
+            select(func.max(MajorTuition.year)).where(
+                province_match(MajorTuition.province_code),
+                MajorTuition.year <= target_year,
+            )
+        )
+    if dataset == DATASET_ADMISSION_REQUIREMENT:
+        return db.scalar(
+            select(func.max(AdmissionRequirement.year)).where(
+                province_match(AdmissionRequirement.province_code),
+                AdmissionRequirement.year <= target_year,
+            )
+        )
+    return None
+
+
+def _resolve_rule_years(
+    db: Session, province_code: str, target_year: int, batch_code: str
+) -> dict[str, int | None]:
+    """按数据集解析"最近可得年度"（契约 8.4/8.6 的 ``data_years`` 口径）。
+
+    各规则集的发布节奏不同（省份模板/体检规则按年、选科要求提前发布且常滞后
+    一年），而校验必须按**考生报考年份**一次定位全部规则。本函数为每个数据集
+    取「不晚于目标年份的最近可得年份」，出接口时如实回传 ``data_years``，
+    并据此把结果标 ``partial``——**不静默用旧数据冒充当年数据**。
+    某数据集在所有年份都无数据 → ``None``，由必需集检查照常给出 3001。
+    """
+    return {
+        dataset: (
+            int(year) if (year := _latest_year_with_presence(
+                db, dataset, province_code, target_year, batch_code
+            )) is not None else None
+        )
+        for dataset in DATASET_VALUES
+    }
+
+
+def _dataset_states_for_years(
+    db: Session,
+    province_code: str,
+    years: Mapping[str, int | None],
+    *,
+    declared_year: int,
+    batch_code: str,
+    exam_type: str,
 ) -> dict[str, str]:
-    """每个规则集的 ``data_status``（契约 8.1 四值）。
+    """每个规则集的 ``data_status``（契约 8.1 四值），按各自的实际数据年度判定。
 
     优先读 ``rule_dataset_status``（契约 8.7：管理端与导入维护的唯一来源）；
     未登记时按"表里是否真的有该省该年的记录"推导，推导只产出 available / unavailable，
     不会凭猜测给出 partial。已声明 available 但表里没有记录 → 降级为 unavailable（不撒谎）。
     """
+    candidate_years = sorted({y for y in years.values() if y} | {declared_year})
     declared = {
-        row.dataset: row.status
+        (row.dataset, int(row.year)): row.status
         for row in db.scalars(
             select(RuleDatasetStatus).where(
                 RuleDatasetStatus.province_code == province_code,
-                RuleDatasetStatus.year == year,
+                RuleDatasetStatus.year.in_(candidate_years),
                 RuleDatasetStatus.batch_code == batch_code,
                 RuleDatasetStatus.exam_type == exam_type,
             )
@@ -249,14 +401,32 @@ def _dataset_states(
     }
     states: dict[str, str] = {}
     for dataset in DATASET_VALUES:
-        present = dataset_presence(db, dataset, province_code, year, batch_code)
-        value = declared.get(dataset)
+        year = years.get(dataset)
+        if year is None:
+            states[dataset] = DATA_STATUS_UNAVAILABLE
+            continue
+        present = dataset_presence(db, dataset, province_code, int(year), batch_code)
+        value = declared.get((dataset, int(year)))
         if value not in DATA_STATUS_VALUES:
             value = DATA_STATUS_AVAILABLE if present else DATA_STATUS_UNAVAILABLE
         elif value == DATA_STATUS_AVAILABLE and not present:
             value = DATA_STATUS_UNAVAILABLE
         states[dataset] = value
     return states
+
+
+def _dataset_states(
+    db: Session, province_code: str, year: int, batch_code: str, exam_type: str = EXAM_TYPE_NORMAL
+) -> dict[str, str]:
+    """**精确年份**的规则集状态（8.3 等按年查询接口沿用；不做跨年回退）。
+
+    校验接口（8.4/8.6）请使用 ``_resolve_rule_years`` + ``_dataset_states_for_years``。
+    """
+    years = {dataset: year for dataset in DATASET_VALUES}
+    return _dataset_states_for_years(
+        db, province_code, years,
+        declared_year=year, batch_code=batch_code, exam_type=exam_type,
+    )
 
 
 def _overall_status(states: Sequence[str]) -> str:
@@ -347,11 +517,12 @@ def province_rules(
 # 8.6 GET /api/majors/{id}/requirements
 # --------------------------------------------------------------------------- #
 def _enrollment_notes(
-    db: Session, province_code: str, year: int, major_id: int
+    db: Session, province_code: str, year: int | None, major_id: int
 ) -> tuple[dict[str, Any], bool]:
     """从 ``admission_requirement`` 组装契约 8.6 的 ``enrollment_notes``。
 
     返回 ``(notes, present)``；未知项一律 ``null``，绝不以空数组冒充"无限制"。
+    ``year`` 为该数据集的实际数据年度（``None`` = 全部年份均无数据）。
     """
     notes: dict[str, Any] = {
         "single_subject_req": None,
@@ -361,6 +532,8 @@ def _enrollment_notes(
         "political_review_required": None,
         "physical_test_required": None,
     }
+    if year is None:
+        return notes, False
     rows = list(
         db.scalars(
             select(AdmissionRequirement).where(
@@ -394,20 +567,23 @@ def _enrollment_notes(
 
 
 def _tuition_of(
-    db: Session, province_code: str, year: int, major: Major
+    db: Session, province_code: str, year: int | None, major: Major
 ) -> tuple[dict[str, Any] | None, bool]:
     """专业学费（契约 8.6 ``tuition``）。
 
     优先读 ``major_tuition``（按省份/年份/院校/专业）；未入库时回退到 ``major.tuition``
     的演示值（仅界面演示用，``note`` 如实说明）。两者都没有 → ``None`` + 列入 missing。
+    ``year`` 为该数据集的实际数据年度（``None`` = 全部年份均无数据，跳过查询）。
     """
-    row = db.scalars(
-        select(MajorTuition).where(
-            MajorTuition.province_code == province_code,
-            MajorTuition.year == year,
-            MajorTuition.major_id == major.id,
-        )
-    ).first()
+    row = None
+    if year is not None:
+        row = db.scalars(
+            select(MajorTuition).where(
+                MajorTuition.province_code == province_code,
+                MajorTuition.year == year,
+                MajorTuition.major_id == major.id,
+            )
+        ).first()
     if row is not None:
         return (
             {
@@ -441,6 +617,9 @@ def major_requirements(
 
     与 8.4 不同：这是**只读**接口，规则缺失不返回 3001，而是如实标注
     ``data_status`` 与 ``missing_rule_sets``，未知项用 ``null``。
+
+    各规则集按「不晚于请求年份的最近可得年度」取数，实际数据年度通过
+    ``data_years`` 如实回传（契约 v1.6）。
     """
     province_code = province_code_of(province)
     major = db.get(Major, major_id)
@@ -448,19 +627,25 @@ def major_requirements(
         raise BizError(f"参数错误：专业不存在：{major_id}")
 
     batch_code = batch_code_of(DEFAULT_BATCH)
-    states = _dataset_states(db, province_code, year, batch_code)
+    years = _resolve_rule_years(db, province_code, year, batch_code)
+    states = _dataset_states_for_years(
+        db, province_code, years,
+        declared_year=year, batch_code=batch_code, exam_type=EXAM_TYPE_NORMAL,
+    )
     missing: list[str] = []
 
     province_name = province_name_of(province_code)
 
-    req_row = db.scalars(
-        select(SubjectRequirement).where(
-            (SubjectRequirement.province_code == province_code)
-            | (SubjectRequirement.province == province_name),
-            SubjectRequirement.year == year,
-            SubjectRequirement.major_id == major_id,
-        )
-    ).first()
+    req_row = None
+    if years[DATASET_SUBJECT_REQUIREMENT] is not None:
+        req_row = db.scalars(
+            select(SubjectRequirement).where(
+                (SubjectRequirement.province_code == province_code)
+                | (SubjectRequirement.province == province_name),
+                SubjectRequirement.year == years[DATASET_SUBJECT_REQUIREMENT],
+                SubjectRequirement.major_id == major_id,
+            )
+        ).first()
 
     subject_req: dict[str, Any] | None = None
     if req_row is None:
@@ -473,31 +658,40 @@ def major_requirements(
             "logic": req_row.logic,
         }
 
+    # 类级匹配走「专业代码前 4 位 → is_category 行 → 专业类名」，与 8.4 同一函数。
+    class_name = _class_name_by_major(db, [major]).get(major.id)
     target_match = []
+    if class_name:
+        target_match.append(PhysicalRestriction.major_category == class_name)
     if str(major.category or "").strip():
         target_match.append(PhysicalRestriction.major_category == major.category)
-    if str(major.code or "").strip():
-        target_match.append(PhysicalRestriction.major_code == major.code)
-    restrictions = list(
-        db.scalars(
-            select(PhysicalRestriction).where(
-                PhysicalRestriction.year == year,
-                (PhysicalRestriction.province_code == province_code)
-                | (PhysicalRestriction.province == province_name)
-                | (PhysicalRestriction.province == "")
-                | (PhysicalRestriction.province_code == ""),
-                or_(*target_match) if target_match else false(),
-            )
-        ).all()
-    )
+    base_code = _code_base(major.code)
+    if base_code:
+        target_match.append(PhysicalRestriction.major_code.like(f"{base_code}%"))
+    restrictions: list[PhysicalRestriction] = []
+    if years[DATASET_PHYSICAL_RESTRICTION] is not None and target_match:
+        restrictions = [
+            row
+            for row in db.scalars(
+                select(PhysicalRestriction).where(
+                    PhysicalRestriction.year == years[DATASET_PHYSICAL_RESTRICTION],
+                    (PhysicalRestriction.province_code == province_code)
+                    | (PhysicalRestriction.province == province_name)
+                    | (PhysicalRestriction.province == "")
+                    | (PhysicalRestriction.province_code == ""),
+                    or_(*target_match),
+                )
+            ).all()
+            if _rule_targets_major(row.major_code, row.major_category, major, class_name)
+        ]
     if states[DATASET_PHYSICAL_RESTRICTION] != DATA_STATUS_AVAILABLE or not restrictions:
         missing.append(DATASET_PHYSICAL_RESTRICTION)
 
-    notes, notes_present = _enrollment_notes(db, province_code, year, major_id)
+    notes, notes_present = _enrollment_notes(db, province_code, years[DATASET_ADMISSION_REQUIREMENT], major_id)
     if not notes_present:
         missing.append(DATASET_ADMISSION_REQUIREMENT)
 
-    tuition, tuition_present = _tuition_of(db, province_code, year, major)
+    tuition, tuition_present = _tuition_of(db, province_code, years[DATASET_MAJOR_TUITION], major)
     if tuition is None or not tuition_present:
         missing.append(DATASET_MAJOR_TUITION)
 
@@ -523,6 +717,7 @@ def major_requirements(
         "province_code": province_code,
         "year": year,
         "data_status": data_status,
+        "data_years": {dataset: years[dataset] for dataset in DATASET_VALUES},
         "subject_req": subject_req,
         "physical_restrictions": [
             {
@@ -545,7 +740,13 @@ def major_requirements(
 # --------------------------------------------------------------------------- #
 # 8.4 / 8.5 POST /api/eligibility/check
 # --------------------------------------------------------------------------- #
-def _restrictions_for(db: Session, province_code: str, year: int) -> list[dict[str, Any]]:
+def _restrictions_for(
+    db: Session,
+    province_code: str,
+    year: int,
+    *,
+    years: Mapping[str, int | None] | None = None,
+) -> list[dict[str, Any]]:
     province_name = province_name_of(province_code)
     rows = list(
         db.scalars(
@@ -563,6 +764,7 @@ def _restrictions_for(db: Session, province_code: str, year: int) -> list[dict[s
             f"{province_name}{year} 年的身体条件限制规则数据缺失（维护中），无法校验体检结论",
             data_status=DATA_STATUS_SCHEMA_ONLY,
             missing=[DATASET_PHYSICAL_RESTRICTION],
+            years=years,
         )
     sources = _sources_of(db, [row.source_id for row in rows])
     return [
@@ -581,10 +783,48 @@ def _restrictions_for(db: Session, province_code: str, year: int) -> list[dict[s
     ]
 
 
+def _pick_group_variants(
+    reqs: list[dict[str, Any]], first_subject: str
+) -> list[dict[str, Any]]:
+    """同组多口径（跨科类/跨批次）时，按考生首选科目选择适用变体。
+
+    背景：河南招生计划按科类（历史类/物理类）独立编组号，同一「校+组号」在
+    两个科类下是**不同专业组**（如 101@历史类 与 101@物理类），各自带首选
+    科目要求入库。考生实际填报的组必然属于其首选科类，因此：
+
+    - 考生首选已填 → 只保留与之一致的变体（``不限``/空视为通配）；若全部
+      变体都要求相反首选（即该组号只属于另一科类）→ 全部保留，由引擎按
+      "首选科目不符"如实拦截；
+    - 考生首选未填 → 全部保留，引擎对每个变体给出「未填写首选科目」的
+      unknown（不猜、不放行）。
+
+    仅在存在多口径时生效；单行时原样返回。
+    """
+    if len(reqs) <= 1 or not str(first_subject or "").strip():
+        return reqs
+    candidate = str(first_subject).strip()
+    matched = [
+        req for req in reqs
+        if str(req.get("first_subject") or "").strip() in ("", "不限", candidate)
+    ]
+    return matched or reqs
+
+
 def _subject_requirements_by_unit(
-    db: Session, items: Sequence[Mapping[str, Any]], province_code: str, year: int
+    db: Session,
+    items: Sequence[Mapping[str, Any]],
+    province_code: str,
+    year: int,
+    *,
+    first_subject: str = "",
+    years: Mapping[str, int | None] | None = None,
 ) -> dict[str, list[dict[str, Any]]]:
-    """按志愿单位组装选科要求；任一专业缺规则 → 3001（契约 8.4）。"""
+    """按志愿单位组装选科要求；任一专业缺规则 → 3001（契约 8.4）。
+
+    ``first_subject`` 为考生首选科目，用于同组多口径（跨科类）时的变体选择
+    （见 ``_pick_group_variants``）；``years`` 仅用于 3001 时回传各规则集实际
+    数据年度（``data_years``），便于定位缺的是哪一年的数据。
+    """
     targets = [(item, item.get("major_ids") or []) for item in items]
     major_ids = sorted({mid for _, mids in targets for mid in mids})
     if not major_ids and not any(item.get("school_id") and item.get("group_code") for item, _ in targets):
@@ -650,6 +890,7 @@ def _subject_requirements_by_unit(
             req for req in by_group.get(group_key, [])
             if not req["batch_code"] or req["batch_code"] == target_batch
         ] if all(group_key) else []
+        group_reqs = _pick_group_variants(group_reqs, first_subject)
         reqs: list[dict[str, Any]] = []
         group_fallback_ids: list[int] = []
         for mid in mids:
@@ -688,6 +929,7 @@ def _subject_requirements_by_unit(
             f"以下目标在 {province_name}{year} 年缺少明确选科规则：{summary}",
             data_status=DATA_STATUS_SCHEMA_ONLY,
             missing=[DATASET_SUBJECT_REQUIREMENT],
+            years=years,
         )
     return result
 
@@ -703,6 +945,8 @@ def _targeted_restrictions(
         major.id: major
         for major in db.scalars(select(Major).where(Major.id.in_(major_ids))).all()
     } if major_ids else {}
+    # 专业 → 专业类名（code 前 4 位 → is_category 行），类级体检规则的匹配链
+    class_by_major = _class_name_by_major(db, list(majors.values()))
     output: list[dict[str, Any]] = []
     for raw in restrictions:
         rule = dict(raw)
@@ -728,8 +972,7 @@ def _targeted_restrictions(
             continue
         matched = [
             major for major in majors.values()
-            if (code and str(major.code or "").strip() == code)
-            or (category and str(major.category or "").strip() == category)
+            if _rule_targets_major(code, category, major, class_by_major.get(major.id))
         ]
         if not matched:
             continue
@@ -763,27 +1006,30 @@ def _targeted_restrictions(
 
 
 def _tuition_by_unit(
-    db: Session, items: Sequence[Mapping[str, Any]], province_code: str, year: int
+    db: Session, items: Sequence[Mapping[str, Any]], province_code: str, year: int | None
 ) -> dict[str, dict[str, Any]]:
     """按志愿单位组装学费（闸门 4）。
 
     优先 ``major_tuition``（含来源引用），回退 ``major.tuition`` 演示值。
     两者都没有 → 该单位不产出学费条目，引擎据此记 ``unknown``（绝不静默放行）。
+    ``year`` 为该数据集的实际数据年度（``None`` = 全部年份均无数据）。
     """
     major_ids = sorted({mid for item in items for mid in (item.get("major_ids") or [])})
     if not major_ids:
         return {}
     majors = {m.id: m for m in db.scalars(select(Major).where(Major.id.in_(major_ids))).all()}
 
-    rows = list(
-        db.scalars(
-            select(MajorTuition).where(
-                (MajorTuition.province_code == province_code) | (MajorTuition.province_code == ""),
-                MajorTuition.year == year,
-                MajorTuition.major_id.in_(major_ids),
-            )
-        ).all()
-    )
+    rows = []
+    if year is not None:
+        rows = list(
+            db.scalars(
+                select(MajorTuition).where(
+                    (MajorTuition.province_code == province_code) | (MajorTuition.province_code == ""),
+                    MajorTuition.year == year,
+                    MajorTuition.major_id.in_(major_ids),
+                )
+            ).all()
+        )
     sources = _sources_of(db, [row.source_id for row in rows])
     tuition_by_major: dict[int, dict[str, Any]] = {}
     for row in rows:
@@ -834,24 +1080,35 @@ def check_eligibility(
     items = [item.model_dump() for item in (payload.items or [])]
     batch_code = batch_code_of(DEFAULT_BATCH)
 
-    states = _dataset_states(db, province_code, year, batch_code, exam_type)
+    # 各规则集按「不晚于报考年份的最近可得年度」取数（数据发布节奏不同：
+    # 省份模板/体检规则按年发布，选科要求常滞后一年），实际年度如实回传
+    # data_years，绝不静默用旧数据冒充当年数据。
+    years = _resolve_rule_years(db, province_code, year, batch_code)
+    states = _dataset_states_for_years(
+        db, province_code, years,
+        declared_year=year, batch_code=batch_code, exam_type=exam_type,
+    )
     missing_required = [ds for ds in REQUIRED_DATASETS if states[ds] != DATA_STATUS_AVAILABLE]
 
     # 闸门 1：省份模板必须存在（契约 8.4：执行校验所必需的规则集缺失 → 3001）
-    rule_row = db.scalars(
-        select(ProvinceExamRule).where(
-            ProvinceExamRule.province_code == province_code,
-            ProvinceExamRule.year == year,
-            ProvinceExamRule.batch_code == batch_code,
-            ProvinceExamRule.exam_type == exam_type,
-        )
-    ).first()
+    rule_year = years[DATASET_PROVINCE_EXAM_RULE]
+    rule_row = None
+    if rule_year is not None:
+        rule_row = db.scalars(
+            select(ProvinceExamRule).where(
+                ProvinceExamRule.province_code == province_code,
+                ProvinceExamRule.year == rule_year,
+                ProvinceExamRule.batch_code == batch_code,
+                ProvinceExamRule.exam_type == exam_type,
+            )
+        ).first()
     if rule_row is None:
         province_name = province_name_of(province_code)
         raise _rule_missing(
             f"{province_name}{year} 年的报考规则数据缺失（维护中），暂无法校验，请稍后再试",
             data_status=states.get(DATASET_PROVINCE_EXAM_RULE, DATA_STATUS_UNAVAILABLE),
             missing=missing_required or [DATASET_PROVINCE_EXAM_RULE],
+            years=years,
         )
 
     if missing_required:
@@ -860,7 +1117,12 @@ def check_eligibility(
             f"{province_name_of(province_code)}{year} 年以下必需规则集尚未达到可用状态：{labels}",
             data_status=_overall_status([states[ds] for ds in REQUIRED_DATASETS]),
             missing=missing_required,
+            years=years,
         )
+
+    # 必需集全部可用 → 三个必需数据集的年度必非空（state=available 蕴含表里有行）。
+    subject_year = int(years[DATASET_SUBJECT_REQUIREMENT])  # type: ignore[arg-type]
+    physical_year = int(years[DATASET_PHYSICAL_RESTRICTION])  # type: ignore[arg-type]
 
     source = _sources_of(db, [rule_row.source_id]).get(rule_row.source_id)
     province_rule = {
@@ -871,21 +1133,31 @@ def check_eligibility(
 
     rules = {
         "province_rule": province_rule,
-        "subject_requirements": _subject_requirements_by_unit(db, items, province_code, year),
-        "physical_restrictions": _targeted_restrictions(
-            db, _restrictions_for(db, province_code, year), items
+        "subject_requirements": _subject_requirements_by_unit(
+            db, items, province_code, subject_year,
+            first_subject=str(getattr(profile, "first_subject", "") or ""),
+            years=years,
         ),
-        "tuition": _tuition_by_unit(db, items, province_code, year),
+        "physical_restrictions": _targeted_restrictions(
+            db, _restrictions_for(db, province_code, physical_year, years=years), items
+        ),
+        "tuition": _tuition_by_unit(db, items, province_code, years[DATASET_MAJOR_TUITION]),
         "pathway_id": getattr(payload, "pathway_id", None),
     }
 
     result = engine.check_units(profile, items, rules)
 
-    # 8.4：出参首字段是 data_status。必需集齐全时，看可选集是否也齐全。
+    # 8.4：出参首字段是 data_status。必需集齐全时，看可选集是否也齐全；
+    # 必需集用到滞后年度（如 2026 报考用 2025 选科要求）同样降级 partial——
+    # "数据齐全"与"数据正好是当年"是两回事，如实标注（data_years 给出年度）。
+    fallback_used = any(
+        years[ds] is not None and int(years[ds]) != year for ds in REQUIRED_DATASETS
+    )
     optional_states = [states[ds] for ds in OPTIONAL_DATASETS]
-    partial = any(state != DATA_STATUS_AVAILABLE for state in optional_states)
+    partial = fallback_used or any(state != DATA_STATUS_AVAILABLE for state in optional_states)
     result = {
         "data_status": DATA_STATUS_PARTIAL if partial else DATA_STATUS_AVAILABLE,
+        "data_years": {dataset: years[dataset] for dataset in DATASET_VALUES},
         **result,
     }
 
