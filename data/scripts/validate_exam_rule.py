@@ -8,7 +8,7 @@
   2. 枚举合法性：mode ∈ {group, major_school, school_major}
   3. 数值合法性：volunteer_count / majors_per_group 为非负整数或 null
   4. 逻辑一致性：has_adjust=False → mode 应为 major_school（"专业+院校"不设调剂）
-  5. 唯一性：(province, year, batch) 不得重复
+  5. 唯一性：(province_code, year, batch_code, exam_type) 不得重复（API v1.5）
   6. source_id 必须在 source-table.json 中存在（★ 契约要求）
   7. year 区间 [2000, 2030]
   8. data_status 枚举
@@ -31,7 +31,7 @@ RULE_FILE = ROOT / "data" / "dictionaries" / "province-exam-rule.json"
 SOURCE_FILE = ROOT / "data" / "sources" / "source-table.json"
 
 MODE_ENUM = {"group", "major_school", "school_major"}
-STATUS_ENUM = {"verified", "schema_only", "missing", "partial"}
+STATUS_ENUM = {"available", "partial", "schema_only", "unavailable"}
 YEAR_MIN, YEAR_MAX = 2000, 2030
 
 
@@ -98,7 +98,7 @@ def validate(rules_doc: dict, source_ids: set[str]) -> Report:
             if v is not None and not _is_nonneg_int(v):
                 rep.err(rid, f"{f} 应为非负整数或 null，实际 {v!r}")
         if need_src and not _is_nonneg_int(r.get("volunteer_count")):
-            rep.err(rid, "volunteer_count 缺失（verified 数据必须有志愿单位数）")
+            rep.err(rid, "volunteer_count 缺失（available 数据必须有志愿单位数）")
 
         # 4. 逻辑一致性：专业+院校不设调剂
         if mode == "major_school" and r.get("has_adjust") is True:
@@ -113,10 +113,10 @@ def validate(rules_doc: dict, source_ids: set[str]) -> Report:
             if y >= fng and es == "文理科":
                 rep.warn(rid, f"year={y} >= first_new_gaokao_year={fng} 但 exam_system='文理科'")
 
-        # 5. 唯一性 (province, year, batch)
-        key = (r.get("province"), r.get("year"), r.get("batch"))
+        # 5. Unique key matches province_exam_rule's API v1.5 model index.
+        key = (r.get("province_code"), r.get("year"), r.get("batch_code"), r.get("exam_type"))
         if key in seen_keys:
-            rep.err(rid, f"(province,year,batch)={key} 与 {seen_keys[key]} 重复")
+            rep.err(rid, f"(province_code,year,batch_code,exam_type)={key} 与 {seen_keys[key]} 重复")
         else:
             seen_keys[key] = rid
 

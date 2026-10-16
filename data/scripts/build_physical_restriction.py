@@ -27,7 +27,7 @@
   - 点名专业→类/代码 由专业库（938 专业 / 93 专业类）自动解析，旧名走
     显式别名（侦察学→侦查学 等），解析不到的 fail loudly，不静默丢弃。
   - `engine_ready` 标记该条当前档案/引擎能否求值（供 T6 过滤）：
-    需引擎扩展（4.5 视力线、BMI 区间、性别维度、矫正度数）者为 false。
+    需引擎/档案扩展（BMI 区间、性别维度、矫正度数）者为 false；4.5 裸眼视力线由 T6 引擎支持。
 
 专业库来源：`data/majors/majors.json`（仓库内基线，**离线可复跑依赖**）；仓库外
   `桌面/智选志愿_数据整合/merged/major.json` 若存在则并入扩大覆盖面，缺失不报错。
@@ -333,10 +333,9 @@ def build_rules() -> list[dict]:
                note="引擎 weight 判定为单边 min 比较，不支持 BMI 区间；需 T6 扩展（身高+体重求 BMI）。"))
     r.append(R("PR-ARMY-03", "裸眼视力", "视力", "blocker", "military",
                threshold="<4.5", basis=f"{BASIS_ARMY} 第二章第三节 眼科项目", source=SOURCE_ARMY,
-               ready=False,
+               ready=True,
                remark="双眼中任何一眼裸眼视力小于 4.5，不合格。",
-               note="引擎视力判定线仅支持 5.0/4.8，**4.5 线需 T6 在 _VISION_THRESHOLDS 增加**，"
-                    "否则会按默认 5.0 误拦（过度拦截）。"))
+               note="T6 已支持 <4.5 阈值；该专项规则仍只在 military pathway 下判定。"))
     r.append(R("PR-ARMY-04", "裸眼视力", "视力", "blocker", "military",
                threshold="裸眼4.5~4.8 且矫正<4.8 或矫正度数>600度",
                basis=f"{BASIS_ARMY} 第二章第三节 眼科项目", source=SOURCE_ARMY, ready=False,
@@ -533,10 +532,9 @@ def main() -> int:
                 "门类级": "原文『工学/农学/医学/法学各专业』→ major_menlei（导入时按专业库展开到类）",
             },
             "engine_integration": {
-                "当前可求值（engine_ready=true）": "色系（色弱/色盲/不能识别）三类、裸眼视力 5.0/4.8 "
-                                                   "两线、听力/嗅觉/口吃（二值粗判）、公安 4.8 线",
+                "当前可求值（engine_ready=true）": "色系（色弱/色盲/不能识别）三类、裸眼视力 5.0/4.8/4.5 "
+                                                   "三线、听力/嗅觉/口吃（二值粗判）、公安 4.8 线",
                 "需 T6 引擎扩展后才可求值": [
-                    "PR-ARMY-03（4.5 视力线：_VISION_THRESHOLDS 需加 '<4.5'，否则默认 5.0 会误拦）",
                     "PR-ARMY-02 / PR-POLICE-02（BMI 区间：现有 weight 判定为单边 min 比较）",
                     "PR-ARMY-01 / PR-POLICE-01（身高含性别维度：需档案补 gender 并按性别过滤规则）",
                     "PR-2003-3-04/05/06（矫正度数：档案无『矫正度数』字段）",

@@ -228,6 +228,72 @@ def _() -> None:
     assert len(hits) == 1 and hits[0]["level"] == eng.LEVEL_NOT_SUITABLE
 
 
+@case("体检13 单眼视力缺失 → unknown，不用另一眼默认通过")
+def _() -> None:
+    hits = eng.physical_check(
+        _profile(vision_left=5.0, vision_right=None),
+        [_restriction("裸眼视力", "reject", threshold="<5.0", category="交通运输类")],
+    )
+    assert len(hits) == 1 and hits[0]["level"] == eng.LEVEL_UNKNOWN
+    assert set(hits[0]["fields"]) == {"vision_left", "vision_right"}
+
+
+@case("体检14 明确 4.5 阈值按原阈值判定")
+def _() -> None:
+    hits = eng.physical_check(
+        _profile(vision_left=4.7, vision_right=4.9),
+        [_restriction("裸眼视力", "reject", threshold="<4.5", category="交通运输类")],
+    )
+    assert hits == []
+
+
+@case("体检15 未知哨兵值按未填处理")
+def _() -> None:
+    hits = eng.physical_check(
+        _profile(color_vision="未知"),
+        [_restriction("色弱", "reject", category="医学类")],
+    )
+    assert len(hits) == 1 and hits[0]["level"] == eng.LEVEL_UNKNOWN
+
+
+@case("体检16 BMI 区间不能退化成体重单阈值")
+def _() -> None:
+    rule = _restriction("BMI", "reject", threshold="18-24", category="公安学类")
+    rule["detail"] = "BMI 应在 18-24"
+    hits = eng.physical_check(_profile(height=180, weight=60), [rule])
+    assert len(hits) == 1 and hits[0]["level"] == eng.LEVEL_UNKNOWN
+    assert set(hits[0]["fields"]) == {"height", "weight"}
+
+
+@case("体检16a 不支持的视力阈值与矫正视力规则保持 unknown")
+def _() -> None:
+    threshold_hit = eng.physical_check(
+        _profile(), [_restriction("裸眼视力", "reject", threshold="<4.6", category="交通运输类")]
+    )
+    corrected_hit = eng.physical_check(
+        _profile(), [_restriction("矫正视力", "reject", threshold=">=4.8", category="交通运输类")]
+    )
+    assert threshold_hit and threshold_hit[0]["level"] == eng.LEVEL_UNKNOWN
+    assert corrected_hit and corrected_hit[0]["level"] == eng.LEVEL_UNKNOWN
+    assert corrected_hit[0]["fields"] == ["corrected_vision"]
+
+
+@case("体检17 军警专项规则不应用到普通 pathway")
+def _() -> None:
+    rule = _restriction("身高（军队院校）", "reject", threshold="<170", category="公安学类")
+    assert eng.physical_check(_profile(height=160), [rule], {"major_ids": [1]}) == []
+
+
+@case("体检18 军校性别阈值缺性别字段时待核验")
+def _() -> None:
+    rule = _restriction("身高（军队院校）", "reject", threshold="<170", category="公安学类")
+    hits = eng.physical_check(
+        _profile(height=160), [rule], {"major_ids": [1]}, pathway_id="military"
+    )
+    assert len(hits) == 1 and hits[0]["level"] == eng.LEVEL_UNKNOWN
+    assert hits[0]["fields"] == ["gender"]
+
+
 # --------------------------------------------------------------------------- #
 # 学费（≥4）
 # --------------------------------------------------------------------------- #

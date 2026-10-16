@@ -1013,6 +1013,51 @@ def _build_import_row(
     raise BizError(f"参数错误：不支持的 dataset：{dataset}")
 
 
+def _import_identity(dataset: str, row: Any) -> tuple[Any, ...]:
+    """Return the logical target key used to reject duplicate imports before writes."""
+    if dataset == DATASET_PROVINCE_EXAM_RULE:
+        return (row.province_code, row.year, row.batch_code, row.exam_type)
+    if dataset == DATASET_SUBJECT_REQUIREMENT:
+        if row.major_id is None and (row.school_id is None or not str(row.group_code or "").strip()):
+            raise BizError("参数错误：选科要求必须绑定专业组（school_id + group_code）或 major_id")
+        target = ("group", row.school_id, row.group_code) if row.major_id is None else ("major", row.school_id, row.major_id)
+        return (row.province_code, row.year, *target)
+    if dataset == DATASET_PHYSICAL_RESTRICTION:
+        return (row.province_code, row.year, row.condition, row.threshold, row.major_category, row.major_code)
+    if dataset == DATASET_ADMISSION_REQUIREMENT:
+        return (row.province_code, row.year, row.school_id, row.major_id, row.requirement_type)
+    if dataset == DATASET_MAJOR_TUITION:
+        return (row.province_code, row.year, row.school_id, row.major_id)
+    raise BizError(f"参数错误：不支持的 dataset：{dataset}")
+
+
+def _reject_duplicate_imports(db: Session, dataset: str, rows: list[Any]) -> None:
+    """Fail the whole batch on duplicate logical keys within it or already in storage."""
+    model = {
+        DATASET_PROVINCE_EXAM_RULE: ProvinceExamRule,
+        DATASET_SUBJECT_REQUIREMENT: SubjectRequirement,
+        DATASET_PHYSICAL_RESTRICTION: PhysicalRestriction,
+        DATASET_ADMISSION_REQUIREMENT: AdmissionRequirement,
+        DATASET_MAJOR_TUITION: MajorTuition,
+    }[dataset]
+    identities: set[tuple[Any, ...]] = set()
+    for row in rows:
+        identity = _import_identity(dataset, row)
+        if identity in identities:
+            raise BizError(f"参数错误：批量导入存在重复逻辑键：{identity}")
+        identities.add(identity)
+    existing_rows = db.scalars(
+        select(model).where(
+            model.province_code == rows[0].province_code,
+            model.year == rows[0].year,
+        )
+    ).all()
+    existing = {_import_identity(dataset, row) for row in existing_rows}
+    conflict = identities.intersection(existing)
+    if conflict:
+        raise BizError(f"参数错误：规则逻辑键已存在：{next(iter(sorted(conflict, key=str)))}")
+
+
 def import_rule_dataset(
     db: Session, payload: Any, admin: AdminUser, *, client_ip: str = ""
 ) -> dict[str, Any]:
@@ -1030,6 +1075,7 @@ def import_rule_dataset(
 
     try:
         rows = [_build_import_row(db, payload.dataset, item, payload) for item in items]
+        _reject_duplicate_imports(db, payload.dataset, rows)
         for row in rows:
             db.add(row)
         db.flush()

@@ -34,6 +34,7 @@ import json
 import os
 import shutil
 import tempfile
+from collections import Counter
 from collections.abc import Callable
 from pathlib import Path
 
@@ -252,6 +253,29 @@ def test_exam_type_normalized() -> None:
     assert "普通" in types
 
 
+@case("江西 2026 普通本科模板导入后保留唯一键和来源关联")
+def test_jiangxi_2026_rule_source() -> None:
+    with SessionLocal() as db:
+        rows = list(db.scalars(select(ProvinceExamRule).where(
+            ProvinceExamRule.province_code == "36",
+            ProvinceExamRule.year == 2026,
+            ProvinceExamRule.batch_code == "undergraduate_regular",
+            ProvinceExamRule.exam_type == "普通",
+        )).all())
+        assert len(rows) == 1, rows
+        source = db.get(Source, rows[0].source_id)
+        status = db.scalar(select(RuleDatasetStatus).where(
+            RuleDatasetStatus.province_code == "36",
+            RuleDatasetStatus.year == 2026,
+            RuleDatasetStatus.batch_code == "undergraduate_regular",
+            RuleDatasetStatus.exam_type == "普通",
+            RuleDatasetStatus.dataset == "province_exam_rule",
+        ))
+    assert source is not None and source.source_name == "江西省教育考试院"
+    assert source.source_url.startswith("http") and source.year == 2026
+    assert status is not None and status.status == "available"
+
+
 @case("闸门 1 可用性：province_exam_rule 的 data_status 同步进 rule_dataset_status")
 def test_rule_dataset_status() -> None:
     with SessionLocal() as db:
@@ -280,6 +304,29 @@ def test_score_segment_batch_persisted() -> None:
         rows = db.scalars(select(ScoreSegment.batch)).all()
     assert rows, "score_segment 未导入"
     assert any(row for row in rows), "batch 列全为空，说明批次信息被丢弃"
+
+
+@case("T4 覆盖快照统计与 2026 分母缺口对账")
+def test_admission_coverage_snapshot() -> None:
+    # data/raw/ 数据本体不入库（.gitignore）：本机有 T4 完整快照（9.9MB）时做逐桶对账；
+    # CI / 队员机器上降级为校验**已入库**的审计报告口径（报告含快照 SHA-256 留档）。
+    full_path = DATA / "raw" / "subject-requirement.full.json"
+    if full_path.exists():
+        full = json.loads(full_path.read_text(encoding="utf-8"))
+        rows = full.get("rows", [])
+        assert len(rows) == 17492
+        counts = Counter(
+            (row.get("province_code"), int(row.get("year") or 0), row.get("status"), row.get("target_type"))
+            for row in rows
+        )
+        assert sum(v for (province, year, status, _), v in counts.items() if province == "41" and year == 2025 and status == "ok") == 9809
+        assert sum(v for (province, year, status, _), v in counts.items() if province == "36" and year == 2024 and status == "ok") == 7683
+        assert not [row for row in rows if row.get("province_code") in {"41", "36"} and row.get("year") == 2026]
+    else:
+        print("    [skip] 本机无 data/raw/subject-requirement.full.json（数据本体不入库），仅校验审计报告")
+    report = (DATA / "reports" / "admission-gate-coverage-2026.md").read_text(encoding="utf-8")
+    assert "不可计算（缺少 2026 招生目标清单）" in report
+    assert "不可计算（分母缺失）" in report
 
 
 @case("来源登记：每条规则行的 source_id 都能指回 source 表")

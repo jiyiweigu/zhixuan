@@ -70,7 +70,7 @@ COND_SMELL = "嗅觉"
 COND_STUTTER = "口吃"
 
 # 视力阈值写法 → 判定线
-_VISION_THRESHOLDS = {"<5.0": VISION_LINE_50, "<4.8": VISION_LINE_48, "5.0": VISION_LINE_50, "4.8": VISION_LINE_48}
+_VISION_THRESHOLDS = {"<5.0": VISION_LINE_50, "<4.8": VISION_LINE_48, "<4.5": 4.5, "5.0": VISION_LINE_50, "4.8": VISION_LINE_48, "4.5": 4.5}
 
 
 def _hit(
@@ -112,7 +112,7 @@ def _unfilled(value: Any) -> bool:
     if value is None:
         return True
     if isinstance(value, str):
-        return value.strip() in ("", PHYSICAL_STATE_UNFILLED)
+        return value.strip() in ("", PHYSICAL_STATE_UNFILLED, "未知")
     return False
 
 
@@ -126,8 +126,8 @@ def _profile_get(profile: Any, key: str, default: Any = None) -> Any:
 def _subjects_of(profile: Any) -> list[str]:
     raw = _profile_get(profile, "second_subjects", []) or []
     if isinstance(raw, str):
-        return [item.strip() for item in raw.replace("，", ",").split(",") if item.strip()]
-    return [str(item).strip() for item in raw if str(item).strip()]
+        return [item.strip() for item in raw.replace("，", ",").split(",") if item.strip() not in ("", "未填", "未知")]
+    return [str(item).strip() for item in raw if str(item).strip() not in ("", "未填", "未知")]
 
 
 # --------------------------------------------------------------------------- #
@@ -268,12 +268,12 @@ def _match_restriction(profile: Any, restriction: Mapping[str, Any]) -> str | No
                 break
         left = _profile_get(profile, "vision_left")
         right = _profile_get(profile, "vision_right")
-        if _unfilled(left) and _unfilled(right):
+        # Both eyes are needed to prove the minimum-eye rule; a missing eye is not a pass.
+        if _unfilled(left) or _unfilled(right):
             return "unknown"
-        values = [v for v in (left, right) if v is not None]
         if line is None:
-            line = VISION_LINE_50
-        worst = min(values)  # 裸眼视力取较差眼
+            return "unknown"
+        worst = min(float(left), float(right))  # 裸眼视力取较差眼
         return "hit" if worst < line else "miss"
 
     if key == COND_HEPATITIS:
@@ -286,6 +286,8 @@ def _match_restriction(profile: Any, restriction: Mapping[str, Any]) -> str | No
         return "hit" if hepatitis else "miss"
 
     if key == COND_HEIGHT:
+        if "军队院校" in str(restriction.get("condition") or "") or "公安院校" in str(restriction.get("condition") or ""):
+            return "unknown"  # 档案没有性别字段，不能套用性别阈值
         height = _profile_get(profile, "height")
         if height is None:
             return "unknown"
@@ -297,6 +299,8 @@ def _match_restriction(profile: Any, restriction: Mapping[str, Any]) -> str | No
         return "hit" if height < limit else "miss"
 
     if key == COND_WEIGHT:
+        if "BMI" in str(restriction.get("condition") or "").upper() or "BMI" in str(restriction.get("detail") or "").upper():
+            return "unknown"  # 复杂区间暂不按体重单字段估算
         weight = _profile_get(profile, "weight")
         if weight is None:
             return "unknown"
@@ -341,7 +345,11 @@ _CONDITION_FIELDS: dict[str, tuple[str, ...]] = {
 
 
 def physical_check(
-    profile: Any, restrictions: Sequence[Mapping[str, Any]] | None
+    profile: Any,
+    restrictions: Sequence[Mapping[str, Any]] | None,
+    unit: Mapping[str, Any] | None = None,
+    *,
+    pathway_id: str | None = None,
 ) -> list[dict[str, Any]]:
     """校验一批身体条件限制，返回命中记录列表。
 
@@ -350,7 +358,21 @@ def physical_check(
     **level 值非法 → 报错不吞**（8.5 边界用例）。
     """
     hits: list[dict[str, Any]] = []
+    unit = unit or {}
+    unit_major_ids = set(unit.get("major_ids") or [])
     for restriction in restrictions or []:
+        scoped_units = restriction.get("scope_unit_ids")
+        if scoped_units and str(unit.get("unit_id") or "") not in {str(value) for value in scoped_units}:
+            continue
+        condition_text = str(restriction.get("condition") or "")
+        scope = "military" if "军队院校" in condition_text else "police" if "公安院校" in condition_text else "national"
+        if (scope == "military" and pathway_id != "military") or (scope == "police" and pathway_id != "police"):
+            continue
+        rule_major_ids = set(restriction.get("major_ids") or [])
+        if rule_major_ids and not unit_major_ids and not scoped_units:
+            continue
+        if unit_major_ids and rule_major_ids and not unit_major_ids.intersection(rule_major_ids):
+            continue
         level = str(restriction.get("level") or "").strip()
         if level not in RESTRICTION_LEVEL_VALUES:
             raise ValueError(f"physical_restriction.level 取值非法：{level!r}")
@@ -361,9 +383,11 @@ def physical_check(
 
         detail = str(restriction.get("detail") or "").strip()
         category = str(restriction.get("major_category") or restriction.get("major_name") or "").strip()
+        affected_ids = restriction.get("major_ids") or unit.get("major_ids")
+        affected_names = restriction.get("major_names") or unit.get("major_names")
         common = {
-            "major_ids": restriction.get("major_ids"),
-            "major_names": restriction.get("major_names"),
+            "major_ids": affected_ids,
+            "major_names": affected_names,
         }
         if outcome == "unknown":
             key = _infer_condition_key(restriction)
@@ -371,7 +395,13 @@ def physical_check(
                 _hit(
                     CONSTRAINT_TYPE_PHYSICAL, LEVEL_UNKNOWN,
                     detail or f"未填写体检结论，无法校验{category}的身体条件要求",
-                    fields=_CONDITION_FIELDS.get(key),
+                    fields=(
+                        (["gender"] if key == COND_HEIGHT and ("军队院校" in condition_text or "公安院校" in condition_text) else None)
+                        or _CONDITION_FIELDS.get(key)
+                        or (["height", "weight"] if "BMI" in condition_text.upper() or "BMI" in detail.upper() else None)
+                        or (["major_category", "major_code"] if "适用范围未知" in condition_text else None)
+                        or (["corrected_vision"] if "矫正视力" in condition_text or "矫正视力" in detail else None)
+                    ),
                     **common,
                 )
             )
@@ -536,6 +566,7 @@ def check_units(
     subject_requirements = rules.get("subject_requirements") or {}
     physical_restrictions = rules.get("physical_restrictions") or []
     tuition_map = rules.get("tuition") or {}
+    pathway_id = rules.get("pathway_id")
 
     results: list[dict[str, Any]] = []
     blocked = warned = unknown = 0
@@ -559,7 +590,7 @@ def check_units(
             (blockers if hit["level"] == LEVEL_REJECT else unknowns if hit["level"] == LEVEL_UNKNOWN else warnings).append(hit)
 
         # 闸门 3｜身体条件
-        for hit in physical_check(profile, physical_restrictions):
+        for hit in physical_check(profile, physical_restrictions, item, pathway_id=pathway_id):
             (blockers if hit["level"] == LEVEL_REJECT else unknowns if hit["level"] == LEVEL_UNKNOWN else warnings).append(hit)
 
         # 闸门 4｜学费
