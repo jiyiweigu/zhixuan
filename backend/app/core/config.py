@@ -83,6 +83,18 @@ class Settings:
     embedding_api_key: str = os.getenv("ZHIXUAN_EMBEDDING_API_KEY", "")
     embedding_batch_size: int = _int_env("ZHIXUAN_EMBEDDING_BATCH_SIZE", 32)
 
+    # —— RAG 问答（T3）——
+    rerank_backend: str = os.getenv("ZHIXUAN_RERANK_BACKEND", "fake").strip() or "fake"
+    rerank_model: str = os.getenv("ZHIXUAN_RERANK_MODEL", "BAAI/bge-reranker-base").strip()
+    generation_backend: str = os.getenv("ZHIXUAN_GENERATION_BACKEND", "fake").strip() or "fake"
+    generation_model: str = os.getenv("ZHIXUAN_GENERATION_MODEL", "qwen-plus").strip()
+    generation_api_base: str = os.getenv("ZHIXUAN_GENERATION_API_BASE", "").strip()
+    generation_api_key: str = os.getenv("ZHIXUAN_GENERATION_API_KEY", "")
+    generation_timeout: int = _int_env("ZHIXUAN_GENERATION_TIMEOUT", 30)
+    rag_vector_top_k: int = _int_env("ZHIXUAN_RAG_VECTOR_TOP_K", 20)
+    rag_bm25_top_k: int = _int_env("ZHIXUAN_RAG_BM25_TOP_K", 20)
+    rag_rerank_top_k: int = _int_env("ZHIXUAN_RAG_RERANK_TOP_K", 5)
+
     # —— 管理端（tasks.md 8.1）——
     # 首个管理员的引导值，仅在手工执行 `python -m app.services.admin_seed` 时使用；
     # 口令为空则脚本拒绝创建（避免落一个空口令的管理员）。登录后可正常使用。
