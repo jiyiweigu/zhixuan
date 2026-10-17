@@ -4,5 +4,7 @@ pydantic
 sqlalchemy>=2.0
 alembic
 pyjwt
+# 自动加载 backend/.env（缺该依赖时 config.py 有极简解析兜底，但仍建议安装）
+python-dotenv
 # 以下仅测试用（fastapi.testclient 依赖 httpx，运行 backend/test_*.py 时需要）
 httpx

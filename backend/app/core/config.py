@@ -1,16 +1,16 @@
 """应用配置。
 
 所有可调项集中从环境变量读取，代码里不硬编码地址与密钥。
-环境变量样例见 backend/.env.example。
+变量样例见 backend/.env.example；本地覆盖值写在 backend/.env（已 gitignore）。
 """
 
 from __future__ import annotations
 
 import os
-from pathlib import Path
 
-# backend/ 目录（本文件位于 backend/app/core/config.py）
-BACKEND_DIR = Path(__file__).resolve().parents[2]
+# 导入即加载 backend/.env（不覆盖已存在的真实环境变量），必须早于 Settings 类体求值。
+# backend/ 目录也由该模块提供，避免两处各自推导路径。
+from app.core.env import BACKEND_DIR  # noqa: F401
 
 DEFAULT_CORS_ORIGINS = "http://localhost:5173,http://127.0.0.1:5173"
 # 开发用占位密钥。HS256 的密钥建议不少于 32 字节（RFC 7518 §3.2），

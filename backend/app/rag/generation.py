@@ -11,6 +11,8 @@ from collections.abc import Sequence
 from typing import Any, Protocol
 from urllib.request import Request, urlopen
 
+from app.core import env as _env  # noqa: F401  导入即加载 backend/.env
+
 LOGGER = logging.getLogger("zhixuan.rag")
 
 
