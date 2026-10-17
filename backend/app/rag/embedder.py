@@ -11,6 +11,8 @@ from typing import Protocol
 from urllib.request import Request, urlopen
 import json
 
+from app.core import env as _env  # noqa: F401  导入即加载 backend/.env
+
 LOGGER = logging.getLogger("zhixuan.rag")
 DEFAULT_DIM = 512
 

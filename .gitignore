@@ -21,6 +21,11 @@ __pycache__/
 .env
 .env.*
 !.env.example
+# 后端本地私有配置（含大模型 API Key）：显式点名，防止上述通配规则被误改后漏防
+backend/.env
+backend/.env.local
+# 启动脚本的本机 Python 绝对路径（各人环境不同，不入库）
+scripts/local-paths.bat
 *.key
 *.pem
 secrets.json
