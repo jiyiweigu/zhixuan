@@ -21,7 +21,18 @@
 ``school`` 属产品书 7.1 的基础字典，**表内不含 ``source_id``**；
 来源按「随记录在 source 表登记」处理——逐条 ensure_source，但不写入 school 行。
 
-字段缺失留空不推断：``type`` / ``website`` / ``intro`` 在 ③ 的任务 2.5 补齐前全为空。
+院校层次 ``is_985`` / ``is_211`` / ``dual_class``
+------------------------------------------------
+三列由迁移 ``20261013_0008_merge_ready`` 加在 develop 上（原属③自己的 0008，撞号后
+只保留 develop 版本，见队长 2026-10-14 评审意见），**本导入器必须消费它们**，否则
+合并数据集里已补齐的层次标记（985 52 / 211 135 / 双一流 171 行）会被丢掉——
+那是「冲稳保」与院校筛选的核心维度，丢了等于整条链路白做。
+
+写法要点：`is_985` / `is_211` 是布尔列，不能走 `text_of`（`False` 会被写成 `""`）；
+且**只在行内真的带该键时才写**——徐的原始 `schools_merged.json` 没有这三列，
+若无条件写 `False` / `""`，二次导入会把已落库的层次标记清空（破坏幂等与数据）。
+
+其余字段仍遵「缺失留空不推断」：数据没给就留 `NULL` / 空串，不拿外部知识补。
 """
 
 from __future__ import annotations
@@ -35,13 +46,28 @@ from app.models.base_data import School
 from app.services.importers import (
     ImportReport,
     SourceRegistry,
+    bool_of,
     int_of,
     load_dataset,
     rows_of,
     text_of,
 )
 
-_WRITABLE = ("name", "code", "province", "city", "level", "type", "ownership", "website", "intro")
+_WRITABLE = (
+    "name",
+    "code",
+    "province",
+    "city",
+    "level",
+    "type",
+    "ownership",
+    "website",
+    "intro",
+    "dual_class",
+)
+
+# 布尔列：必须走 bool_of，且「行内没这个键」时保持原值（见模块 docstring）
+_TIER_FLAGS = ("is_985", "is_211")
 
 
 def import_schools(
@@ -58,6 +84,9 @@ def import_schools(
         return report
 
     rows = rows_of(payload, key) or rows_of(payload, "schools")
+
+    # 层次标记实测计数（写进报告，便于与《数据整合与装载交接》的 52/135/171 对账）
+    tiers = {"is_985": 0, "is_211": 0, "dual_class": 0}
 
     for row in rows:
         report.read += 1
@@ -78,6 +107,12 @@ def import_schools(
             report.skip("unresolvable_source")
             continue
 
+        for flag in _TIER_FLAGS:
+            if flag in row and bool_of(row, flag):
+                tiers[flag] += 1
+        if text_of(row, "dual_class"):
+            tiers["dual_class"] += 1
+
         existing = db.scalar(select(School).where(School.name == name))
 
         if existing is None:
@@ -96,6 +131,9 @@ def import_schools(
             for field in _WRITABLE:
                 if field not in {"name", "province", "level"}:
                     setattr(entity, field, text_of(row, field))
+            for flag in _TIER_FLAGS:
+                if flag in row:
+                    setattr(entity, flag, bool_of(row, flag))
             db.add(entity)
             report.created += 1
             continue
@@ -106,6 +144,11 @@ def import_schools(
             if value and getattr(existing, field) != value:
                 setattr(existing, field, value)
                 changed = True
+        for flag in _TIER_FLAGS:
+            # 行内没有该键时保持原值：徐的原始院校库没有层次列，不能把已补齐的标记清空
+            if flag in row and bool(getattr(existing, flag)) != bool_of(row, flag):
+                setattr(existing, flag, bool_of(row, flag))
+                changed = True
 
         if changed:
             report.updated += 1
@@ -114,4 +157,9 @@ def import_schools(
 
     db.flush()
     report.note(f"数据文件：{path}（业务键 name）")
+    if any(tiers.values()):
+        report.note(
+            f"院校层次：is_985={tiers['is_985']} / is_211={tiers['is_211']}"
+            f" / dual_class={tiers['dual_class']}（数据侧计数，应为 52 / 135 / 171 口径）"
+        )
     return report

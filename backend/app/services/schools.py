@@ -132,9 +132,11 @@ def school_summary(school: School) -> dict[str, Any]:
     """院校基础字段（产品书 6.5.1 的 items[] 字段集）。
 
     含院校层次（``is_985`` / ``is_211`` / ``dual_class``）：层次是「冲稳保」与院校筛选的
-    核心维度，原先三份数据源都没给全，2026-10-14 已由数据整合补齐并落库
-    （口径见 ``data/scripts/backfill_school_tiers.py``）。缺标记时如实为
-    ``false`` / ``""``，不推断。
+    核心维度，原先三份数据源都没给全，2026-10-14 已由数据整合按教育部公开名单补齐
+    （``data/dictionaries/school_tiers.json``）。落库走**正常装载通道**
+    （``app/services/importers/schools.py``，PR #32 起直接消费合并数据集的层次列）；
+    ``data/scripts/backfill_school_tiers.py`` 自此仅作事后校验 / 修库工具，不再是装载前置。
+    缺标记时如实为 ``false`` / ``""``，不推断。
     """
     return {
         "school_id": school.id,
