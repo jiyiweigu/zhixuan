@@ -11,6 +11,9 @@
   ``艺术类 / 体育类`` 一行两类、``general-batch`` 外键缺失、占位骨架；
 - ``province_exam_rule`` 的 ``data_status`` 同步进 ``rule_dataset_status``（闸门 1 的可用性来源）；
 - 新增列 ``score_segment.batch`` 真的落库（③ 口径：批次不可合并）；
+- 迁移 0008 在 develop 上的其余新增列同样必须被消费：``school.is_985`` / ``is_211`` /
+  ``dual_class``（缺列重导不得清空）、``score_segment.same_score_count``
+  （``segment_count`` 同口径兜底、缺省留 NULL 不推算）；
 - ``school_major_score``：可空列（``school_id`` / ``major_id``）、身份列
   （``major_code`` / ``group_code`` / ``major_name`` / ``exam_system``）、
   **位置 id 防护**（未知 ``school_id`` 跳过上报而不是降级成 NULL）、
@@ -304,6 +307,128 @@ def test_score_segment_batch_persisted() -> None:
         rows = db.scalars(select(ScoreSegment.batch)).all()
     assert rows, "score_segment 未导入"
     assert any(row for row in rows), "batch 列全为空，说明批次信息被丢弃"
+
+
+@case("新增列 school.is_985 / is_211 / dual_class 落库，且缺列重导不清空")
+def test_school_tiers_persisted() -> None:
+    """迁移 0008 加的三列必须由导入器消费（队长 2026-10-14 评审意见）。
+
+    三阶段断言：
+    1. 合并数据集带层次列 → 落库为 True/True/双一流；
+    2. 换一份**没有**层次列的院校库重导（徐的原始格式）→ 已落库的标记不得被清空；
+    3. 再导一次带层次列的文件 → 幂等（created=0 / updated=0）。
+    """
+    from app.services.importers.schools import import_schools
+
+    folder = _WORK / "tiers" / "schools"
+    folder.mkdir(parents=True, exist_ok=True)
+    base = {
+        "province": "河南",
+        "level": "本科",
+        "source_name": "河南省阳光高考信息平台（招生计划查询系统）",
+        "source_url": "https://zsjh.haedu.cn/qwerasd/school",
+        "year": 2026,
+    }
+    with_tiers = folder / "with_tiers.json"
+    with_tiers.write_text(
+        json.dumps(
+            {
+                "records": [
+                    {"id": 9001, "name": "层次测试大学甲", "is_985": True,
+                     "is_211": True, "dual_class": "双一流", **base},
+                    {"id": 9002, "name": "层次测试大学乙", "is_985": False,
+                     "is_211": False, "dual_class": "", **base},
+                ]
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    without_tiers = folder / "without_tiers.json"
+    without_tiers.write_text(
+        json.dumps(
+            {
+                "schools": [
+                    {"id": 9001, "name": "层次测试大学甲", **base},
+                    {"id": 9002, "name": "层次测试大学乙", **base},
+                ]
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    with SessionLocal() as db:
+        registry = SourceRegistry(db)
+        registry.load_registry(ROOT / "sources" / "source-table.json")
+        first = import_schools(db, with_tiers, registry)
+        db.commit()
+
+        tiers = db.get(School, 9001)
+        plain = db.get(School, 9002)
+        assert tiers is not None and plain is not None
+        assert tiers.is_985 is True and tiers.is_211 is True and tiers.dual_class == "双一流"
+        assert plain.is_985 is False and plain.is_211 is False and plain.dual_class == ""
+
+        # 换原始格式（无层次列）重导：不得把已落库的标记清空
+        second = import_schools(db, without_tiers, registry)
+        db.commit()
+        db.refresh(tiers)
+        assert first.created == 2, first.describe()
+        assert tiers.is_985 is True and tiers.dual_class == "双一流", "缺列重导把层次标记清空了"
+        assert second.created == 0 and second.updated == 0, second.describe()
+
+        # 再导带层次列的文件：幂等
+        third = import_schools(db, with_tiers, registry)
+        db.commit()
+        assert third.created == 0 and third.updated == 0, third.describe()
+
+
+@case("新增列 score_segment.same_score_count 落库（segment_count 同口径兜底，缺省不推算）")
+def test_score_segment_same_score_count() -> None:
+    """迁移 0008 加的 same_score_count 必须由导入器消费，否则库内恒为空。
+
+    三种字段形态都要覆盖：合并数据集 ``same_score_count``、③ 原始文件
+    ``segment_count``、两者都无（留 NULL，不按位次差值倒推）。
+    """
+    from app.services.importers.score_segment import import_score_segments
+
+    folder = _WORK / "same_count" / "score_segment"
+    folder.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "meta": {
+            "source_name": "河南省教育考试院（经河南省阳光高考信息平台发布）",
+            "source_url": "https://gaokao.haedu.cn/501/552/2026/0625/155639.html",
+            "year": 2027,
+        },
+        "segments": [
+            {"province": "河南", "year": 2027, "subject_type": "历史类", "batch": "本科批",
+             "score": 700, "cumulative_rank": 5, "same_score_count": 3},
+            {"province": "河南", "year": 2027, "subject_type": "历史类", "batch": "本科批",
+             "score": 699, "cumulative_rank": 12, "segment_count": 7},
+            {"province": "河南", "year": 2027, "subject_type": "历史类", "batch": "本科批",
+             "score": 698, "cumulative_rank": 20},
+        ],
+    }
+    (folder / "score_segment_2027.json").write_text(
+        json.dumps(payload, ensure_ascii=False), encoding="utf-8"
+    )
+
+    with SessionLocal() as db:
+        registry = SourceRegistry(db)
+        registry.load_registry(ROOT / "sources" / "source-table.json")
+        report = import_score_segments(db, folder, registry)
+        db.commit()
+        rows = {
+            row.score: row.same_score_count
+            for row in db.scalars(
+                select(ScoreSegment).where(ScoreSegment.year == 2027)
+            ).all()
+        }
+    assert report.created == 3, report.describe()
+    assert rows[700] == 3, "same_score_count 字段未落库"
+    assert rows[699] == 7, "segment_count 同口径兜底失败"
+    assert rows[698] is None, "无该字段时应留 NULL，不得按位次差值倒推"
 
 
 @case("T4 覆盖快照统计与 2026 分母缺口对账")
