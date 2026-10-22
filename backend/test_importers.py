@@ -14,7 +14,11 @@
 - ``school_major_score``：可空列（``school_id`` / ``major_id``）、身份列
   （``major_code`` / ``group_code`` / ``major_name`` / ``exam_system``）、
   **位置 id 防护**（未知 ``school_id`` 跳过上报而不是降级成 NULL）、
-  同键多行的序数幂等。
+  同键多行的序数幂等；
+- ``discipline_eval``：③ 的产出**混装两源**，只有带等级的才是评估结论，
+  「重点学科」（无等级、round 却标第四轮）必须跳过上报，不得冒充评估结果；
+- ``pathway_score``：③ 按专业组发布，表缺 ``subject_type`` 时同身份多行必须
+  **整组跳过**，不任选一行覆盖。
 
 数据来源是 ③ 随仓库分发的小样本包（``data/samples/``），
 来源登记表另取真实表 ``data/sources/source-table.json``（非样本包，规模会增长），
@@ -47,9 +51,20 @@ os.environ["ZHIXUAN_ENV"] = "test"
 from sqlalchemy import delete, func, select  # noqa: E402
 
 from app.db.session import SessionLocal, create_all  # noqa: E402
-from app.models.base_data import Major, School, SchoolMajorScore, ScoreSegment  # noqa: E402
+from app.models.base_data import (  # noqa: E402
+    DisciplineEval,
+    Major,
+    School,
+    SchoolMajorScore,
+    ScoreSegment,
+)
 from app.models.constraints import ProvinceExamRule, RuleDatasetStatus  # noqa: E402
-from app.models.pathway import Pathway, PathwayEligibility, PathwayRegion  # noqa: E402
+from app.models.pathway import (  # noqa: E402
+    Pathway,
+    PathwayEligibility,
+    PathwayRegion,
+    PathwayScore,
+)
 from app.models.source import Source  # noqa: E402
 from app.services.importers import SourceRegistry  # noqa: E402
 from app.services.importers.__main__ import run_all  # noqa: E402
@@ -87,6 +102,78 @@ shutil.copy(
 )
 # 专业库（845 专业 + 93 专业类）随仓库分发，是录取分专业挂接的前置
 shutil.copy(DATA / "majors" / "majors.json", ROOT / "majors" / "majors.json")
+
+# --------------------------------------------------------------------------- #
+# ③ 的 data/output/*.json：**顶层数组**形态（非 {"records": [...]} 包装），
+# 正好钉住 load_rows() 对两种产出形状的兼容
+# --------------------------------------------------------------------------- #
+(ROOT / "output").mkdir(parents=True, exist_ok=True)
+
+# 学科评估：20 行真评估 + 389 行「重点学科」的缩微版。
+# 关键点是**两源混装**（③ c_discipline.py 的设计）：有等级的是评估结论，
+# 无等级的是掌上高考「重点学科」收录关系，而 round 都写着「第四轮」。
+DISCIPLINE_SOURCE = {
+    "source_name": "教育部学位与研究生教育发展中心·学科评估（公开汇总）",
+    "source_url": "http://www.cdgdc.edu.cn/xwyyjsjyxx/xkpgjg/",
+    "year": 2017,
+}
+KEY_DISCIPLINE_SOURCE = {
+    "source_name": "掌上高考（中国教育在线）·院校重点学科",
+    "source_url": "https://static-data.gaokao.cn/www/2.0/school/62/info.json",
+    "year": 2026,
+}
+DISCIPLINE_ROWS = [
+    {"school_name": "郑州大学", "discipline_name": "化学", "grade": "B+",
+     "round": "第四轮", **DISCIPLINE_SOURCE},
+    {"school_name": "郑州大学", "discipline_name": "材料科学与工程", "grade": "B+",
+     "round": "第四轮", **DISCIPLINE_SOURCE},
+    {"school_name": "河南大学", "discipline_name": "教育学", "grade": "B",
+     "round": "第四轮", **DISCIPLINE_SOURCE},
+    # 无等级 → 重点学科收录关系，不得当作「第四轮评估、等级空」入库
+    {"school_name": "郑州大学", "discipline_name": "金融学", "grade": "",
+     "round": "第四轮", **KEY_DISCIPLINE_SOURCE},
+    # 院校库未收录 → 跳过上报，不猜、不自建院校行
+    {"school_name": "不存在的大学", "discipline_name": "化学", "grade": "B+",
+     "round": "第四轮", **DISCIPLINE_SOURCE},
+    # round 缺失 → 不默认成「第四轮」，直接跳过
+    {"school_name": "河南大学", "discipline_name": "哲学", "grade": "A-",
+     "round": "", **DISCIPLINE_SOURCE},
+]
+(ROOT / "output" / "discipline_eval.json").write_text(
+    json.dumps(DISCIPLINE_ROWS, ensure_ascii=False, indent=2), encoding="utf-8"
+)
+SAMPLE_DISCIPLINE_ROWS = len(DISCIPLINE_ROWS)
+SAMPLE_DISCIPLINE_GRADED = 3
+
+# 途径参考分：③ 按「专业组」发布，表结构只有 (途径, 院校, 省, 年)
+PATHWAY_SOURCE = {
+    "source_name": "河南省人民政府门户网站（郑大2025录取分公布）",
+    "source_url": "https://m.henan.gov.cn/2025/07-22/3182795.html",
+}
+PATHWAY_SCORE_ROWS = [
+    # 身份唯一 → 落库
+    {"pathway_name": "国家专项计划", "school_name": "郑州大学", "province": "河南",
+     "year": 2025, "subject_type": "历史类", "batch": "普通本科批",
+     "min_score": 598, "min_rank": None, **PATHWAY_SOURCE},
+    # 同身份两行，差异仅在 subject_type → 整组跳过（表里没有该列）
+    {"pathway_name": "地方专项计划", "school_name": "河南大学", "province": "河南",
+     "year": 2025, "subject_type": "历史类", "batch": "普通本科批",
+     "min_score": 589, "min_rank": 9187, **PATHWAY_SOURCE},
+    {"pathway_name": "地方专项计划", "school_name": "河南大学", "province": "河南",
+     "year": 2025, "subject_type": "物理类", "batch": "普通本科批",
+     "min_score": 579, "min_rank": 72674, **PATHWAY_SOURCE},
+    # 院校未收录
+    {"pathway_name": "国家专项计划", "school_name": "不存在的大学", "province": "河南",
+     "year": 2025, "subject_type": "历史类", "min_score": 500, **PATHWAY_SOURCE},
+    # 途径字典未收录
+    {"pathway_name": "不存在的计划", "school_name": "郑州大学", "province": "河南",
+     "year": 2025, "subject_type": "历史类", "min_score": 500, **PATHWAY_SOURCE},
+]
+(ROOT / "output" / "pathway_score.json").write_text(
+    json.dumps(PATHWAY_SCORE_ROWS, ensure_ascii=False, indent=2), encoding="utf-8"
+)
+SAMPLE_PATHWAY_SCORE_ROWS = len(PATHWAY_SCORE_ROWS)
+SAMPLE_PATHWAY_SCORE_CREATED = 1
 
 # 样本包的既定规模。
 # ⚠️ SAMPLE_SOURCES 例外：`data/sources/source-table.json` 是**真实来源登记表**（非样本包），
@@ -646,6 +733,70 @@ def test_majors_merged_format() -> None:
             if row is not None:
                 db.delete(row)
         db.commit()
+
+
+@case("学科评估只落带等级的评估结论；「重点学科」（无等级）不入库")
+def test_discipline_eval_only_graded() -> None:
+    report = FIRST_BY_NAME["discipline_eval"]
+    assert report.read == SAMPLE_DISCIPLINE_ROWS, report.describe()
+    assert report.created == SAMPLE_DISCIPLINE_GRADED, report.describe()
+
+    with SessionLocal() as db:
+        rows = db.scalars(select(DisciplineEval)).all()
+    assert len(rows) == SAMPLE_DISCIPLINE_GRADED, len(rows)
+    # 反向断言：库内不得存在「round=第四轮 但 grade 为空」的行 ——
+    # 那是把「重点学科收录关系」冒充成「第四轮评估、等级空」
+    empty = [row.discipline_name for row in rows if not row.grade]
+    assert not empty, f"无等级的行被当成评估结论入库：{empty}"
+
+    with SessionLocal() as db:
+        chem = db.scalar(select(DisciplineEval).where(DisciplineEval.discipline_name == "化学"))
+    assert chem is not None and chem.grade == "B+" and chem.round == "第四轮"
+
+    assert SECOND_BY_NAME["discipline_eval"].unchanged == SAMPLE_DISCIPLINE_GRADED
+
+
+@case("学科评估三类跳过各自计数：无等级 / 院校未收录 / round 缺失")
+def test_discipline_eval_skip_reasons() -> None:
+    reasons = FIRST_BY_NAME["discipline_eval"].skip_reasons
+    assert reasons.get("grade_absent_not_evaluation") == 1, reasons
+    assert reasons.get("unknown_school_name") == 1, reasons
+    assert reasons.get("missing_round") == 1, reasons
+
+
+@case("途径参考分：身份粒度不足时整组跳过，不任选一行覆盖同组其它行")
+def test_pathway_score_identity_ambiguous() -> None:
+    report = FIRST_BY_NAME["pathway_score"]
+    assert report.read == SAMPLE_PATHWAY_SCORE_ROWS, report.describe()
+    assert report.created == SAMPLE_PATHWAY_SCORE_CREATED, report.describe()
+    assert report.skip_reasons.get("identity_ambiguous_no_subject_type") == 2, report.describe()
+    assert report.skip_reasons.get("unknown_school_name") == 1, report.describe()
+    assert report.skip_reasons.get("unknown_pathway_name") == 1, report.describe()
+
+    with SessionLocal() as db:
+        rows = db.scalars(select(PathwayScore)).all()
+    assert len(rows) == SAMPLE_PATHWAY_SCORE_CREATED, len(rows)
+    # 落库的是身份唯一的那行；同组两行（589 / 579）不得互相覆盖后留任一行
+    assert rows[0].pathway_id == "national-special" and rows[0].min_score == 598
+    assert SECOND_BY_NAME["pathway_score"].unchanged == SAMPLE_PATHWAY_SCORE_CREATED
+
+
+@case("data/output 缺失时如实报 missing_file，不伪装成「零行成功」")
+def test_output_datasets_missing_file() -> None:
+    from app.services.importers.discipline_eval import import_discipline_evals
+    from app.services.importers.pathway_score import import_pathway_scores
+
+    empty = _WORK / "empty_root"
+    empty.mkdir(parents=True, exist_ok=True)
+    with SessionLocal() as db:
+        registry = SourceRegistry(db)
+        discipline = import_discipline_evals(
+            db, empty / "output" / "discipline_eval.json", registry
+        )
+        scores = import_pathway_scores(db, empty / "output" / "pathway_score.json", registry)
+    for report in (discipline, scores):
+        assert report.missing_file, report.describe()
+        assert report.read == 0 and report.created == 0, report.describe()
 
 
 def main() -> int:

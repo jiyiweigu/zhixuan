@@ -122,6 +122,24 @@ def rows_of(payload: dict[str, Any], key: str) -> list[dict[str, Any]]:
     return []
 
 
+def load_rows(path: Path, key: str = "records") -> list[dict[str, Any]] | None:
+    """读 JSON 行数组；文件不存在返回 ``None``（数据本体不随仓库分发，属正常情况）。
+
+    ③ 的产出有两种形状，本函数统一接收：
+    - **顶层数组**：``data/output/discipline_eval.json``、``pathway_score.json``；
+    - **带键包装**：``{"<key>": [...]}``（``data/schools/*_rows.json`` 用 ``records``）。
+    """
+    if not path.is_file():
+        return None
+    with path.open(encoding="utf-8") as handle:
+        payload = json.load(handle)
+    if isinstance(payload, list):
+        return [row for row in payload if isinstance(row, dict)]
+    if isinstance(payload, dict):
+        return rows_of(payload, key)
+    return []
+
+
 # --------------------------------------------------------------------------- #
 # 取值助手
 # --------------------------------------------------------------------------- #
