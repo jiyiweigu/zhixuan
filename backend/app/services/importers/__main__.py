@@ -20,11 +20,13 @@ from pathlib import Path
 from sqlalchemy.orm import Session
 
 from app.services.importers import ImportReport, SourceRegistry, data_root
+from app.services.importers.discipline_eval import import_discipline_evals
 from app.services.importers.eligibility import import_eligibility
 from app.services.importers.enrollment_rules import import_enrollment_rules
 from app.services.importers.majors import import_majors
 from app.services.importers.major_links import import_major_links
 from app.services.importers.pathway_regions import import_pathway_regions
+from app.services.importers.pathway_score import import_pathway_scores
 from app.services.importers.pathways import import_pathways
 from app.services.importers.province_exam_rule import import_province_exam_rules
 from app.services.importers.school_life import import_school_life
@@ -66,6 +68,9 @@ def run_all(session: Session, root: Path) -> list[ImportReport]:
         import_school_major_scores(session, root / "school_major_score", registry),
         # 依赖 major 表：把录取分按专业名挂到专业库（整数外键）
         import_major_links(session, registry),
+        # 依赖 school / pathway：学科评估与途径参考分（③ 产出在 data/output/）
+        import_discipline_evals(session, root / "output" / "discipline_eval.json", registry),
+        import_pathway_scores(session, root / "output" / "pathway_score.json", registry),
     ]
 
     if registry.unresolved:
